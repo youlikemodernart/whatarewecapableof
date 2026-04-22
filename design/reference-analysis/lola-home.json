@@ -1,0 +1,280 @@
+{
+  "url": "https://loladementmyers.com/",
+  "slug": "lola-home",
+  "viewports": {
+    "mobile": {
+      "file": "/Users/noah/Projects/whatarewecapableof/design/reference-analysis/screenshots/lola-home_mobile_375.png",
+      "width": 375
+    },
+    "tablet": {
+      "file": "/Users/noah/Projects/whatarewecapableof/design/reference-analysis/screenshots/lola-home_tablet_768.png",
+      "width": 768
+    },
+    "desktop": {
+      "file": "/Users/noah/Projects/whatarewecapableof/design/reference-analysis/screenshots/lola-home_desktop_1280.png",
+      "width": 1280
+    }
+  },
+  "computed": {},
+  "vars": {},
+  "fonts": [],
+  "assets": {
+    "images": 0,
+    "video": 0,
+    "font": 0
+  },
+  "styles": {
+    "computed": {
+      "html": {
+        "fontFamily": "Times",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "fontStyle": "normal",
+        "lineHeight": "normal",
+        "letterSpacing": "normal",
+        "textTransform": "none",
+        "color": "rgb(0, 0, 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textAlign": "start",
+        "margin": "0px",
+        "padding": "0px"
+      },
+      "body": {
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "11px",
+        "fontWeight": "400",
+        "fontStyle": "normal",
+        "lineHeight": "0px",
+        "letterSpacing": "normal",
+        "textTransform": "lowercase",
+        "color": "rgb(0, 0, 0)",
+        "backgroundColor": "rgba(255, 255, 255, 0)",
+        "textAlign": "start",
+        "margin": "0px",
+        "padding": "0px"
+      },
+      "h1": {
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "8px",
+        "fontWeight": "400",
+        "fontStyle": "normal",
+        "lineHeight": "0px",
+        "letterSpacing": "normal",
+        "textTransform": "lowercase",
+        "color": "rgb(255, 255, 255)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textAlign": "start",
+        "margin": "0px",
+        "padding": "0px"
+      },
+      "p": {
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "11px",
+        "fontWeight": "400",
+        "fontStyle": "normal",
+        "lineHeight": "8.8px",
+        "letterSpacing": "normal",
+        "textTransform": "lowercase",
+        "color": "rgb(0, 0, 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textAlign": "start",
+        "margin": "0px",
+        "padding": "0px"
+      },
+      "a": {
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "17px",
+        "fontWeight": "400",
+        "fontStyle": "normal",
+        "lineHeight": "0px",
+        "letterSpacing": "normal",
+        "textTransform": "lowercase",
+        "color": "rgb(255, 255, 255)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textAlign": "start",
+        "margin": "0px",
+        "padding": "3.4px"
+      },
+      "nav": {
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "17px",
+        "fontWeight": "400",
+        "fontStyle": "normal",
+        "lineHeight": "0px",
+        "letterSpacing": "normal",
+        "textTransform": "lowercase",
+        "color": "rgb(0, 0, 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textAlign": "start",
+        "margin": "0px",
+        "padding": "0px"
+      },
+      "header": {
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "11px",
+        "fontWeight": "400",
+        "fontStyle": "normal",
+        "lineHeight": "0px",
+        "letterSpacing": "normal",
+        "textTransform": "lowercase",
+        "color": "rgb(0, 0, 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textAlign": "start",
+        "margin": "0px",
+        "padding": "0px"
+      },
+      "section": {
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "11px",
+        "fontWeight": "400",
+        "fontStyle": "normal",
+        "lineHeight": "0px",
+        "letterSpacing": "normal",
+        "textTransform": "lowercase",
+        "color": "rgb(0, 0, 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textAlign": "start",
+        "margin": "0px",
+        "padding": "0px"
+      },
+      "li": {
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "17px",
+        "fontWeight": "400",
+        "fontStyle": "normal",
+        "lineHeight": "0px",
+        "letterSpacing": "normal",
+        "textTransform": "lowercase",
+        "color": "rgb(0, 0, 0)",
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textAlign": "start",
+        "margin": "0px",
+        "padding": "0px"
+      }
+    },
+    "vars": {},
+    "fonts": [],
+    "counts": {
+      "images": 1,
+      "video": 0,
+      "svg": 2,
+      "h1": 1,
+      "h2": 0,
+      "links": 11,
+      "allText": 85
+    },
+    "bodyBackground": "rgba(255, 255, 255, 0)",
+    "htmlBackground": "rgba(0, 0, 0, 0)",
+    "title": "☮︎",
+    "lang": "en-US",
+    "navLinks": [],
+    "allLinks": [
+      {
+        "text": "Menu",
+        "href": null
+      },
+      {
+        "text": "",
+        "href": "/"
+      },
+      {
+        "text": "",
+        "href": "http://mailto:LOLAMDEMENTMYERS@GMAIL.COM"
+      },
+      {
+        "text": "lola dement myers",
+        "href": "https://loladementmyers.com/all"
+      },
+      {
+        "text": "blog",
+        "href": "https://loladementmyers.com/blog"
+      },
+      {
+        "text": "shop",
+        "href": "https://loladementmyers.com/shop"
+      },
+      {
+        "text": "outfit",
+        "href": "/outfit-log"
+      },
+      {
+        "text": "+",
+        "href": "/portfolio"
+      },
+      {
+        "text": "+",
+        "href": "/posting"
+      },
+      {
+        "text": "+",
+        "href": "/earthday"
+      },
+      {
+        "text": "+",
+        "href": "/sex-talk"
+      }
+    ],
+    "containerWidths": {
+      "section": 1190,
+      "header": 50
+    },
+    "bodyChildWidths": [
+      1280,
+      0,
+      0,
+      0,
+      0
+    ],
+    "firstTextBlocks": [
+      {
+        "tag": "H1",
+        "text": ""
+      },
+      {
+        "tag": "P",
+        "text": ""
+      },
+      {
+        "tag": "P",
+        "text": "lola dement myers (b.1997) does it for no reason."
+      },
+      {
+        "tag": "P",
+        "text": ""
+      },
+      {
+        "tag": "P",
+        "text": "blog"
+      },
+      {
+        "tag": "P",
+        "text": "shop"
+      },
+      {
+        "tag": "P",
+        "text": "outfit"
+      },
+      {
+        "tag": "P",
+        "text": ""
+      },
+      {
+        "tag": "P",
+        "text": "+"
+      },
+      {
+        "tag": "P",
+        "text": "+"
+      },
+      {
+        "tag": "P",
+        "text": "+"
+      },
+      {
+        "tag": "P",
+        "text": "+"
+      }
+    ],
+    "cssVars": {}
+  }
+}

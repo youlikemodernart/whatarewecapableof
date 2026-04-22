@@ -249,7 +249,9 @@
 
 <main>
 
-<p class="proposal-title">Thirteen thousand wholesale accounts, built over eleven years through trade shows and founder energy. The distribution is real. The systems behind it were added one at a time, as the business grew. From the outside, the gap between the two is visible.</p>
+<p class="proposal-title">We spent time with Teaspressa's public-facing infrastructure: the DTC store, the wholesale store, the content, the analytics, the DNS records, and the technology connecting them. This is what we found, what it might mean, and what we'd want to learn more about.</p>
+
+<p style="margin-top: var(--space-1); font-size: var(--size-s); max-width: 52ch;"><strong>Summary</strong> is what we noticed. <strong>Research</strong> is the evidence behind each observation and the methodology that produced it. <strong>Scope</strong> is where we see potential space, and the questions we'd want to explore together.</p>
 
 <div class="tabs">
   <button class="tab active" onclick="switchTab('summary')">Summary</button>
@@ -262,7 +264,7 @@
 
 <p>Teaspressa is a Phoenix-based CPG brand. Allison DeVane founded it in 2015, owns 100% of the company, and manufactures the products in-house. The Luxe Mixer Cubes (flavored sugar cubes for cocktails, lattes, and mimosas) are the main product. She appeared on Shark Tank early on, closed physical retail locations during COVID, and pivoted to wholesale. The collabs page states the business generates over seven figures through 13,000+ retail accounts.</p>
 
-<p>We looked at the public-facing infrastructure: the DTC Shopify store, the separate wholesale Shopify store, the content, the analytics tools, the DNS records, and the technology connecting them. Five things stood out.</p>
+<p>We looked at the publicly visible pieces. Five observations seemed worth flagging.</p>
 
 <div class="stat-row">
   <div class="stat-item"><strong>13,000+</strong> Retail accounts</div>
@@ -277,7 +279,7 @@
 
 <div class="finding">
   <div class="finding-label">01</div>
-  <p>The wholesale operation serves 13,000+ retail accounts through a separate Shopify store at wholesale.teaspressa.com. Pricing is login-gated. Products are displayed in case packs. There's a blog coaching retailers on seasonal merchandising. But there's no line sheet, no reorder system, no account-level tracking, and no way for a buyer to browse after a trade show without logging into a second e-commerce store. The wholesale store also includes a "Sip & Shop Demo Package" at $120-$130, which shows investment in retail activation. The gap is between the scale of the distribution and the tools supporting it.</p>
+  <p>The wholesale operation serves 13,000+ retail accounts through a separate Shopify store at wholesale.teaspressa.com. Pricing is login-gated. Products are displayed in case packs. There's a blog coaching retailers on seasonal merchandising, and a "Sip & Shop Demo Package" at $120-$130 for in-store demos. What we didn't find: a digital line sheet, a reorder system, account-level tracking, or a way for a buyer to browse after a trade show without logging into a second e-commerce store.</p>
   <div class="evidence">wholesale.teaspressa.com product catalog, login-gated pricing, DNS subdomain analysis</div>
 </div>
 
@@ -308,6 +310,10 @@
 <div class="section-heading">What's working</div>
 
 <p>The product merchandising is sophisticated: 100+ collections organized by drink type, format, flavor profile, base spirit, caffeine level, occasion, and price point. Seasonal rotation keeps the catalog fresh. Product-specific landing page subdomains (champagnekit.teaspressa.com, mimosakit.teaspressa.com, drink.teaspressa.com) suggest campaign-level marketing with QR codes on packaging. The wholesale blog coaching retailers on seasonal prep is a differentiator most CPG brands at this scale don't offer. Premium partnerships include NetJets x Monaco Grand Prix and a Greenwood Brewery collaboration.</p>
+
+<div class="section-heading" style="margin-top: var(--space-3);">What we'd want to learn</div>
+
+<p>These observations come from the outside. We can see the storefront, the source code, the DNS records, and the public content. We can't see the GA4 dashboard, the Klaviyo engagement data, the wholesale account activity, or the trade show follow-up process. The patterns above are specific enough to be useful, and general enough that the real picture could look different once those internal layers are visible. A conversation with Allison would sharpen them considerably.</p>
 
 </div>
 
@@ -399,53 +405,34 @@
 <!-- ===== SCOPE ===== -->
 <div id="scope" class="tab-content">
 
-<p>The distribution reached a scale where the systems behind it matter. The wholesale ordering, analytics, retention tools, and event-based verticals were each added as the business needed them. The opportunity is to connect them.</p>
-
-<p>Three phases, ordered by leverage. Phase 1 addresses wholesale infrastructure because that's where the majority of revenue comes from. Phase 2 builds DTC retention. Phase 3 connects the measurement layer.</p>
+<p>The observations in this report come from publicly visible data. They suggest specific areas worth exploring, but the right priorities depend on context we don't have: internal metrics, trade show economics, team capacity, and what Allison is already planning. What follows is where the patterns point, not a prescription.</p>
 
 <div class="scope-phase">
-  <div class="phase-label">Phase 1</div>
-  <h3>Wholesale buyer experience</h3>
-  <p>A digital line sheet and buyer portal running on top of the existing wholesale Shopify store. The line sheet is the tool that lives after the trade show: a retail buyer can browse the seasonal catalog, check pricing, and reorder without logging into a separate e-commerce store. It looks like the brand, works on a phone, and can be forwarded internally.</p>
-  <ul>
-    <li>Line sheet pulling product data, images, and pricing from Shopify. Seasonal collections highlighted. Shareable link per account or per collection.</li>
-    <li>Account-level visibility: order history, reorder shortcut, seasonal catalog preview, new product alerts.</li>
-    <li>Post-show follow-up sequence: every buyer scanned at the booth gets the line sheet with a personalized note and a one-click reorder path.</li>
-    <li>Klaviyo integration for wholesale-specific email flows: new product launch, seasonal transition, restock reminders.</li>
-  </ul>
+  <div class="phase-label">Area 1</div>
+  <h3>Wholesale buyer tools</h3>
+  <p>13,000 retail accounts ordering through a login-gated Shopify store. If even a fraction of those accounts are lapsed or underactive, the simplest leverage might be making it easier to reorder: a digital line sheet that a buyer can browse on a phone after a trade show, seasonal collection previews, and a follow-up path that doesn't require navigating a separate e-commerce store. Whether that's the right priority depends on what the wholesale account data shows: how many accounts are active, what the reorder rate looks like, and how follow-up works after a show.</p>
 </div>
 
 <div class="scope-phase">
-  <div class="phase-label">Phase 2</div>
-  <h3>DTC retention and recurring revenue</h3>
-  <p>Convert the dormant subscription infrastructure into a live product. The seasonal flavor rotation provides a natural subscription story: subscribers receive the new collection before it hits shelves. Pair this with self-service quoting for wedding and corporate verticals.</p>
-  <ul>
-    <li>Subscribe-and-save on key products: monthly or quarterly Mixer Cube delivery, subscriber-exclusive seasonal flavors, easy skip/swap/cancel.</li>
-    <li>Wedding configurator: select cube flavor, packaging, quantity, personalization. Instant quote.</li>
-    <li>Corporate gifting builder: budget-based recommendations, bulk pricing tiers, branded packaging options, recurring annual setup.</li>
-    <li>LoyalTEA program audit: is the current points structure driving repeat purchases?</li>
-  </ul>
+  <div class="phase-label">Area 2</div>
+  <h3>Recurring revenue from a consumable product</h3>
+  <p>The subscription infrastructure is partially built. Shopify has it enabled. A collection and a page exist. If Allison tried subscriptions before and moved on, there's probably a reason. If she hasn't tried them, the seasonal rotation creates a natural subscription story: new flavors before they hit shelves. The wedding and corporate verticals could also benefit from less friction in the quoting process. Whether any of this is worth building depends on the DTC reorder rate and how much of the current revenue these verticals represent.</p>
 </div>
 
 <div class="scope-phase">
-  <div class="phase-label">Phase 3</div>
-  <h3>Measurement and analytics</h3>
-  <p>Google Tag Manager as the container for all tracking. A data layer connecting Klaviyo, Postscript, GA4, and the ad pixels. DNS cleanup. Review platform consolidation. One view of customer behavior across DTC and wholesale.</p>
-  <ul>
-    <li>GTM setup with server-side tagging for accuracy and privacy compliance.</li>
-    <li>Unified event model: add-to-cart, purchase, email signup, SMS opt-in, review submission, subscription activation tracked as coordinated events.</li>
-    <li>Consolidate review platforms (Judge.me or Stamped.io, not both). Migrate existing reviews.</li>
-    <li>TikTok audit: per-video performance analysis. Restructure the content strategy or reallocate the production effort.</li>
-    <li>SEO baseline: indexed page count, ranking keywords, organic traffic, blog content performance.</li>
-  </ul>
+  <div class="phase-label">Area 3</div>
+  <h3>Connected measurement</h3>
+  <p>Six analytics and marketing tools running independently. No container connecting them. DNS records showing signs of accumulation over time. These are the kinds of patterns that make it hard to answer "what's working" with confidence. A unified tracking layer (Google Tag Manager, shared data layer, consolidated events) would give whoever manages marketing a single view of customer behavior. Whether that's urgent depends on how much the team currently relies on data for decisions versus intuition and relationship.</p>
 </div>
+
+<div class="section-heading">What a conversation would look like</div>
+
+<p>We'd want to understand the wholesale operation from the inside: how buyers currently find and reorder products, what happens after a trade show, what the active-account percentage looks like, and where Allison feels the friction. We'd want to see the GA4 and Klaviyo data to understand DTC traffic, conversion, and retention patterns. And we'd want to know what she's already tried and what she's planning, so anything we suggest builds on momentum rather than cutting across it.</p>
+
+<p>The research here is the starting point. A conversation with Allison would turn these observations into a clearer picture of where the highest-leverage work actually sits.</p>
 
 <div class="closing">
-  <p>This report was produced by analyzing publicly observable infrastructure: extracting structured data from product pages, parsing XML sitemaps, reading every script and pixel on the homepage, querying DNS records, checking SSL certificate history, and pulling the wholesale store's product API. Everything cited here has a source.</p>
-
-  <p>An engagement follows the same method: understand the system before changing it. We'd start with an internal audit (GA4, Klaviyo, wholesale account data, trade show records), then build a roadmap grounded in what the data shows, then execute in phases with measurable checkpoints.</p>
-
-  <p>Austin Rockwell knows Allison and the Teaspressa business personally. Noah Glynn built the analysis and systems methodology. Both are at <a href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a>.</p>
+  <p>Austin Rockwell knows Allison and the Teaspressa business personally. Noah Glynn built the research and analysis methodology. Both are at <a href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a>.</p>
 </div>
 
 </div>

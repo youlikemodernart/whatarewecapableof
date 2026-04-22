@@ -88,11 +88,17 @@
     font-size: var(--size-s);
     text-transform: uppercase;
     letter-spacing: var(--tracking-caps);
-    margin-top: var(--space-3);
+    margin-top: var(--space-4);
     margin-bottom: var(--space-1);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-text);
   }
 
-  .section-heading:first-child { margin-top: 0; }
+  .section-heading:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
 
   .finding {
     margin-bottom: var(--space-2);

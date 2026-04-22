@@ -516,8 +516,13 @@ Before merging any implementation pass, verify:
 
 These are decisions the constraints can't make alone — they require Noah and Austin's input (with Caroline weighing in on taste/design questions where relevant).
 
+### Resolved (2026-04-22)
+
+2. ~~**Content model.**~~ **Resolved.** See `design/sitemap.md`. Three verticals (`/coach`, `/consult`, `/creative`) with integrated portfolio (scroll-through, not separate pages). About and contact are footer-only. Custom booking tool at `/coach/book` via Google Calendar API. Revisit portfolio-as-separate-pages when any vertical has 5+ items.
+
+### Still open
+
 1. **Specific typefaces.** The profile specifies tier and classification; the selection happens during Phase 4 of the create workflow. Candidates to audition: Lyon Text + Söhne Mono; GT Sectra + ABC Diatype Mono; Recoleta + JetBrains Mono. Licensing cost varies from free (JetBrains Mono) to $300–500 per family for the foundry serifs. Budget matters here.
-2. **Content model.** What pages exist? Home, about, work, contact — but also: writing, proposals, process, calendar? The layout primitives cover most, but a writing section may want different rules (longer prose columns, footnotes).
 3. **About page format.** Ellen Ole's voice memo is flagged as a strong direction. Confirm whether Noah + Austin want to record one, write a one-sentence bio, use photography (exception to image-absence — flagged), or something else entirely.
 4. **Motion ambitions.** The profile permits letterspacing expansion and word-level repositioning as signature moments. Are there specific moments to build (landing sequence, work-item entry, etc.), or does the site start motion-free with moves added later?
 5. **CMS vs. static.** Current state is static HTML. As content accrues, does a lightweight CMS (11ty, Astro, Hugo) become worth it? Recommend static until the project list exceeds ~15 items.

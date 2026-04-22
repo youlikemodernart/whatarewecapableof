@@ -9,15 +9,16 @@ Revised 2026-04-22 from Noah's working diagram + session discussion.
 ```
 whatarewecapableof.com
 
-/                           HOME
-├── /coach                  Austin's coaching vertical
+/                           HOME ("What are we capable of?" links to /question/)
+├── /question/              Ethos page: the firm's worldview (hidden link from homepage question)
+├── /coach/                 Austin's coaching vertical
 │   └── /coach/book         Custom booking tool (Google Calendar API)
-├── /consult                Shared advisory vertical
-└── /creative               Noah's design/build vertical
+├── /consult/               Shared advisory vertical
+└── /creative/              Noah's design/build vertical
 
 Footer-only (secondary):
-  ABOUT                     /about
-  CONTACT                   email + location in footer text (no dedicated page unless needed)
+  ABOUT                     /about/
+  CONTACT                   email in footer text (no dedicated page unless needed)
 ```
 
 ---
@@ -29,7 +30,7 @@ Footer-only (secondary):
 **Layout:** Primitive A (single-column, left-anchored). One viewport, no scroll.
 
 **Content:**
-- "What are we capable of?" as the primary typographic element. Serif, `--size-m` or `--size-l`. Takes up 60-70% of the viewport. Breathes.
+- "What are we capable of?" as the primary typographic element. Clickable (links to `/question/`) but with no visible link styling — no underline, no color change. Cursor change on hover is the only signal. Serif, `--size-m` or `--size-l`. Takes up 60-70% of the viewport. Breathes.
 - Below the question: `COACH  CONSULT  CREATIVE` as three mono ALL CAPS links. No descriptions. The words are self-explanatory.
 - Footer visible at bottom: `ABOUT` link + contact info (email).
 
@@ -43,7 +44,25 @@ Footer-only (secondary):
 
 ---
 
-### `/coach` — Coaching vertical
+### `/question/` — Ethos
+
+**Access:** Hidden link from the homepage. Clicking the question text navigates here. No visible link styling on the homepage; cursor change on hover is the only signal. This is the Lola `+` pattern: content that rewards engagement.
+
+**Layout:** Primitive A, scrollable.
+
+**Content:**
+- The question's origin: Jason Jaggard, *Beyond High Performance*. Not rhetorical; a practice.
+- How each founder carries it: Austin through coaching (BHP-certified), Noah through research and design.
+- What happens when both operate together.
+- Community section: a living document. Collaborators, thinkers, practitioners in the firm's orbit. Will grow as the firm takes shape and the BHP corpus develops.
+
+**Distinction from /about:** `/about` is biographical (who they are as people). `/question/` is intellectual and communal (what the firm believes, what it's investigating, who's in the conversation).
+
+**Content pipeline:** Noah is developing a BHP-inspired corpus in a separate session. That material feeds into the "question in practice" and "community" sections here. Expect this page to evolve more than any other as the firm's worldview sharpens.
+
+---
+
+### `/coach/` — Coaching vertical
 
 **Owner:** Austin.
 
@@ -113,13 +132,16 @@ When individual projects have enough depth, they become child pages (`/creative/
 
 **Layout:** Primitive A. One viewport if possible.
 
-**Content:** TBD. Open question from the taste profile phase. Options ranked by alignment with the reference set:
-1. Voice memo (Ellen Ole pattern) — audio replaces written bio. Strongest format signal.
-2. One sentence each for Noah and Austin — minimal text, maximum restraint.
-3. Single paragraph — standard but fine if the writing is good.
-4. Photography of the founders — exception to image-absence rule on chrome pages. Flag if chosen.
+**Content (built 2026-04-22):**
+- **Austin Rockwell:** Executive coach, organizational leader, Kamp Love founder. BHP-trained and certified.
+- **Noah Glynn:** Research, design, implementation.
+- **Contact:** `hello@whatarewecapableof.com`
+
+Short paragraph bios. Mono section labels (ALL CAPS) for each person's name, serif prose for the bio. Contact as a third section below the bios.
 
 Footer placement means visitors who want this page will find it; visitors who don't won't be distracted from the three verticals.
+
+> **Format note:** The voice-memo option (Ellen Ole pattern) is still worth revisiting. The current text bios work as scaffolding but could evolve into audio, photography, or a more distinctive format once the firm's voice is clearer.
 
 ---
 
@@ -193,6 +215,10 @@ Max depth: 2 from the primary nav. 3 counting home as level 0.
 
 **Credentials:** Google workspace OAuth creds already exist from the youtube-manager GCP project. Need to add Calendar API scope and create a service account or extend the existing OAuth consent.
 
+**Additional requirement (2026-04-22):** Booking events must also notify `austin@kamplove.org` (Austin's other email). Add as attendee on the created event so Google sends the invite there too.
+
+**Blocker:** Google Workspace migration (from Namecheap Private Email) is planned but blocked on Mercury account access from Austin. Can prototype against a test calendar before migration is done.
+
 ---
 
 ## Decisions log
@@ -204,3 +230,7 @@ Max depth: 2 from the primary nav. 3 counting home as level 0.
 | About and contact in footer only, not in primary nav | 2026-04-22 | If user research shows visitors can't find about/contact |
 | Custom booking tool (Google Calendar API) over Calendly | 2026-04-22 | If implementation takes >2 days or the UX isn't clean enough; Calendly inline embed is the fallback |
 | Contact as footer text, not a dedicated page | 2026-04-22 | If a contact form or more complex routing (different inboxes per vertical) becomes necessary |
+| Homepage question links to /question/ (no visible styling) | 2026-04-22 | If users don't discover the ethos page; consider a subtle hover effect |
+| /question/ as ethos vs /about as biographical | 2026-04-22 | If the distinction confuses visitors |
+| About page as text bios (scaffold) | 2026-04-22 | Voice memo, photography, or richer format when the firm's voice is clearer |
+| URL pattern: always `<name>/index.html` for clean paths | 2026-04-22 | Permanent; `about.html` style 404s on Vercel |

@@ -1,0 +1,410 @@
+{
+  "url": "https://loladementmyers.com/",
+  "slug": "lola-home2",
+  "viewports": {
+    "mobile": {
+      "file": "/Users/noah/Projects/whatarewecapableof/design/reference-analysis/screenshots/lola-home2_mobile_375.png",
+      "width": 375
+    },
+    "tablet": {
+      "file": "/Users/noah/Projects/whatarewecapableof/design/reference-analysis/screenshots/lola-home2_tablet_768.png",
+      "width": 768
+    },
+    "desktop": {
+      "file": "/Users/noah/Projects/whatarewecapableof/design/reference-analysis/screenshots/lola-home2_desktop_1280.png",
+      "width": 1280
+    }
+  },
+  "styles": {
+    "computed": {
+      "html": [
+        {
+          "text": "lola dement myers (b.1997) does it for no reason.\n\nblog\n\nshop \n\noutfit\n\n+\n\n+\n\n+\n\n+",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "w": 1280,
+            "h": 900
+          },
+          "fontFamily": "Times",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "normal",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ],
+      "body": [
+        {
+          "text": "lola dement myers (b.1997) does it for no reason.\n\nblog\n\nshop \n\noutfit\n\n+\n\n+\n\n+\n\n+",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "w": 1280,
+            "h": 880
+          },
+          "fontFamily": "Arial, Helvetica, sans-serif",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "0px",
+          "letterSpacing": "normal",
+          "textTransform": "lowercase",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(255, 255, 255, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ],
+      "p": [
+        {
+          "text": "lola dement myers (b.1997) does it for no reason.",
+          "rect": {
+            "x": 80,
+            "y": 53,
+            "w": 1190,
+            "h": 9
+          },
+          "fontFamily": "Arial, Helvetica, sans-serif",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "8.8px",
+          "letterSpacing": "normal",
+          "textTransform": "lowercase",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px 0px 11px",
+          "padding": "0px"
+        },
+        {
+          "text": "blog",
+          "rect": {
+            "x": 80,
+            "y": 92,
+            "w": 1190,
+            "h": 9
+          },
+          "fontFamily": "Arial, Helvetica, sans-serif",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "8.8px",
+          "letterSpacing": "normal",
+          "textTransform": "lowercase",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px 0px 11px",
+          "padding": "0px"
+        }
+      ],
+      "a": [
+        {
+          "text": "lola dement myers",
+          "rect": {
+            "x": 80,
+            "y": 51,
+            "w": 90,
+            "h": 13
+          },
+          "fontFamily": "Arial, Helvetica, sans-serif",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "8.8px",
+          "letterSpacing": "normal",
+          "textTransform": "lowercase",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        },
+        {
+          "text": "blog",
+          "rect": {
+            "x": 80,
+            "y": 90,
+            "w": 21,
+            "h": 13
+          },
+          "fontFamily": "Arial, Helvetica, sans-serif",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "8.8px",
+          "letterSpacing": "normal",
+          "textTransform": "lowercase",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ],
+      "section": [
+        {
+          "text": "lola dement myers (b.1997) does it for no reason.\n\nblog\n\nshop \n\noutfit\n\n+\n\n+\n\n+\n\n+",
+          "rect": {
+            "x": 80,
+            "y": 10,
+            "w": 1190,
+            "h": 860
+          },
+          "fontFamily": "Arial, Helvetica, sans-serif",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "0px",
+          "letterSpacing": "normal",
+          "textTransform": "lowercase",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ]
+    },
+    "visible": [],
+    "vars": {},
+    "fonts": [],
+    "counts": {
+      "images": 1,
+      "video": 0,
+      "svg": 2,
+      "h1": 1,
+      "h2": 0,
+      "p": 42,
+      "a": 11
+    },
+    "fontCombos": [
+      {
+        "count": 9,
+        "sample": "lola dement myers",
+        "tag": "A",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "11px",
+        "fontWeight": "400",
+        "fontStyle": "normal",
+        "letterSpacing": "normal",
+        "textTransform": "lowercase",
+        "lineHeight": "8.8px",
+        "color": "rgb(0, 0, 0)"
+      }
+    ],
+    "allText": [
+      {
+        "tag": "A",
+        "size": "11px",
+        "text": "lola dement myers"
+      },
+      {
+        "tag": "P",
+        "size": "11px",
+        "text": "(b.1997) does it for no reason."
+      },
+      {
+        "tag": "A",
+        "size": "11px",
+        "text": "blog"
+      },
+      {
+        "tag": "A",
+        "size": "11px",
+        "text": "shop"
+      },
+      {
+        "tag": "A",
+        "size": "11px",
+        "text": "outfit"
+      },
+      {
+        "tag": "A",
+        "size": "11px",
+        "text": "+"
+      },
+      {
+        "tag": "A",
+        "size": "11px",
+        "text": "+"
+      },
+      {
+        "tag": "A",
+        "size": "11px",
+        "text": "+"
+      },
+      {
+        "tag": "A",
+        "size": "11px",
+        "text": "+"
+      }
+    ],
+    "cssVars": {},
+    "fontsApi": [
+      {
+        "family": "squarespace-ui-font",
+        "style": "normal",
+        "weight": "normal",
+        "status": "unloaded"
+      },
+      {
+        "family": "squarespace-ui-font",
+        "style": "normal",
+        "weight": "normal",
+        "status": "unloaded"
+      },
+      {
+        "family": "social-icon-font",
+        "style": "normal",
+        "weight": "normal",
+        "status": "unloaded"
+      },
+      {
+        "family": "proxima-nova",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "proxima-nova",
+        "style": "normal",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "proxima-nova",
+        "style": "normal",
+        "weight": "600",
+        "status": "unloaded"
+      }
+    ],
+    "bodyBackground": "rgba(255, 255, 255, 0)",
+    "htmlBackground": "rgba(0, 0, 0, 0)",
+    "title": "☮︎",
+    "lang": "en-US",
+    "allLinks": [
+      {
+        "text": "Menu",
+        "href": null,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 0
+        }
+      },
+      {
+        "text": "",
+        "href": "/",
+        "rect": {
+          "x": 10,
+          "y": 25,
+          "w": 50
+        }
+      },
+      {
+        "text": "",
+        "href": "http://mailto:LOLAMDEMENTMYERS@GMAIL.COM",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 0
+        }
+      },
+      {
+        "text": "lola dement myers",
+        "href": "https://loladementmyers.com/all",
+        "rect": {
+          "x": 80,
+          "y": 51,
+          "w": 90
+        }
+      },
+      {
+        "text": "blog",
+        "href": "https://loladementmyers.com/blog",
+        "rect": {
+          "x": 80,
+          "y": 90,
+          "w": 21
+        }
+      },
+      {
+        "text": "shop",
+        "href": "https://loladementmyers.com/shop",
+        "rect": {
+          "x": 80,
+          "y": 110,
+          "w": 24
+        }
+      },
+      {
+        "text": "outfit",
+        "href": "/outfit-log",
+        "rect": {
+          "x": 80,
+          "y": 130,
+          "w": 24
+        }
+      },
+      {
+        "text": "+",
+        "href": "/portfolio",
+        "rect": {
+          "x": 80,
+          "y": 170,
+          "w": 6
+        }
+      },
+      {
+        "text": "+",
+        "href": "/posting",
+        "rect": {
+          "x": 80,
+          "y": 189,
+          "w": 6
+        }
+      },
+      {
+        "text": "+",
+        "href": "/earthday",
+        "rect": {
+          "x": 80,
+          "y": 209,
+          "w": 6
+        }
+      },
+      {
+        "text": "+",
+        "href": "/sex-talk",
+        "rect": {
+          "x": 80,
+          "y": 229,
+          "w": 6
+        }
+      }
+    ],
+    "containerWidths": {
+      "section": 1190,
+      "header": 50
+    },
+    "bodyChildWidths": [
+      1280,
+      0,
+      0,
+      0,
+      0
+    ],
+    "documentHeight": 900,
+    "viewportWidth": 1280
+  }
+}

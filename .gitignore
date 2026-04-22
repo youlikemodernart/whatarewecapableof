@@ -1,1 +1,5 @@
 .vercel
+
+# Working artifacts that shouldn't be tracked
+design/claude-session.log
+design/reference-analysis/_quarantine/

@@ -1,0 +1,288 @@
+{
+  "url": "https://ellenole.com/",
+  "slug": "ellenole-home",
+  "viewports": {
+    "mobile": {
+      "file": "/Users/noah/Projects/whatarewecapableof/design/reference-analysis/screenshots/ellenole-home_mobile_375.png",
+      "width": 375,
+      "height": 667
+    },
+    "tablet": {
+      "file": "/Users/noah/Projects/whatarewecapableof/design/reference-analysis/screenshots/ellenole-home_tablet_768.png",
+      "width": 768,
+      "height": 1024
+    },
+    "desktop": {
+      "file": "/Users/noah/Projects/whatarewecapableof/design/reference-analysis/screenshots/ellenole-home_desktop_1280.png",
+      "width": 1280,
+      "height": 800
+    }
+  },
+  "styles": {
+    "computed": {
+      "html": [
+        {
+          "text": "Ellen Nielsen\nSelected work\nDaniel Caesar PERFORMANCE\nYung Lean FOREVER YUNG TOUR\nSon of Spergy VINYL\nYung Lean HOMECOMING SHOW\nMowa Lola\nDaniel Caesar CFG SHOW",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "w": 1280,
+            "h": 463
+          },
+          "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "24px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ],
+      "body": [
+        {
+          "text": "Ellen Nielsen\nSelected work\nDaniel Caesar PERFORMANCE\nYung Lean FOREVER YUNG TOUR\nSon of Spergy VINYL\nYung Lean HOMECOMING SHOW\nMowa Lola\nDaniel Caesar CFG SHOW",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "w": 1280,
+            "h": 463
+          },
+          "fontFamily": "Inter, \"Helvetica Neue\", Arial, sans-serif",
+          "fontSize": "10px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "12px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "10px"
+        }
+      ],
+      "a": [
+        {
+          "text": "Blog",
+          "rect": {
+            "x": 10,
+            "y": 363,
+            "w": 21,
+            "h": 12
+          },
+          "fontFamily": "Inter, \"Helvetica Neue\", Arial, sans-serif",
+          "fontSize": "10px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "12px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        },
+        {
+          "text": "@__e____n",
+          "rect": {
+            "x": 10,
+            "y": 429,
+            "w": 49,
+            "h": 12
+          },
+          "fontFamily": "Inter, \"Helvetica Neue\", Arial, sans-serif",
+          "fontSize": "10px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "12px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "30px 0px 0px",
+          "padding": "0px"
+        },
+        {
+          "text": "ellennielsn@gmail.com",
+          "rect": {
+            "x": 10,
+            "y": 441,
+            "w": 101,
+            "h": 12
+          },
+          "fontFamily": "Inter, \"Helvetica Neue\", Arial, sans-serif",
+          "fontSize": "10px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "12px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ],
+      "button": [
+        {
+          "text": "",
+          "rect": {
+            "x": 1245,
+            "y": 768,
+            "w": 25,
+            "h": 28
+          },
+          "fontFamily": "Inter, \"Helvetica Neue\", Arial, sans-serif",
+          "fontSize": "10px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "12px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "center",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ]
+    },
+    "vars": {},
+    "fonts": [],
+    "counts": {
+      "images": 0,
+      "video": 0,
+      "svg": 0,
+      "h1": 0,
+      "h2": 0,
+      "h3": 0,
+      "p": 0,
+      "a": 3
+    },
+    "visible": [],
+    "fontCombos": [
+      {
+        "count": 29,
+        "sample": "Ellen Nielsen",
+        "tag": "DIV",
+        "fontFamily": "Inter, \"Helvetica Neue\", Arial, sans-serif",
+        "fontSize": "10px",
+        "fontWeight": "400",
+        "fontStyle": "normal",
+        "letterSpacing": "normal",
+        "textTransform": "none",
+        "lineHeight": "12px",
+        "color": "rgb(0, 0, 0)"
+      }
+    ],
+    "cssVars": {
+      "--un-content": "",
+      "--un-rotate": "0",
+      "--un-rotate-x": "0",
+      "--un-rotate-y": "0",
+      "--un-rotate-z": "0",
+      "--un-scale-x": "1",
+      "--un-scale-y": "1",
+      "--un-scale-z": "1",
+      "--un-skew-x": "0",
+      "--un-skew-y": "0",
+      "--un-translate-x": "0",
+      "--un-translate-y": "0",
+      "--un-translate-z": "0",
+      "--un-pan-x": "",
+      "--un-pan-y": "",
+      "--un-pinch-zoom": "",
+      "--un-scroll-snap-strictness": "proximity",
+      "--un-ordinal": "",
+      "--un-slashed-zero": "",
+      "--un-numeric-figure": "",
+      "--un-numeric-spacing": "",
+      "--un-numeric-fraction": "",
+      "--un-border-spacing-x": "0",
+      "--un-border-spacing-y": "0",
+      "--un-ring-offset-shadow": "0 0 transparent",
+      "--un-ring-shadow": "0 0 transparent",
+      "--un-shadow-inset": "",
+      "--un-shadow": "0 0 transparent",
+      "--un-ring-inset": "",
+      "--un-ring-offset-width": "0px",
+      "--un-ring-offset-color": "#fff",
+      "--un-ring-width": "0px",
+      "--un-ring-color": "rgba(147,197,253,.5)",
+      "--un-blur": "",
+      "--un-brightness": "",
+      "--un-contrast": "",
+      "--un-drop-shadow": "",
+      "--un-grayscale": "",
+      "--un-hue-rotate": "",
+      "--un-invert": "",
+      "--un-saturate": "",
+      "--un-sepia": "",
+      "--un-backdrop-blur": "",
+      "--un-backdrop-brightness": "",
+      "--un-backdrop-contrast": "",
+      "--un-backdrop-grayscale": "",
+      "--un-backdrop-hue-rotate": "",
+      "--un-backdrop-invert": "",
+      "--un-backdrop-opacity": "",
+      "--un-backdrop-saturate": "",
+      "--un-backdrop-sepia": "",
+      "--un-border-opacity": "",
+      "--un-bg-opacity": "",
+      "--un-text-opacity": "",
+      "--svg": ""
+    },
+    "fontsApi": [],
+    "bodyBackground": "rgba(0, 0, 0, 0)",
+    "htmlBackground": "rgba(0, 0, 0, 0)",
+    "title": "Ellen Nielsen",
+    "lang": "en",
+    "allLinks": [
+      {
+        "text": "Blog",
+        "href": "https://hereismyblog.com/",
+        "rect": {
+          "x": 10,
+          "y": 363,
+          "w": 21
+        }
+      },
+      {
+        "text": "@__e____n",
+        "href": "https://www.instagram.com/__e____n/",
+        "rect": {
+          "x": 10,
+          "y": 429,
+          "w": 49
+        }
+      },
+      {
+        "text": "ellennielsn@gmail.com",
+        "href": "mailto:ellennielsn@gmail.com",
+        "rect": {
+          "x": 10,
+          "y": 441,
+          "w": 101
+        }
+      }
+    ],
+    "containerWidths": {},
+    "bodyChildWidths": [
+      1260,
+      1260,
+      0,
+      0,
+      0
+    ],
+    "documentHeight": 800,
+    "viewportWidth": 1280
+  }
+}

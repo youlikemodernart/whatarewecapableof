@@ -1,0 +1,775 @@
+{
+  "url": "https://www.loyalgallery.com/",
+  "slug": "loyal-home",
+  "viewports": {
+    "mobile": {
+      "file": "/Users/noah/Projects/whatarewecapableof/design/reference-analysis/screenshots/loyal-home_mobile_375.png",
+      "width": 375,
+      "height": 667
+    },
+    "tablet": {
+      "file": "/Users/noah/Projects/whatarewecapableof/design/reference-analysis/screenshots/loyal-home_tablet_768.png",
+      "width": 768,
+      "height": 1024
+    },
+    "desktop": {
+      "file": "/Users/noah/Projects/whatarewecapableof/design/reference-analysis/screenshots/loyal-home_desktop_1280.png",
+      "width": 1280,
+      "height": 800
+    }
+  },
+  "styles": {
+    "computed": {
+      "html": [
+        {
+          "text": "LOYAL\nExhibitions\nArtists\nBooks\nAbout\nUpcoming exhibition\nUNTIL\nTianyue Zhong\nApril 15–May 13, 2026\nOpening hours\nWed–Fri 12–5 pm\nSat 12–3 pm\nSANDGATAN 7, 223 5",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "w": 1280,
+            "h": 800
+          },
+          "fontFamily": "Times",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "normal",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ],
+      "body": [
+        {
+          "text": "LOYAL\nExhibitions\nArtists\nBooks\nAbout\nUpcoming exhibition\nUNTIL\nTianyue Zhong\nApril 15–May 13, 2026\nOpening hours\nWed–Fri 12–5 pm\nSat 12–3 pm\nSANDGATAN 7, 223 5",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "w": 1280,
+            "h": 800
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ],
+      "h1": [
+        {
+          "text": "LOYAL",
+          "rect": {
+            "x": 27,
+            "y": 24,
+            "w": 613,
+            "h": 27
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ],
+      "h2": [
+        {
+          "text": "Upcoming exhibition",
+          "rect": {
+            "x": 27,
+            "y": 156,
+            "w": 586,
+            "h": 27
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ],
+      "h3": [
+        {
+          "text": "UNTIL",
+          "rect": {
+            "x": 27,
+            "y": 238,
+            "w": 207,
+            "h": 27
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ],
+      "a": [
+        {
+          "text": "LOYAL",
+          "rect": {
+            "x": 27,
+            "y": 26,
+            "w": 67,
+            "h": 22
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        },
+        {
+          "text": "Exhibitions",
+          "rect": {
+            "x": 640,
+            "y": 26,
+            "w": 109,
+            "h": 22
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        },
+        {
+          "text": "Artists",
+          "rect": {
+            "x": 851,
+            "y": 26,
+            "w": 66,
+            "h": 22
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        },
+        {
+          "text": "Books",
+          "rect": {
+            "x": 1019,
+            "y": 26,
+            "w": 61,
+            "h": 22
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        },
+        {
+          "text": "About",
+          "rect": {
+            "x": 1182,
+            "y": 26,
+            "w": 60,
+            "h": 22
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        },
+        {
+          "text": "UNTIL\nTianyue Zhong\nApril 15–May 13, 2026",
+          "rect": {
+            "x": 27,
+            "y": 238,
+            "w": 207,
+            "h": 82
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ],
+      "nav": [
+        {
+          "text": "LOYAL\nExhibitions\nArtists\nBooks\nAbout",
+          "rect": {
+            "x": 27,
+            "y": 24,
+            "w": 1226,
+            "h": 27
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ],
+      "footer": [
+        {
+          "text": "SANDGATAN 7, 223 50 LUND\nSWEDEN, +46 8-680 7711, LOYAL@LOYALGALLERY.COM",
+          "rect": {
+            "x": 0,
+            "y": 691,
+            "w": 1280,
+            "h": 109
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "uppercase",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "27.2px"
+        }
+      ],
+      "header": [
+        {
+          "text": "LOYAL\nExhibitions\nArtists\nBooks\nAbout",
+          "rect": {
+            "x": 0,
+            "y": -3,
+            "w": 1280,
+            "h": 109
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "-3.4px 0px 0px",
+          "padding": "27.2px 27.2px 54.4px"
+        },
+        {
+          "text": "Upcoming exhibition",
+          "rect": {
+            "x": 27,
+            "y": 156,
+            "w": 586,
+            "h": 82
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px 0px 54.4px"
+        },
+        {
+          "text": "",
+          "rect": {
+            "x": 640,
+            "y": 156,
+            "w": 586,
+            "h": 54
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px 0px 54.4px"
+        }
+      ],
+      "main": [
+        {
+          "text": "Upcoming exhibition\nUNTIL\nTianyue Zhong\nApril 15–May 13, 2026",
+          "rect": {
+            "x": 0,
+            "y": 105,
+            "w": 1280,
+            "h": 695
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "54.4px 27.2px 27.2px"
+        }
+      ]
+    },
+    "vars": {},
+    "fonts": [],
+    "counts": {
+      "images": 1,
+      "video": 0,
+      "svg": 0,
+      "h1": 1,
+      "h2": 2,
+      "h3": 1,
+      "p": 0,
+      "a": 10
+    },
+    "visible": [],
+    "fontCombos": [
+      {
+        "count": 9,
+        "sample": "LOYAL",
+        "tag": "A",
+        "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+        "fontSize": "21.76px",
+        "fontWeight": "400",
+        "fontStyle": "normal",
+        "letterSpacing": "normal",
+        "textTransform": "none",
+        "lineHeight": "27.2px",
+        "color": "rgb(0, 0, 0)"
+      },
+      {
+        "count": 4,
+        "sample": ", ,",
+        "tag": "DIV",
+        "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+        "fontSize": "21.76px",
+        "fontWeight": "400",
+        "fontStyle": "normal",
+        "letterSpacing": "normal",
+        "textTransform": "uppercase",
+        "lineHeight": "27.2px",
+        "color": "rgb(0, 0, 0)"
+      }
+    ],
+    "cssVars": {
+      "--fontSize": "1.7vw",
+      "--lineHeight": "1.25",
+      "--baseWidth": "calc(1.7vw * 1.25)",
+      "--baseline": "calc(1.7vw * 1.25)",
+      "--color-icon": "#000",
+      "--color-badge-active": "#fff",
+      "--bgColor-badge-active": "#000",
+      "--color-buttonPrimary": "#fff",
+      "--borderColor-buttonPrimary": "#000",
+      "--bgColor-buttonPrimary": "#000",
+      "--color-buttonPrimary-hover": "#fff",
+      "--borderColor-buttonPrimary-hover": "#000fff",
+      "--bgColor-buttonPrimary-hover": "#000fff",
+      "--shadow-buttonPrimary-hover": "none",
+      "--color-buttonSecondary": "#000",
+      "--borderColor-buttonSecondary": "#000",
+      "--bgColor-buttonSecondary": "#fff",
+      "--color-buttonSecondary-hover": "#000",
+      "--shadow-buttonSecondary-hover": "none",
+      "--bgColor-buttonSecondary-hover": "#fff",
+      "--bgColor-buttonSecondary-active": "#eee",
+      "--borderColor-input-focus": "#000",
+      "--borderColor-input-hover": "#000",
+      "--shadow-input-focus": "none",
+      "--bgColor-buttonDanger": "transparent",
+      "--color-buttonDanger": "#000",
+      "--shadow-buttonDanger-hover": "none",
+      "--color-buttonDanger-hover": "#ff0000",
+      "--bgColor-buttonDanger-hover": "transparent"
+    },
+    "fontsApi": [
+      {
+        "family": "Montserrat",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Montserrat",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Montserrat",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Montserrat",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Montserrat",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Montserrat",
+        "style": "normal",
+        "weight": "500",
+        "status": "unloaded"
+      },
+      {
+        "family": "Montserrat",
+        "style": "normal",
+        "weight": "500",
+        "status": "unloaded"
+      },
+      {
+        "family": "Montserrat",
+        "style": "normal",
+        "weight": "500",
+        "status": "unloaded"
+      },
+      {
+        "family": "Montserrat",
+        "style": "normal",
+        "weight": "500",
+        "status": "unloaded"
+      },
+      {
+        "family": "Montserrat",
+        "style": "normal",
+        "weight": "500",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "600",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "600",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "600",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "600",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "600",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "600",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "600",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "600",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "600",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "600",
+        "status": "unloaded"
+      },
+      {
+        "family": "Unica77 LL",
+        "style": "normal",
+        "weight": "normal",
+        "status": "loaded"
+      }
+    ],
+    "bodyBackground": "rgba(0, 0, 0, 0)",
+    "htmlBackground": "rgba(0, 0, 0, 0)",
+    "title": "LOYAL",
+    "lang": "",
+    "allLinks": [
+      {
+        "text": "LOYAL",
+        "href": "/",
+        "rect": {
+          "x": 27,
+          "y": 26,
+          "w": 67
+        }
+      },
+      {
+        "text": "Exhibitions",
+        "href": "/exhibitions",
+        "rect": {
+          "x": 640,
+          "y": 26,
+          "w": 109
+        }
+      },
+      {
+        "text": "Artists",
+        "href": "/artists",
+        "rect": {
+          "x": 851,
+          "y": 26,
+          "w": 66
+        }
+      },
+      {
+        "text": "Books",
+        "href": "/books",
+        "rect": {
+          "x": 1019,
+          "y": 26,
+          "w": 61
+        }
+      },
+      {
+        "text": "About",
+        "href": "/about",
+        "rect": {
+          "x": 1182,
+          "y": 26,
+          "w": 60
+        }
+      },
+      {
+        "text": "UNTIL\nTianyue Zhong\nApril 15–May 13, 2026",
+        "href": "exhibitions/until/",
+        "rect": {
+          "x": 27,
+          "y": 238,
+          "w": 207
+        }
+      },
+      {
+        "text": "Opening hours\nWed–Fri 12–5 pm\nSat 12–3 pm",
+        "href": "/about/",
+        "rect": {
+          "x": 27,
+          "y": 694,
+          "w": 165
+        }
+      },
+      {
+        "text": "SANDGATAN 7, 223 50 LUND\nSWEDEN",
+        "href": "https://maps.app.goo.gl/PurQSw5XFwFioDjW9",
+        "rect": {
+          "x": 640,
+          "y": 721,
+          "w": 285
+        }
+      },
+      {
+        "text": "+46 8-680 7711",
+        "href": "tel:+468680 7711",
+        "rect": {
+          "x": 742,
+          "y": 748,
+          "w": 141
+        }
+      },
+      {
+        "text": "LOYAL@LOYALGALLERY.COM",
+        "href": "mailto:loyal@loyalgallery.com",
+        "rect": {
+          "x": 893,
+          "y": 748,
+          "w": 307
+        }
+      }
+    ],
+    "containerWidths": {
+      "main": 1280,
+      "header": 1280,
+      "footer": 1280
+    },
+    "bodyChildWidths": [
+      0,
+      0,
+      1280,
+      1280,
+      165,
+      0,
+      1280,
+      0
+    ],
+    "documentHeight": 800,
+    "viewportWidth": 1280
+  }
+}

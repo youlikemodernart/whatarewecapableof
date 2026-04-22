@@ -1,0 +1,566 @@
+{
+  "url": "https://loladementmyers.com/portfolio",
+  "slug": "lola-portfolio",
+  "viewports": {
+    "mobile": {
+      "file": "/Users/noah/Projects/whatarewecapableof/design/reference-analysis/screenshots/lola-portfolio_mobile_375.png",
+      "width": 375
+    },
+    "tablet": {
+      "file": "/Users/noah/Projects/whatarewecapableof/design/reference-analysis/screenshots/lola-portfolio_tablet_768.png",
+      "width": 768
+    },
+    "desktop": {
+      "file": "/Users/noah/Projects/whatarewecapableof/design/reference-analysis/screenshots/lola-portfolio_desktop_1280.png",
+      "width": 1280
+    }
+  },
+  "styles": {
+    "computed": {
+      "html": [
+        {
+          "text": "(notice the mundane + simplify) + amplify =",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "w": 1280,
+            "h": 900
+          },
+          "fontFamily": "Times",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "normal",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ],
+      "body": [
+        {
+          "text": "(notice the mundane + simplify) + amplify =",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "w": 1280,
+            "h": 35561
+          },
+          "fontFamily": "Arial, Helvetica, sans-serif",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "0px",
+          "letterSpacing": "normal",
+          "textTransform": "lowercase",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(255, 255, 255, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ],
+      "p": [
+        {
+          "text": "(notice the mundane + simplify) + amplify =",
+          "rect": {
+            "x": 80,
+            "y": 53,
+            "w": 578,
+            "h": 9
+          },
+          "fontFamily": "Arial, Helvetica, sans-serif",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "8.8px",
+          "letterSpacing": "normal",
+          "textTransform": "lowercase",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ],
+      "section": [
+        {
+          "text": "(notice the mundane + simplify) + amplify =",
+          "rect": {
+            "x": 80,
+            "y": 10,
+            "w": 1190,
+            "h": 35541
+          },
+          "fontFamily": "Arial, Helvetica, sans-serif",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "0px",
+          "letterSpacing": "normal",
+          "textTransform": "lowercase",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ]
+    },
+    "visible": [],
+    "vars": {},
+    "fonts": [],
+    "counts": {
+      "images": 110,
+      "video": 0,
+      "svg": 2,
+      "h1": 1,
+      "h2": 0,
+      "p": 2,
+      "a": 112
+    },
+    "fontCombos": [
+      {
+        "count": 1,
+        "sample": "(NOTICE THE MUNDANE + SIMPLIFY) + AMPLIFY =",
+        "tag": "P",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "11px",
+        "fontWeight": "400",
+        "fontStyle": "normal",
+        "letterSpacing": "normal",
+        "textTransform": "lowercase",
+        "lineHeight": "8.8px",
+        "color": "rgb(0, 0, 0)"
+      }
+    ],
+    "allText": [
+      {
+        "tag": "P",
+        "size": "11px",
+        "text": "(NOTICE THE MUNDANE + SIMPLIFY) + AMPLIFY ="
+      }
+    ],
+    "cssVars": {},
+    "fontsApi": [
+      {
+        "family": "proxima-nova",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "proxima-nova",
+        "style": "normal",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "proxima-nova",
+        "style": "normal",
+        "weight": "600",
+        "status": "unloaded"
+      },
+      {
+        "family": "squarespace-ui-font",
+        "style": "normal",
+        "weight": "normal",
+        "status": "unloaded"
+      },
+      {
+        "family": "squarespace-ui-font",
+        "style": "normal",
+        "weight": "normal",
+        "status": "unloaded"
+      },
+      {
+        "family": "social-icon-font",
+        "style": "normal",
+        "weight": "normal",
+        "status": "unloaded"
+      }
+    ],
+    "bodyBackground": "rgba(255, 255, 255, 0)",
+    "htmlBackground": "rgba(0, 0, 0, 0)",
+    "title": "portfolio — ☮︎",
+    "lang": "en-US",
+    "allLinks": [
+      {
+        "text": "Menu",
+        "href": null,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 0
+        }
+      },
+      {
+        "text": "",
+        "href": "/",
+        "rect": {
+          "x": 10,
+          "y": 25,
+          "w": 50
+        }
+      },
+      {
+        "text": "",
+        "href": "http://mailto:LOLAMDEMENTMYERS@GMAIL.COM",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 0
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 96,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 421,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 746,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 1071,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 1396,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 1721,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 2046,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 2371,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 2697,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 3022,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 3347,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 3672,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 3997,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 4322,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 4647,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 4972,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 5298,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 5623,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 5948,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 6273,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 6598,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 6923,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 7248,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 7573,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 7899,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 8224,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 8549,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 8874,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 9199,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 9524,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 9849,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 10174,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 10500,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 10825,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 11150,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 11475,
+          "w": 578
+        }
+      },
+      {
+        "text": "",
+        "href": null,
+        "rect": {
+          "x": 80,
+          "y": 11800,
+          "w": 578
+        }
+      }
+    ],
+    "containerWidths": {
+      "section": 1190,
+      "header": 50
+    },
+    "bodyChildWidths": [
+      1280,
+      0,
+      0,
+      0,
+      0
+    ],
+    "documentHeight": 35561,
+    "viewportWidth": 1280
+  }
+}

@@ -1,0 +1,359 @@
+{
+  "url": "https://loladementmyers.com/all",
+  "slug": "lola-all",
+  "viewports": {
+    "mobile": {
+      "file": "/Users/noah/Projects/whatarewecapableof/design/reference-analysis/screenshots/lola-all_mobile_375.png",
+      "width": 375
+    },
+    "tablet": {
+      "file": "/Users/noah/Projects/whatarewecapableof/design/reference-analysis/screenshots/lola-all_tablet_768.png",
+      "width": 768
+    },
+    "desktop": {
+      "file": "/Users/noah/Projects/whatarewecapableof/design/reference-analysis/screenshots/lola-all_desktop_1280.png",
+      "width": 1280
+    }
+  },
+  "styles": {
+    "computed": {
+      "html": [
+        {
+          "text": "silk\n\ntwitter\n\nare.na\n\ninstagram\n\nnew york city\n\nlolamdementmyers@gmail.com",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "w": 1280,
+            "h": 900
+          },
+          "fontFamily": "Times",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "normal",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ],
+      "body": [
+        {
+          "text": "silk\n\ntwitter\n\nare.na\n\ninstagram\n\nnew york city\n\nlolamdementmyers@gmail.com",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "w": 1280,
+            "h": 207
+          },
+          "fontFamily": "Arial, Helvetica, sans-serif",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "0px",
+          "letterSpacing": "normal",
+          "textTransform": "lowercase",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(255, 255, 255, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ],
+      "p": [
+        {
+          "text": "silk",
+          "rect": {
+            "x": 80,
+            "y": 53,
+            "w": 1190,
+            "h": 9
+          },
+          "fontFamily": "Arial, Helvetica, sans-serif",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "8.8px",
+          "letterSpacing": "normal",
+          "textTransform": "lowercase",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px 0px 11px",
+          "padding": "0px"
+        },
+        {
+          "text": "twitter",
+          "rect": {
+            "x": 80,
+            "y": 73,
+            "w": 1190,
+            "h": 9
+          },
+          "fontFamily": "Arial, Helvetica, sans-serif",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "8.8px",
+          "letterSpacing": "normal",
+          "textTransform": "lowercase",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px 0px 11px",
+          "padding": "0px"
+        }
+      ],
+      "a": [
+        {
+          "text": "silk",
+          "rect": {
+            "x": 80,
+            "y": 51,
+            "w": 16,
+            "h": 13
+          },
+          "fontFamily": "Arial, Helvetica, sans-serif",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "8.8px",
+          "letterSpacing": "normal",
+          "textTransform": "lowercase",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        },
+        {
+          "text": "twitter",
+          "rect": {
+            "x": 80,
+            "y": 71,
+            "w": 29,
+            "h": 13
+          },
+          "fontFamily": "Arial, Helvetica, sans-serif",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "8.8px",
+          "letterSpacing": "normal",
+          "textTransform": "lowercase",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ],
+      "section": [
+        {
+          "text": "silk\n\ntwitter\n\nare.na\n\ninstagram\n\nnew york city\n\nlolamdementmyers@gmail.com",
+          "rect": {
+            "x": 80,
+            "y": 10,
+            "w": 1190,
+            "h": 187
+          },
+          "fontFamily": "Arial, Helvetica, sans-serif",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "0px",
+          "letterSpacing": "normal",
+          "textTransform": "lowercase",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ]
+    },
+    "visible": [],
+    "vars": {},
+    "fonts": [],
+    "counts": {
+      "images": 1,
+      "video": 0,
+      "svg": 2,
+      "h1": 1,
+      "h2": 0,
+      "p": 8,
+      "a": 7
+    },
+    "fontCombos": [
+      {
+        "count": 6,
+        "sample": "silk",
+        "tag": "A",
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "11px",
+        "fontWeight": "400",
+        "fontStyle": "normal",
+        "letterSpacing": "normal",
+        "textTransform": "lowercase",
+        "lineHeight": "8.8px",
+        "color": "rgb(0, 0, 0)"
+      }
+    ],
+    "allText": [
+      {
+        "tag": "A",
+        "size": "11px",
+        "text": "silk"
+      },
+      {
+        "tag": "A",
+        "size": "11px",
+        "text": "twitter"
+      },
+      {
+        "tag": "A",
+        "size": "11px",
+        "text": "are.na"
+      },
+      {
+        "tag": "A",
+        "size": "11px",
+        "text": "instagram"
+      },
+      {
+        "tag": "P",
+        "size": "11px",
+        "text": "new york city"
+      },
+      {
+        "tag": "P",
+        "size": "11px",
+        "text": "lolamdementmyers@gmail.com"
+      }
+    ],
+    "cssVars": {},
+    "fontsApi": [
+      {
+        "family": "squarespace-ui-font",
+        "style": "normal",
+        "weight": "normal",
+        "status": "unloaded"
+      },
+      {
+        "family": "squarespace-ui-font",
+        "style": "normal",
+        "weight": "normal",
+        "status": "unloaded"
+      },
+      {
+        "family": "social-icon-font",
+        "style": "normal",
+        "weight": "normal",
+        "status": "unloaded"
+      },
+      {
+        "family": "proxima-nova",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "proxima-nova",
+        "style": "normal",
+        "weight": "400",
+        "status": "unloaded"
+      },
+      {
+        "family": "proxima-nova",
+        "style": "normal",
+        "weight": "600",
+        "status": "unloaded"
+      }
+    ],
+    "bodyBackground": "rgba(255, 255, 255, 0)",
+    "htmlBackground": "rgba(0, 0, 0, 0)",
+    "title": "+ — ☮︎",
+    "lang": "en-US",
+    "allLinks": [
+      {
+        "text": "Menu",
+        "href": null,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 0
+        }
+      },
+      {
+        "text": "",
+        "href": "/",
+        "rect": {
+          "x": 10,
+          "y": 25,
+          "w": 50
+        }
+      },
+      {
+        "text": "",
+        "href": "http://mailto:LOLAMDEMENTMYERS@GMAIL.COM",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 0
+        }
+      },
+      {
+        "text": "silk",
+        "href": "https://birds.silk.cx/@lola",
+        "rect": {
+          "x": 80,
+          "y": 51,
+          "w": 16
+        }
+      },
+      {
+        "text": "twitter",
+        "href": "https://x.com/lolaarchive",
+        "rect": {
+          "x": 80,
+          "y": 71,
+          "w": 29
+        }
+      },
+      {
+        "text": "are.na",
+        "href": "https://www.are.na/lola-dement-myers-1sny_h9zszk/channels",
+        "rect": {
+          "x": 80,
+          "y": 90,
+          "w": 31
+        }
+      },
+      {
+        "text": "instagram",
+        "href": "https://www.instagram.com/loladementmyers/",
+        "rect": {
+          "x": 80,
+          "y": 110,
+          "w": 48
+        }
+      }
+    ],
+    "containerWidths": {
+      "section": 1190,
+      "header": 50
+    },
+    "bodyChildWidths": [
+      1280,
+      0,
+      0,
+      0,
+      0
+    ],
+    "documentHeight": 900,
+    "viewportWidth": 1280
+  }
+}

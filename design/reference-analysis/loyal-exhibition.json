@@ -1,0 +1,904 @@
+{
+  "url": "https://www.loyalgallery.com/exhibitions/until/",
+  "slug": "loyal-exhibition",
+  "viewports": {
+    "mobile": {
+      "file": "/Users/noah/Projects/whatarewecapableof/design/reference-analysis/screenshots/loyal-exhibition_mobile_375.png",
+      "width": 375,
+      "height": 667
+    },
+    "tablet": {
+      "file": "/Users/noah/Projects/whatarewecapableof/design/reference-analysis/screenshots/loyal-exhibition_tablet_768.png",
+      "width": 768,
+      "height": 1024
+    },
+    "desktop": {
+      "file": "/Users/noah/Projects/whatarewecapableof/design/reference-analysis/screenshots/loyal-exhibition_desktop_1280.png",
+      "width": 1280,
+      "height": 800
+    }
+  },
+  "styles": {
+    "computed": {
+      "html": [
+        {
+          "text": "LOYAL\nExhibitions\nArtists\nBooks\nAbout\n1\nUNTIL\nTianyue Zhong\nApril 15–May 13, 2026\n\nWe’re pleased to invite you to the opening reception of Tianyue Zhong’s secon",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "w": 1280,
+            "h": 800
+          },
+          "fontFamily": "Times",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "normal",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ],
+      "body": [
+        {
+          "text": "LOYAL\nExhibitions\nArtists\nBooks\nAbout\n1\nUNTIL\nTianyue Zhong\nApril 15–May 13, 2026\n\nWe’re pleased to invite you to the opening reception of Tianyue Zhong’s secon",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "w": 1280,
+            "h": 2650
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ],
+      "h1": [
+        {
+          "text": "LOYAL",
+          "rect": {
+            "x": 27,
+            "y": 24,
+            "w": 613,
+            "h": 27
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ],
+      "h2": [
+        {
+          "text": "UNTIL",
+          "rect": {
+            "x": 640,
+            "y": 156,
+            "w": 599,
+            "h": 27
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ],
+      "p": [
+        {
+          "text": "We’re pleased to invite you to the opening reception of Tianyue Zhong’s second solo exhibition with the gallery. UNTIL brings together three large-scale oil pai",
+          "rect": {
+            "x": 640,
+            "y": 265,
+            "w": 599,
+            "h": 190
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px 0px 27.2px"
+        },
+        {
+          "text": "The three paintings in UNTIL emerge from a single originating moment Tianyue Zhong experienced during a visit to the Tashi Lhunpo Monastery in Shigatse, Tibet (",
+          "rect": {
+            "x": 640,
+            "y": 456,
+            "w": 599,
+            "h": 354
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px 0px 27.2px"
+        },
+        {
+          "text": "Zhong revisited this experience through collage and, subsequently, through painting. Rather than reconstructing a fixed scene, she worked to re-enter the sensat",
+          "rect": {
+            "x": 640,
+            "y": 809,
+            "w": 599,
+            "h": 245
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px 0px 27.2px"
+        },
+        {
+          "text": "Recurrence and repetition play a central role in this process, not to reinforce narrative but to dissolve it. By revisiting the same imagery time and again, Zho",
+          "rect": {
+            "x": 640,
+            "y": 1054,
+            "w": 599,
+            "h": 272
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px 0px 27.2px"
+        },
+        {
+          "text": "While each painting maintains its own internal logic, they remain closely linked. In Walking Bare, the composition radiates outward from the lower edge, where t",
+          "rect": {
+            "x": 640,
+            "y": 1326,
+            "w": 599,
+            "h": 299
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px 0px 27.2px"
+        },
+        {
+          "text": "Throughout her practice, Zhong moves between observation and painting, allowing these processes to inform one another. What emerges is a visual language rooted ",
+          "rect": {
+            "x": 640,
+            "y": 1625,
+            "w": 599,
+            "h": 163
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px 0px 27.2px"
+        }
+      ],
+      "a": [
+        {
+          "text": "LOYAL",
+          "rect": {
+            "x": 27,
+            "y": 26,
+            "w": 67,
+            "h": 22
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        },
+        {
+          "text": "Exhibitions",
+          "rect": {
+            "x": 640,
+            "y": 26,
+            "w": 109,
+            "h": 22
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 15, 255)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        },
+        {
+          "text": "Artists",
+          "rect": {
+            "x": 851,
+            "y": 26,
+            "w": 66,
+            "h": 22
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        },
+        {
+          "text": "Books",
+          "rect": {
+            "x": 1019,
+            "y": 26,
+            "w": 61,
+            "h": 22
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        },
+        {
+          "text": "About",
+          "rect": {
+            "x": 1182,
+            "y": 26,
+            "w": 60,
+            "h": 22
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        },
+        {
+          "text": "SANDGATAN 7, 223 50 LUND\nSWEDEN",
+          "rect": {
+            "x": 640,
+            "y": 2571,
+            "w": 285,
+            "h": 49
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "uppercase",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ],
+      "nav": [
+        {
+          "text": "LOYAL\nExhibitions\nArtists\nBooks\nAbout",
+          "rect": {
+            "x": 27,
+            "y": 24,
+            "w": 1226,
+            "h": 27
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ],
+      "footer": [
+        {
+          "text": "SANDGATAN 7, 223 50 LUND\nSWEDEN, +46 8-680 7711, LOYAL@LOYALGALLERY.COM",
+          "rect": {
+            "x": 0,
+            "y": 2542,
+            "w": 1280,
+            "h": 109
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "uppercase",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "27.2px"
+        }
+      ],
+      "header": [
+        {
+          "text": "LOYAL\nExhibitions\nArtists\nBooks\nAbout",
+          "rect": {
+            "x": 0,
+            "y": -3,
+            "w": 1280,
+            "h": 109
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "-3.4px 0px 0px",
+          "padding": "27.2px 27.2px 54.4px"
+        },
+        {
+          "text": "UNTIL\nTianyue Zhong\nApril 15–May 13, 2026",
+          "rect": {
+            "x": 640,
+            "y": 156,
+            "w": 599,
+            "h": 109
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "0px"
+        }
+      ],
+      "main": [
+        {
+          "text": "1\nUNTIL\nTianyue Zhong\nApril 15–May 13, 2026\n\nWe’re pleased to invite you to the opening reception of Tianyue Zhong’s second solo exhibition with the gallery. UN",
+          "rect": {
+            "x": 0,
+            "y": 105,
+            "w": 1280,
+            "h": 2545
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "0px",
+          "padding": "54.4px 27.2px 400px"
+        }
+      ],
+      "article": [
+        {
+          "text": "UNTIL\nTianyue Zhong\nApril 15–May 13, 2026\n\nWe’re pleased to invite you to the opening reception of Tianyue Zhong’s second solo exhibition with the gallery. UNTI",
+          "rect": {
+            "x": 640,
+            "y": 156,
+            "w": 613,
+            "h": 2094
+          },
+          "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+          "fontSize": "21.76px",
+          "fontWeight": "400",
+          "fontStyle": "normal",
+          "lineHeight": "27.2px",
+          "letterSpacing": "normal",
+          "textTransform": "none",
+          "color": "rgb(0, 0, 0)",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "textAlign": "start",
+          "margin": "-3.4px 0px 0px",
+          "padding": "0px 13.6px 0px 0px"
+        }
+      ]
+    },
+    "vars": {},
+    "fonts": [],
+    "counts": {
+      "images": 2,
+      "video": 0,
+      "svg": 0,
+      "h1": 1,
+      "h2": 2,
+      "h3": 0,
+      "p": 8,
+      "a": 8
+    },
+    "visible": [],
+    "fontCombos": [
+      {
+        "count": 15,
+        "sample": "LOYAL",
+        "tag": "A",
+        "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+        "fontSize": "21.76px",
+        "fontWeight": "400",
+        "fontStyle": "normal",
+        "letterSpacing": "normal",
+        "textTransform": "none",
+        "lineHeight": "27.2px",
+        "color": "rgb(0, 0, 0)"
+      },
+      {
+        "count": 5,
+        "sample": "UNTIL",
+        "tag": "EM",
+        "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+        "fontSize": "21.76px",
+        "fontWeight": "400",
+        "fontStyle": "italic",
+        "letterSpacing": "normal",
+        "textTransform": "none",
+        "lineHeight": "27.2px",
+        "color": "rgb(0, 0, 0)"
+      },
+      {
+        "count": 4,
+        "sample": ", ,",
+        "tag": "DIV",
+        "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+        "fontSize": "21.76px",
+        "fontWeight": "400",
+        "fontStyle": "normal",
+        "letterSpacing": "normal",
+        "textTransform": "uppercase",
+        "lineHeight": "27.2px",
+        "color": "rgb(0, 0, 0)"
+      },
+      {
+        "count": 1,
+        "sample": "Exhibitions",
+        "tag": "A",
+        "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+        "fontSize": "21.76px",
+        "fontWeight": "400",
+        "fontStyle": "normal",
+        "letterSpacing": "normal",
+        "textTransform": "none",
+        "lineHeight": "27.2px",
+        "color": "rgb(0, 15, 255)"
+      },
+      {
+        "count": 1,
+        "sample": "1",
+        "tag": "DIV",
+        "fontFamily": "\"Unica77 LL\", Helvetica, sans-serif",
+        "fontSize": "13.4477px",
+        "fontWeight": "400",
+        "fontStyle": "normal",
+        "letterSpacing": "normal",
+        "textTransform": "none",
+        "lineHeight": "16.8096px",
+        "color": "rgb(0, 0, 0)"
+      }
+    ],
+    "cssVars": {
+      "--fontSize": "1.7vw",
+      "--lineHeight": "1.25",
+      "--baseWidth": "calc(1.7vw * 1.25)",
+      "--baseline": "calc(1.7vw * 1.25)",
+      "--color-icon": "#000",
+      "--color-badge-active": "#fff",
+      "--bgColor-badge-active": "#000",
+      "--color-buttonPrimary": "#fff",
+      "--borderColor-buttonPrimary": "#000",
+      "--bgColor-buttonPrimary": "#000",
+      "--color-buttonPrimary-hover": "#fff",
+      "--borderColor-buttonPrimary-hover": "#000fff",
+      "--bgColor-buttonPrimary-hover": "#000fff",
+      "--shadow-buttonPrimary-hover": "none",
+      "--color-buttonSecondary": "#000",
+      "--borderColor-buttonSecondary": "#000",
+      "--bgColor-buttonSecondary": "#fff",
+      "--color-buttonSecondary-hover": "#000",
+      "--shadow-buttonSecondary-hover": "none",
+      "--bgColor-buttonSecondary-hover": "#fff",
+      "--bgColor-buttonSecondary-active": "#eee",
+      "--borderColor-input-focus": "#000",
+      "--borderColor-input-hover": "#000",
+      "--shadow-input-focus": "none",
+      "--bgColor-buttonDanger": "transparent",
+      "--color-buttonDanger": "#000",
+      "--shadow-buttonDanger-hover": "none",
+      "--color-buttonDanger-hover": "#ff0000",
+      "--bgColor-buttonDanger-hover": "transparent"
+    },
+    "fontsApi": [
+      {
+        "family": "Montserrat",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Montserrat",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Montserrat",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Montserrat",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Montserrat",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Montserrat",
+        "style": "normal",
+        "weight": "500",
+        "status": "unloaded"
+      },
+      {
+        "family": "Montserrat",
+        "style": "normal",
+        "weight": "500",
+        "status": "unloaded"
+      },
+      {
+        "family": "Montserrat",
+        "style": "normal",
+        "weight": "500",
+        "status": "unloaded"
+      },
+      {
+        "family": "Montserrat",
+        "style": "normal",
+        "weight": "500",
+        "status": "unloaded"
+      },
+      {
+        "family": "Montserrat",
+        "style": "normal",
+        "weight": "500",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "300",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "600",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "600",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "600",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "600",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "600",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "600",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "600",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "600",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "600",
+        "status": "unloaded"
+      },
+      {
+        "family": "Open Sans",
+        "style": "normal",
+        "weight": "600",
+        "status": "unloaded"
+      },
+      {
+        "family": "Unica77 LL",
+        "style": "normal",
+        "weight": "normal",
+        "status": "loaded"
+      }
+    ],
+    "bodyBackground": "rgba(0, 0, 0, 0)",
+    "htmlBackground": "rgba(0, 0, 0, 0)",
+    "title": "LOYAL, UNTIL",
+    "lang": "",
+    "allLinks": [
+      {
+        "text": "LOYAL",
+        "href": "/",
+        "rect": {
+          "x": 27,
+          "y": 26,
+          "w": 67
+        }
+      },
+      {
+        "text": "Exhibitions",
+        "href": "/exhibitions",
+        "rect": {
+          "x": 640,
+          "y": 26,
+          "w": 109
+        }
+      },
+      {
+        "text": "Artists",
+        "href": "/artists",
+        "rect": {
+          "x": 851,
+          "y": 26,
+          "w": 66
+        }
+      },
+      {
+        "text": "Books",
+        "href": "/books",
+        "rect": {
+          "x": 1019,
+          "y": 26,
+          "w": 61
+        }
+      },
+      {
+        "text": "About",
+        "href": "/about",
+        "rect": {
+          "x": 1182,
+          "y": 26,
+          "w": 60
+        }
+      },
+      {
+        "text": "SANDGATAN 7, 223 50 LUND\nSWEDEN",
+        "href": "https://maps.app.goo.gl/PurQSw5XFwFioDjW9",
+        "rect": {
+          "x": 640,
+          "y": 2571,
+          "w": 285
+        }
+      },
+      {
+        "text": "+46 8-680 7711",
+        "href": "tel:+468680 7711",
+        "rect": {
+          "x": 742,
+          "y": 2599,
+          "w": 141
+        }
+      },
+      {
+        "text": "LOYAL@LOYALGALLERY.COM",
+        "href": "mailto:loyal@loyalgallery.com",
+        "rect": {
+          "x": 893,
+          "y": 2599,
+          "w": 307
+        }
+      }
+    ],
+    "containerWidths": {
+      "main": 1280,
+      "article": 613,
+      "header": 1280,
+      "footer": 1280
+    },
+    "bodyChildWidths": [
+      0,
+      0,
+      1280,
+      1280,
+      0,
+      1280,
+      0,
+      0
+    ],
+    "documentHeight": 2650,
+    "viewportWidth": 1280
+  }
+}

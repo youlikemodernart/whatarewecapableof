@@ -13,11 +13,17 @@
   flex: 1;
   display: flex;
   align-items: center;
-  max-width: var(--content-width-prose);
+  justify-content: center;
+  text-align: center;
 }
 
 .page-home .primary-nav {
+  justify-content: center;
   padding-bottom: var(--space-1);
+}
+
+.page-home footer {
+  justify-content: center;
 }
 
 /* ============================================

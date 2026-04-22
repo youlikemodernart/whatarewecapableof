@@ -1,0 +1,87 @@
+/* ============================================
+   Homepage: question breathes, nav at bottom
+   ============================================ */
+
+.page-home {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  padding: var(--margin-block) var(--margin-inline);
+}
+
+.page-home main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  max-width: var(--content-width-prose);
+}
+
+.page-home .primary-nav {
+  padding-bottom: var(--space-1);
+}
+
+/* ============================================
+   Interior pages: nav at top, content below
+   ============================================ */
+
+.page-interior {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  padding: var(--margin-block) var(--margin-inline);
+}
+
+.page-interior header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding-bottom: var(--space-2);
+}
+
+.page-interior main {
+  flex: 1;
+  max-width: var(--content-width-prose);
+}
+
+.page-interior .home-link {
+  text-decoration: none;
+}
+
+/* ============================================
+   Scrollable content page (coach, consult, creative)
+   ============================================ */
+
+.page-scrollable main {
+  max-width: var(--content-width-prose);
+  padding-bottom: var(--space-4);
+}
+
+.page-scrollable .section-offering {
+  padding-bottom: var(--space-4);
+}
+
+.page-scrollable .section-work {
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-text);
+}
+
+/* ============================================
+   Two-column midpoint split (future work detail pages)
+   ============================================ */
+
+.layout-two-col {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-2);
+}
+
+@media (min-width: 768px) {
+  .layout-two-col {
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  .layout-two-col .col-right {
+    padding-left: var(--space-2);
+  }
+}

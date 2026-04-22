@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a call — What are we capable of?</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/typography.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body class="page-interior">
+  <header>
+    <a href="/" class="home-link mono caps size-s">?</a>
+    <nav class="primary-nav" aria-label="Services">
+      <a href="/coach/" aria-current="page">Coach</a>
+      <a href="/consult/">Consult</a>
+      <a href="/creative/">Creative</a>
+    </nav>
+  </header>
+  <main>
+    <h1>Book a call</h1>
+    <p>Pick a time that works. You will receive a calendar invite at the email you provide.</p>
+
+    <div class="content-block" style="margin-top: var(--space-2);">
+      <p class="section-label">Available dates</p>
+      <ul class="booking-dates">
+        <li><a href="#">Mon, May 5</a></li>
+        <li><a href="#">Tue, May 6</a></li>
+        <li><a href="#">Wed, May 7</a></li>
+        <li><a href="#">Thu, May 8</a></li>
+        <li><a href="#">Fri, May 9</a></li>
+      </ul>
+    </div>
+
+    <div class="content-block" style="margin-top: var(--space-2);">
+      <p class="section-label">Times — May 5</p>
+      <ul class="booking-dates">
+        <li><a href="#">9:00 AM</a></li>
+        <li><a href="#">10:00 AM</a></li>
+        <li><a href="#">2:00 PM</a></li>
+        <li><a href="#">3:00 PM</a></li>
+      </ul>
+    </div>
+
+    <form class="booking-form" style="margin-top: var(--space-2);">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="note">Note (optional)</label>
+      <textarea id="note" name="note" rows="3"></textarea>
+
+      <button type="submit">(Book)</button>
+    </form>
+  </main>
+  <footer>
+    <a href="/about/">About</a>
+    <a href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a>
+  </footer>
+</body>
+</html>

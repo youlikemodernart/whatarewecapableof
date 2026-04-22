@@ -1,0 +1,60 @@
+:root {
+  --baseline: 24px;
+  --body-size: 16px;
+  --line-height: 1.5;
+
+  --size-xs: calc(var(--body-size) * 0.75);
+  --size-s: calc(var(--body-size) * 0.889);
+  --size-m: var(--body-size);
+  --size-l: calc(var(--body-size) * 1.125);
+  --size-xl: calc(var(--body-size) * 1.266);
+
+  --font-serif: 'EB Garamond', Garamond, serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --space-0-5: calc(var(--baseline) * 0.5);
+  --space-1: var(--baseline);
+  --space-2: calc(var(--baseline) * 2);
+  --space-3: calc(var(--baseline) * 3);
+  --space-4: calc(var(--baseline) * 4);
+  --space-6: calc(var(--baseline) * 6);
+
+  --color-bg: #ffffff;
+  --color-text: #000000;
+  --color-accent: rgb(0, 15, 255);
+
+  --margin-inline: var(--space-2);
+  --margin-block: var(--space-2);
+
+  --content-width-narrow: 40ch;
+  --content-width-prose: 64ch;
+
+  --tracking-normal: 0;
+  --tracking-caps: 0.05em;
+
+  --transition-default: 200ms ease;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --body-size: 17px;
+    --line-height: 1.412;
+    --margin-inline: var(--space-3);
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --body-size: 18px;
+    --line-height: 1.333;
+    --margin-inline: var(--space-4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -57,21 +57,12 @@
   .tabs {
     display: flex;
     gap: var(--space-2);
-    padding: var(--space-1) 0;
+    padding: calc(var(--space-1) + 4rem) 0 var(--space-1) 0;
+    margin-top: -4rem;
     position: sticky;
-    top: 0;
+    top: -4rem;
     background: var(--color-bg);
     z-index: 10;
-  }
-
-  .tabs::before {
-    content: "";
-    position: absolute;
-    bottom: 100%;
-    left: 0;
-    right: 0;
-    height: 2rem;
-    background: var(--color-bg);
   }
 
   .tabs::after {

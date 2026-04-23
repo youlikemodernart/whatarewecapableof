@@ -22,19 +22,35 @@
   }
 
   .page-proposal {
+    --proposal-header-height: calc(var(--space-1) + var(--space-0-5));
     min-height: 100svh;
     display: flex;
     flex-direction: column;
-    padding: var(--margin-block) var(--margin-inline);
+    padding: 0 var(--margin-inline) var(--margin-block);
   }
 
   .page-proposal main {
     flex: 1;
     max-width: var(--content-width-prose);
+    padding-top: var(--space-1);
   }
 
-  .page-proposal header {
-    padding-bottom: var(--space-2);
+  .proposal-header {
+    min-height: var(--proposal-header-height);
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--color-bg);
+    margin-inline: calc(-1 * var(--margin-inline));
+    padding-inline: var(--margin-inline);
+  }
+
+  .proposal-home {
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    color: inherit;
   }
 
   .proposal-meta {
@@ -57,11 +73,11 @@
   .tabs {
     display: flex;
     gap: var(--space-2);
-    padding: var(--space-1) 0;
+    padding: var(--space-0-5) 0;
     position: sticky;
-    top: 0;
+    top: var(--proposal-header-height);
     background: var(--color-bg);
-    z-index: 10;
+    z-index: 15;
   }
 
   .tabs::after {
@@ -287,8 +303,8 @@
 </head>
 <body class="page-proposal">
 
-<header>
-  <a href="/" style="letter-spacing: -0.02em; text-decoration: none; color: inherit;">What are we capable of?</a>
+<header class="proposal-header">
+  <a href="/" class="proposal-home">What are we capable of?</a>
 </header>
 
 <main>

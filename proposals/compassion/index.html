@@ -26,7 +26,6 @@
     display: flex;
     flex-direction: column;
     padding: var(--margin-block) var(--margin-inline);
-    overflow-x: clip;
   }
 
   .page-proposal main {
@@ -69,8 +68,8 @@
     content: "";
     position: absolute;
     bottom: 0;
-    left: 0;
-    right: 0;
+    left: calc(-1 * var(--margin-inline));
+    width: 100vw;
     height: 1px;
     background: var(--color-text);
   }
@@ -388,9 +387,8 @@
   }
 
   @media (max-width: 767px) {
-    .page-proposal {
-      padding-left: var(--space-1);
-      padding-right: var(--space-1);
+    :root {
+      --margin-inline: var(--space-1);
     }
     .stat-row {
       flex-direction: column;

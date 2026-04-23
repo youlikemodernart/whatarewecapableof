@@ -22,7 +22,7 @@
   }
 
   .page-proposal {
-    --proposal-header-height: var(--space-2);
+    --proposal-header-height: calc(var(--space-1) + var(--space-0-5));
     min-height: 100svh;
     display: flex;
     flex-direction: column;
@@ -48,7 +48,6 @@
   }
 
   .proposal-home {
-    font-size: var(--size-s);
     letter-spacing: -0.02em;
     text-decoration: none;
     color: inherit;
@@ -74,7 +73,7 @@
   .tabs {
     display: flex;
     gap: var(--space-2);
-    padding: var(--space-1) 0;
+    padding: var(--space-0-5) 0;
     position: sticky;
     top: var(--proposal-header-height);
     background: var(--color-bg);

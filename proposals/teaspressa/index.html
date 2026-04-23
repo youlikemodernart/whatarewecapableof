@@ -89,6 +89,14 @@
   }
   .tab-content.active { display: block; }
 
+  .tab-content-full {
+    display: none;
+    min-height: calc(100svh - 4rem);
+    flex-direction: column;
+    justify-content: center;
+  }
+  .tab-content-full.active { display: flex; }
+
   .section-heading {
     font-family: var(--font-mono);
     font-size: var(--size-s);
@@ -460,10 +468,12 @@
 </div>
 
 <!-- ===== ? ===== -->
-<div id="question" class="tab-content">
+<div id="question" class="tab-content-full">
 
-<p class="proposal-title" style="margin-top: var(--space-4);">What are <span style="text-decoration: underline; text-underline-offset: 0.15em;">we</span> capable of?</p>
-<p class="mono caps size-s" style="margin-top: var(--space-1);"><a href="mailto:hello@whatarewecapableof.com">Book a call</a></p>
+<div>
+  <p class="proposal-title">What are <span style="text-decoration: underline; text-underline-offset: 0.15em;">we</span> capable of?</p>
+  <p class="mono caps size-s" style="margin-top: var(--space-1);"><a href="mailto:hello@whatarewecapableof.com">Book a call</a></p>
+</div>
 
 </div>
 
@@ -471,7 +481,6 @@
 
 <footer>
   <span class="proposal-meta">Research conducted April 22, 2026. All findings from publicly available sources.</span>
-  <span class="mono caps size-s" style="margin-top: var(--space-0-5); display: block;"><a href="mailto:hello@whatarewecapableof.com">Book a call</a></span>
 </footer>
 
 <script>

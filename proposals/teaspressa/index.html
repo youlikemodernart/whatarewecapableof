@@ -64,6 +64,16 @@
     z-index: 10;
   }
 
+  .tabs::before {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    right: 0;
+    height: 2rem;
+    background: var(--color-bg);
+  }
+
   .tabs::after {
     content: "";
     position: absolute;

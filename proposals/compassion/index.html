@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Compassion Causes</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/typography.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<style>
+  .page-proposal {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    padding: var(--margin-block) var(--margin-inline);
+    overflow-x: hidden;
+  }
+
+  .page-proposal main {
+    flex: 1;
+  }
+
+  .page-proposal header {
+    padding-bottom: var(--space-2);
+  }
+
+  .proposal-meta {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--color-text);
+    opacity: 0.4;
+  }
+
+  .proposal-title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: var(--size-m);
+    margin-top: var(--space-1);
+    max-width: 52ch;
+  }
+
+  /* ---- Tabs ---- */
+
+  .tabs {
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-1) 0;
+    border-bottom: 1px solid var(--color-text);
+    position: sticky;
+    top: 0;
+    background: var(--color-bg);
+    z-index: 10;
+    margin-left: calc(-1 * var(--margin-inline));
+    margin-right: calc(-1 * var(--margin-inline));
+    padding-left: var(--margin-inline);
+    padding-right: var(--margin-inline);
+    box-shadow: 0 -50vh 0 0 var(--color-bg);
+  }
+
+  .tab {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    cursor: pointer;
+    color: var(--color-text);
+    opacity: 0.35;
+    border: none;
+    background: none;
+    padding: 0;
+    transition: opacity var(--transition-default);
+  }
+
+  .tab:hover { opacity: 0.7; }
+  .tab.active { opacity: 1; }
+
+  .tab-content {
+    display: none;
+    padding-top: var(--space-2);
+  }
+  .tab-content.active { display: block; }
+
+  /* ---- Prose sections ---- */
+
+  .prose {
+    max-width: var(--content-width-prose);
+  }
+
+  .section-heading {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    margin-top: var(--space-4);
+    margin-bottom: var(--space-1);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-text);
+  }
+
+  .section-heading:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+
+  /* ---- Stat row ---- */
+
+  .stat-row {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin: var(--space-1) 0 var(--space-2);
+  }
+
+  .stat-item {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+  }
+
+  .stat-item strong {
+    font-weight: 400;
+    font-family: var(--font-serif);
+    font-size: var(--size-m);
+    text-transform: none;
+    letter-spacing: 0;
+    display: block;
+  }
+
+  /* ---- Comparison table ---- */
+
+  table {
+    width: 100%;
+    max-width: var(--content-width-prose);
+    border-collapse: collapse;
+    margin: var(--space-1) 0;
+    font-size: var(--size-s);
+    table-layout: fixed;
+    word-wrap: break-word;
+  }
+
+  th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    font-weight: 400;
+    opacity: 0.4;
+    padding: var(--space-0-5) 0;
+    border-bottom: 1px solid var(--color-text);
+  }
+
+  td {
+    padding: var(--space-0-5) 0;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    vertical-align: top;
+    font-family: var(--font-serif);
+  }
+
+  th + th, td + td {
+    padding-left: var(--space-1);
+  }
+
+  /* ---- Specimen grid (1of1-inspired) ---- */
+
+  .specimen-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    margin: var(--space-2) calc(-1 * var(--margin-inline));
+    padding: 0 var(--margin-inline);
+    border-top: 1px solid var(--color-text);
+    border-bottom: 1px solid var(--color-text);
+  }
+
+  .specimen {
+    padding: var(--space-1) var(--space-1) var(--space-2);
+  }
+
+  .specimen-number {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.4;
+    margin-bottom: var(--space-0-5);
+  }
+
+  .specimen-label {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    margin-bottom: var(--space-0-5);
+  }
+
+  .specimen-image {
+    width: 100%;
+    aspect-ratio: 1;
+    background: #f5f5f3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--space-1);
+    overflow: hidden;
+  }
+
+  .specimen-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .specimen-image .placeholder {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.25;
+  }
+
+  .specimen-meta {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    opacity: 0.4;
+    margin-top: var(--space-0-5);
+  }
+
+  .specimen-desc {
+    font-family: var(--font-serif);
+    font-size: var(--size-s);
+    margin-top: var(--space-0-5);
+    max-width: 38ch;
+  }
+
+  /* ---- Feed comparison (full-width) ---- */
+
+  .feed-comparison {
+    margin: var(--space-2) calc(-1 * var(--margin-inline));
+    padding: var(--space-2) var(--margin-inline);
+    border-top: 1px solid var(--color-text);
+    border-bottom: 1px solid var(--color-text);
+  }
+
+  .feed-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+  }
+
+  .feed-panel {
+    background: #f5f5f3;
+    padding: var(--space-1);
+  }
+
+  .feed-panel-label {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.4;
+    margin-bottom: var(--space-1);
+  }
+
+  .feed-panel img {
+    width: 100%;
+    display: block;
+  }
+
+  /* ---- Scope phases ---- */
+
+  .scope-phase {
+    margin-bottom: var(--space-3);
+  }
+
+  .scope-phase .phase-label {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.4;
+  }
+
+  .scope-phase h3 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: var(--size-m);
+    margin-bottom: var(--space-0-5);
+  }
+
+  .scope-phase p {
+    max-width: var(--content-width-prose);
+  }
+
+  .scope-phase ul {
+    margin: var(--space-0-5) 0 0;
+    padding-left: 1.25rem;
+    list-style: none;
+    max-width: var(--content-width-prose);
+  }
+
+  .scope-phase li {
+    font-size: var(--size-s);
+    margin-bottom: var(--space-0-5);
+    position: relative;
+  }
+
+  .scope-phase li::before {
+    content: "";
+    position: absolute;
+    left: -1rem;
+    top: 0.55em;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--color-text);
+    opacity: 0.25;
+  }
+
+  /* ---- Finding blocks ---- */
+
+  .finding {
+    margin-bottom: var(--space-2);
+    max-width: var(--content-width-prose);
+  }
+
+  .finding-label {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.4;
+    margin-bottom: calc(var(--space-0-5) * 0.5);
+  }
+
+  .finding p:last-child {
+    margin-bottom: 0;
+  }
+
+  .evidence {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    opacity: 0.35;
+    margin-top: var(--space-0-5);
+  }
+
+  /* ---- Pillar markers ---- */
+
+  .pillar-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.35;
+    border: 1px solid rgba(0,0,0,0.15);
+    padding: 0.15em 0.5em;
+    margin-top: var(--space-0-5);
+  }
+
+  /* ---- Closing ---- */
+
+  .closing {
+    margin-top: var(--space-3);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-text);
+    max-width: var(--content-width-prose);
+  }
+
+  .page-proposal footer {
+    margin-top: var(--space-4);
+    padding-top: var(--space-1);
+    border-top: 1px solid rgba(0,0,0,0.08);
+  }
+
+  /* ---- Responsive ---- */
+
+  @media (max-width: 767px) {
+    .page-proposal {
+      padding-left: var(--space-1);
+      padding-right: var(--space-1);
+    }
+    .stat-row {
+      flex-direction: column;
+      gap: var(--space-0-5);
+    }
+    .tabs {
+      gap: var(--space-1);
+    }
+    .specimen-grid {
+      grid-template-columns: 1fr;
+    }
+    .feed-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body class="page-proposal">
+
+<header>
+  <div class="proposal-meta">Prepared for Compassion Causes / April 2026</div>
+</header>
+
+<main>
+
+<p class="proposal-title">Compassion International is the 11th-largest charity in the United States. Compassion Causes is their effort to reach the next generation. We spent time with the team, the platform, the content, and the competitive landscape. This is what we see, what we'd build, and how we'd work together.</p>
+
+<p class="prose" style="margin-top: var(--space-1); font-size: var(--size-s); max-width: 52ch;"><strong>Situation</strong> is what we observed. <strong>Content</strong> is the strategy and the specific ideas. <strong>Scope</strong> is how we'd work together and what each tier looks like.</p>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('situation')">Situation</button>
+  <button class="tab" onclick="switchTab('content')">Content</button>
+  <button class="tab" onclick="switchTab('scope')">Scope</button>
+</div>
+
+<!-- ===== SITUATION ===== -->
+<div id="situation" class="tab-content active">
+
+<div class="prose">
+<p>Compassion International has $1.3 billion in annual private donations, 258K Instagram followers, 950K email subscribers, and 73 years of church partnerships across 27 countries. Compassion Causes, their Gen Z fundraising platform, has 1,800 Instagram followers and 87 TikTok followers. The main compassion.com homepage does not link to compassioncauses.com.</p>
+
+<p>The gap between the parent brand and the sub-brand is where we see opportunity.</p>
+</div>
+
+<div class="stat-row">
+  <div class="stat-item"><strong>$1.3B</strong>Parent annual donations</div>
+  <div class="stat-item"><strong>258K</strong>Parent Instagram</div>
+  <div class="stat-item"><strong>1,800</strong>Causes Instagram</div>
+  <div class="stat-item"><strong>87</strong>Causes TikTok</div>
+  <div class="stat-item"><strong>9</strong>Active causes on platform</div>
+  <div class="stat-item"><strong>$1,200/mo</strong>Social budget</div>
+</div>
+
+<div class="section-heading">Findings</div>
+
+<div class="finding">
+  <div class="finding-label">01</div>
+  <p>Compassion Causes is architecturally disconnected from its parent brand. Separate domain, separate CMS, separate analytics, separate user accounts. A Compassion donor who sponsors a child cannot use that login on Compassion Causes. The 258K Instagram audience, the 950K email list, and the homepage itself do not drive traffic to Causes. This is not a sub-brand underperforming; it is a sub-brand that was never connected to its distribution.</p>
+  <div class="evidence">compassion.com homepage, compassioncauses.com DNS, separate GTM containers, separate Contentful spaces</div>
+</div>
+
+<div class="finding">
+  <div class="finding-label">02</div>
+  <p>The content on the platform has no editorial layer. Churches write their own cause descriptions and titles. Some are compelling. One is titled "Enhance Your Baking Skills: Tips and Techniques for Perfect Results." The raw material is extraordinary: pig farming for self-reliance, literacy programs, classroom construction across 27 countries. The packaging is where it breaks down.</p>
+  <div class="evidence">compassioncauses.com cause pages, church-submitted content review</div>
+</div>
+
+<div class="finding">
+  <div class="finding-label">03</div>
+  <p>The influencer strategy failed because the landing experience cannot convert. An external agency ran campaigns with poor ROI. The causes they drove traffic to use UUID-based URLs (36-character strings), church-written copy, and a design disconnected from the Compassion brand donors trust. An influencer can drive clicks; the page they land on does not close.</p>
+  <div class="evidence">compassioncauses.com URL structure, cause page content quality assessment</div>
+</div>
+
+<div class="finding">
+  <div class="finding-label">04</div>
+  <p>The social feed has no visual identity. The current Instagram mixes cell phone snapshots, blue infographic cards, talking-head Reels, platform screenshots, and stock-style impact photography. No consistent color palette, no content series, no editorial calendar. Compare: Samaritan's Purse has 350K followers with consistent visual treatment. Compassion's main account has 258K with professional photography. Compassion Causes has 1,800 with visual chaos.</p>
+  <div class="evidence">Instagram @compassioncauses feed analysis, competitor comparison</div>
+</div>
+
+<div class="finding">
+  <div class="finding-label">05</div>
+  <p>$1,200 per month against a $1M fundraising goal is not a tight budget. It is a budget that was never calculated against the goal. At $20 average donation and 2% conversion, $1M requires 2.5 million impressions. $1,200/month does not generate that on any platform. The budget was set by organizational default, not by working backward from the target.</p>
+  <div class="evidence">Team-reported budget and goal figures</div>
+</div>
+
+<div class="section-heading">The precedent</div>
+
+<div class="prose">
+<p>K-Love is the largest contemporary Christian music radio network in the world: 600+ stations, 12 million weekly listeners, 1 million Instagram followers. Their core audience skews 25-54. Gen Z does not discover faith content through FM radio.</p>
+
+<p>K-Love's response was Goodsource: a separate brand with 7 hired Gen Z creators, a 4-person creative team, two video podcast shows, and partnerships with campus movements like Unite Us (71K Instagram, thousands of students at events). The footer says "K-Love, Inc." but the brand face is entirely distinct. They invested in people first, then content, then events.</p>
+
+<p>Compassion Causes took the opposite approach: platform first, then an influencer agency. K-Love hired creators to build an audience. Compassion bought impressions from an agency. The structural logic of K-Love's investment validates the direction we'd propose.</p>
+</div>
+
+<table>
+  <tr><th>Dimension</th><th>K-Love to Goodsource</th><th>Compassion to Causes</th></tr>
+  <tr><td>Parent scale</td><td>1M Instagram, 12M listeners</td><td>258K Instagram, 950K email, $1.3B</td></tr>
+  <tr><td>Generational gap</td><td>Radio skews 25-54</td><td>Sponsorship skews 35+</td></tr>
+  <tr><td>Sub-brand approach</td><td>Hired Gen Z creators, built shows</td><td>Built platform, hired influencer agency</td></tr>
+  <tr><td>Team investment</td><td>11 people, ~$400K/year</td><td>5-6 people, $14,400/year social</td></tr>
+  <tr><td>Sub-brand social</td><td>1,194 Instagram (early stage)</td><td>1,800 Instagram, 87 TikTok</td></tr>
+</table>
+
+<div class="prose" style="margin-top: var(--space-2);">
+<p>Goodsource hasn't proven it works yet either. 1,194 followers is pre-traction. We're pointing to the logic of the investment model, not claiming proven results. The argument is structural: creators over influencers, owned audience over rented attention, people before platform.</p>
+</div>
+
+</div>
+
+<!-- ===== CONTENT ===== -->
+<div id="content" class="tab-content">
+
+<div class="prose">
+<p>The Compassion Causes Instagram feed should do three things: make causes feel like stories, let the audience see themselves in the work, and build a visual identity distinct from Compassion International's institutional polish.</p>
+
+<p>Four content pillars. Three grid posts per week. Daily Stories when there's material.</p>
+</div>
+
+<div class="stat-row">
+  <div class="stat-item"><strong>On the Ground</strong>Church partner content</div>
+  <div class="stat-item"><strong>The Why</strong>Emotional connection</div>
+  <div class="stat-item"><strong>The Proof</strong>Funded impact</div>
+  <div class="stat-item"><strong>The Invite</strong>Participation</div>
+</div>
+
+<div class="section-heading">The feed today</div>
+
+<div class="feed-comparison">
+  <div class="feed-row">
+    <div class="feed-panel">
+      <div class="feed-panel-label">Current feed</div>
+      <!-- Noah will place the current feed screenshot here -->
+      <div class="specimen-image" style="aspect-ratio: auto; min-height: 400px;">
+        <span class="placeholder">Current feed screenshot</span>
+      </div>
+    </div>
+    <div class="feed-panel">
+      <div class="feed-panel-label">Proposed direction</div>
+      <!-- Noah will place the moodboard/mockup here -->
+      <div class="specimen-image" style="aspect-ratio: auto; min-height: 400px;">
+        <span class="placeholder">Proposed feed mockup</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-heading">Content ideas</div>
+
+<div class="prose" style="margin-bottom: var(--space-2);">
+<p>Each numbered idea below is a repeatable content format. Not a single post, but a series that can run weekly or monthly. The formats are designed to be produced by a small team, primarily from church partner submissions with editorial direction from us.</p>
+</div>
+
+<div class="specimen-grid">
+
+  <div class="specimen">
+    <div class="specimen-number">01</div>
+    <div class="specimen-image"><span class="placeholder">Reference image</span></div>
+    <div class="specimen-label">One Cause, One Minute</div>
+    <div class="specimen-desc">A single cause distilled into 60 seconds. One person at the site explains what they need and what it would change. Phone-shot. Subtitled. Progress bar ending.</div>
+    <div class="specimen-meta">Reel / TikTok / Shorts</div>
+    <div class="pillar-tag">On the Ground</div>
+  </div>
+
+  <div class="specimen">
+    <div class="specimen-number">02</div>
+    <div class="specimen-image"><span class="placeholder">Reference image</span></div>
+    <div class="specimen-label">Day-in-the-Life</div>
+    <div class="specimen-desc">Follow one church partner through a single day. Morning service through program delivery. First-person narration. The content no competitor can replicate.</div>
+    <div class="specimen-meta">Carousel (8-10 slides) or 90s video</div>
+    <div class="pillar-tag">On the Ground</div>
+  </div>
+
+  <div class="specimen">
+    <div class="specimen-number">03</div>
+    <div class="specimen-image"><span class="placeholder">Reference image</span></div>
+    <div class="specimen-label">Before / After</div>
+    <div class="specimen-desc">A funded cause in two states. The empty lot and the finished classroom. The broken pipe and the running faucet. Tangible proof that donations did something.</div>
+    <div class="specimen-meta">Split-frame post or transition Reel</div>
+    <div class="pillar-tag">The Proof</div>
+  </div>
+
+  <div class="specimen">
+    <div class="specimen-number">04</div>
+    <div class="specimen-image"><span class="placeholder">Reference image</span></div>
+    <div class="specimen-label">The Numbers Card</div>
+    <div class="specimen-desc">One statistic, designed with impact. "47 kids now have clean water because 312 people gave an average of $8." Specific, small, real. Not "3,600 children impacted."</div>
+    <div class="specimen-meta">Single-image post</div>
+    <div class="pillar-tag">The Proof</div>
+  </div>
+
+  <div class="specimen">
+    <div class="specimen-number">05</div>
+    <div class="specimen-image"><span class="placeholder">Reference image</span></div>
+    <div class="specimen-label">What Would You Build?</div>
+    <div class="specimen-desc">Show a community's need. Ask the audience what they'd prioritize. Reveal what the community actually chose and link to the cause. Participation before donation.</div>
+    <div class="specimen-meta">Story polls / Reel with comment prompt</div>
+    <div class="pillar-tag">The Invite</div>
+  </div>
+
+  <div class="specimen">
+    <div class="specimen-number">06</div>
+    <div class="specimen-image"><span class="placeholder">Reference image</span></div>
+    <div class="specimen-label">Funded Celebration</div>
+    <div class="specimen-desc">When a cause reaches 100%, celebrate it. Quick montage: the page hitting 100%, the community, what comes next. Making completion feel like an event.</div>
+    <div class="specimen-meta">Reel (15-30s)</div>
+    <div class="pillar-tag">The Proof</div>
+  </div>
+
+</div>
+
+<div class="prose" style="margin-top: var(--space-2);">
+
+<div class="section-heading" style="margin-top: var(--space-2);">Visual identity</div>
+
+<p>The current feed has no consistent visual language. The proposed direction:</p>
+
+<p><strong>Photography dominates.</strong> Real photos from real places. The blue infographic cards currently on the feed become the exception, not the rule.</p>
+
+<p><strong>Warm palette.</strong> The parent brand is institutional blue. The sub-brand should be warm: earth tones, golden hour, the actual colors of the communities served. Instant visual differentiation from @compassion.</p>
+
+<p><strong>Consistent text treatment.</strong> One typeface, one style when text appears on images. Serif or hand-drawn, not the current mix of sans-serif infographic treatments.</p>
+
+<p><strong>No stock photography.</strong> Every image traceable to a real place and a real cause.</p>
+
+</div>
+
+</div>
+
+<!-- ===== SCOPE ===== -->
+<div id="scope" class="tab-content">
+
+<div class="prose">
+<p>Strategy and production are separate. Strategy is what we're proposing here: the thinking, the direction, the framework. Production is the cost of making the content itself. We price them independently so you can say yes to strategy even if production budget needs to be built over time.</p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Tier 1</div>
+  <h3>Social strategy and content direction</h3>
+  <p>We define the content pillars, the visual identity, the posting cadence, and the editorial direction. We create briefs for each content format. Your team executes, and we review and refine. Monthly retainer.</p>
+  <ul>
+    <li>Content pillar framework and editorial calendar</li>
+    <li>Visual identity guide for the feed (color, type, photography direction)</li>
+    <li>Monthly content briefs (format, subject, source, channel adaptation)</li>
+    <li>Bi-weekly review of published content with feedback</li>
+    <li>Church partner content brief template (how to shoot, what to send)</li>
+  </ul>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Tier 2</div>
+  <h3>Strategy + content creation</h3>
+  <p>Everything in Tier 1, plus we produce the content. We edit church partner submissions, design the graphics, write the copy, and manage the posting schedule. Your team coordinates with church partners on source material; we handle everything from raw footage to published post.</p>
+  <ul>
+    <li>All Tier 1 deliverables</li>
+    <li>Content production: editing, design, copywriting</li>
+    <li>Posting management across Instagram, TikTok, YouTube Shorts</li>
+    <li>Monthly performance reporting with strategic adjustments</li>
+    <li>Campaign planning for cultural moments (Earth Day, Back to School, Christmas)</li>
+  </ul>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Tier 3</div>
+  <h3>Strategy + creation + consulting</h3>
+  <p>Everything in Tier 2, plus strategic consulting on the Compassion Causes initiative as a whole. We help build the internal case for investment, prepare presentations for organizational leadership, and advise on the relationship between the sub-brand and the parent brand. This is the thinking-partner engagement.</p>
+  <ul>
+    <li>All Tier 2 deliverables</li>
+    <li>Cross-pollination strategy: connecting Causes to the main brand's 258K audience and 950K email list</li>
+    <li>Internal advocacy support: helping the team present to organizational leadership</li>
+    <li>Sub-brand development: building the distinct identity that makes Causes feel like a movement, not a department</li>
+    <li>Quarterly strategy review with long-term roadmap</li>
+  </ul>
+</div>
+
+<div class="section-heading">What a conversation would look like</div>
+
+<div class="prose">
+<p>We've been in the room. We've seen where the gaps are and where the team's energy is. The next step is a focused conversation about which tier fits, what the team can execute internally, and what budget looks like for the first quarter. We'd want to understand the internal relationship between Causes and the main brand's marketing team, because the cross-pollination opportunity (connecting to the 258K audience and the 950K email list) may be the single highest-leverage move available.</p>
+
+<p>The research here is the starting point. Everything we've proposed can be adjusted once we see the internal data and understand the approval process from the inside.</p>
+</div>
+
+<div class="closing">
+  <p><a href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a></p>
+</div>
+
+</div>
+
+</main>
+
+<footer>
+  <span class="proposal-meta">Research conducted April 2026. Observations from publicly available sources and direct conversation.</span>
+</footer>
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.tab-content').forEach(function(el) { el.classList.remove('active'); });
+  document.querySelectorAll('.tab').forEach(function(el) { el.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({ top: document.querySelector('.tabs').offsetTop - 10, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>

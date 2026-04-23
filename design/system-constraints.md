@@ -87,6 +87,8 @@ The `--space-0-5` (12px) token exists for one case: grouping a line of mono meta
 
 **Weights to license:** 400 regular + 400 italic, for both serif and mono. That's 4 files total. Nothing else.
 
+**Bold usage (established 2026-04-22):** Bold (`<strong>` / font-weight 700) is accepted for one purpose: inline wayfinding within quieter text registers. The tab guide on proposal pages uses bold on tab names ("**Summary** is what we noticed. **Research** is the evidence...") so the reader can scan the three names without reading the full sentence. Bold is not used for headings, section labels, or structural emphasis. The flat heading hierarchy (all weight 400) remains the system's primary mode.
+
 ### Size scale
 
 ```css

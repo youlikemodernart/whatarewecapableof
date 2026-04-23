@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title><!-- CLIENT NAME --></title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/typography.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<style>
+  html {
+    overflow-x: clip;
+  }
+
+  .page-proposal {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    padding: var(--margin-block) var(--margin-inline);
+    overflow-x: clip;
+  }
+
+  .page-proposal main {
+    flex: 1;
+    max-width: var(--content-width-prose);
+  }
+
+  .page-proposal header {
+    padding-bottom: var(--space-2);
+  }
+
+  .proposal-meta {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--color-text);
+    opacity: 0.4;
+  }
+
+  .proposal-title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: var(--size-m);
+    margin-top: var(--space-1);
+    max-width: 52ch;
+  }
+
+  .tabs {
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-1) 0;
+    position: sticky;
+    top: 0;
+    background: var(--color-bg);
+    z-index: 10;
+  }
+
+  .tabs::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: calc(-1 * var(--margin-inline));
+    right: calc(-1 * var(--margin-inline));
+    height: 1px;
+    background: var(--color-text);
+  }
+
+  .tab {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    text-decoration: none;
+    cursor: pointer;
+    color: var(--color-text);
+    opacity: 0.35;
+    border: none;
+    background: none;
+    padding: 0;
+    transition: opacity var(--transition-default);
+  }
+
+  .tab:hover { text-decoration: none; opacity: 0.7; }
+  .tab.active { opacity: 1; }
+
+  .tab-content {
+    padding-top: var(--space-2);
+  }
+
+  .tab-content-full {
+    padding-top: var(--space-2);
+  }
+
+  .tabbed .tab-content {
+    display: none;
+    padding-top: var(--space-2);
+  }
+  .tabbed .tab-content.active { display: block; }
+
+  .tabbed .tab-content-full {
+    display: none;
+    min-height: calc(100svh - 4rem);
+    flex-direction: column;
+    justify-content: center;
+  }
+  .tabbed .tab-content-full.active { display: flex; }
+
+  .section-heading {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    margin-top: var(--space-4);
+    margin-bottom: var(--space-1);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-text);
+  }
+
+  .section-heading:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .finding {
+    margin-bottom: var(--space-2);
+  }
+
+  .finding-label {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.4;
+    margin-bottom: calc(var(--space-0-5) * 0.5);
+  }
+
+  .finding p:last-child {
+    margin-bottom: 0;
+  }
+
+  .evidence {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    opacity: 0.35;
+    margin-top: calc(var(--space-0-5));
+  }
+
+  .stat-row {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin: var(--space-1) 0 var(--space-2);
+  }
+
+  .stat-item {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+  }
+
+  .stat-item strong {
+    font-weight: 400;
+    font-family: var(--font-serif);
+    font-size: var(--size-m);
+    text-transform: none;
+    letter-spacing: 0;
+    display: block;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--space-1) 0;
+    font-size: var(--size-s);
+    table-layout: fixed;
+    word-wrap: break-word;
+  }
+
+  th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    font-weight: 400;
+    opacity: 0.4;
+    padding: var(--space-0-5) 0;
+    border-bottom: 1px solid var(--color-text);
+  }
+
+  td {
+    padding: var(--space-0-5) 0;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    vertical-align: top;
+    font-family: var(--font-serif);
+  }
+
+  th + th, td + td {
+    padding-left: var(--space-1);
+  }
+
+  .scope-phase {
+    margin-bottom: var(--space-3);
+  }
+
+  .scope-phase .phase-label {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.4;
+  }
+
+  .scope-phase h3 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: var(--size-m);
+    margin-bottom: var(--space-0-5);
+  }
+
+  .scope-phase ul {
+    margin: var(--space-0-5) 0 0;
+    padding-left: 1.25rem;
+    list-style: none;
+  }
+
+  .scope-phase li {
+    font-size: var(--size-s);
+    margin-bottom: var(--space-0-5);
+    position: relative;
+  }
+
+  .scope-phase li::before {
+    content: "";
+    position: absolute;
+    left: -1rem;
+    top: 0.55em;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--color-text);
+    opacity: 0.25;
+  }
+
+  .closing {
+    margin-top: var(--space-3);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-text);
+  }
+
+  .closing p:last-of-type {
+    margin-top: var(--space-1);
+  }
+
+  .page-proposal footer {
+    margin-top: var(--space-4);
+    padding-top: var(--space-1);
+    border-top: 1px solid rgba(0,0,0,0.08);
+  }
+
+  @media (max-width: 767px) {
+    .page-proposal {
+      padding-left: var(--space-1);
+      padding-right: var(--space-1);
+    }
+    .stat-row {
+      flex-direction: column;
+      gap: var(--space-0-5);
+    }
+    .tabs {
+      gap: var(--space-1);
+    }
+  }
+</style>
+</head>
+<body class="page-proposal">
+
+<header>
+  <a href="/" style="letter-spacing: -0.02em; text-decoration: none; color: inherit;">What are we capable of?</a>
+</header>
+
+<main>
+
+<!-- META: client name and date -->
+<div class="proposal-meta">Prepared for <!-- CLIENT NAME --> / <!-- MONTH YEAR --></div>
+
+<!-- INTRO: what we looked at, what this document is -->
+<p class="proposal-title" style="margin-top: var(--space-1);"><!-- 2-3 sentences: what we examined, what this contains, what we'd want to learn more about --></p>
+
+<!-- TAB GUIDE: bold tab names for scannability -->
+<p style="margin-top: var(--space-1); font-size: var(--size-s); max-width: 52ch;"><strong>Summary</strong> is what we noticed. <strong>Research</strong> is the evidence behind each observation and the methodology that produced it. <strong>Scope</strong> is where we see potential space, and the questions we'd want to explore together.</p>
+
+<nav class="tabs" aria-label="Sections">
+  <a class="tab active" href="#summary">Summary</a>
+  <a class="tab" href="#research">Research</a>
+  <a class="tab" href="#scope">Scope</a>
+  <a class="tab" href="#question">?</a>
+</nav>
+
+<!-- ===== SUMMARY ===== -->
+<div id="summary" class="tab-content active">
+
+<!-- AGREEMENT: 1 paragraph the reader will nod along to. Company, founder, what they've built. -->
+<p><!-- Company description from research. Factual, observational. --></p>
+
+<!-- TRANSITION: what we looked at -->
+<p>We looked at the publicly visible pieces. <!-- N --> observations seemed worth flagging.</p>
+
+<!-- STATS: 4-6 key numbers. Serif values, mono labels. -->
+<div class="stat-row">
+  <div class="stat-item"><strong><!-- VALUE --></strong> <!-- LABEL --></div>
+  <!-- repeat 4-6 times -->
+</div>
+
+<div class="section-heading">Findings</div>
+
+<!-- FINDINGS: 4-6 observations. Each gets a number label, evidence line. -->
+<!-- Frame as observation, not diagnosis. "What we didn't find" not "what's broken." -->
+<div class="finding">
+  <div class="finding-label">01</div>
+  <p><!-- Observation with specific evidence --></p>
+  <div class="evidence"><!-- Source --></div>
+</div>
+<!-- repeat for each finding -->
+
+<div class="section-heading">What's working</div>
+
+<!-- Concrete observations about strengths. No validation language. -->
+<p><!-- Specific things the business does well, with evidence --></p>
+
+<div class="section-heading" style="margin-top: var(--space-3);">What we'd want to learn</div>
+
+<!-- BRIDGE: name the limits of outside observation, frame a conversation as the next step -->
+<p><!-- What we can see vs. what we can't. What internal data would sharpen the picture. --></p>
+
+</div>
+
+<!-- ===== RESEARCH ===== -->
+<div id="research" class="tab-content">
+
+<!-- Full technical depth. Section headings with border-top for hierarchy. -->
+<!-- Sections: Company, Product catalog, Technology, Content and social, Subdomains, Structured data, What we don't know -->
+
+<div class="section-heading">Company</div>
+<p><!-- Detailed company profile from research --></p>
+
+<!-- Tables for structured data (product catalog, tech stack, social media) -->
+<!-- Use table-layout: fixed for mobile. -->
+
+<div class="section-heading">What we don't know</div>
+<p><!-- List of questions only internal data can answer --></p>
+
+</div>
+
+<!-- ===== SCOPE ===== -->
+<div id="scope" class="tab-content">
+
+<!-- Frame as exploratory, not prescriptive -->
+<p><!-- Acknowledge limitations of outside observation. What follows is where the patterns point, not a prescription. --></p>
+
+<!-- AREAS: 2-4 areas worth exploring. Each with a conditional. -->
+<div class="scope-phase">
+  <div class="phase-label">Area 1</div>
+  <h3><!-- Area name --></h3>
+  <p><!-- Description with conditional: "whether this is the right priority depends on [data we don't have]" --></p>
+</div>
+<!-- repeat for each area -->
+
+<div class="section-heading">What a conversation would look like</div>
+
+<!-- Questions we'd want to ask. What internal data would sharpen the picture. -->
+<p><!-- Specific questions about the business --></p>
+
+<p><!-- Bridge to action: a conversation would turn these observations into a clearer picture --></p>
+
+</div>
+
+<!-- ===== ? ===== -->
+<div id="question" class="tab-content-full">
+
+<div>
+  <p class="proposal-title">What are <span style="text-decoration: underline; text-underline-offset: 0.15em;">we</span> capable of?</p>
+  <p class="mono caps size-s" style="margin-top: var(--space-1);"><a href="mailto:hello@whatarewecapableof.com">Book a call</a></p>
+</div>
+
+</div>
+
+</main>
+
+<footer>
+  <span class="proposal-meta">Research conducted <!-- DATE -->. All findings from publicly available sources.</span>
+</footer>
+
+<script>
+(function() {
+  var container = document.querySelector('main');
+  container.classList.add('tabbed');
+
+  var tabs = document.querySelectorAll('.tab');
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function(e) {
+      e.preventDefault();
+      var id = this.getAttribute('href').slice(1);
+      document.querySelectorAll('.tab-content, .tab-content-full').forEach(function(el) { el.classList.remove('active'); });
+      tabs.forEach(function(t) { t.classList.remove('active'); });
+      document.getElementById(id).classList.add('active');
+      this.classList.add('active');
+      window.scrollTo({ top: document.querySelector('.tabs').offsetTop - 10, behavior: 'smooth' });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

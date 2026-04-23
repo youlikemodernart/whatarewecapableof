@@ -1,6 +1,6 @@
 # Sitemap — whatarewecapableof.com
 
-Revised 2026-04-22 from Noah's working diagram + session discussion.
+Revised 2026-04-22. Production live at `whatarewecapableof.com` (merged from draft 2026-04-22). Vercel linked to GitHub; push to `main` auto-deploys.
 
 ---
 
@@ -19,6 +19,9 @@ whatarewecapableof.com
 Footer-only (secondary):
   ABOUT                     /about/
   CONTACT                   email in footer text (no dedicated page unless needed)
+
+Non-navigation (direct link only):
+  /proposals/teaspressa/    Proof-of-insight proposal (noindex, nofollow)
 ```
 
 ---

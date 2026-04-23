@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#ffffff">
 <title><!-- CLIENT NAME --></title>
@@ -17,6 +17,11 @@
 <link rel="stylesheet" href="/css/layout.css">
 <link rel="stylesheet" href="/css/components.css">
 <style>
+  :root {
+    --safe-area-top: env(safe-area-inset-top, 0px);
+    --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
   html {
     overflow-x: clip;
   }
@@ -25,8 +30,19 @@
     min-height: 100svh;
     display: flex;
     flex-direction: column;
-    padding: var(--margin-block) var(--margin-inline);
-    overflow-x: clip;
+    padding: calc(var(--margin-block) + var(--safe-area-top)) var(--margin-inline) calc(var(--margin-block) + var(--safe-area-bottom));
+  }
+
+  .page-proposal::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--safe-area-top);
+    background: var(--color-bg);
+    z-index: 11;
+    pointer-events: none;
   }
 
   .page-proposal main {
@@ -60,7 +76,7 @@
     gap: var(--space-2);
     padding: var(--space-1) 0;
     position: sticky;
-    top: 0;
+    top: var(--safe-area-top);
     background: var(--color-bg);
     z-index: 10;
   }

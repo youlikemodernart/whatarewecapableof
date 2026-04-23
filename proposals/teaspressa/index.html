@@ -70,6 +70,7 @@
     font-size: var(--size-s);
     text-transform: uppercase;
     letter-spacing: var(--tracking-caps);
+    text-decoration: none;
     cursor: pointer;
     color: var(--color-text);
     opacity: 0.35;
@@ -78,6 +79,8 @@
     padding: 0;
     transition: opacity var(--transition-default);
   }
+
+  .tab:hover { text-decoration: none; }
 
   .tab:hover { opacity: 0.7; }
   .tab.active { opacity: 1; }
@@ -89,8 +92,6 @@
   .tab-content-full {
     padding-top: var(--space-2);
   }
-
-  .tabbed .tabs { display: flex; }
 
   .tabbed .tab-content {
     display: none;

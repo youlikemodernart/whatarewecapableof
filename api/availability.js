@@ -143,7 +143,7 @@ module.exports = async function handler(req, res) {
       dates: result.filter((d) => d.availableCount > 0),
     });
   } catch (err) {
-    console.error('Availability error:', err.message);
-    return res.status(500).json({ error: 'Could not fetch availability' });
+    console.error('Availability error:', err.message, err.stack);
+    return res.status(500).json({ error: 'Could not fetch availability', debug: err.message });
   }
 };

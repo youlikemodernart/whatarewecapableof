@@ -1,5 +1,8 @@
 {
   "private": true,
+  "scripts": {
+    "scan:assets": "node scripts/scan-assets.mjs"
+  },
   "dependencies": {
     "googleapis": "^144.0.0"
   }

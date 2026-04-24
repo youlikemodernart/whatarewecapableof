@@ -1,0 +1,4873 @@
+{
+  "summary": {
+    "generatedAt": "2026-04-24",
+    "root": "/Users/noah/Projects/whatarewecapableof",
+    "assetCount": 319,
+    "siteVisibleAssetCount": 27,
+    "referencedAssetCount": 12,
+    "unreferencedSiteVisibleAssetCount": 15,
+    "missingReferenceCount": 0,
+    "relativeLocalReferenceCount": 0,
+    "formatMismatchCount": 2,
+    "categories": {
+      "site-shell": 4,
+      "design-reference-originals": 9,
+      "design-reference-quarantine": 3,
+      "design-reference-frames": 249,
+      "design-reference-gifs": 2,
+      "design-reference-images": 5,
+      "design-reference-screenshots": 24,
+      "proposal-content": 23
+    }
+  },
+  "assets": [
+    {
+      "path": "apple-touch-icon.png",
+      "publicPath": "/apple-touch-icon.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 324,
+      "size": "324 B",
+      "dimensions": {
+        "width": 180,
+        "height": 180
+      },
+      "category": "site-shell",
+      "usedIn": [
+        "about/index.html",
+        "coach/book/index.html",
+        "coach/index.html",
+        "consult/index.html",
+        "creative/index.html",
+        "index.html",
+        "question/index.html"
+      ]
+    },
+    {
+      "path": "design/reference-analysis/_originals/img3-type-as-form.jpg",
+      "publicPath": "/design/reference-analysis/_originals/img3-type-as-form.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 193996,
+      "size": "189.4 KB",
+      "dimensions": {
+        "width": 976,
+        "height": 1921
+      },
+      "category": "design-reference-originals",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/_originals/lola-all_desktop_1280.png",
+      "publicPath": "/design/reference-analysis/_originals/lola-all_desktop_1280.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 34789,
+      "size": "34.0 KB",
+      "dimensions": {
+        "width": 2574,
+        "height": 1800
+      },
+      "category": "design-reference-originals",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/_originals/lola-all_tablet_768.png",
+      "publicPath": "/design/reference-analysis/_originals/lola-all_tablet_768.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 30159,
+      "size": "29.5 KB",
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "category": "design-reference-originals",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/_originals/lola-home2_desktop_1280.png",
+      "publicPath": "/design/reference-analysis/_originals/lola-home2_desktop_1280.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 32382,
+      "size": "31.6 KB",
+      "dimensions": {
+        "width": 2574,
+        "height": 1800
+      },
+      "category": "design-reference-originals",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/_originals/lola-home2_mobile_375.png",
+      "publicPath": "/design/reference-analysis/_originals/lola-home2_mobile_375.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 22354,
+      "size": "21.8 KB",
+      "dimensions": {
+        "width": 750,
+        "height": 1984
+      },
+      "category": "design-reference-originals",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/_originals/lola-home2_tablet_768.png",
+      "publicPath": "/design/reference-analysis/_originals/lola-home2_tablet_768.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 27780,
+      "size": "27.1 KB",
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "category": "design-reference-originals",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/_originals/lola-home_desktop_1280.png",
+      "publicPath": "/design/reference-analysis/_originals/lola-home_desktop_1280.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 32382,
+      "size": "31.6 KB",
+      "dimensions": {
+        "width": 2574,
+        "height": 1800
+      },
+      "category": "design-reference-originals",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/_originals/lola-home_mobile_375.png",
+      "publicPath": "/design/reference-analysis/_originals/lola-home_mobile_375.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 22354,
+      "size": "21.8 KB",
+      "dimensions": {
+        "width": 750,
+        "height": 1984
+      },
+      "category": "design-reference-originals",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/_originals/lola-home_tablet_768.png",
+      "publicPath": "/design/reference-analysis/_originals/lola-home_tablet_768.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 27780,
+      "size": "27.1 KB",
+      "dimensions": {
+        "width": 1536,
+        "height": 2048
+      },
+      "category": "design-reference-originals",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/_quarantine/lola-portfolio_desktop_1280.png",
+      "publicPath": "/design/reference-analysis/_quarantine/lola-portfolio_desktop_1280.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 704950,
+      "size": "688.4 KB",
+      "dimensions": {
+        "width": 2574,
+        "height": 71122
+      },
+      "category": "design-reference-quarantine",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/_quarantine/lola-portfolio_mobile_375.png",
+      "publicPath": "/design/reference-analysis/_quarantine/lola-portfolio_mobile_375.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 7234772,
+      "size": "6.90 MB",
+      "dimensions": {
+        "width": 750,
+        "height": 41548
+      },
+      "category": "design-reference-quarantine",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/_quarantine/lola-portfolio_tablet_768.png",
+      "publicPath": "/design/reference-analysis/_quarantine/lola-portfolio_tablet_768.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 597569,
+      "size": "583.6 KB",
+      "dimensions": {
+        "width": 1536,
+        "height": 89740
+      },
+      "category": "design-reference-quarantine",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_000.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_000.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 13024,
+      "size": "12.7 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_001.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_001.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12794,
+      "size": "12.5 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_002.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_002.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 11961,
+      "size": "11.7 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_003.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_003.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12643,
+      "size": "12.3 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_004.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_004.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12141,
+      "size": "11.9 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_005.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_005.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12442,
+      "size": "12.2 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_006.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_006.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 13250,
+      "size": "12.9 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_007.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_007.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12438,
+      "size": "12.1 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_008.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_008.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12186,
+      "size": "11.9 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_009.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_009.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 13202,
+      "size": "12.9 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_010.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_010.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 13267,
+      "size": "13.0 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_011.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_011.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 13220,
+      "size": "12.9 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_012.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_012.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 13158,
+      "size": "12.8 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_013.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_013.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12993,
+      "size": "12.7 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_014.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_014.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12301,
+      "size": "12.0 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_015.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_015.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 13037,
+      "size": "12.7 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_016.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_016.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 13573,
+      "size": "13.3 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_017.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_017.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12986,
+      "size": "12.7 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_018.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_018.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12693,
+      "size": "12.4 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_019.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_019.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12603,
+      "size": "12.3 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_020.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_020.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12646,
+      "size": "12.3 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_021.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_021.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12489,
+      "size": "12.2 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_022.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_022.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 13103,
+      "size": "12.8 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_023.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_023.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12817,
+      "size": "12.5 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_024.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_024.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12929,
+      "size": "12.6 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_025.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_025.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12533,
+      "size": "12.2 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_026.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_026.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12722,
+      "size": "12.4 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_027.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_027.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12786,
+      "size": "12.5 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_028.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_028.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12631,
+      "size": "12.3 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_029.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_029.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12620,
+      "size": "12.3 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_030.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_030.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12620,
+      "size": "12.3 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_031.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_031.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12620,
+      "size": "12.3 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_032.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_032.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12620,
+      "size": "12.3 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_033.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_033.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12724,
+      "size": "12.4 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_034.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_034.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12748,
+      "size": "12.4 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_035.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_035.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12825,
+      "size": "12.5 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_036.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_036.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12662,
+      "size": "12.4 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_037.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_037.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12919,
+      "size": "12.6 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_038.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_038.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12737,
+      "size": "12.4 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_039.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_039.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12966,
+      "size": "12.7 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_040.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_040.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12859,
+      "size": "12.6 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_041.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_041.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 13066,
+      "size": "12.8 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_042.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_042.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 13394,
+      "size": "13.1 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_043.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_043.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 14999,
+      "size": "14.6 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_044.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_044.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 16884,
+      "size": "16.5 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_045.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_045.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 19786,
+      "size": "19.3 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_046.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_046.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 22009,
+      "size": "21.5 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_047.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_047.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 24988,
+      "size": "24.4 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_048.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_048.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25458,
+      "size": "24.9 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_049.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_049.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25534,
+      "size": "24.9 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_050.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_050.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25101,
+      "size": "24.5 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_051.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_051.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25159,
+      "size": "24.6 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_052.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_052.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25070,
+      "size": "24.5 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_053.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_053.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25171,
+      "size": "24.6 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_054.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_054.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25186,
+      "size": "24.6 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_055.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_055.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25203,
+      "size": "24.6 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_056.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_056.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25179,
+      "size": "24.6 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_057.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_057.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25267,
+      "size": "24.7 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_058.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_058.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25133,
+      "size": "24.5 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_059.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_059.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25044,
+      "size": "24.5 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_060.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_060.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25268,
+      "size": "24.7 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_061.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_061.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25229,
+      "size": "24.6 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_062.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_062.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25315,
+      "size": "24.7 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_063.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_063.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 24976,
+      "size": "24.4 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_064.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_064.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25192,
+      "size": "24.6 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_065.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_065.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 24591,
+      "size": "24.0 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_066.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_066.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 24399,
+      "size": "23.8 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_067.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_067.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 24079,
+      "size": "23.5 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_068.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_068.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 22980,
+      "size": "22.4 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_069.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_069.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 20080,
+      "size": "19.6 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_070.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_070.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 16348,
+      "size": "16.0 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_071.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_071.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15099,
+      "size": "14.7 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_072.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_072.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15254,
+      "size": "14.9 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_073.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_073.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15277,
+      "size": "14.9 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_074.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_074.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15196,
+      "size": "14.8 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_075.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_075.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 14787,
+      "size": "14.4 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_076.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_076.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15134,
+      "size": "14.8 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_077.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_077.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 14913,
+      "size": "14.6 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_078.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_078.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 14983,
+      "size": "14.6 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_079.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_079.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 14995,
+      "size": "14.6 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_080.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_080.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15005,
+      "size": "14.7 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_081.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_081.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15027,
+      "size": "14.7 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_082.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_082.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15133,
+      "size": "14.8 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_083.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_083.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15136,
+      "size": "14.8 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_084.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_084.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15136,
+      "size": "14.8 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_085.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_085.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15148,
+      "size": "14.8 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_086.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_086.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15137,
+      "size": "14.8 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_087.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_087.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15137,
+      "size": "14.8 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_088.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_088.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15134,
+      "size": "14.8 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_089.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_089.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15153,
+      "size": "14.8 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_090.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_090.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15153,
+      "size": "14.8 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_091.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_091.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15153,
+      "size": "14.8 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_092.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_092.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15243,
+      "size": "14.9 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_093.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_093.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15555,
+      "size": "15.2 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_094.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_094.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15323,
+      "size": "15.0 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_095.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_095.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15381,
+      "size": "15.0 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_096.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_096.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15357,
+      "size": "15.0 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_097.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_097.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15256,
+      "size": "14.9 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_098.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_098.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15797,
+      "size": "15.4 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_099.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_099.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15951,
+      "size": "15.6 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_100.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_100.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15858,
+      "size": "15.5 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_101.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_101.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 16235,
+      "size": "15.9 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_102.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_102.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 16750,
+      "size": "16.4 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_103.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_103.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 17673,
+      "size": "17.3 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_104.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_104.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 21763,
+      "size": "21.3 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_105.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_105.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 23247,
+      "size": "22.7 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_106.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_106.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 23984,
+      "size": "23.4 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_107.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_107.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 24788,
+      "size": "24.2 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_108.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_108.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25058,
+      "size": "24.5 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_109.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_109.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25033,
+      "size": "24.4 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_110.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_110.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25215,
+      "size": "24.6 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_111.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_111.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25063,
+      "size": "24.5 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_112.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_112.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25427,
+      "size": "24.8 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_113.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_113.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25352,
+      "size": "24.8 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_114.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_114.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 24959,
+      "size": "24.4 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_115.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_115.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25153,
+      "size": "24.6 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_116.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_116.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25426,
+      "size": "24.8 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_117.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_117.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25731,
+      "size": "25.1 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_118.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_118.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25278,
+      "size": "24.7 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_119.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_119.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25063,
+      "size": "24.5 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_120.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_120.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25226,
+      "size": "24.6 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_121.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_121.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25383,
+      "size": "24.8 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_122.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_122.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25316,
+      "size": "24.7 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_123.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_123.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25237,
+      "size": "24.6 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_124.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_124.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25278,
+      "size": "24.7 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_125.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_125.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 23898,
+      "size": "23.3 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_126.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_126.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 21248,
+      "size": "20.8 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_127.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_127.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 18732,
+      "size": "18.3 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_128.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_128.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12800,
+      "size": "12.5 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_129.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_129.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12989,
+      "size": "12.7 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_130.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_130.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12836,
+      "size": "12.5 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_131.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_131.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 13104,
+      "size": "12.8 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_132.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_132.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 13025,
+      "size": "12.7 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_133.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_133.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12662,
+      "size": "12.4 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_134.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_134.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 11964,
+      "size": "11.7 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_135.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_135.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12813,
+      "size": "12.5 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_136.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_136.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12244,
+      "size": "12.0 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_137.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_137.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12245,
+      "size": "12.0 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_138.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_138.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12674,
+      "size": "12.4 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_139.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_139.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12561,
+      "size": "12.3 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_140.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_140.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12445,
+      "size": "12.2 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_141.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_141.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12542,
+      "size": "12.2 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_142.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_142.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12246,
+      "size": "12.0 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_143.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_143.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12966,
+      "size": "12.7 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_144.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_144.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12762,
+      "size": "12.5 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_145.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_145.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12542,
+      "size": "12.2 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_146.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_146.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12902,
+      "size": "12.6 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_147.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_147.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12646,
+      "size": "12.3 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_148.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_148.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 13089,
+      "size": "12.8 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_149.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_149.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12709,
+      "size": "12.4 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_150.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_150.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12499,
+      "size": "12.2 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_151.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_151.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12070,
+      "size": "11.8 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_152.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_152.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12815,
+      "size": "12.5 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_153.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_153.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12302,
+      "size": "12.0 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_154.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_154.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 13251,
+      "size": "12.9 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_155.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_155.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 13160,
+      "size": "12.9 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_156.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_156.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12186,
+      "size": "11.9 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1/frame_157.png",
+      "publicPath": "/design/reference-analysis/frames/gif1/frame_157.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12616,
+      "size": "12.3 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_000.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_000.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 13024,
+      "size": "12.7 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_005.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_005.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12442,
+      "size": "12.2 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_010.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_010.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 13267,
+      "size": "13.0 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_015.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_015.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 13037,
+      "size": "12.7 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_020.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_020.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12646,
+      "size": "12.3 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_025.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_025.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12533,
+      "size": "12.2 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_030.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_030.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12620,
+      "size": "12.3 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_035.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_035.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12825,
+      "size": "12.5 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_040.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_040.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12859,
+      "size": "12.6 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_045.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_045.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 19786,
+      "size": "19.3 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_050.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_050.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25101,
+      "size": "24.5 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_055.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_055.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25203,
+      "size": "24.6 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_060.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_060.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25268,
+      "size": "24.7 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_065.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_065.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 24591,
+      "size": "24.0 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_070.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_070.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 16348,
+      "size": "16.0 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_075.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_075.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 14787,
+      "size": "14.4 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_080.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_080.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15005,
+      "size": "14.7 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_085.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_085.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15148,
+      "size": "14.8 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_090.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_090.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15153,
+      "size": "14.8 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_095.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_095.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15381,
+      "size": "15.0 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_100.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_100.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 15858,
+      "size": "15.5 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_105.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_105.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 23247,
+      "size": "22.7 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_110.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_110.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25215,
+      "size": "24.6 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_115.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_115.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25153,
+      "size": "24.6 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_120.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_120.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25226,
+      "size": "24.6 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_125.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_125.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 23898,
+      "size": "23.3 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_130.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_130.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12836,
+      "size": "12.5 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_135.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_135.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12813,
+      "size": "12.5 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_140.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_140.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12445,
+      "size": "12.2 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_145.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_145.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12542,
+      "size": "12.2 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_150.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_150.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12499,
+      "size": "12.2 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_155.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_155.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 13160,
+      "size": "12.9 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif1-keys/key_157.png",
+      "publicPath": "/design/reference-analysis/frames/gif1-keys/key_157.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12616,
+      "size": "12.3 KB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_000.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_000.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 14641,
+      "size": "14.3 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_001.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_001.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 20401,
+      "size": "19.9 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_002.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_002.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 26275,
+      "size": "25.7 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_003.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_003.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 31581,
+      "size": "30.8 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_004.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_004.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 40986,
+      "size": "40.0 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_005.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_005.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 48738,
+      "size": "47.6 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_006.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_006.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 56818,
+      "size": "55.5 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_007.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_007.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 70186,
+      "size": "68.5 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_008.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_008.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 83362,
+      "size": "81.4 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_009.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_009.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 96147,
+      "size": "93.9 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_010.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_010.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 107535,
+      "size": "105.0 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_011.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_011.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 117300,
+      "size": "114.6 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_012.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_012.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 127164,
+      "size": "124.2 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_013.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_013.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 138870,
+      "size": "135.6 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_014.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_014.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 138867,
+      "size": "135.6 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_015.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_015.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 138867,
+      "size": "135.6 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_016.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_016.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 138867,
+      "size": "135.6 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_017.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_017.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 130605,
+      "size": "127.5 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_018.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_018.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 131117,
+      "size": "128.0 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_019.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_019.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 129194,
+      "size": "126.2 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_020.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_020.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 127705,
+      "size": "124.7 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_021.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_021.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 126265,
+      "size": "123.3 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_022.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_022.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 123804,
+      "size": "120.9 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_023.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_023.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 122487,
+      "size": "119.6 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_024.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_024.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 119833,
+      "size": "117.0 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_025.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_025.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 116803,
+      "size": "114.1 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_026.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_026.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 115934,
+      "size": "113.2 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_027.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_027.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 113922,
+      "size": "111.3 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2/frame_028.png",
+      "publicPath": "/design/reference-analysis/frames/gif2/frame_028.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 111650,
+      "size": "109.0 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_000.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_000.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 14641,
+      "size": "14.3 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_001.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_001.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 20401,
+      "size": "19.9 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_002.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_002.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 26275,
+      "size": "25.7 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_003.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_003.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 31581,
+      "size": "30.8 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_004.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_004.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 40986,
+      "size": "40.0 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_005.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_005.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 48738,
+      "size": "47.6 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_006.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_006.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 56818,
+      "size": "55.5 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_007.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_007.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 70186,
+      "size": "68.5 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_008.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_008.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 83362,
+      "size": "81.4 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_009.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_009.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 96147,
+      "size": "93.9 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_010.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_010.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 107535,
+      "size": "105.0 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_011.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_011.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 117300,
+      "size": "114.6 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_012.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_012.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 127164,
+      "size": "124.2 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_013.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_013.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 138870,
+      "size": "135.6 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_014.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_014.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 138867,
+      "size": "135.6 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_015.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_015.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 138867,
+      "size": "135.6 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_016.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_016.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 138867,
+      "size": "135.6 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_017.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_017.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 130605,
+      "size": "127.5 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_018.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_018.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 131117,
+      "size": "128.0 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_019.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_019.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 129194,
+      "size": "126.2 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_020.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_020.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 127705,
+      "size": "124.7 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_021.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_021.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 126265,
+      "size": "123.3 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_022.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_022.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 123804,
+      "size": "120.9 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_023.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_023.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 122487,
+      "size": "119.6 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_024.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_024.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 119833,
+      "size": "117.0 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_025.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_025.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 116803,
+      "size": "114.1 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_026.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_026.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 115934,
+      "size": "113.2 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_027.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_027.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 113922,
+      "size": "111.3 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/frames/gif2-keys/key_028.png",
+      "publicPath": "/design/reference-analysis/frames/gif2-keys/key_028.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 111650,
+      "size": "109.0 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-frames",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/gifs/gif1-mono-serif-mix.gif",
+      "publicPath": "/design/reference-analysis/gifs/gif1-mono-serif-mix.gif",
+      "ext": "gif",
+      "detectedFormat": "gif",
+      "bytes": 2413898,
+      "size": "2.30 MB",
+      "dimensions": {
+        "width": 600,
+        "height": 600
+      },
+      "category": "design-reference-gifs",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/gifs/gif2-line-heights.gif",
+      "publicPath": "/design/reference-analysis/gifs/gif2-line-heights.gif",
+      "ext": "gif",
+      "detectedFormat": "gif",
+      "bytes": 1235897,
+      "size": "1.18 MB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "design-reference-gifs",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/images/img1-monochrome-palette.jpg",
+      "publicPath": "/design/reference-analysis/images/img1-monochrome-palette.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 150193,
+      "size": "146.7 KB",
+      "dimensions": {
+        "width": 1438,
+        "height": 730
+      },
+      "category": "design-reference-images",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/images/img2-arena-typo-form.jpg",
+      "publicPath": "/design/reference-analysis/images/img2-arena-typo-form.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 44395,
+      "size": "43.4 KB",
+      "dimensions": {
+        "width": 595,
+        "height": 600
+      },
+      "category": "design-reference-images",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/images/img3-type-as-form.jpg",
+      "publicPath": "/design/reference-analysis/images/img3-type-as-form.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 142571,
+      "size": "139.2 KB",
+      "dimensions": {
+        "width": 813,
+        "height": 1600
+      },
+      "category": "design-reference-images",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/images/img4-type-form-2.jpg",
+      "publicPath": "/design/reference-analysis/images/img4-type-form-2.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 57643,
+      "size": "56.3 KB",
+      "dimensions": {
+        "width": 700,
+        "height": 500
+      },
+      "category": "design-reference-images",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/images/img5-quality-typeface.png",
+      "publicPath": "/design/reference-analysis/images/img5-quality-typeface.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 399506,
+      "size": "390.1 KB",
+      "dimensions": {
+        "width": 1054,
+        "height": 974
+      },
+      "category": "design-reference-images",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/screenshots/ellenole-about_desktop_1280.png",
+      "publicPath": "/design/reference-analysis/screenshots/ellenole-about_desktop_1280.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 38511,
+      "size": "37.6 KB",
+      "dimensions": {
+        "width": 1280,
+        "height": 800
+      },
+      "category": "design-reference-screenshots",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/screenshots/ellenole-about_mobile_375.png",
+      "publicPath": "/design/reference-analysis/screenshots/ellenole-about_mobile_375.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 7816,
+      "size": "7.6 KB",
+      "dimensions": {
+        "width": 375,
+        "height": 667
+      },
+      "category": "design-reference-screenshots",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/screenshots/ellenole-about_tablet_768.png",
+      "publicPath": "/design/reference-analysis/screenshots/ellenole-about_tablet_768.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 11434,
+      "size": "11.2 KB",
+      "dimensions": {
+        "width": 768,
+        "height": 1024
+      },
+      "category": "design-reference-screenshots",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/screenshots/ellenole-archive_desktop_1280.png",
+      "publicPath": "/design/reference-analysis/screenshots/ellenole-archive_desktop_1280.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 9132,
+      "size": "8.9 KB",
+      "dimensions": {
+        "width": 1280,
+        "height": 800
+      },
+      "category": "design-reference-screenshots",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/screenshots/ellenole-archive_mobile_375.png",
+      "publicPath": "/design/reference-analysis/screenshots/ellenole-archive_mobile_375.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 5240,
+      "size": "5.1 KB",
+      "dimensions": {
+        "width": 375,
+        "height": 667
+      },
+      "category": "design-reference-screenshots",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/screenshots/ellenole-archive_tablet_768.png",
+      "publicPath": "/design/reference-analysis/screenshots/ellenole-archive_tablet_768.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 8209,
+      "size": "8.0 KB",
+      "dimensions": {
+        "width": 768,
+        "height": 1024
+      },
+      "category": "design-reference-screenshots",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/screenshots/ellenole-home_desktop_1280.png",
+      "publicPath": "/design/reference-analysis/screenshots/ellenole-home_desktop_1280.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 35367,
+      "size": "34.5 KB",
+      "dimensions": {
+        "width": 1280,
+        "height": 800
+      },
+      "category": "design-reference-screenshots",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/screenshots/ellenole-home_mobile_375.png",
+      "publicPath": "/design/reference-analysis/screenshots/ellenole-home_mobile_375.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 26226,
+      "size": "25.6 KB",
+      "dimensions": {
+        "width": 375,
+        "height": 667
+      },
+      "category": "design-reference-screenshots",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/screenshots/ellenole-home_tablet_768.png",
+      "publicPath": "/design/reference-analysis/screenshots/ellenole-home_tablet_768.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 32453,
+      "size": "31.7 KB",
+      "dimensions": {
+        "width": 768,
+        "height": 1024
+      },
+      "category": "design-reference-screenshots",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/screenshots/lola-all_desktop_1280.png",
+      "publicPath": "/design/reference-analysis/screenshots/lola-all_desktop_1280.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12129,
+      "size": "11.8 KB",
+      "dimensions": {
+        "width": 1600,
+        "height": 1119
+      },
+      "category": "design-reference-screenshots",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/screenshots/lola-all_mobile_375.png",
+      "publicPath": "/design/reference-analysis/screenshots/lola-all_mobile_375.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 23052,
+      "size": "22.5 KB",
+      "dimensions": {
+        "width": 750,
+        "height": 1624
+      },
+      "category": "design-reference-screenshots",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/screenshots/lola-all_tablet_768.png",
+      "publicPath": "/design/reference-analysis/screenshots/lola-all_tablet_768.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 14920,
+      "size": "14.6 KB",
+      "dimensions": {
+        "width": 1200,
+        "height": 1600
+      },
+      "category": "design-reference-screenshots",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/screenshots/lola-home2_desktop_1280.png",
+      "publicPath": "/design/reference-analysis/screenshots/lola-home2_desktop_1280.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 11686,
+      "size": "11.4 KB",
+      "dimensions": {
+        "width": 1600,
+        "height": 1119
+      },
+      "category": "design-reference-screenshots",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/screenshots/lola-home2_mobile_375.png",
+      "publicPath": "/design/reference-analysis/screenshots/lola-home2_mobile_375.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 13108,
+      "size": "12.8 KB",
+      "dimensions": {
+        "width": 605,
+        "height": 1600
+      },
+      "category": "design-reference-screenshots",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/screenshots/lola-home2_tablet_768.png",
+      "publicPath": "/design/reference-analysis/screenshots/lola-home2_tablet_768.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 14515,
+      "size": "14.2 KB",
+      "dimensions": {
+        "width": 1200,
+        "height": 1600
+      },
+      "category": "design-reference-screenshots",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/screenshots/lola-home_desktop_1280.png",
+      "publicPath": "/design/reference-analysis/screenshots/lola-home_desktop_1280.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 11686,
+      "size": "11.4 KB",
+      "dimensions": {
+        "width": 1600,
+        "height": 1119
+      },
+      "category": "design-reference-screenshots",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/screenshots/lola-home_mobile_375.png",
+      "publicPath": "/design/reference-analysis/screenshots/lola-home_mobile_375.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 13108,
+      "size": "12.8 KB",
+      "dimensions": {
+        "width": 605,
+        "height": 1600
+      },
+      "category": "design-reference-screenshots",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/screenshots/lola-home_tablet_768.png",
+      "publicPath": "/design/reference-analysis/screenshots/lola-home_tablet_768.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 14515,
+      "size": "14.2 KB",
+      "dimensions": {
+        "width": 1200,
+        "height": 1600
+      },
+      "category": "design-reference-screenshots",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/screenshots/loyal-exhibition_desktop_1280.png",
+      "publicPath": "/design/reference-analysis/screenshots/loyal-exhibition_desktop_1280.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 223774,
+      "size": "218.5 KB",
+      "dimensions": {
+        "width": 1280,
+        "height": 800
+      },
+      "category": "design-reference-screenshots",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/screenshots/loyal-exhibition_mobile_375.png",
+      "publicPath": "/design/reference-analysis/screenshots/loyal-exhibition_mobile_375.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 77996,
+      "size": "76.2 KB",
+      "dimensions": {
+        "width": 375,
+        "height": 667
+      },
+      "category": "design-reference-screenshots",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/screenshots/loyal-exhibition_tablet_768.png",
+      "publicPath": "/design/reference-analysis/screenshots/loyal-exhibition_tablet_768.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 189866,
+      "size": "185.4 KB",
+      "dimensions": {
+        "width": 768,
+        "height": 1024
+      },
+      "category": "design-reference-screenshots",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/screenshots/loyal-home_desktop_1280.png",
+      "publicPath": "/design/reference-analysis/screenshots/loyal-home_desktop_1280.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 43037,
+      "size": "42.0 KB",
+      "dimensions": {
+        "width": 1280,
+        "height": 800
+      },
+      "category": "design-reference-screenshots",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/screenshots/loyal-home_mobile_375.png",
+      "publicPath": "/design/reference-analysis/screenshots/loyal-home_mobile_375.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 27010,
+      "size": "26.4 KB",
+      "dimensions": {
+        "width": 375,
+        "height": 667
+      },
+      "category": "design-reference-screenshots",
+      "usedIn": []
+    },
+    {
+      "path": "design/reference-analysis/screenshots/loyal-home_tablet_768.png",
+      "publicPath": "/design/reference-analysis/screenshots/loyal-home_tablet_768.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 55294,
+      "size": "54.0 KB",
+      "dimensions": {
+        "width": 768,
+        "height": 1024
+      },
+      "category": "design-reference-screenshots",
+      "usedIn": []
+    },
+    {
+      "path": "favicon.png",
+      "publicPath": "/favicon.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 299,
+      "size": "299 B",
+      "dimensions": {
+        "width": 32,
+        "height": 32
+      },
+      "category": "site-shell",
+      "usedIn": [
+        "about/index.html",
+        "coach/book/index.html",
+        "coach/index.html",
+        "consult/index.html",
+        "creative/index.html",
+        "index.html",
+        "proposals/_template/index.html",
+        "proposals/belhaus/index.html",
+        "proposals/compassion/index.html",
+        "proposals/teaspressa/index.html",
+        "question/index.html"
+      ]
+    },
+    {
+      "path": "favicon.svg",
+      "publicPath": "/favicon.svg",
+      "ext": "svg",
+      "detectedFormat": "svg",
+      "bytes": 111,
+      "size": "111 B",
+      "dimensions": {
+        "width": 32,
+        "height": 32
+      },
+      "category": "site-shell",
+      "usedIn": [
+        "about/index.html",
+        "coach/book/index.html",
+        "coach/index.html",
+        "consult/index.html",
+        "creative/index.html",
+        "index.html",
+        "proposals/_template/index.html",
+        "proposals/belhaus/index.html",
+        "proposals/compassion/index.html",
+        "proposals/teaspressa/index.html",
+        "question/index.html"
+      ]
+    },
+    {
+      "path": "og.png",
+      "publicPath": "/og.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 13548,
+      "size": "13.2 KB",
+      "dimensions": {
+        "width": 1200,
+        "height": 630
+      },
+      "category": "site-shell",
+      "usedIn": [
+        "index.html"
+      ]
+    },
+    {
+      "path": "proposals/compassion/img/01_45517378.png",
+      "publicPath": "/proposals/compassion/img/01_45517378.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 1578107,
+      "size": "1.51 MB",
+      "dimensions": {
+        "width": 1023,
+        "height": 685
+      },
+      "category": "proposal-content",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/compassion/img/02_33442391.jpg",
+      "publicPath": "/proposals/compassion/img/02_33442391.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 224455,
+      "size": "219.2 KB",
+      "dimensions": {
+        "width": 705,
+        "height": 529
+      },
+      "category": "proposal-content",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/compassion/img/03_24149267.jpg",
+      "publicPath": "/proposals/compassion/img/03_24149267.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 305940,
+      "size": "298.8 KB",
+      "dimensions": {
+        "width": 967,
+        "height": 645
+      },
+      "category": "proposal-content",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/compassion/img/04_38489707.jpg",
+      "publicPath": "/proposals/compassion/img/04_38489707.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 70612,
+      "size": "69.0 KB",
+      "dimensions": {
+        "width": 900,
+        "height": 600
+      },
+      "category": "proposal-content",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/compassion/img/05_22941529.webp",
+      "publicPath": "/proposals/compassion/img/05_22941529.webp",
+      "ext": "webp",
+      "detectedFormat": "webp",
+      "bytes": 141482,
+      "size": "138.2 KB",
+      "dimensions": {
+        "width": 2000,
+        "height": 2526
+      },
+      "category": "proposal-content",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/compassion/img/07_21689207.jpg",
+      "publicPath": "/proposals/compassion/img/07_21689207.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 51382,
+      "size": "50.2 KB",
+      "dimensions": {
+        "width": 500,
+        "height": 500
+      },
+      "category": "proposal-content",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/compassion/img/08_26740334.png",
+      "publicPath": "/proposals/compassion/img/08_26740334.png",
+      "ext": "png",
+      "detectedFormat": "jpg",
+      "bytes": 411645,
+      "size": "402.0 KB",
+      "dimensions": {
+        "width": 640,
+        "height": 853
+      },
+      "category": "proposal-content",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/compassion/img/09_39070405.jpg",
+      "publicPath": "/proposals/compassion/img/09_39070405.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 200900,
+      "size": "196.2 KB",
+      "dimensions": {
+        "width": 1024,
+        "height": 683
+      },
+      "category": "proposal-content",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/compassion/img/10_43464303.png",
+      "publicPath": "/proposals/compassion/img/10_43464303.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 1567610,
+      "size": "1.49 MB",
+      "dimensions": {
+        "width": 1016,
+        "height": 760
+      },
+      "category": "proposal-content",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/compassion/img/11_45335422.jpg",
+      "publicPath": "/proposals/compassion/img/11_45335422.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 600733,
+      "size": "586.7 KB",
+      "dimensions": {
+        "width": 1200,
+        "height": 900
+      },
+      "category": "proposal-content",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/compassion/img/12_33807573.jpg",
+      "publicPath": "/proposals/compassion/img/12_33807573.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 843260,
+      "size": "823.5 KB",
+      "dimensions": {
+        "width": 2000,
+        "height": 1600
+      },
+      "category": "proposal-content",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/compassion/img/feed-current.jpg",
+      "publicPath": "/proposals/compassion/img/feed-current.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 521468,
+      "size": "509.2 KB",
+      "dimensions": {
+        "width": 1200,
+        "height": 2395
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/compassion/index.html"
+      ]
+    },
+    {
+      "path": "proposals/compassion/img/feed-current.png",
+      "publicPath": "/proposals/compassion/img/feed-current.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 707294,
+      "size": "690.7 KB",
+      "dimensions": {
+        "width": 720,
+        "height": 1278
+      },
+      "category": "proposal-content",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/compassion/img/feed-new.jpg",
+      "publicPath": "/proposals/compassion/img/feed-new.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 542951,
+      "size": "530.2 KB",
+      "dimensions": {
+        "width": 1200,
+        "height": 2175
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/compassion/index.html"
+      ]
+    },
+    {
+      "path": "proposals/compassion/img/square/01-one-cause.jpg",
+      "publicPath": "/proposals/compassion/img/square/01-one-cause.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 261764,
+      "size": "255.6 KB",
+      "dimensions": {
+        "width": 645,
+        "height": 645
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/compassion/index.html"
+      ]
+    },
+    {
+      "path": "proposals/compassion/img/square/02-day-in-life.png",
+      "publicPath": "/proposals/compassion/img/square/02-day-in-life.png",
+      "ext": "png",
+      "detectedFormat": "jpg",
+      "bytes": 328564,
+      "size": "320.9 KB",
+      "dimensions": {
+        "width": 640,
+        "height": 640
+      },
+      "category": "proposal-content",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/compassion/img/square/03-before-after.png",
+      "publicPath": "/proposals/compassion/img/square/03-before-after.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 1002874,
+      "size": "979.4 KB",
+      "dimensions": {
+        "width": 685,
+        "height": 685
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/compassion/index.html"
+      ]
+    },
+    {
+      "path": "proposals/compassion/img/square/04-numbers-card.jpg",
+      "publicPath": "/proposals/compassion/img/square/04-numbers-card.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 167953,
+      "size": "164.0 KB",
+      "dimensions": {
+        "width": 529,
+        "height": 529
+      },
+      "category": "proposal-content",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/compassion/img/square/04-numbers-card.png",
+      "publicPath": "/proposals/compassion/img/square/04-numbers-card.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 1732547,
+      "size": "1.65 MB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/compassion/index.html"
+      ]
+    },
+    {
+      "path": "proposals/compassion/img/square/05-what-would-you-build.jpg",
+      "publicPath": "/proposals/compassion/img/square/05-what-would-you-build.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 322886,
+      "size": "315.3 KB",
+      "dimensions": {
+        "width": 779,
+        "height": 779
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/compassion/index.html"
+      ]
+    },
+    {
+      "path": "proposals/compassion/img/square/06-funded-celebration.jpg",
+      "publicPath": "/proposals/compassion/img/square/06-funded-celebration.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 1007775,
+      "size": "984.2 KB",
+      "dimensions": {
+        "width": 1600,
+        "height": 1600
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/compassion/index.html"
+      ]
+    },
+    {
+      "path": "proposals/compassion/img/square/07_21689207.jpg",
+      "publicPath": "/proposals/compassion/img/square/07_21689207.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 51382,
+      "size": "50.2 KB",
+      "dimensions": {
+        "width": 500,
+        "height": 500
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/compassion/index.html"
+      ]
+    },
+    {
+      "path": "proposals/compassion/img/square/08_35628837.png",
+      "publicPath": "/proposals/compassion/img/square/08_35628837.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 2053434,
+      "size": "1.96 MB",
+      "dimensions": {
+        "width": 1136,
+        "height": 1136
+      },
+      "category": "proposal-content",
+      "usedIn": []
+    }
+  ],
+  "references": [
+    {
+      "source": "about/index.html",
+      "raw": "/favicon.svg",
+      "normalizedPath": "favicon.svg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "about/index.html",
+      "raw": "/favicon.png",
+      "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "about/index.html",
+      "raw": "/apple-touch-icon.png",
+      "normalizedPath": "apple-touch-icon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "coach/book/index.html",
+      "raw": "/favicon.svg",
+      "normalizedPath": "favicon.svg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "coach/book/index.html",
+      "raw": "/favicon.png",
+      "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "coach/book/index.html",
+      "raw": "/apple-touch-icon.png",
+      "normalizedPath": "apple-touch-icon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "coach/index.html",
+      "raw": "/favicon.svg",
+      "normalizedPath": "favicon.svg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "coach/index.html",
+      "raw": "/favicon.png",
+      "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "coach/index.html",
+      "raw": "/apple-touch-icon.png",
+      "normalizedPath": "apple-touch-icon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "consult/index.html",
+      "raw": "/favicon.svg",
+      "normalizedPath": "favicon.svg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "consult/index.html",
+      "raw": "/favicon.png",
+      "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "consult/index.html",
+      "raw": "/apple-touch-icon.png",
+      "normalizedPath": "apple-touch-icon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "creative/index.html",
+      "raw": "/favicon.svg",
+      "normalizedPath": "favicon.svg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "creative/index.html",
+      "raw": "/favicon.png",
+      "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "creative/index.html",
+      "raw": "/apple-touch-icon.png",
+      "normalizedPath": "apple-touch-icon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "index.html",
+      "raw": "/favicon.svg",
+      "normalizedPath": "favicon.svg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "index.html",
+      "raw": "/favicon.png",
+      "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "index.html",
+      "raw": "/apple-touch-icon.png",
+      "normalizedPath": "apple-touch-icon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "index.html",
+      "raw": "https://whatarewecapableof.com/og.png",
+      "normalizedPath": "og.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": true
+    },
+    {
+      "source": "index.html",
+      "raw": "https://whatarewecapableof.com/og.png",
+      "normalizedPath": "og.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": true
+    },
+    {
+      "source": "proposals/_template/index.html",
+      "raw": "/favicon.svg",
+      "normalizedPath": "favicon.svg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/_template/index.html",
+      "raw": "/favicon.png",
+      "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/belhaus/index.html",
+      "raw": "/favicon.svg",
+      "normalizedPath": "favicon.svg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/belhaus/index.html",
+      "raw": "/favicon.png",
+      "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/compassion/index.html",
+      "raw": "https://whatarewecapableof.com/proposals/compassion/img/feed-new.jpg",
+      "normalizedPath": "proposals/compassion/img/feed-new.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": true
+    },
+    {
+      "source": "proposals/compassion/index.html",
+      "raw": "https://whatarewecapableof.com/proposals/compassion/img/feed-new.jpg",
+      "normalizedPath": "proposals/compassion/img/feed-new.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": true
+    },
+    {
+      "source": "proposals/compassion/index.html",
+      "raw": "/favicon.svg",
+      "normalizedPath": "favicon.svg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/compassion/index.html",
+      "raw": "/favicon.png",
+      "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/compassion/index.html",
+      "raw": "/proposals/compassion/img/feed-current.jpg",
+      "normalizedPath": "proposals/compassion/img/feed-current.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/compassion/index.html",
+      "raw": "/proposals/compassion/img/feed-new.jpg",
+      "normalizedPath": "proposals/compassion/img/feed-new.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/compassion/index.html",
+      "raw": "/proposals/compassion/img/square/01-one-cause.jpg",
+      "normalizedPath": "proposals/compassion/img/square/01-one-cause.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/compassion/index.html",
+      "raw": "/proposals/compassion/img/square/07_21689207.jpg",
+      "normalizedPath": "proposals/compassion/img/square/07_21689207.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/compassion/index.html",
+      "raw": "/proposals/compassion/img/square/03-before-after.png",
+      "normalizedPath": "proposals/compassion/img/square/03-before-after.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/compassion/index.html",
+      "raw": "/proposals/compassion/img/square/04-numbers-card.png",
+      "normalizedPath": "proposals/compassion/img/square/04-numbers-card.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/compassion/index.html",
+      "raw": "/proposals/compassion/img/square/05-what-would-you-build.jpg",
+      "normalizedPath": "proposals/compassion/img/square/05-what-would-you-build.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/compassion/index.html",
+      "raw": "/proposals/compassion/img/square/06-funded-celebration.jpg",
+      "normalizedPath": "proposals/compassion/img/square/06-funded-celebration.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/teaspressa/index.html",
+      "raw": "/favicon.svg",
+      "normalizedPath": "favicon.svg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/teaspressa/index.html",
+      "raw": "/favicon.png",
+      "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "question/index.html",
+      "raw": "/favicon.svg",
+      "normalizedPath": "favicon.svg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "question/index.html",
+      "raw": "/favicon.png",
+      "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "question/index.html",
+      "raw": "/apple-touch-icon.png",
+      "normalizedPath": "apple-touch-icon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    }
+  ],
+  "missing": [],
+  "relativeLocalRefs": []
+}

@@ -4,6 +4,33 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 
 ## Active
 
+### Faith Driven Entrepreneur Campus Initiative
+
+| | |
+|---|---|
+| URL | [whatarewecapableof.com/proposals/fde-campus/](https://whatarewecapableof.com/proposals/fde-campus/) |
+| Prepared | April 2026 |
+| Status | Migrated from Base44 into proposal template; needs Noah/Austin review before sending |
+| Relationship | Austin to Mark / Faith Driven Entrepreneur |
+| Tabs | Overview / Program / Investment / ? |
+| Source | Migrated from `~/Projects/faith-driven-campus-initiative-migration-base44` (2026-04-24) |
+
+**Client:** Faith Driven Entrepreneur, the faith and work community co-founded by Henry Kaestner. The proposal is directed toward Mark and centers on a campus initiative for student-led FDE clubs.
+
+**Key people:** Austin Rockwell (proposer), Mark at Faith Driven Entrepreneur (recipient referenced in the original proposal), Henry Kaestner (quoted vision and curriculum reference), J.D. Greear (8-week series reference).
+
+**What we're proposing:** A one-year campus initiative: 5 student-led clubs running by January 2027, 10 clubs by September 2027, bi-weekly coaching, local church partnerships, national cohorts, yearly conference rhythm, and a documented launch playbook owned by FDE. Investment: $60K annually, $5K per month for 12 months.
+
+**History:**
+- 2026-04-24: Base44 migrated repo cloned locally from `youlikemodernart/faith-driven-campus-initiative-migration-base44`.
+- 2026-04-24: Standalone iframe/Base44 design rebuilt as a static whatarewecapableof proposal page at `/proposals/fde-campus/`.
+
+**Next:** Noah and Austin should review the tone, recipient details, first 5 campus assumptions, CTA email, and whether the investment terms should remain visible before sending.
+
+**Deep docs:** Source repo at `~/Projects/faith-driven-campus-initiative-migration-base44`, migrated page at `~/Projects/whatarewecapableof/proposals/fde-campus/index.html`
+
+---
+
 ### Belhaus
 
 | | |
@@ -51,7 +78,7 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 | Prepared | April 2026 |
 | Status | Austin reviewed; ready to send to Causes team |
 | Relationship | Warm via Austin (in their orbit since Jul 2025) |
-| Tabs | Situation / Content / Scope / ? |
+| Tabs | Research / Content / Proposal / ? |
 
 **Client:** Compassion Causes, the Gen Z fundraising arm of Compassion International (11th-largest US charity, $1.3B annual donations, 258K Instagram, 950K email subscribers). Causes has 1,800 Instagram followers, 87 TikTok followers, $1,200/mo social budget, $1M fundraising goal.
 

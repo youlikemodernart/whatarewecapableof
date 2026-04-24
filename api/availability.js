@@ -13,7 +13,6 @@ function getAuth() {
     email: creds.client_email,
     key: creds.private_key,
     scopes: ['https://www.googleapis.com/auth/calendar.readonly'],
-    subject: CALENDAR_EMAIL,
   });
 }
 

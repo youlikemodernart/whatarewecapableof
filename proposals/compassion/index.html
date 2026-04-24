@@ -117,31 +117,18 @@
   }
 
   .tabbed .tab-content {
-    position: absolute;
-    left: -9999px;
-    visibility: hidden;
+    display: none;
     padding-top: var(--space-2);
   }
-  .tabbed .tab-content.active {
-    position: static;
-    left: auto;
-    visibility: visible;
-  }
+  .tabbed .tab-content.active { display: block; }
 
   .tabbed .tab-content-full {
-    position: absolute;
-    left: -9999px;
-    visibility: hidden;
+    display: none;
     min-height: calc(100svh - 4rem);
     flex-direction: column;
     justify-content: center;
   }
-  .tabbed .tab-content-full.active {
-    position: static;
-    left: auto;
-    visibility: visible;
-    display: flex;
-  }
+  .tabbed .tab-content-full.active { display: flex; }
 
   .section-heading {
     font-family: var(--font-mono);
@@ -410,16 +397,8 @@
     margin-bottom: var(--space-1);
   }
 
-  .feed-panel .specimen-image {
-    aspect-ratio: auto;
-    display: block;
-    min-height: auto;
-    overflow: visible;
-  }
-
   .feed-panel img {
     width: 100%;
-    height: auto;
     display: block;
   }
 

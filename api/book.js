@@ -6,7 +6,7 @@ const CALENDAR_EMAIL = process.env.BOOKING_CALENDAR_EMAIL;
 const NOTIFY_EMAIL = process.env.BOOKING_NOTIFY_EMAIL || '';
 
 function getAuth() {
-  const creds = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
+  const creds = JSON.parse(Buffer.from(process.env.GOOGLE_SERVICE_ACCOUNT_KEY, 'base64').toString());
   return new google.auth.JWT({
     email: creds.client_email,
     key: creds.private_key,

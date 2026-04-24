@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#ffffff">
+<title>Belhaus</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/typography.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<style>
+  html {
+    overflow-x: clip;
+  }
+
+  .page-proposal {
+    --proposal-header-height: calc(var(--space-1) + var(--space-0-5));
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    padding: 0 var(--margin-inline) var(--margin-block);
+  }
+
+  .page-proposal main {
+    flex: 1;
+    max-width: var(--content-width-prose);
+    padding-top: var(--space-1);
+  }
+
+  .proposal-header {
+    min-height: var(--proposal-header-height);
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--color-bg);
+    margin-inline: calc(-1 * var(--margin-inline));
+    padding-inline: var(--margin-inline);
+  }
+
+  .proposal-home {
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .proposal-meta {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--color-text);
+    opacity: 0.4;
+  }
+
+  .proposal-title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: var(--size-m);
+    margin-top: var(--space-1);
+    max-width: 52ch;
+  }
+
+  .tabs {
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-0-5) 0;
+    position: sticky;
+    top: var(--proposal-header-height);
+    background: var(--color-bg);
+    z-index: 15;
+  }
+
+  .tabs::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: calc(-1 * var(--margin-inline));
+    width: 100vw;
+    height: 1px;
+    background: var(--color-text);
+  }
+
+  .tab {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    text-decoration: none;
+    cursor: pointer;
+    color: var(--color-text);
+    opacity: 0.35;
+    border: none;
+    background: none;
+    padding: 0;
+    transition: opacity var(--transition-default);
+  }
+
+  .tab:hover { text-decoration: none; opacity: 0.7; }
+  .tab.active { opacity: 1; }
+
+  .tab-content {
+    padding-top: var(--space-2);
+  }
+
+  .tab-content-full {
+    padding-top: var(--space-2);
+  }
+
+  .tabbed .tab-content {
+    display: none;
+    padding-top: var(--space-2);
+  }
+  .tabbed .tab-content.active { display: block; }
+
+  .tabbed .tab-content-full {
+    display: none;
+    min-height: calc(100svh - 4rem);
+    flex-direction: column;
+    justify-content: center;
+  }
+  .tabbed .tab-content-full.active { display: flex; }
+
+  .section-heading {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    margin-top: var(--space-4);
+    margin-bottom: var(--space-1);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-text);
+  }
+
+  .section-heading:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .finding {
+    margin-bottom: var(--space-2);
+  }
+
+  .finding-label {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.4;
+    margin-bottom: calc(var(--space-0-5) * 0.5);
+  }
+
+  .finding p:last-child {
+    margin-bottom: 0;
+  }
+
+  .evidence {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    opacity: 0.35;
+    margin-top: calc(var(--space-0-5));
+  }
+
+  .stat-row {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin: var(--space-1) 0 var(--space-2);
+  }
+
+  .stat-item {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+  }
+
+  .stat-item strong {
+    font-weight: 400;
+    font-family: var(--font-serif);
+    font-size: var(--size-m);
+    text-transform: none;
+    letter-spacing: 0;
+    display: block;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--space-1) 0;
+    font-size: var(--size-s);
+    table-layout: fixed;
+    word-wrap: break-word;
+  }
+
+  th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    font-weight: 400;
+    opacity: 0.4;
+    padding: var(--space-0-5) 0;
+    border-bottom: 1px solid var(--color-text);
+  }
+
+  td {
+    padding: var(--space-0-5) 0;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    vertical-align: top;
+    font-family: var(--font-serif);
+  }
+
+  th + th, td + td {
+    padding-left: var(--space-1);
+  }
+
+  .scope-phase {
+    margin-bottom: var(--space-3);
+  }
+
+  .scope-phase .phase-label {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.4;
+  }
+
+  .scope-phase h3 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: var(--size-m);
+    margin-bottom: var(--space-0-5);
+  }
+
+  .scope-phase ul {
+    margin: var(--space-0-5) 0 0;
+    padding-left: 1.25rem;
+    list-style: none;
+  }
+
+  .scope-phase li {
+    font-size: var(--size-s);
+    margin-bottom: var(--space-0-5);
+    position: relative;
+  }
+
+  .scope-phase li::before {
+    content: "";
+    position: absolute;
+    left: -1rem;
+    top: 0.55em;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--color-text);
+    opacity: 0.25;
+  }
+
+  .closing {
+    margin-top: var(--space-3);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-text);
+  }
+
+  .closing p:last-of-type {
+    margin-top: var(--space-1);
+  }
+
+  .page-proposal footer {
+    margin-top: var(--space-4);
+    padding-top: var(--space-1);
+    border-top: 1px solid rgba(0,0,0,0.08);
+  }
+
+  @media (max-width: 767px) {
+    :root {
+      --margin-inline: var(--space-1);
+    }
+    .stat-row {
+      flex-direction: column;
+      gap: var(--space-0-5);
+    }
+    .tabs {
+      gap: var(--space-1);
+    }
+  }
+</style>
+</head>
+<body class="page-proposal">
+
+<header class="proposal-header">
+  <a href="/" class="proposal-home">What are we capable of?</a>
+</header>
+
+<main>
+
+<div class="proposal-meta">Prepared for Belhaus / April 2026</div>
+
+<p class="proposal-title" style="margin-top: var(--space-1);">A private database of your artwork and collectors, with an AI that drafts outreach and keeps the records current. This document covers what the system does, how it's built, and how the work happens.</p>
+
+<p style="margin-top: var(--space-1); font-size: var(--size-s); max-width: 52ch;"><strong>Overview</strong> is what the system does and why it's built this way. <strong>System</strong> is the architecture: data model, interfaces, AI agent, integrations. <strong>Approach</strong> is the phases, division of labor, and open questions.</p>
+
+<nav class="tabs" aria-label="Sections">
+  <a class="tab active" href="#overview">Overview</a>
+  <a class="tab" href="#system">System</a>
+  <a class="tab" href="#approach">Approach</a>
+  <a class="tab" href="#question">?</a>
+</nav>
+
+<!-- ===== OVERVIEW ===== -->
+<div id="overview" class="tab-content active">
+
+<p>A private database you own. A custom web app sits on top for daily use. An AI agent drafts outreach, prepares new records, and answers questions; the populating doesn't land on you or Chloe. You decide what goes out.</p>
+
+<div class="stat-row">
+  <div class="stat-item"><strong>5 tables</strong> Artworks, collectors, exhibitions, consignments, relationships</div>
+  <div class="stat-item"><strong>3 interfaces</strong> Web app, Airtable, private catalogs</div>
+  <div class="stat-item"><strong>&lt;$200/mo</strong> Composable stack cost</div>
+</div>
+
+<div class="section-heading">What you'd have</div>
+
+<p>One private database holds every artwork and every collector. Every artwork: artist, title, medium, dimensions, edition, provenance, pricing, consignment terms, current location (main gallery, Aftermarket, or out at a fair), status, exhibition history. Every collector: who they are, what they've bought, what they've asked about, which fairs you've met at (Intersect, Scottsdale Ferrari Week, others), what they've passed on, when you last spoke. Any record is one search away.</p>
+
+<p>An AI agent sits on top of it. It has context on the roster, the exhibition calendar, and the collector network. Before a fair, it pulls the relevant collector segment and drafts personalized outreach. You edit and send. When a new piece arrives, it prepares the record. You approve. When you ask "who's interested in Ramsey Dau and hasn't heard from me in six months," it answers.</p>
+
+<p>Private catalog views live at URLs you share with specific collectors. You build a page for one person in thirty seconds; they see exactly what you chose to show them.</p>
+
+<p>Artsy stays synced. Whatever you add in the database shows up on your Artsy profile without you doing anything.</p>
+
+<div class="section-heading">Why not the alternatives</div>
+
+<p>Georgie recommended ArtCloud because it matches what a lot of galleries at your scale use. Two things about both platforms make them wrong for what you want.</p>
+
+<div class="finding">
+  <div class="finding-label">01</div>
+  <p>Neither has a real API. Data goes in through Excel or CSV files and comes out the same way. The AI that would save you and Chloe from cataloging everything by hand can prepare the file, but a person still imports it. After the initial load, every update runs the same loop: export, edit, import. That's the labor the AI is supposed to replace; probably the same labor that kept Artlogic from sticking.</p>
+</div>
+
+<div class="finding">
+  <div class="finding-label">02</div>
+  <p>Neither platform stores what you meant by intelligence. A collector profile shaped to how you think about relationships needs custom fields that go deeper than either platform allows. Connecting a Paris conversation to a piece coming back on consignment takes a data model built to your practice.</p>
+</div>
+
+<table>
+  <tr><th>Dimension</th><th>Artlogic</th><th>ArtCloud</th><th>Composable stack</th></tr>
+  <tr><td>API</td><td>Excel import/export</td><td>CSV import/export</td><td>Full REST API</td></tr>
+  <tr><td>Custom fields</td><td>Fixed schema, 150+ fields</td><td>Limited</td><td>Fields you define</td></tr>
+  <tr><td>Cost</td><td>$530-900/mo</td><td>$440-700/mo</td><td>&lt;$200/mo</td></tr>
+  <tr><td>Data portability</td><td>WeTransfer Export (paid)</td><td>CSV export</td><td>Standard schemas, one-time export</td></tr>
+  <tr><td>AI integration</td><td>File preparation only</td><td>File preparation only</td><td>Real-time read/write</td></tr>
+  <tr><td>Artsy sync</td><td>Built-in</td><td>Exists, less documented</td><td>Scripted via Partner API</td></tr>
+</table>
+
+<p style="margin-top: var(--space-2);">A composable stack gives you both: real APIs and a schema you control. If you ever want to migrate to Artlogic later, the data exports to their schema.</p>
+
+<div class="section-heading">Your part and Chloe's</div>
+
+<p>Noah handles the initial build: schema, data import, interface, agent. The database is populated at launch.</p>
+
+<p>After launch, your part is quick. The system prepares new records; you review batches. New information goes in as it comes up: a voice memo after a collector conversation, a forwarded email, a fair sign-up sheet. Before a fair or opening, the system pulls the relevant segment and drafts outreach; you edit and send. During collector conversations, you pull up the profile and see the full history.</p>
+
+<p>Chloe takes on what maps to her role: gallery visitor records, exhibition logistics, confirming inventory changes. The work is review and direction.</p>
+
+</div>
+
+<!-- ===== SYSTEM ===== -->
+<div id="system" class="tab-content">
+
+<p>Airtable holds the records. A web app at a Belhaus subdomain provides the daily interface. An AI agent reads and writes via the API and sends nothing without you. Four integrations connect to Artsy, email, the image pipeline, and the existing Squarespace store.</p>
+
+<div class="section-heading">Data model</div>
+
+<p>Five connected tables in Airtable.</p>
+
+<table>
+  <tr><th>Table</th><th>What it holds</th></tr>
+  <tr><td>Artworks</td><td>Artist, title, year, medium, dimensions, edition, provenance, pricing, consignment terms, current location, status, exhibition history, images</td></tr>
+  <tr><td>Collectors and contacts</td><td>Name, email, phone, shipping address, cities, source, artists they collect, fairs met at, price range, purchase history, passed-on history, referral source, conversation notes, last contact date</td></tr>
+  <tr><td>Exhibitions and fairs</td><td>Name, dates, location, artists, works shown, works sold, collectors attended</td></tr>
+  <tr><td>Consignments</td><td>Works in and out, terms, dates, contact</td></tr>
+  <tr><td>Relationships</td><td>Links between people (spouses, families, advisors), between collectors and artists, between artworks and collections</td></tr>
+</table>
+
+<p style="margin-top: var(--space-1);">The fields are yours. Adding a new field takes a minute. As your practice changes, the schema changes with it.</p>
+
+<div class="section-heading">Interfaces</div>
+
+<div class="finding">
+  <div class="finding-label">Gallery web app</div>
+  <p>Private app at a Belhaus subdomain. Daily-use interface for you and Chloe. Search any artwork or collector. Log a new piece or contact in two fields the system fills out. Pull up a collector profile before a call. See what's where. Monochrome design that matches the site.</p>
+</div>
+
+<div class="finding">
+  <div class="finding-label">Airtable</div>
+  <p>Direct access to the database for power editing, bulk changes, custom views. Useful for Chloe when she's cleaning up data in volume. Most daily work happens in the app; Airtable is the back room.</p>
+</div>
+
+<div class="finding">
+  <div class="finding-label">Private catalog URLs</div>
+  <p>A page you can build in thirty seconds and share with a specific collector: "Six works I thought you'd want to see." The link shows exactly what you selected, with your commentary, at your domain. You can see when they opened it.</p>
+</div>
+
+<div class="section-heading">The AI agent</div>
+
+<p>The agent reads from Airtable, drafts into the web app, and sends nothing without you. It has three jobs.</p>
+
+<div class="finding">
+  <div class="finding-label">Prepare</div>
+  <p>New artwork coming in: the agent drafts the record from whatever source you hand it (an invoice, a photo, an email from the artist). You approve. New collector met at a fair: the agent creates the profile from a business card photo or a voice memo. You approve.</p>
+</div>
+
+<div class="finding">
+  <div class="finding-label">Surface</div>
+  <p>Before a fair, the agent pulls the relevant collector list and drafts outreach for each. Mid-conversation with a collector, the agent surfaces the last five pieces they asked about, who they asked about them with, what they bought last. Quarterly, the agent reviews the collector base and flags stale relationships with next-step suggestions.</p>
+</div>
+
+<div class="finding">
+  <div class="finding-label">Draft</div>
+  <p>Press releases, social captions, SEO descriptions, artist spotlights, private catalog blurbs. The agent produces a draft in your voice. You edit. Whatever you don't want drafted, it doesn't draft.</p>
+</div>
+
+<p>The agent proposes; you decide. Sending emails, changing pricing, publishing content: everything outward-facing requires your approval.</p>
+
+<div class="section-heading">Integrations</div>
+
+<table>
+  <tr><th>Integration</th><th>How it works</th></tr>
+  <tr><td>Artsy</td><td>The Partner API keeps your Artsy profile synced with the Airtable artwork records. Scripted sync, runs when you want it to.</td></tr>
+  <tr><td>Email</td><td>Outbound drafted by the agent, sent by you from your existing email. Resend or similar handles transactional email (catalog-share notifications, private view links). Marketing email stays on whatever tool you pick; the system feeds segments to the tool.</td></tr>
+  <tr><td>Image pipeline</td><td>Gallery photography processed once: resized for each platform (website, Instagram, Artsy, catalog PDFs), metadata embedded (artist, title, medium, dimensions) so the file is self-describing. Processed images live in Airtable, available to every integration.</td></tr>
+  <tr><td>Squarespace</td><td>The Commerce API can feed sales data back into the collector records when an online purchase happens. Available if useful; not required.</td></tr>
+</table>
+
+<div class="section-heading">What's portable</div>
+
+<p>The data model uses standard field names. If you ever want to move to Artlogic or ArtCloud, a one-time export matches their schema. You own the records, the images, and the history. Nothing's locked in.</p>
+
+</div>
+
+<!-- ===== APPROACH ===== -->
+<div id="approach" class="tab-content">
+
+<p>Three phases. The first produces a populated database. The second puts the full system in daily use. The third extends capabilities based on what proves useful.</p>
+
+<div class="scope-phase">
+  <div class="phase-label">Phase 1</div>
+  <h3>Data audit and initial population</h3>
+  <p>Before any system goes up, we find out what data exists and what's missing. Decisions made early: what counts as a collector versus a contact, how consignment terms get stored, which artwork fields matter most. Output: a starting dataset, complete where complete, flagged where incomplete.</p>
+  <ul>
+    <li>Current belhaus.co listings (artworks, artists, exhibitions)</li>
+    <li>Any Artlogic exports from the brief populate attempt</li>
+    <li>Email threads with collectors and buyers</li>
+    <li>Phone contacts and SMS threads</li>
+    <li>Fair sign-up sheets</li>
+    <li>Spreadsheets and docs you've kept</li>
+    <li>Artist CVs and biographies</li>
+  </ul>
+  <p style="margin-top: var(--space-1);"><strong>Duration: 1 week.</strong> You and Chloe field questions. Noah does the collection and preparation.</p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Phase 2</div>
+  <h3>Build the database, the interface, and the agent</h3>
+  <p>The database schema goes into Airtable, populated from the Phase 1 dataset. The web app ships as a functional v1: search, view, edit, log new records, private catalog generation. The agent comes online with its core capabilities: prepare new records, surface collector intelligence, draft outreach.</p>
+  <p>By the end of this phase, the system is in use. You and Chloe log in, do real work, and the AI drafts real emails.</p>
+  <p><strong>Duration: 4 to 5 weeks.</strong></p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Phase 3</div>
+  <h3>Extend based on use</h3>
+  <p>Capabilities that weren't in the initial v1 come online as they prove useful. Each gets scoped separately once we know it's needed.</p>
+  <ul>
+    <li>Private catalog analytics (who opened the link, what they lingered on)</li>
+    <li>Outreach sequences, where a draft goes into a sequence instead of a one-off email</li>
+    <li>Press release and social drafting, tuned to your voice</li>
+    <li>Cross-business reporting with Aftermarket's Square data</li>
+    <li>Email newsletter migration off Squarespace Campaigns, if and when it matters</li>
+  </ul>
+  <p style="margin-top: var(--space-1);"><strong>Duration: ongoing, at your pace.</strong></p>
+</div>
+
+<div class="section-heading">Division of labor</div>
+
+<table>
+  <tr><th>Role</th><th>Responsibility</th></tr>
+  <tr><td>You</td><td>Strategic input during build. Approval of the schema and field choices. Review of the initial data before it goes live. After launch: approval of AI-prepared records, direction for capabilities that get added, the decision on every collector-facing action.</td></tr>
+  <tr><td>Chloe</td><td>Data cleanup during Phase 1, field validation during Phase 2, ongoing record review. The system reduces her entry burden.</td></tr>
+  <tr><td>Noah</td><td>Builds the schema, the web app, the agent, and the integrations. Trains you and Chloe on what you use. Documents the system so it's transferable. Continues after launch for support and incremental work.</td></tr>
+  <tr><td>The AI</td><td>Drafts new records, outreach, and content. Waits for your approval before anything reaches a person. Reads and writes only inside the database.</td></tr>
+</table>
+
+<div class="section-heading">Open questions</div>
+
+<div class="finding">
+  <div class="finding-label">01</div>
+  <p><strong>Artlogic.</strong> Keep the paused subscription as a fallback, or cancel it. The composable stack doesn't need it.</p>
+</div>
+
+<div class="finding">
+  <div class="finding-label">02</div>
+  <p><strong>Artsy.</strong> Confirm with Georgie that the Partner API route works for her. Her opinion matters here; she'll know whether Artsy treats a scripted sync as supported.</p>
+</div>
+
+<div class="finding">
+  <div class="finding-label">03</div>
+  <p><strong>Email identity.</strong> Which inbox drafts get queued in. Gmail is fine; your existing flow stays.</p>
+</div>
+
+<div class="finding">
+  <div class="finding-label">04</div>
+  <p><strong>Scope of the web app v1.</strong> Recommendation: search, artwork detail, collector detail, private catalog builder. Everything else waits for demand.</p>
+</div>
+
+<div class="finding">
+  <div class="finding-label">05</div>
+  <p><strong>Access for Chloe.</strong> What she can see and edit versus what stays keyed to you. Defaults to equal access; can lock down specific records if useful.</p>
+</div>
+
+<div class="closing">
+  <p>A call to work through these and align on how to start.</p>
+  <p><a href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a></p>
+</div>
+
+</div>
+
+<!-- ===== ? ===== -->
+<div id="question" class="tab-content-full">
+
+<div>
+  <p class="proposal-title">What are <span style="text-decoration: underline; text-underline-offset: 0.15em;">we</span> capable of?</p>
+  <p class="mono caps size-s" style="margin-top: var(--space-1);"><a href="mailto:hello@whatarewecapableof.com">Book a call</a></p>
+</div>
+
+</div>
+
+</main>
+
+<footer>
+  <span class="proposal-meta">Prepared April 2026.</span>
+</footer>
+
+<script>
+(function() {
+  var container = document.querySelector('main');
+  container.classList.add('tabbed');
+
+  var tabs = document.querySelectorAll('.tab');
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function(e) {
+      e.preventDefault();
+      var id = this.getAttribute('href').slice(1);
+      document.querySelectorAll('.tab-content, .tab-content-full').forEach(function(el) { el.classList.remove('active'); });
+      tabs.forEach(function(t) { t.classList.remove('active'); });
+      document.getElementById(id).classList.add('active');
+      this.classList.add('active');
+      window.scrollTo({ top: document.querySelector('.tabs').offsetTop - 10, behavior: 'smooth' });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

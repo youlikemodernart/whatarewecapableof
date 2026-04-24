@@ -145,6 +145,42 @@ Handoff:
 Write a summary with changed files, commands run, findings, and unresolved issues.
 ```
 
+### Base44 proposal migration
+
+```txt
+Project root: ~/Projects/whatarewecapableof
+
+Goal:
+Migrate a Base44 proposal into the static whatarewecapableof proposal system.
+
+Read:
+- Source repo `src/pages/Home.jsx` or the page containing the embedded proposal HTML
+- PROPOSALS.md
+- proposals/_template/index.html
+- docs/directory-map.md
+
+Rules:
+- Rebuild as static HTML under `proposals/<slug>/index.html`.
+- Do not keep the React wrapper or iframe unless Noah explicitly asks.
+- Use the current proposal template structure and tab script.
+- Keep proposal language in the restrained whatarewecapableof register unless Noah asks for the original visual or rhetorical intensity.
+- Prefer no-trailing-slash public URLs in docs and tracker entries.
+
+Validation:
+- npx --yes html-validate proposals/<slug>/index.html
+- npm run scan:assets
+- python3 -m http.server 8888
+- Open both http://localhost:8888/proposals/<slug> and http://localhost:8888/proposals/<slug>/
+
+Deployment:
+- git status --short --branch
+- git push origin main if local main is ahead
+- curl -I https://whatarewecapableof.com/proposals/<slug>
+
+Handoff:
+List route, source file, source repo, confirmed copy/design decisions, commands run, deploy status, and remaining review questions.
+```
+
 ### Bulk path replacement
 
 ```txt
@@ -224,11 +260,13 @@ Return:
 
 ## Git rules
 
-- Run `git status --short` before editing.
+- Run `git status --short --branch` before editing.
 - Preserve uncommitted user work.
 - Use a branch for structural changes.
 - Keep generated inventory changes with the script or asset changes that caused them.
 - Review `git diff` before committing or handing off.
+- A local commit is not production. If `main` is ahead of `origin/main`, push before testing the live site.
+- After pushing a proposal page, verify the production route with `curl -I https://whatarewecapableof.com/proposals/<slug>`.
 
 ## Handoff format
 

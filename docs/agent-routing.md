@@ -110,6 +110,24 @@ http://localhost:8888/proposals/compassion/
 
 Check both slash forms for proposal pages because asset paths must work in both cases.
 
+For proposal tab changes, also test the tab switcher after scrolling:
+
+- At 375×667 and 1280×800.
+- Scroll down inside a long tab.
+- Click back and forth rapidly between two tabs.
+- Confirm the active panel starts directly under the sticky tab bar and does not drift downward.
+
+### Draft mobile QA
+
+Use the draft subdomain for phone testing before production:
+
+```bash
+vercel deploy --yes
+vercel alias set <preview-url> draft.whatarewecapableof.com
+```
+
+This can be used with an uncommitted preview when Noah needs to test on mobile. Commit and push `main` only after the draft check passes.
+
 ## Codex task templates
 
 ### Asset scanner or asset cleanup

@@ -130,7 +130,7 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 
 ## Pipeline context
 
-**Template:** `proposals/_template/index.html` defines the structural pattern: sticky header, meta line, title, tab guide, four tabs (customizable names), findings/stat-row/table/scope-phase components, ? tab CTA.
+**Template:** `proposals/_template/index.html` defines the structural pattern: sticky header, meta line, title, tab guide, four tabs (customizable names), findings/stat-row/table/scope-phase components, ? tab CTA. As of 2026-04-24, the template and all active proposal pages use the stable tab scroll handler: on tab click, scroll the selected panel to the top under the sticky header and tab bar. Do not restore the old `.tabs.offsetTop - 10` smooth-scroll pattern; it caused viewport drift on repeated mobile tab switching.
 
 **Tim referral channel:** Austin's brother Tim served 4 clients in the past year. Plan is to run all 4 through the pipeline, show Tim the output, get buy-in, then Tim refers or sells on behalf. Clients identified so far: Teaspressa, Five Points Strategies.
 

@@ -1,17 +1,35 @@
-const { google } = require('googleapis');
+const crypto = require('crypto');
+const {
+  SLOT_DURATION_MIN,
+  TIMEZONE,
+  CALENDAR_ID,
+  NOTIFY_EMAIL,
+  isBookableStart,
+  getCalendar,
+  getBusyPeriods,
+  slotOverlapsBusy,
+} = require('./_calendar');
 
-const SLOT_DURATION_MIN = parseInt(process.env.BOOKING_SLOT_MINUTES || '60', 10);
-const TIMEZONE = process.env.BOOKING_TIMEZONE || 'America/Chicago';
-const CALENDAR_EMAIL = process.env.BOOKING_CALENDAR_EMAIL;
-const NOTIFY_EMAIL = process.env.BOOKING_NOTIFY_EMAIL || '';
+function clean(value) {
+  return String(value || '').trim();
+}
 
-function getAuth() {
-  const creds = JSON.parse(Buffer.from(process.env.GOOGLE_SERVICE_ACCOUNT_KEY, 'base64').toString());
-  return new google.auth.JWT({
-    email: creds.client_email,
-    key: creds.private_key,
-    scopes: ['https://www.googleapis.com/auth/calendar'],
-  });
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function uniqueAttendees(emails) {
+  const seen = new Set();
+  return emails
+    .map(clean)
+    .filter(Boolean)
+    .filter((email) => {
+      const key = email.toLowerCase();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .map((email) => ({ email }));
 }
 
 module.exports = async function handler(req, res) {
@@ -22,17 +40,26 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { start, name, email, note } = req.body;
+  const start = clean(req.body?.start);
+  const name = clean(req.body?.name);
+  const email = clean(req.body?.email);
+  const note = clean(req.body?.note);
 
   if (!start || !name || !email) {
     return res.status(400).json({ error: 'Missing required fields: start, name, email' });
   }
 
-  try {
-    const auth = getAuth();
-    const calendar = google.calendar({ version: 'v3', auth });
+  if (!isValidEmail(email)) {
+    return res.status(400).json({ error: 'Enter a valid email address.' });
+  }
 
-    const startTime = new Date(start);
+  const startTime = new Date(start);
+  if (!isBookableStart(startTime)) {
+    return res.status(400).json({ error: 'Choose an available time from the booking page.' });
+  }
+
+  try {
+    const calendar = getCalendar(['https://www.googleapis.com/auth/calendar']);
     const endTime = new Date(startTime.getTime() + SLOT_DURATION_MIN * 60000);
 
     const freeBusy = await calendar.freebusy.query({
@@ -40,29 +67,37 @@ module.exports = async function handler(req, res) {
         timeMin: startTime.toISOString(),
         timeMax: endTime.toISOString(),
         timeZone: TIMEZONE,
-        items: [{ id: CALENDAR_EMAIL }],
+        items: [{ id: CALENDAR_ID }],
       },
     });
 
-    const busyPeriods = freeBusy.data.calendars[CALENDAR_EMAIL]?.busy || [];
-    if (busyPeriods.length > 0) {
+    const busyPeriods = getBusyPeriods(freeBusy);
+    if (slotOverlapsBusy({ start: startTime, end: endTime }, busyPeriods)) {
       return res.status(409).json({ error: 'This time slot is no longer available' });
     }
 
-    const attendees = [{ email }];
-    if (NOTIFY_EMAIL) {
-      attendees.push({ email: NOTIFY_EMAIL });
-    }
-
+    const attendees = uniqueAttendees([email, NOTIFY_EMAIL]);
     const event = await calendar.events.insert({
-      calendarId: CALENDAR_EMAIL,
+      calendarId: CALENDAR_ID,
       sendUpdates: 'all',
+      conferenceDataVersion: 1,
       requestBody: {
         summary: `Call with ${name}`,
-        description: note ? `Note from ${name}:\n\n${note}` : `Booked via whatarewecapableof.com`,
+        description: [
+          `Booked via whatarewecapableof.com`,
+          `Name: ${name}`,
+          `Email: ${email}`,
+          note ? `Note:\n${note}` : '',
+        ].filter(Boolean).join('\n\n'),
         start: { dateTime: startTime.toISOString(), timeZone: TIMEZONE },
         end: { dateTime: endTime.toISOString(), timeZone: TIMEZONE },
         attendees,
+        conferenceData: {
+          createRequest: {
+            requestId: crypto.randomUUID(),
+            conferenceSolutionKey: { type: 'hangoutsMeet' },
+          },
+        },
       },
     });
 
@@ -71,9 +106,10 @@ module.exports = async function handler(req, res) {
       eventId: event.data.id,
       start: startTime.toISOString(),
       end: endTime.toISOString(),
+      meetLink: event.data.hangoutLink || null,
     });
   } catch (err) {
-    console.error('Booking error:', err.message);
+    console.error('Booking error:', err.message, err.stack);
     return res.status(500).json({ error: 'Could not create booking' });
   }
 };

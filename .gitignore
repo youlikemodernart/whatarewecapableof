@@ -1,4 +1,5 @@
 .vercel
+node_modules/
 
 # Working artifacts that shouldn't be tracked
 design/claude-session.log

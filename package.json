@@ -4,6 +4,6 @@
     "scan:assets": "node scripts/scan-assets.mjs"
   },
   "dependencies": {
-    "googleapis": "^144.0.0"
+    "googleapis": "^171.4.0"
   }
 }

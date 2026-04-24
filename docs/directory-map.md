@@ -83,8 +83,9 @@ Design constraints live in `design/system-constraints.md`. Treat that file as th
 
 | File | Role |
 |---|---|
-| `api/availability.js` | Reads Google Calendar free/busy data and returns available slots. |
-| `api/book.js` | Books calendar events after availability is confirmed. Booking write access still needs live validation. |
+| `api/_calendar.js` | Shared Google Calendar auth, timezone conversion, bookable slot generation, and free/busy helpers. |
+| `api/availability.js` | Reads Austin's Google Calendar free/busy data and returns available slots. |
+| `api/book.js` | Books calendar events after availability is confirmed, creates a Google Meet link, and sends attendee updates. |
 
 Do not commit secrets. Calendar credentials belong in Vercel environment variables.
 

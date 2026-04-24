@@ -197,14 +197,14 @@ Max depth: 2 from the primary nav. 3 counting home as level 0.
 
 ## Booking tool implementation notes (Google Calendar API)
 
-**Scope:** One calendar (Austin's), one event type (30-min or 60-min call), one timezone display (visitor's local time with Austin's timezone noted).
+**Scope:** Austin's primary Google Calendar, one event type (60-min call by default), 14 business days of availability, and Central time display.
 
 **Stack:**
 - Two Vercel serverless functions:
-  - `GET /api/availability?date=YYYY-MM-DD` — reads Austin's Google Calendar free/busy, returns open slots within business hours
-  - `POST /api/book` — creates a calendar event with the visitor as attendee, Google sends invite emails automatically
+  - `GET /api/availability?date=YYYY-MM-DD` reads Austin's Google Calendar free/busy, returns open slots within business hours
+  - `POST /api/book` double-checks availability, creates a calendar event with a Google Meet link, and sends invite emails to attendees
 - Frontend: static HTML + vanilla JS (no framework needed for 3 fields and a time picker)
-- Auth: Google service account with calendar read/write scope on Austin's calendar, OR OAuth with a stored refresh token
+- Auth: Google service account with domain-wide delegation impersonating `austin@whatarewecapableof.com`; `BOOKING_CALENDAR_EMAIL` controls the impersonated calendar owner
 
 **UI in the taste system:**
 - Date display: mono, `--size-s`, ALL CAPS day names
@@ -214,13 +214,11 @@ Max depth: 2 from the primary nav. 3 counting home as level 0.
 - Confirmation: serif sentence ("Booked. Check your email for the calendar invite.")
 - Loading states: replace content with "..." or similar; no spinner animation
 
-**What to build first:** the availability endpoint + a time-slot display. If that works and feels right, add the booking flow. If the whole thing stalls, Calendly inline embed is the fallback with zero structural changes (swap the booking page content).
-
-**Credentials:** Google workspace OAuth creds already exist from the youtube-manager GCP project. Need to add Calendar API scope and create a service account or extend the existing OAuth consent.
+**Implemented:** Availability and booking use Vercel serverless functions plus `googleapis`. Booking creates events on Austin's primary calendar, adds the visitor and `austin@kamplove.org` as attendees, and creates a Google Meet link.
 
 **Additional requirement (2026-04-22):** Booking events must also notify `austin@kamplove.org` (Austin's other email). Add as attendee on the created event so Google sends the invite there too.
 
-**Blocker:** Google Workspace migration (from Namecheap Private Email) is planned but blocked on Mercury account access from Austin. Can prototype against a test calendar before migration is done.
+**Resolved blocker (2026-04-24):** Google Workspace migration is complete, Austin has logged in, and domain-wide delegation can impersonate `austin@whatarewecapableof.com` for Calendar API access.
 
 ---
 

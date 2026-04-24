@@ -8,9 +8,9 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 
 | | |
 |---|---|
-| URL | [whatarewecapableof.com/proposals/fde-campus/](https://whatarewecapableof.com/proposals/fde-campus/) |
+| URL | [whatarewecapableof.com/proposals/fde](https://whatarewecapableof.com/proposals/fde) |
 | Prepared | April 2026 |
-| Status | Migrated from Base44 into proposal template; needs Noah/Austin review before sending |
+| Status | Migration complete; needs final campus-assumption review before sending |
 | Relationship | Austin to Mark / Faith Driven Entrepreneur |
 | Tabs | Overview / Program / Investment / ? |
 | Source | Migrated from `~/Projects/faith-driven-campus-initiative-migration-base44` (2026-04-24) |
@@ -23,11 +23,12 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 
 **History:**
 - 2026-04-24: Base44 migrated repo cloned locally from `youlikemodernart/faith-driven-campus-initiative-migration-base44`.
-- 2026-04-24: Standalone iframe/Base44 design rebuilt as a static whatarewecapableof proposal page at `/proposals/fde-campus/`.
+- 2026-04-24: Standalone iframe/Base44 design rebuilt as a static whatarewecapableof proposal page at `/proposals/fde`.
+- 2026-04-24: Confirmed Mark as recipient, `hello@whatarewecapableof.com` as CTA, visible pricing, restrained language, and `/proposals/fde` as the final route.
 
-**Next:** Noah and Austin should review the tone, recipient details, first 5 campus assumptions, CTA email, and whether the investment terms should remain visible before sending.
+**Next:** Noah and Austin should review the first 5 campus assumptions and send path before sharing with Mark.
 
-**Deep docs:** Source repo at `~/Projects/faith-driven-campus-initiative-migration-base44`, migrated page at `~/Projects/whatarewecapableof/proposals/fde-campus/index.html`
+**Deep docs:** Source repo at `~/Projects/faith-driven-campus-initiative-migration-base44`, migrated page at `~/Projects/whatarewecapableof/proposals/fde/index.html`
 
 ---
 

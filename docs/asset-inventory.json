@@ -4153,6 +4153,7 @@
         "proposals/_template/index.html",
         "proposals/belhaus/index.html",
         "proposals/compassion/index.html",
+        "proposals/fde/index.html",
         "proposals/teaspressa/index.html",
         "question/index.html"
       ]
@@ -4179,6 +4180,7 @@
         "proposals/_template/index.html",
         "proposals/belhaus/index.html",
         "proposals/compassion/index.html",
+        "proposals/fde/index.html",
         "proposals/teaspressa/index.html",
         "question/index.html"
       ]
@@ -4823,6 +4825,22 @@
       "source": "proposals/compassion/index.html",
       "raw": "/proposals/compassion/img/square/06-funded-celebration.jpg",
       "normalizedPath": "proposals/compassion/img/square/06-funded-celebration.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/fde/index.html",
+      "raw": "/favicon.svg",
+      "normalizedPath": "favicon.svg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/fde/index.html",
+      "raw": "/favicon.png",
+      "normalizedPath": "favicon.png",
       "exists": true,
       "rootRelative": true,
       "absolute": false

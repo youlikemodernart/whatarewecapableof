@@ -22,6 +22,7 @@ Production site: `https://whatarewecapableof.com`
     belhaus/index.html
     compassion/index.html
     compassion/img/
+    fde/index.html
     teaspressa/index.html
   css/
     tokens.css
@@ -62,6 +63,7 @@ Production site: `https://whatarewecapableof.com`
 | `/proposals/teaspressa` | `proposals/teaspressa/index.html` | Direct-link proposal. |
 | `/proposals/compassion` | `proposals/compassion/index.html` | Direct-link proposal with image-heavy content. |
 | `/proposals/belhaus` | `proposals/belhaus/index.html` | Direct-link proposal. |
+| `/proposals/fde` | `proposals/fde/index.html` | Direct-link proposal migrated from Base44. |
 
 The site uses directory-style pages: each route is a folder with an `index.html` file. Public handoffs should prefer no trailing slash, but implementation must be safe with either slash form.
 

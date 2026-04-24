@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#ffffff">
+<title>Faith Driven Entrepreneur Campus Initiative</title>
+<meta property="og:title" content="Faith Driven Entrepreneur Campus Initiative">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&amp;family=Geist+Mono:wght@400&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/typography.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<style>
+  html {
+    overflow-x: clip;
+  }
+
+  .page-proposal {
+    --proposal-header-height: calc(var(--space-1) + var(--space-0-5));
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    padding: 0 var(--margin-inline) var(--margin-block);
+  }
+
+  .page-proposal main {
+    flex: 1;
+    max-width: var(--content-width-prose);
+    padding-top: var(--space-1);
+  }
+
+  .proposal-header {
+    min-height: var(--proposal-header-height);
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--color-bg);
+    margin-inline: calc(-1 * var(--margin-inline));
+    padding-inline: var(--margin-inline);
+  }
+
+  .proposal-home {
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .proposal-meta {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--color-text);
+    opacity: 0.4;
+  }
+
+  .proposal-title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: var(--size-m);
+    margin-top: var(--space-1);
+    max-width: 52ch;
+  }
+
+  .tabs {
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-0-5) 0;
+    position: sticky;
+    top: var(--proposal-header-height);
+    background: var(--color-bg);
+    z-index: 15;
+  }
+
+  .tabs::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: calc(-1 * var(--margin-inline));
+    width: 100vw;
+    height: 1px;
+    background: var(--color-text);
+  }
+
+  .tab {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    text-decoration: none;
+    cursor: pointer;
+    color: var(--color-text);
+    opacity: 0.35;
+    border: none;
+    background: none;
+    padding: 0;
+    transition: opacity var(--transition-default);
+  }
+
+  .tab:hover { text-decoration: none; opacity: 0.7; }
+  .tab.active { opacity: 1; }
+
+  .tab-content {
+    padding-top: var(--space-2);
+  }
+
+  .tab-content-full {
+    padding-top: var(--space-2);
+  }
+
+  .tabbed .tab-content {
+    display: none;
+    padding-top: var(--space-2);
+  }
+  .tabbed .tab-content.active { display: block; }
+
+  .tabbed .tab-content-full {
+    display: none;
+    min-height: calc(100svh - 4rem);
+    flex-direction: column;
+    justify-content: center;
+  }
+  .tabbed .tab-content-full.active { display: flex; }
+
+  .section-heading {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    margin-top: var(--space-4);
+    margin-bottom: var(--space-1);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-text);
+  }
+
+  .section-heading:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .finding {
+    margin-bottom: var(--space-2);
+  }
+
+  .finding-label {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.4;
+    margin-bottom: calc(var(--space-0-5) * 0.5);
+  }
+
+  .finding p:last-child {
+    margin-bottom: 0;
+  }
+
+  .evidence {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    opacity: 0.35;
+    margin-top: calc(var(--space-0-5));
+  }
+
+  .stat-row {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin: var(--space-1) 0 var(--space-2);
+  }
+
+  .stat-item {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+  }
+
+  .stat-item strong {
+    font-weight: 400;
+    font-family: var(--font-serif);
+    font-size: var(--size-m);
+    text-transform: none;
+    letter-spacing: 0;
+    display: block;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--space-1) 0;
+    font-size: var(--size-s);
+    table-layout: fixed;
+    word-wrap: break-word;
+  }
+
+  th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    font-weight: 400;
+    opacity: 0.4;
+    padding: var(--space-0-5) 0;
+    border-bottom: 1px solid var(--color-text);
+  }
+
+  td {
+    padding: var(--space-0-5) 0;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    vertical-align: top;
+    font-family: var(--font-serif);
+  }
+
+  th + th, td + td {
+    padding-left: var(--space-1);
+  }
+
+  .scope-phase {
+    margin-bottom: var(--space-3);
+  }
+
+  .scope-phase .phase-label {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.4;
+  }
+
+  .scope-phase h3 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: var(--size-m);
+    margin-bottom: var(--space-0-5);
+  }
+
+  .scope-phase ul {
+    margin: var(--space-0-5) 0 0;
+    padding-left: 1.25rem;
+    list-style: none;
+  }
+
+  .scope-phase li {
+    font-size: var(--size-s);
+    margin-bottom: var(--space-0-5);
+    position: relative;
+  }
+
+  .scope-phase li::before {
+    content: "";
+    position: absolute;
+    left: -1rem;
+    top: 0.55em;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--color-text);
+    opacity: 0.25;
+  }
+
+  .closing {
+    margin-top: var(--space-3);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-text);
+  }
+
+  .closing p:last-of-type {
+    margin-top: var(--space-1);
+  }
+
+  .proposal-guide {
+    margin-top: var(--space-1);
+    font-size: var(--size-s);
+    max-width: 52ch;
+  }
+
+  .mt-1 {
+    margin-top: var(--space-1);
+  }
+
+  .mt-3 {
+    margin-top: var(--space-3);
+  }
+
+  .question-underline {
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .page-proposal footer {
+    margin-top: var(--space-4);
+    padding-top: var(--space-1);
+    border-top: 1px solid rgba(0,0,0,0.08);
+  }
+
+  @media (max-width: 767px) {
+    :root {
+      --margin-inline: var(--space-1);
+    }
+    .stat-row {
+      flex-direction: column;
+      gap: var(--space-0-5);
+    }
+    .tabs {
+      gap: var(--space-1);
+    }
+    .responsive-table,
+    .responsive-table tbody,
+    .responsive-table tr,
+    .responsive-table td {
+      display: block;
+      width: 100%;
+    }
+    .responsive-table tr:first-child {
+      display: none;
+    }
+    .responsive-table tr {
+      padding: var(--space-1) 0;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+    .responsive-table td {
+      border-bottom: none;
+      padding: 0;
+    }
+    .responsive-table td + td {
+      padding-left: 0;
+      margin-top: var(--space-0-5);
+    }
+    .responsive-table td::before {
+      content: attr(data-label);
+      display: block;
+      font-family: var(--font-mono);
+      font-size: var(--size-xs);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-caps);
+      opacity: 0.4;
+      margin-bottom: calc(var(--space-0-5) * 0.5);
+    }
+  }
+</style>
+</head>
+<body class="page-proposal">
+
+<header class="proposal-header">
+  <a href="/" class="proposal-home">What are we capable of?</a>
+</header>
+
+<main>
+
+<div class="proposal-meta">Prepared for Faith Driven Entrepreneur / April 2026</div>
+
+<h1 class="proposal-title mt-1">A campus initiative for Faith Driven Entrepreneur: student-led clubs, local church partnerships, entrepreneur coaching, national cohorts, and a launch playbook FDE owns. The first year builds 5 clubs for January 2027 and 10 clubs by September 2027.</h1>
+
+<p class="proposal-guide"><strong>Overview</strong> is why the campus initiative exists. <strong>Program</strong> is the leader development model and yearly rhythm. <strong>Investment</strong> is the rollout plan, deliverables, and terms.</p>
+
+<nav class="tabs" aria-label="Sections">
+  <a class="tab active" href="#overview">Overview</a>
+  <a class="tab" href="#program">Program</a>
+  <a class="tab" href="#investment">Investment</a>
+  <a class="tab" href="#question">?</a>
+</nav>
+
+<div id="overview" class="tab-content active">
+
+<p>Faith Driven Entrepreneur has built the content, community, and language for entrepreneurs who see their work as spiritual worship. The campus initiative moves that formation one stage earlier: before the first company, before the pressure of payroll, while students are deciding what money, leadership, and calling are for.</p>
+
+<p>The proposal launches student-led FDE campus clubs with enough structure to protect the mission and enough ownership for students to carry it themselves.</p>
+
+<div class="stat-row">
+  <div class="stat-item"><strong>5</strong> Clubs running by January 2027</div>
+  <div class="stat-item"><strong>10</strong> Clubs running by September 2027</div>
+  <div class="stat-item"><strong>$60K</strong> Annual investment</div>
+  <div class="stat-item"><strong>$5K</strong> Monthly retainer</div>
+  <div class="stat-item"><strong>0</strong> Day-to-day management hours from Mark</div>
+</div>
+
+<h2 class="section-heading">Why this exists</h2>
+
+<div class="finding">
+  <div class="finding-label">01</div>
+  <p>College is where many future founders decide what success means. Students are choosing career paths, mentors, habits, and communities before FDE is usually in the room. Campus clubs give the movement a presence at the point of identity formation.</p>
+</div>
+
+<div class="finding">
+  <div class="finding-label">02</div>
+  <p>FDE already has material that can carry a semester: the 8-week video series with J.D. Greear and Henry Kaestner, the language of faith and work, and the broader vision for entrepreneurs bringing their gifts to the altar. The campus format turns that material into a shared rhythm lived with peers.</p>
+</div>
+
+<div class="finding">
+  <div class="finding-label">03</div>
+  <p>Student leadership matters. A club run by students can feel like a movement on campus. A club delivered to students from the outside usually feels like programming. The proposed model gives students real responsibility, with coaching and guardrails around them.</p>
+</div>
+
+<div class="finding">
+  <div class="finding-label">04</div>
+  <p>Local church partnerships keep the work grounded in each city. The campus club becomes a bridge between students, churches, entrepreneurs, and the national FDE network.</p>
+</div>
+
+<div class="finding">
+  <div class="finding-label">05</div>
+  <p>The first year produces more than 10 clubs. It produces a repeatable launch playbook: how to choose a campus, recruit a student director, pair mentors, run gatherings, report to FDE, and hand the model forward.</p>
+</div>
+
+<h2 class="section-heading">What is already built</h2>
+
+<p>The proposal starts from existing FDE strengths: founder-level language, curriculum, a national entrepreneur network, local churches already connected to the movement, and a clear theological frame for work. The campus initiative builds the container where students can practice the mission.</p>
+
+<h2 class="section-heading mt-3">What we would want to confirm</h2>
+
+<p>The plan depends on the first 5 campuses having the right conditions: a credible student director, a local church partner, at least one entrepreneur mentor, and enough institutional openness to gather weekly. A conversation would identify the first campuses, define the student director profile, and set the reporting cadence FDE leadership wants.</p>
+
+</div>
+
+<div id="program" class="tab-content">
+
+<p>The program has three leader development layers and five recurring touchpoints. The layers define what each student leader receives. The touchpoints define the rhythm each campus lives inside.</p>
+
+<h2 class="section-heading">Leader development framework</h2>
+
+<div class="scope-phase">
+  <div class="phase-label">Layer 1</div>
+  <h3>Content</h3>
+  <p>FDE's 8-week video series with J.D. Greear and Henry Kaestner runs in community. Students watch, discuss, apply, and test the ideas against actual leadership decisions on campus.</p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Layer 2</div>
+  <h3>Opportunity</h3>
+  <p>Students lead weekly gatherings, semester events, and campus invitations. They do more than study faith-driven entrepreneurship. They practice leadership with real people in the room.</p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Layer 3</div>
+  <h3>Coaching</h3>
+  <p>Student directors connect bi-weekly with local and national Faith Driven Entrepreneurs: church FDE graduates, Christian business owners, and people who have carried faith through real operational pressure.</p>
+</div>
+
+<h2 class="section-heading">Five touchpoints</h2>
+
+<table class="responsive-table">
+  <tbody>
+    <tr><th>Touchpoint</th><th>Cadence</th><th>Purpose</th></tr>
+    <tr><td data-label="Touchpoint">Weekly club gatherings</td><td data-label="Cadence">Every week, on campus</td><td data-label="Purpose">FDE curriculum in community, led by students for students. Calling, money, leadership, and work get discussed out loud.</td></tr>
+    <tr><td data-label="Touchpoint">Semester events</td><td data-label="Cadence">Once per semester, per campus</td><td data-label="Purpose">A larger gathering for vision, celebration, and invitation. This is the on-ramp for students who have not found the club yet.</td></tr>
+    <tr><td data-label="Touchpoint">Yearly conferences</td><td data-label="Cadence">Annual, national or regional</td><td data-label="Purpose">Students from every campus gather. The movement becomes visible across universities and connects local groups to one another.</td></tr>
+    <tr><td data-label="Touchpoint">Bi-weekly coaching</td><td data-label="Cadence">Every two weeks, per leader</td><td data-label="Purpose">Each student director has a mentor who can speak to faith, business, calling, and the practical cost of leadership.</td></tr>
+    <tr><td data-label="Touchpoint">National cohorts</td><td data-label="Cadence">Regular cross-campus cadence</td><td data-label="Purpose">Student leaders connect across schools, share what is working, and see themselves as part of one movement.</td></tr>
+  </tbody>
+</table>
+
+<h2 class="section-heading">Operating principle</h2>
+
+<p>FDE provides the mission, the curriculum, the network, and the guardrails. Students carry the campus expression. That division protects the movement from becoming another centralized program while giving FDE the consistency it needs to scale responsibly.</p>
+
+<div class="finding">
+  <div class="finding-label">Mission language</div>
+  <p>FDE's stated value is a "ruthless fervor to advance the mission for God's glory, not our own." The campus initiative follows that logic. Students learn to carry the mission from their own calling.</p>
+</div>
+
+</div>
+
+<div id="investment" class="tab-content">
+
+<p>The first year is a build, launch, and scale cycle. It gives FDE a live campus program and a documented playbook the organization can own after the initial year.</p>
+
+<h2 class="section-heading">Three-phase plan</h2>
+
+<div class="scope-phase">
+  <div class="phase-label">Phase 1 / Now through December 2026</div>
+  <h3>Recruit and build</h3>
+  <p>Identify and confirm 5 campuses. Recruit and develop founding student directors. Establish local church partnerships. Run launch events and founding gatherings. Build spring curriculum cadence and coaching pairings. Send weekly reports to FDE leadership throughout the build.</p>
+  <p class="mt-1"><strong>Output: 5 clubs ready for the January 2027 spring semester.</strong></p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Phase 2 / January 2027 spring semester</div>
+  <h3>Launch</h3>
+  <p>Five FDE campus clubs begin weekly gatherings. Bi-weekly coaching starts with all student directors. The national student cohort connects for the first time. Each campus runs a semester event. The next 5 campuses are identified and recruitment begins.</p>
+  <p class="mt-1"><strong>Output: 5 clubs fully operating and the second 5 in development.</strong></p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Phase 3 / September 2027 fall semester</div>
+  <h3>Scale</h3>
+  <p>Ten clubs operate nationally. The first cohort of student directors has one full year of experience. The national cohort is active. The first yearly conference brings the campuses together. The launch playbook is documented and handed to FDE.</p>
+  <p class="mt-1"><strong>Output: 10 clubs operating and a repeatable process for the next 50 or 100.</strong></p>
+</div>
+
+<h2 class="section-heading">Deliverables</h2>
+
+<table class="responsive-table">
+  <tbody>
+    <tr><th>Deliverable</th><th>What FDE receives</th></tr>
+    <tr><td data-label="Deliverable">5 clubs built by December 2026</td><td data-label="What FDE receives">Campus confirmed, student director developed, church partner established, launch event executed, and spring start prepared.</td></tr>
+    <tr><td data-label="Deliverable">5 fully running clubs in January 2027</td><td data-label="What FDE receives">All five touchpoints live from the start of the spring semester.</td></tr>
+    <tr><td data-label="Deliverable">10 clubs operating by September 2027</td><td data-label="What FDE receives">The second five campuses built through spring and ready for fall.</td></tr>
+    <tr><td data-label="Deliverable">Leader development program</td><td data-label="What FDE receives">Content, opportunity, and coaching present at every club.</td></tr>
+    <tr><td data-label="Deliverable">Five-touchpoint yearly rhythm</td><td data-label="What FDE receives">Weekly gatherings, semester events, yearly conferences, bi-weekly coaching, and national cohorts.</td></tr>
+    <tr><td data-label="Deliverable">Church partnership network</td><td data-label="What FDE receives">Each club connected to a local church partner for mentorship, community, and grounding.</td></tr>
+    <tr><td data-label="Deliverable">Launch playbook owned by FDE</td><td data-label="What FDE receives">A documented process for launching an FDE campus club anywhere.</td></tr>
+    <tr><td data-label="Deliverable">Weekly reporting</td><td data-label="What FDE receives">Clear updates to FDE leadership, with no day-to-day management required from Mark.</td></tr>
+  </tbody>
+</table>
+
+<h2 class="section-heading">Investment</h2>
+
+<div class="stat-row">
+  <div class="stat-item"><strong>$60,000</strong> Total annual investment</div>
+  <div class="stat-item"><strong>$5,000</strong> Per month</div>
+  <div class="stat-item"><strong>12</strong> Months</div>
+  <div class="stat-item"><strong>10</strong> Clubs by fall 2027</div>
+</div>
+
+<p>$5,000 per month funds the build and first-year operation: recruiting, campus development, student leader coaching structure, church partner coordination, weekly reporting, launch documentation, and the first national cohort rhythm.</p>
+
+<h2 class="section-heading">What a conversation would confirm</h2>
+
+<p>Before starting, we would confirm the first 5 campus candidates, the approval path for using FDE curriculum, the mentor pool, the student director selection criteria, the church partnership standard, the exact reporting format, and who owns final decisions when the campus model needs to adapt.</p>
+
+<div class="closing">
+  <p>The proposal is a one-year test with a permanent asset at the end: a proven campus model FDE can own and scale.</p>
+  <p><a href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a></p>
+</div>
+
+</div>
+
+<div id="question" class="tab-content-full">
+
+<div>
+  <p class="proposal-title">What are <span class="question-underline">we</span> capable of?</p>
+  <p class="mono size-s mt-1"><a href="mailto:hello@whatarewecapableof.com">Book a call</a></p>
+</div>
+
+</div>
+
+</main>
+
+<footer>
+  <span class="proposal-meta">Prepared April 2026. Migrated from the Faith Driven Campus Initiative proposal.</span>
+</footer>
+
+<script>
+(function() {
+  var container = document.querySelector('main');
+  container.classList.add('tabbed');
+
+  var tabs = document.querySelectorAll('.tab');
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function(e) {
+      e.preventDefault();
+      var id = this.getAttribute('href').slice(1);
+      document.querySelectorAll('.tab-content, .tab-content-full').forEach(function(el) { el.classList.remove('active'); });
+      tabs.forEach(function(t) { t.classList.remove('active'); });
+      document.getElementById(id).classList.add('active');
+      this.classList.add('active');
+      window.scrollTo({ top: document.querySelector('.tabs').offsetTop - 10, behavior: 'smooth' });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

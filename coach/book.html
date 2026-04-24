@@ -29,43 +29,183 @@
     <h1>Book a call</h1>
     <p>Pick a time that works. You will receive a calendar invite at the email you provide.</p>
 
-    <div class="content-block" style="margin-top: var(--space-2);">
+    <div id="step-dates" style="margin-top: var(--space-2);">
       <p class="section-label">Available dates</p>
-      <ul class="booking-dates">
-        <li><a href="#">Mon, May 5</a></li>
-        <li><a href="#">Tue, May 6</a></li>
-        <li><a href="#">Wed, May 7</a></li>
-        <li><a href="#">Thu, May 8</a></li>
-        <li><a href="#">Fri, May 9</a></li>
-      </ul>
+      <div id="dates-list" class="booking-dates">...</div>
     </div>
 
-    <div class="content-block" style="margin-top: var(--space-2);">
-      <p class="section-label">Times — May 5</p>
-      <ul class="booking-dates">
-        <li><a href="#">9:00 AM</a></li>
-        <li><a href="#">10:00 AM</a></li>
-        <li><a href="#">2:00 PM</a></li>
-        <li><a href="#">3:00 PM</a></li>
-      </ul>
+    <div id="step-times" style="margin-top: var(--space-2); display: none;">
+      <p class="section-label"><span id="selected-date-label"></span></p>
+      <div id="times-list" class="booking-dates">...</div>
+      <p style="margin-top: var(--space-0-5);"><a href="#" id="back-to-dates" class="mono size-xs" style="opacity: 0.4;">← different date</a></p>
     </div>
 
-    <form class="booking-form" style="margin-top: var(--space-2);">
-      <label for="name">Name</label>
-      <input type="text" id="name" name="name" required>
+    <div id="step-form" style="margin-top: var(--space-2); display: none;">
+      <p class="section-label"><span id="selected-slot-label"></span></p>
+      <form class="booking-form" id="booking-form">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required autocomplete="name">
 
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" required>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required autocomplete="email">
 
-      <label for="note">Note (optional)</label>
-      <textarea id="note" name="note" rows="3"></textarea>
+        <label for="note">Note (optional)</label>
+        <textarea id="note" name="note" rows="3"></textarea>
 
-      <button type="submit">(Book)</button>
-    </form>
+        <button type="submit" id="submit-btn">(Book)</button>
+      </form>
+      <p style="margin-top: var(--space-0-5);"><a href="#" id="back-to-times" class="mono size-xs" style="opacity: 0.4;">← different time</a></p>
+    </div>
+
+    <div id="step-confirmed" style="margin-top: var(--space-2); display: none;">
+      <p>Booked. Check your email for the calendar invite.</p>
+    </div>
+
+    <div id="step-error" style="margin-top: var(--space-2); display: none;">
+      <p id="error-message"></p>
+    </div>
   </main>
   <footer>
     <a href="/about/">About</a>
     <a href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a>
   </footer>
+
+  <script>
+    const API = '';
+    let selectedDate = null;
+    let selectedSlot = null;
+
+    const $dates = document.getElementById('step-dates');
+    const $times = document.getElementById('step-times');
+    const $form = document.getElementById('step-form');
+    const $confirmed = document.getElementById('step-confirmed');
+    const $error = document.getElementById('step-error');
+
+    function showStep(step) {
+      [$dates, $times, $form, $confirmed, $error].forEach(el => el.style.display = 'none');
+      step.style.display = 'block';
+    }
+
+    function formatDateDisplay(dateStr) {
+      const d = new Date(dateStr + 'T12:00:00');
+      return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    }
+
+    async function loadDates() {
+      const list = document.getElementById('dates-list');
+      list.textContent = '...';
+      try {
+        const res = await fetch(API + '/api/availability');
+        const data = await res.json();
+        if (!data.dates || data.dates.length === 0) {
+          list.textContent = 'No availability in the next two weeks.';
+          return;
+        }
+        list.innerHTML = '';
+        const ul = document.createElement('ul');
+        ul.style.listStyle = 'none';
+        ul.style.padding = '0';
+        data.dates.forEach(d => {
+          const li = document.createElement('li');
+          li.style.padding = 'var(--space-0-5) 0';
+          const a = document.createElement('a');
+          a.href = '#';
+          a.textContent = formatDateDisplay(d.date);
+          a.addEventListener('click', e => { e.preventDefault(); selectDate(d.date); });
+          li.appendChild(a);
+          ul.appendChild(li);
+        });
+        list.appendChild(ul);
+      } catch (err) {
+        list.textContent = 'Could not load availability.';
+      }
+    }
+
+    async function selectDate(dateStr) {
+      selectedDate = dateStr;
+      document.getElementById('selected-date-label').textContent = formatDateDisplay(dateStr);
+      showStep($times);
+      const list = document.getElementById('times-list');
+      list.textContent = '...';
+      try {
+        const res = await fetch(API + '/api/availability?date=' + dateStr);
+        const data = await res.json();
+        if (!data.slots || data.slots.length === 0) {
+          list.textContent = 'No slots available on this date.';
+          return;
+        }
+        list.innerHTML = '';
+        const ul = document.createElement('ul');
+        ul.style.listStyle = 'none';
+        ul.style.padding = '0';
+        data.slots.forEach(s => {
+          const li = document.createElement('li');
+          li.style.padding = 'var(--space-0-5) 0';
+          const a = document.createElement('a');
+          a.href = '#';
+          a.textContent = s.display;
+          a.addEventListener('click', e => { e.preventDefault(); selectSlot(s); });
+          li.appendChild(a);
+          ul.appendChild(li);
+        });
+        list.appendChild(ul);
+      } catch (err) {
+        list.textContent = 'Could not load times.';
+      }
+    }
+
+    function selectSlot(slot) {
+      selectedSlot = slot;
+      document.getElementById('selected-slot-label').textContent =
+        formatDateDisplay(selectedDate) + ' at ' + slot.display;
+      showStep($form);
+    }
+
+    document.getElementById('back-to-dates').addEventListener('click', e => {
+      e.preventDefault();
+      showStep($dates);
+    });
+
+    document.getElementById('back-to-times').addEventListener('click', e => {
+      e.preventDefault();
+      showStep($times);
+    });
+
+    document.getElementById('booking-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      const btn = document.getElementById('submit-btn');
+      const original = btn.textContent;
+      btn.textContent = '...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(API + '/api/book', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            start: selectedSlot.start,
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            note: document.getElementById('note').value,
+          }),
+        });
+        const data = await res.json();
+        if (data.success) {
+          showStep($confirmed);
+        } else {
+          document.getElementById('error-message').textContent = data.error || 'Something went wrong.';
+          showStep($error);
+        }
+      } catch (err) {
+        document.getElementById('error-message').textContent = 'Could not complete booking.';
+        showStep($error);
+      } finally {
+        btn.textContent = original;
+        btn.disabled = false;
+      }
+    });
+
+    loadDates();
+  </script>
 </body>
 </html>

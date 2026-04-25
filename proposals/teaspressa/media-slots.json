@@ -66,13 +66,6 @@
       "sortRule": "Rows 1-2: narrow stick and mini cube formats. Row 3: tea line and sampler. Rows 4-7: kits, gifts, and boxed collections. Row 8: tallboys.",
       "status": "live",
       "liveAsset": "/proposals/teaspressa/img/ts-11-wholesale-product-collage.jpg"
-    },
-    {
-      "slot": "TS-08",
-      "placement": "Scope tab, after Area 1: Wholesale buyer tools.",
-      "frame": "single-image 16:9",
-      "currentJob": "artifact reference",
-      "placeholderCopy": "Line sheet, buyer guide, reorder tool, seasonal wholesale preview, or retail catalog reference."
     }
   ],
   "slots": [
@@ -292,9 +285,9 @@
     {
       "id": "TS-08",
       "name": "Wholesale buyer tool artifact",
-      "status": "placeholder-draft",
+      "status": "future-only",
       "section": "scope area 1",
-      "placementAnchor": "Scope tab, after Area 1: Wholesale buyer tools.",
+      "placementAnchor": "Future-only reference. Scope Area 1 placeholder was removed from the local draft before publish.",
       "beat": "Possibility",
       "mediaJob": "Artifact",
       "compositionMove": "Single body-width image placeholder",
@@ -317,7 +310,7 @@
         "job: artifact",
         "move: document excerpt"
       ],
-      "currentUse": "in-flow local placeholder; final image not inserted yet"
+      "currentUse": "Parked for a future pass; no Scope-tab placeholder in the current local draft."
     },
     {
       "id": "TS-09",

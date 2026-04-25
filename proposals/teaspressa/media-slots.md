@@ -68,7 +68,7 @@ slot: TS-07
 | TS-05 | TikTok effort versus traction | Medium | TikTok profile, video grid, representative thumbnails. |
 | TS-06 | Wedding and corporate inquiry flow | Medium | Wedding Shop, corporate gifting, custom kit or quote flow material. |
 | TS-07 | Merchandising strength | High | Placeholder after What's working; single 4:3 or 16:9 image. Grid can wait. |
-| TS-08 | Wholesale buyer tool artifact | Medium | Placeholder after Scope Area 1; single 16:9 artifact/reference image. |
+| TS-08 | Wholesale buyer tool artifact | Medium | Future-only reference; Scope Area 1 placeholder removed from the local draft before publish. |
 | TS-09 | Seasonal subscription possibility | Low | Seasonal rotation, subscription ritual, limited flavor or box references. |
 | TS-10 | Connected measurement path | Medium | No image required. Generated diagram from tool stack and scope. |
 | TS-11 | Research catalog breath | Medium | Live in Research after Product catalog as 120-image product-only edge-to-edge wholesale collage. |
@@ -217,7 +217,7 @@ priority: high
 
 ### TS-08: Wholesale buyer tool artifact
 
-- Placement: Scope tab, after Area 1: Wholesale buyer tools.
+- Placement: Future only. The Scope tab placeholder after Area 1 was removed from the local draft before publish.
 - Beat: Possibility.
 - Job: Artifact/reference.
 - Move: single body-width image placeholder by default.
@@ -309,6 +309,7 @@ Collect more than we use. The proposal should probably use five or fewer visual 
 2. TS-04: Empty subscription infrastructure, Summary
 3. TS-07: Merchandising strength, Summary
 4. TS-11: Research catalog breath, Research
-5. TS-08: Wholesale buyer tool artifact, Scope
+
+TS-08 is parked for a future pass; the Scope-tab placeholder was removed before publish.
 
 Then consider TS-03, TS-05, or TS-06 only if the page still needs clarity, rhythm, or proof.

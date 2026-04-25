@@ -4,6 +4,38 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 
 ## Active
 
+### PäSTE
+
+| | |
+|---|---|
+| URL | [whatarewecapableof.com/proposals/paste](https://whatarewecapableof.com/proposals/paste) |
+| Prepared | April 2026 |
+| Status | Build outline deployed; needs Davey and Andres review |
+| Relationship | Davey Leavitt, through BELHAUS and Phoenix context |
+| Tabs | Overview / System / First Build / ? |
+| Source | Built from Davey's deck, Cargo beta, web captures, and message thread (2026-04-25) |
+
+**Client:** Davey Leavitt and the PäSTE team. PäSTE is a Shopify-centered participatory merch platform where fans create licensed 1-of-1 apparel from approved IP asset packs, with production routed to a DTG factory and royalties tracked for IP holders, guest designers, and affiliates.
+
+**Key people:** Davey Leavitt (artist, designer, former CYRCLE co-founder, BELHAUS context), Andres Izquieta (business/operator context from the message thread), Noah Glynn (possible systems builder and technical/product lead).
+
+**What we're proposing:** A first MVP loop: approved IP assets become durable design state, the customer checks out through Shopify, a paid line item becomes a factory-ready production packet, tracking returns to Shopify, and a royalty ledger records the participant shares. The page argues for proving the Shopify-to-factory loop before marketplace polish.
+
+**Public boundaries:** This proposal is a build outline, not a research-heavy diagnostic. It intentionally leaves pricing, salary, equity, and hard timeline language off the public page.
+
+**History:**
+- 2026-04-24: PäSTE project context created at `~/Projects/paste/`; deck, Cargo beta, web sources, and message export parsed into project-local notes.
+- 2026-04-25: Loose architecture map created at `~/Projects/paste/notes/architecture-v0.md`.
+- 2026-04-25: Proposal page deployed at `/proposals/paste` and verified on production.
+
+**Open questions:** Factory file requirements, order intake channel, tracking return path, first IP partner, royalty base, threshold rules, Shopify plan/store status, and Noah's exact role and economics.
+
+**Next:** Review the live page with Davey and Andres. Before build work begins, turn the open questions into a discovery checklist centered on the production packet and factory workflow.
+
+**Deep docs:** `~/Projects/paste/PROJECT.md`, memory at `project_paste.md`, architecture map at `~/Projects/paste/notes/architecture-v0.md`, proposal implementation note at `~/Projects/paste/notes/2026-04-25-proposal-page.md`
+
+---
+
 ### Faith Driven Entrepreneur Campus Initiative
 
 | | |

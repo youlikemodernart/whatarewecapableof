@@ -197,7 +197,7 @@ Max depth: 2 from the primary nav. 3 counting home as level 0.
 
 ## Booking tool implementation notes (Google Calendar API)
 
-**Scope:** Austin's primary Google Calendar, one event type (60-min call by default), 14 business days of availability, and Central time display.
+**Scope:** Austin's primary Google Calendar, one event type (60-min call by default), 14 business days of availability, and Arizona time display (`America/Arizona`, Mountain Standard Time year-round).
 
 **Stack:**
 - Two Vercel serverless functions:

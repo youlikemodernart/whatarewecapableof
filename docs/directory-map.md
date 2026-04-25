@@ -1,6 +1,6 @@
 # Directory Map
 
-Current as of 2026-04-24.
+Current as of 2026-04-25.
 
 Project root: `~/Projects/whatarewecapableof/`
 
@@ -15,6 +15,7 @@ Production site: `https://whatarewecapableof.com`
   question/index.html
   coach/index.html
   coach/book/index.html
+  book/index.html
   consult/index.html
   creative/index.html
   proposals/
@@ -30,7 +31,10 @@ Production site: `https://whatarewecapableof.com`
     typography.css
     layout.css
     components.css
+  js/
+    booking.js
   api/
+    _calendar.js
     availability.js
     book.js
   design/
@@ -56,7 +60,8 @@ Production site: `https://whatarewecapableof.com`
 | `/` | `index.html` | Home page. Question, three verticals, footer. |
 | `/question` | `question/index.html` | Ethos page. Intellectual home for the agency. |
 | `/coach` | `coach/index.html` | Austin coaching vertical. |
-| `/coach/book` | `coach/book/index.html` | Booking tool UI. |
+| `/coach/book` | `coach/book/index.html` | Austin coaching booking tool UI. |
+| `/book` | `book/index.html` | Discovery-call booking tool for proposal CTAs. |
 | `/consult` | `consult/index.html` | Shared advisory vertical. |
 | `/creative` | `creative/index.html` | Noah design and build vertical. |
 | `/about` | `about/index.html` | Bios and contact. Footer-only access. |
@@ -76,6 +81,7 @@ The site uses directory-style pages: each route is a folder with an `index.html`
 | `css/typography.css` | Type classes and text conventions. |
 | `css/layout.css` | The two permitted layout primitives and page-level layout. |
 | `css/components.css` | Navigation, footer, work lists, proposal tabs, booking form, repeated components. |
+| `js/booking.js` | Shared booking UI controller used by `/coach/book` and `/book`. |
 
 Design constraints live in `design/system-constraints.md`. Treat that file as the engineering contract for spacing, type, layout, color, and motion.
 
@@ -83,9 +89,9 @@ Design constraints live in `design/system-constraints.md`. Treat that file as th
 
 | File | Role |
 |---|---|
-| `api/_calendar.js` | Shared Google Calendar auth, timezone conversion, bookable slot generation, and free/busy helpers. |
-| `api/availability.js` | Reads Austin's Google Calendar free/busy data and returns available slots. |
-| `api/book.js` | Books calendar events after availability is confirmed, creates a Google Meet link, and sends attendee updates. |
+| `api/_calendar.js` | Shared Google Calendar auth, timezone conversion, booking type config, bookable slot generation, buffer enforcement, and free/busy helpers. |
+| `api/availability.js` | Reads Austin's Google Calendar free/busy data and returns available slots for `type=coach` or `type=discovery`. |
+| `api/book.js` | Books calendar events after availability is confirmed, enforces buffers, creates a Google Meet link, and sends attendee updates. |
 
 Do not commit secrets. Calendar credentials belong in Vercel environment variables.
 
@@ -129,7 +135,7 @@ Use root-relative paths for all local assets and internal links in HTML:
 
 ```html
 <img src="/proposals/compassion/img/feed-current.jpg" alt="...">
-<a href="/coach/book">Book a call</a>
+<a href="/book">Book a call</a>
 ```
 
 Avoid bare relative asset paths such as:

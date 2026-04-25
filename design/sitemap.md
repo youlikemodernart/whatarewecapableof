@@ -1,6 +1,6 @@
 # Sitemap — whatarewecapableof.com
 
-Revised 2026-04-22. Production live at `whatarewecapableof.com` (merged from draft 2026-04-22). Vercel linked to GitHub; push to `main` auto-deploys.
+Revised 2026-04-25. Production live at `whatarewecapableof.com` (merged from draft 2026-04-22). Vercel linked to GitHub; push to `main` auto-deploys.
 
 ---
 
@@ -12,9 +12,10 @@ whatarewecapableof.com
 /                           HOME ("What are we capable of?" links to /question/)
 ├── /question/              Ethos page: the firm's worldview (hidden link from homepage question)
 ├── /coach/                 Austin's coaching vertical
-│   └── /coach/book         Custom booking tool (Google Calendar API)
+│   └── /coach/book         Austin coaching booking flow (Google Calendar API)
 ├── /consult/               Shared advisory vertical
-└── /creative/              Noah's design/build vertical
+├── /creative/              Noah's design/build vertical
+└── /book                   Discovery-call booking flow for proposal CTAs
 
 Footer-only (secondary):
   ABOUT                     /about/
@@ -22,6 +23,9 @@ Footer-only (secondary):
 
 Non-navigation (direct link only):
   /proposals/teaspressa/    Proof-of-insight proposal (noindex, nofollow)
+  /proposals/compassion/    Compassion Causes proposal (noindex, nofollow)
+  /proposals/belhaus/       Belhaus proposal (noindex, nofollow)
+  /proposals/fde/           Faith Driven Entrepreneur proposal (noindex, nofollow)
 ```
 
 ---
@@ -80,24 +84,38 @@ Non-navigation (direct link only):
 
 ---
 
-### `/coach/book` — Booking tool
+### `/coach/book` — Austin coaching booking tool
 
 **Layout:** Primitive A. Minimal.
 
-**Implementation:** Custom Google Calendar API integration (not Calendly). See implementation notes below.
+**Implementation:** Custom Google Calendar API integration (not Calendly). Uses the shared booking UI and API with booking type `coach`.
 
 **Content:**
 1. Brief context line: what happens when you book (serif, one sentence).
-2. Date selection: next 10 available days in mono.
-3. Time slots for the selected date: available windows as clickable mono text.
+2. Date selection in mono.
+3. Time slots for the selected date as clickable mono text.
 4. Booking form: name, email, optional note. Three fields.
 5. Confirmation state after booking.
 
 **What this is NOT:**
 - Not a Calendly embed.
 - Not a full scheduling platform.
-- No multiple event types, no payment, no team scheduling.
-- Just: pick a time on Austin's calendar → it gets booked → both parties get notified.
+- Not the acquisition/discovery-call route for proposal CTAs.
+- Just: pick a time on Austin's coaching calendar flow, it gets booked, both parties get notified.
+
+---
+
+### `/book` — Discovery-call booking tool
+
+**Access:** Direct link from proposal CTAs. Not in primary nav.
+
+**Layout:** Primitive A. Minimal. Same shared booking UI as `/coach/book`.
+
+**Implementation:** Custom Google Calendar API integration using booking type `discovery`.
+
+**Availability rules:** Thursday and Friday, 10am to 1pm Arizona time. Calls are 30 minutes. A 15-minute buffer is enforced around meetings, so the default generated starts are 10:00, 10:45, 11:30, and 12:15 when the window is fully open.
+
+**Intention:** This route is for acquisition/discovery calls from proposals and CTAs. It keeps that inbound path separate from Austin's coaching business page while sharing the same calendar infrastructure.
 
 ---
 
@@ -154,7 +172,7 @@ Footer placement means visitors who want this page will find it; visitors who do
 
 **Content:** `hello@whatarewecapableof.com` as a mailto link. Possibly Austin's email separately if coaching inquiries should route differently. Location if relevant.
 
-If a contact form is ever needed, it becomes `/contact` as a minimal page. For now, footer text is sufficient. The booking tool at `/coach/book` handles the primary inbound path for coaching.
+If a contact form is ever needed, it becomes `/contact` as a minimal page. For now, footer text is sufficient. The booking tool at `/coach/book` handles Austin's coaching inbound path. The booking tool at `/book` handles proposal CTA discovery calls.
 
 ---
 
@@ -186,7 +204,8 @@ Mono, ALL CAPS, `--size-s`. Email is a mailto link.
 |-------|-------|--------|
 | 0 | `/` (home) | Primitive A, one viewport |
 | 1 | `/coach`, `/consult`, `/creative` | Primitive A, scrollable (landing + integrated portfolio) |
-| 2 | `/coach/book` | Primitive A, one viewport (booking tool) |
+| 1/direct | `/book` | Primitive A, one viewport (discovery-call booking tool) |
+| 2 | `/coach/book` | Primitive A, one viewport (coaching booking tool) |
 | 2 | `/creative/<project>` (future) | Primitive B (two-column: images + text) |
 | 2 | `/consult/<case>` (future) | Primitive B (two-column: deliverable + context) |
 | — | `/about` | Primitive A, one viewport, footer-access only |
@@ -197,22 +216,26 @@ Max depth: 2 from the primary nav. 3 counting home as level 0.
 
 ## Booking tool implementation notes (Google Calendar API)
 
-**Scope:** Austin's primary Google Calendar, one event type (60-min call by default), 14 business days of availability, and Arizona time display (`America/Phoenix`, Mountain Standard Time year-round).
+**Scope:** Austin's primary Google Calendar, two booking types, and Arizona time display (`America/Phoenix`, Mountain Standard Time year-round).
+
+**Booking types:**
+- `coach`: `/coach/book`, Austin coaching page, default 60-minute calls, weekday 9am to 5pm rules unless env vars override.
+- `discovery`: `/book`, proposal CTA flow, Thursday and Friday 10am to 1pm Arizona time, 30-minute calls, 15-minute buffer.
 
 **Stack:**
 - Two Vercel serverless functions:
-  - `GET /api/availability?date=YYYY-MM-DD` reads Austin's Google Calendar free/busy, returns open slots within business hours
-  - `POST /api/book` double-checks availability, creates a calendar event with a Google Meet link, and sends invite emails to attendees
-- Frontend: static HTML + vanilla JS (no framework needed for 3 fields and a time picker)
-- Auth: Google service account with domain-wide delegation impersonating `austin@whatarewecapableof.com`; `BOOKING_CALENDAR_EMAIL` controls the impersonated calendar owner
+  - `GET /api/availability?type=coach|discovery&date=YYYY-MM-DD` reads Austin's Google Calendar free/busy, returns open slots within that booking type's rules.
+  - `POST /api/book` double-checks availability, enforces buffers, creates a calendar event with a Google Meet link, and sends invite emails to attendees. Request body includes `type`.
+- Shared frontend script: `/js/booking.js`. Both `/coach/book` and `/book` use the same static HTML structure with different `data-booking-type` values.
+- Auth: Google service account with domain-wide delegation impersonating `austin@whatarewecapableof.com`; `BOOKING_CALENDAR_EMAIL` controls the impersonated calendar owner.
 
 **UI in the taste system:**
-- Date display: mono, `--size-s`, ALL CAPS day names
-- Time slots: mono, `--size-m`, clickable text (underline on hover per link rules)
-- Form fields: serif labels, mono inputs, underline-below-input (no box border)
-- Submit: `Book a call` in mono, sentence case, underlined, no box
-- Confirmation: serif sentence ("Booked. Check your email for the calendar invite.")
-- Loading states: replace content with "..." or similar; no spinner animation
+- Date display: mono, `--size-s`, ALL CAPS day names.
+- Time slots: mono, `--size-m`, clickable text (underline on hover per link rules).
+- Form fields: serif labels, mono inputs, underline-below-input (no box border).
+- Submit: `Book a call` in mono, sentence case, underlined, no box.
+- Confirmation: serif sentence ("Booked. Check your email for the calendar invite.").
+- Loading states: replace content with "..." or similar; no spinner animation.
 
 **Implemented:** Availability and booking use Vercel serverless functions plus `googleapis`. Booking creates events on Austin's primary calendar, adds the visitor and `austin@kamplove.org` as attendees, and creates a Google Meet link.
 

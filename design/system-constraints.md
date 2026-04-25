@@ -521,7 +521,7 @@ These are decisions the constraints can't make alone — they require Noah and A
 
 ### Resolved (2026-04-22)
 
-2. ~~**Content model.**~~ **Resolved.** See `design/sitemap.md`. Three verticals (`/coach`, `/consult`, `/creative`) with integrated portfolio (scroll-through, not separate pages). About and contact are footer-only. Custom booking tool at `/coach/book` via Google Calendar API. Revisit portfolio-as-separate-pages when any vertical has 5+ items.
+2. ~~**Content model.**~~ **Resolved.** See `design/sitemap.md`. Three verticals (`/coach`, `/consult`, `/creative`) with integrated portfolio (scroll-through, not separate pages). About and contact are footer-only. Custom booking tools at `/coach/book` for Austin coaching and `/book` for proposal discovery calls via shared Google Calendar API infrastructure. Revisit portfolio-as-separate-pages when any vertical has 5+ items.
 
 ### Still open
 

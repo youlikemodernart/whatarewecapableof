@@ -1,9 +1,9 @@
 const crypto = require('crypto');
 const {
-  SLOT_DURATION_MIN,
   TIMEZONE,
   CALENDAR_ID,
   NOTIFY_EMAIL,
+  getBookingConfig,
   isBookableStart,
   getCalendar,
   getBusyPeriods,
@@ -32,6 +32,10 @@ function uniqueAttendees(emails) {
     .map((email) => ({ email }));
 }
 
+function getTypeFromRequest(req) {
+  return clean(req.body?.type || req.body?.bookingType || req.query?.type || req.query?.flow || 'coach');
+}
+
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -39,6 +43,13 @@ module.exports = async function handler(req, res) {
 
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  let bookingConfig;
+  try {
+    bookingConfig = getBookingConfig(getTypeFromRequest(req));
+  } catch (err) {
+    return res.status(400).json({ error: 'Unknown booking type' });
+  }
 
   const start = clean(req.body?.start);
   const name = clean(req.body?.name);
@@ -54,25 +65,26 @@ module.exports = async function handler(req, res) {
   }
 
   const startTime = new Date(start);
-  if (!isBookableStart(startTime)) {
+  if (!isBookableStart(startTime, bookingConfig)) {
     return res.status(400).json({ error: 'Choose an available time from the booking page.' });
   }
 
   try {
     const calendar = getCalendar(['https://www.googleapis.com/auth/calendar']);
-    const endTime = new Date(startTime.getTime() + SLOT_DURATION_MIN * 60000);
+    const endTime = new Date(startTime.getTime() + bookingConfig.slotDurationMin * 60000);
+    const bufferMs = bookingConfig.bufferMinutes * 60000;
 
     const freeBusy = await calendar.freebusy.query({
       requestBody: {
-        timeMin: startTime.toISOString(),
-        timeMax: endTime.toISOString(),
+        timeMin: new Date(startTime.getTime() - bufferMs).toISOString(),
+        timeMax: new Date(endTime.getTime() + bufferMs).toISOString(),
         timeZone: TIMEZONE,
         items: [{ id: CALENDAR_ID }],
       },
     });
 
     const busyPeriods = getBusyPeriods(freeBusy);
-    if (slotOverlapsBusy({ start: startTime, end: endTime }, busyPeriods)) {
+    if (slotOverlapsBusy({ start: startTime, end: endTime }, busyPeriods, bookingConfig.bufferMinutes)) {
       return res.status(409).json({ error: 'This time slot is no longer available' });
     }
 
@@ -82,9 +94,10 @@ module.exports = async function handler(req, res) {
       sendUpdates: 'all',
       conferenceDataVersion: 1,
       requestBody: {
-        summary: `Call with ${name}`,
+        summary: `${bookingConfig.summaryPrefix} with ${name}`,
         description: [
-          `Booked via whatarewecapableof.com`,
+          `Booked via ${bookingConfig.sourceLabel}`,
+          `Booking type: ${bookingConfig.label}`,
           `Name: ${name}`,
           `Email: ${email}`,
           note ? `Note:\n${note}` : '',
@@ -103,6 +116,7 @@ module.exports = async function handler(req, res) {
 
     return res.json({
       success: true,
+      type: bookingConfig.key,
       eventId: event.data.id,
       start: startTime.toISOString(),
       end: endTime.toISOString(),

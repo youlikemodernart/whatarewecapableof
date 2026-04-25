@@ -9,16 +9,160 @@ function intEnv(name, fallback) {
   return Number.isFinite(value) ? value : fallback;
 }
 
-const SLOT_DURATION_MIN = intEnv('BOOKING_SLOT_MINUTES', 60);
-const SLOT_INTERVAL_MIN = intEnv('BOOKING_SLOT_INTERVAL_MINUTES', SLOT_DURATION_MIN);
-const BUSINESS_START = intEnv('BOOKING_START_HOUR', 9);
-const BUSINESS_END = intEnv('BOOKING_END_HOUR', 17);
 const TIMEZONE = env('BOOKING_TIMEZONE', 'America/Phoenix');
 const CALENDAR_EMAIL = env('BOOKING_CALENDAR_EMAIL');
 const IMPERSONATE_EMAIL = env('BOOKING_IMPERSONATE_EMAIL', CALENDAR_EMAIL);
 const CALENDAR_ID = env('BOOKING_CALENDAR_ID', IMPERSONATE_EMAIL ? 'primary' : CALENDAR_EMAIL || 'primary');
 const NOTIFY_EMAIL = env('BOOKING_NOTIFY_EMAIL');
-const LOOKAHEAD_DAYS = intEnv('BOOKING_LOOKAHEAD_DAYS', 14);
+
+const DAY_ALIASES = {
+  sun: 0,
+  sunday: 0,
+  mon: 1,
+  monday: 1,
+  tue: 2,
+  tues: 2,
+  tuesday: 2,
+  wed: 3,
+  wednesday: 3,
+  thu: 4,
+  thur: 4,
+  thurs: 4,
+  thursday: 4,
+  fri: 5,
+  friday: 5,
+  sat: 6,
+  saturday: 6,
+};
+
+function parseDayValue(value) {
+  const token = String(value || '').trim().toLowerCase();
+  if (!token) return null;
+
+  if (/^\d+$/.test(token)) {
+    const day = Number(token);
+    if (day >= 0 && day <= 6) return day;
+    if (day === 7) return 0;
+  }
+
+  return DAY_ALIASES[token] ?? null;
+}
+
+function parseDaysOfWeek(value, fallback) {
+  if (!value) return [...fallback];
+
+  const days = String(value)
+    .split(/[\s,]+/)
+    .map(parseDayValue)
+    .filter((day) => day !== null);
+
+  return days.length > 0 ? [...new Set(days)] : [...fallback];
+}
+
+function parseClockTime(value) {
+  const match = /^(\d{1,2})(?::(\d{2}))?$/.exec(String(value || '').trim());
+  if (!match) return null;
+
+  const hour = Number(match[1]);
+  const minute = Number(match[2] || 0);
+  if (hour < 0 || hour > 23 || minute < 0 || minute > 59) return null;
+
+  return hour * 60 + minute;
+}
+
+function parseWindows(value, fallback) {
+  if (!value) return fallback.map((window) => ({ ...window }));
+
+  const windows = String(value)
+    .split(',')
+    .map((range) => {
+      const [startRaw, endRaw] = range.split('-');
+      const start = parseClockTime(startRaw);
+      const end = parseClockTime(endRaw);
+      if (start === null || end === null || end <= start) return null;
+      return { start, end };
+    })
+    .filter(Boolean);
+
+  return windows.length > 0 ? windows : fallback.map((window) => ({ ...window }));
+}
+
+function createBookingConfig({
+  key,
+  label,
+  envPrefix,
+  defaultSlotMinutes,
+  defaultBufferMinutes,
+  defaultDaysOfWeek,
+  defaultWindows,
+  defaultLookaheadDays = 14,
+  defaultSummaryPrefix,
+  defaultSourceLabel,
+}) {
+  const slotDurationMin = intEnv(`${envPrefix}_SLOT_MINUTES`, defaultSlotMinutes);
+  const bufferMinutes = intEnv(`${envPrefix}_BUFFER_MINUTES`, defaultBufferMinutes);
+  const slotIntervalMin = intEnv(`${envPrefix}_SLOT_INTERVAL_MINUTES`, slotDurationMin + bufferMinutes);
+  const daysOfWeek = parseDaysOfWeek(env(`${envPrefix}_DAYS_OF_WEEK`, env(`${envPrefix}_DAYS`)), defaultDaysOfWeek);
+  const windows = parseWindows(env(`${envPrefix}_WINDOWS`), defaultWindows);
+
+  return {
+    key,
+    label,
+    slotDurationMin,
+    bufferMinutes,
+    slotIntervalMin,
+    daysOfWeek,
+    windows,
+    lookaheadDays: intEnv(`${envPrefix}_LOOKAHEAD_DAYS`, defaultLookaheadDays),
+    summaryPrefix: env(`${envPrefix}_EVENT_SUMMARY`, defaultSummaryPrefix),
+    sourceLabel: env(`${envPrefix}_EVENT_SOURCE`, defaultSourceLabel),
+  };
+}
+
+const coachDefaultStart = intEnv('BOOKING_START_HOUR', 9) * 60;
+const coachDefaultEnd = intEnv('BOOKING_END_HOUR', 17) * 60;
+
+const BOOKING_CONFIGS = {
+  coach: createBookingConfig({
+    key: 'coach',
+    label: 'Coaching call',
+    envPrefix: 'BOOKING',
+    defaultSlotMinutes: 60,
+    defaultBufferMinutes: 0,
+    defaultDaysOfWeek: [1, 2, 3, 4, 5],
+    defaultWindows: [{ start: coachDefaultStart, end: coachDefaultEnd }],
+    defaultLookaheadDays: 14,
+    defaultSummaryPrefix: 'Coaching call',
+    defaultSourceLabel: 'whatarewecapableof.com/coach/book',
+  }),
+  discovery: createBookingConfig({
+    key: 'discovery',
+    label: 'Discovery call',
+    envPrefix: 'DISCOVERY_BOOKING',
+    defaultSlotMinutes: 30,
+    defaultBufferMinutes: 15,
+    defaultDaysOfWeek: [4, 5],
+    defaultWindows: [{ start: 10 * 60, end: 13 * 60 }],
+    defaultLookaheadDays: 14,
+    defaultSummaryPrefix: 'Discovery call',
+    defaultSourceLabel: 'whatarewecapableof.com/book',
+  }),
+};
+
+const BOOKING_ALIASES = {
+  proposal: 'discovery',
+  proposals: 'discovery',
+  acquisition: 'discovery',
+  sales: 'discovery',
+};
+
+function getBookingConfig(type = 'coach') {
+  const requested = String(type || 'coach').trim().toLowerCase();
+  const key = BOOKING_ALIASES[requested] || requested || 'coach';
+  const config = BOOKING_CONFIGS[key];
+  if (!config) throw new Error(`Unknown booking type: ${requested}`);
+  return config;
+}
 
 const dateTimeFormatters = new Map();
 
@@ -90,12 +234,21 @@ function addDays(dateStr, days) {
   return date.toISOString().slice(0, 10);
 }
 
-function isWeekend(dateStr) {
+function dayOfWeek(dateStr) {
   const parts = parseDateString(dateStr);
-  if (!parts) return true;
+  if (!parts) return null;
   const date = new Date(Date.UTC(parts.year, parts.month - 1, parts.day, 12));
-  const day = date.getUTCDay();
-  return day === 0 || day === 6;
+  return date.getUTCDay();
+}
+
+function isWeekend(dateStr) {
+  const day = dayOfWeek(dateStr);
+  return day === 0 || day === 6 || day === null;
+}
+
+function isBookableDate(dateStr, config = getBookingConfig()) {
+  const day = dayOfWeek(dateStr);
+  return day !== null && config.daysOfWeek.includes(day);
 }
 
 function zonedTimeToDate(dateStr, hour = 0, minute = 0, second = 0, timeZone = TIMEZONE) {
@@ -117,49 +270,57 @@ function zonedTimeToDate(dateStr, hour = 0, minute = 0, second = 0, timeZone = T
   return new Date(utcGuess.getTime() - offset);
 }
 
-function getDayRange(dateStr) {
+function getDayRange(dateStr, timeZone = TIMEZONE) {
   const nextDate = addDays(dateStr, 1);
   return {
-    start: zonedTimeToDate(dateStr, 0, 0, 0),
-    end: zonedTimeToDate(nextDate, 0, 0, 0),
+    start: zonedTimeToDate(dateStr, 0, 0, 0, timeZone),
+    end: zonedTimeToDate(nextDate, 0, 0, 0, timeZone),
   };
 }
 
-function getBusinessSlots(dateStr) {
-  const slots = [];
-  const startMinutes = BUSINESS_START * 60;
-  const endMinutes = BUSINESS_END * 60;
+function getBusinessSlots(dateStr, config = getBookingConfig()) {
+  if (!isBookableDate(dateStr, config)) return [];
 
-  for (let minuteOfDay = startMinutes; minuteOfDay + SLOT_DURATION_MIN <= endMinutes; minuteOfDay += SLOT_INTERVAL_MIN) {
-    const hour = Math.floor(minuteOfDay / 60);
-    const minute = minuteOfDay % 60;
-    const start = zonedTimeToDate(dateStr, hour, minute, 0);
-    const end = new Date(start.getTime() + SLOT_DURATION_MIN * 60000);
-    slots.push({ start, end });
+  const slots = [];
+  for (const window of config.windows) {
+    for (
+      let minuteOfDay = window.start;
+      minuteOfDay + config.slotDurationMin <= window.end;
+      minuteOfDay += config.slotIntervalMin
+    ) {
+      const hour = Math.floor(minuteOfDay / 60);
+      const minute = minuteOfDay % 60;
+      const start = zonedTimeToDate(dateStr, hour, minute, 0);
+      const end = new Date(start.getTime() + config.slotDurationMin * 60000);
+      slots.push({ start, end });
+    }
   }
 
   return slots;
 }
 
-function getBookableDates() {
+function getBookableDates(config = getBookingConfig()) {
   const dates = [];
   let cursor = addDays(dateStringInTimeZone(new Date()), 1);
+  let inspectedDays = 0;
+  const maxCalendarDays = Math.max(config.lookaheadDays * 14, 60);
 
-  while (dates.length < LOOKAHEAD_DAYS) {
-    if (!isWeekend(cursor)) dates.push(cursor);
+  while (dates.length < config.lookaheadDays && inspectedDays < maxCalendarDays) {
+    if (isBookableDate(cursor, config)) dates.push(cursor);
     cursor = addDays(cursor, 1);
+    inspectedDays += 1;
   }
 
   return dates;
 }
 
-function isBookableStart(startTime) {
+function isBookableStart(startTime, config = getBookingConfig()) {
   if (!(startTime instanceof Date) || Number.isNaN(startTime.getTime())) return false;
 
   const dateStr = dateStringInTimeZone(startTime);
-  if (!getBookableDates().includes(dateStr)) return false;
+  if (!getBookableDates(config).includes(dateStr)) return false;
 
-  return getBusinessSlots(dateStr).some((slot) => slot.start.getTime() === startTime.getTime());
+  return getBusinessSlots(dateStr, config).some((slot) => slot.start.getTime() === startTime.getTime());
 }
 
 function formatTime(date, timeZone = TIMEZONE) {
@@ -197,24 +358,29 @@ function getBusyPeriods(freeBusyResponse) {
   return freeBusyResponse.data.calendars?.[CALENDAR_ID]?.busy || [];
 }
 
-function slotOverlapsBusy(slot, busyPeriods) {
+function slotOverlapsBusy(slot, busyPeriods, bufferMinutes = 0) {
+  const bufferMs = bufferMinutes * 60000;
+  const slotStart = new Date(slot.start.getTime() - bufferMs);
+  const slotEnd = new Date(slot.end.getTime() + bufferMs);
+
   return busyPeriods.some((busy) => {
     const busyStart = new Date(busy.start);
     const busyEnd = new Date(busy.end);
-    return slot.start < busyEnd && slot.end > busyStart;
+    return slotStart < busyEnd && slotEnd > busyStart;
   });
 }
 
 module.exports = {
-  SLOT_DURATION_MIN,
   TIMEZONE,
   CALENDAR_ID,
   CALENDAR_EMAIL,
   IMPERSONATE_EMAIL,
   NOTIFY_EMAIL,
-  LOOKAHEAD_DAYS,
+  BOOKING_CONFIGS,
+  getBookingConfig,
   parseDateString,
   isWeekend,
+  isBookableDate,
   getDayRange,
   getBusinessSlots,
   getBookableDates,

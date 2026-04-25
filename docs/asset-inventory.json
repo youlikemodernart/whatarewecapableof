@@ -2,9 +2,9 @@
   "summary": {
     "generatedAt": "2026-04-25",
     "root": "/Users/noah/Projects/whatarewecapableof",
-    "assetCount": 320,
-    "siteVisibleAssetCount": 28,
-    "referencedAssetCount": 13,
+    "assetCount": 323,
+    "siteVisibleAssetCount": 31,
+    "referencedAssetCount": 16,
     "unreferencedSiteVisibleAssetCount": 15,
     "missingReferenceCount": 0,
     "relativeLocalReferenceCount": 0,
@@ -17,7 +17,7 @@
       "design-reference-gifs": 2,
       "design-reference-images": 5,
       "design-reference-screenshots": 24,
-      "proposal-content": 24
+      "proposal-content": 27
     }
   },
   "assets": [
@@ -4545,6 +4545,54 @@
       "usedIn": []
     },
     {
+      "path": "proposals/teaspressa/img/ts-02-wholesale-guide.jpg",
+      "publicPath": "/proposals/teaspressa/img/ts-02-wholesale-guide.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 200820,
+      "size": "196.1 KB",
+      "dimensions": {
+        "width": 1500,
+        "height": 844
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/teaspressa/index.html"
+      ]
+    },
+    {
+      "path": "proposals/teaspressa/img/ts-04-seasonal-campaign.jpg",
+      "publicPath": "/proposals/teaspressa/img/ts-04-seasonal-campaign.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 128742,
+      "size": "125.7 KB",
+      "dimensions": {
+        "width": 1800,
+        "height": 1012
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/teaspressa/index.html"
+      ]
+    },
+    {
+      "path": "proposals/teaspressa/img/ts-07-valentines-retail-guide.jpg",
+      "publicPath": "/proposals/teaspressa/img/ts-07-valentines-retail-guide.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 228139,
+      "size": "222.8 KB",
+      "dimensions": {
+        "width": 1778,
+        "height": 1000
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/teaspressa/index.html"
+      ]
+    },
+    {
       "path": "proposals/teaspressa/img/ts-11-wholesale-product-collage.jpg",
       "publicPath": "/proposals/teaspressa/img/ts-11-wholesale-product-collage.jpg",
       "ext": "jpg",
@@ -4918,6 +4966,30 @@
       "source": "proposals/teaspressa/index.html",
       "raw": "/favicon.png",
       "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/teaspressa/index.html",
+      "raw": "/proposals/teaspressa/img/ts-02-wholesale-guide.jpg",
+      "normalizedPath": "proposals/teaspressa/img/ts-02-wholesale-guide.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/teaspressa/index.html",
+      "raw": "/proposals/teaspressa/img/ts-04-seasonal-campaign.jpg",
+      "normalizedPath": "proposals/teaspressa/img/ts-04-seasonal-campaign.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/teaspressa/index.html",
+      "raw": "/proposals/teaspressa/img/ts-07-valentines-retail-guide.jpg",
+      "normalizedPath": "proposals/teaspressa/img/ts-07-valentines-retail-guide.jpg",
       "exists": true,
       "rootRelative": true,
       "absolute": false

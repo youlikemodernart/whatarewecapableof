@@ -153,11 +153,11 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 **History:**
 - 2026-04-22: Full pipeline run (intake through deliverable) in a single session. First proposal using the observation/conditional/bridge framework and whatarewecapableof design system.
 - 2026-04-23: iOS Safari status bar debugging. Double-sticky header pattern implemented (Puma-inspired). Template and pipeline files updated.
-- 2026-04-25: Media pass added the TS-11 wholesale product collage to the Research tab and cut the Scope-tab TS-08 placeholder from the local draft before publish.
+- 2026-04-25: Media pass added three Summary images (TS-02, TS-04, TS-07) plus the TS-11 wholesale product collage in Research, and cut the Scope-tab TS-08 placeholder from the local draft before publish.
 
 **Next:** Tim reviews the output and decides whether to make the introduction to Allison. This is part of the Tim referral channel proof-of-concept (4 clients total: Teaspressa, Five Points Strategies, and 2 others TBD).
 
-**Media slots:** Teaspressa is the pilot for the proposal composition system. Slot map: `proposals/teaspressa/media-slots.md`; structured manifest: `proposals/teaspressa/media-slots.json`; local-only in-flow draft: `proposals/teaspressa/slots/index.html`, ignored by git through `proposals/*/slots/` while Noah curates imagery. Current draft slots: TS-02, TS-04, TS-07, and TS-11. TS-08 is parked for a future pass after the Scope-tab placeholder was removed. TS-11 is live in the Research tab after Product catalog as `proposals/teaspressa/img/ts-11-wholesale-product-collage.jpg`, a 120-image product-only edge-to-edge Shopify wholesale product collage sorted by product family. Raw source and crop workspace assets live under ignored `proposals/teaspressa/img/src/`.
+**Media slots:** Teaspressa is the pilot for the proposal composition system. Slot map: `proposals/teaspressa/media-slots.md`; structured manifest: `proposals/teaspressa/media-slots.json`; local-only in-flow draft: `proposals/teaspressa/slots/index.html`, ignored by git through `proposals/*/slots/` while Noah curates imagery. Live placements: TS-02 after Finding 01 in Summary, TS-04 after Finding 03 in Summary, TS-07 after What's working in Summary, and TS-11 after Product catalog in Research. TS-08 is parked for a future pass after the Scope-tab placeholder was removed. Raw source and crop workspace assets live under ignored `proposals/teaspressa/img/src/`.
 
 **Deep docs:** `~/Projects/consulting/clients/teaspressa/status.md`
 

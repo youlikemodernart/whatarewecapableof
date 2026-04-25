@@ -27,27 +27,33 @@
   "draftPlacements": [
     {
       "slot": "TS-02",
-      "placement": "After Finding 01 in the Summary tab.",
+      "placement": "After Finding 01 in the Summary tab. Live in proposals/teaspressa/index.html.",
       "frame": "single-image 16:9",
-      "currentJob": "atmosphere or proof",
-      "placeholderCopy": "Selected Are.na image currently previewed in a 16:9 CSS crop.",
-      "draftAsset": "/proposals/teaspressa/img/src/arena/ts-02-wholesale-guide-45589756.png"
+      "currentJob": "atmosphere / proof",
+      "placeholderCopy": "Cropped 16:9 Teaspressa wholesale guide image.",
+      "draftAsset": "/proposals/teaspressa/img/src/arena/ts-02-wholesale-guide-45589756.png",
+      "status": "live",
+      "liveAsset": "/proposals/teaspressa/img/ts-02-wholesale-guide.jpg"
     },
     {
       "slot": "TS-04",
-      "placement": "After Finding 03 in the Summary tab.",
+      "placement": "After Finding 03 in the Summary tab. Live in proposals/teaspressa/index.html.",
       "frame": "single-image 16:9",
-      "currentJob": "atmosphere or proof",
-      "placeholderCopy": "Selected Are.na image currently previewed in a 16:9 CSS crop.",
-      "draftAsset": "/proposals/teaspressa/img/src/arena/ts-04-mothers-day-45587982.webp"
+      "currentJob": "atmosphere / proof",
+      "placeholderCopy": "Cropped 16:9 seasonal Teaspressa campaign image.",
+      "draftAsset": "/proposals/teaspressa/img/src/arena/ts-04-mothers-day-45587982.webp",
+      "status": "live",
+      "liveAsset": "/proposals/teaspressa/img/ts-04-seasonal-campaign.jpg"
     },
     {
       "slot": "TS-07",
-      "placement": "Inside What's working after the merchandising paragraph.",
+      "placement": "Inside What's working after the merchandising paragraph. Live in proposals/teaspressa/index.html.",
       "frame": "single-image 16:9",
       "currentJob": "atmosphere",
-      "placeholderCopy": "Selected Are.na image currently previewed in a 16:9 CSS crop.",
-      "draftAsset": "/proposals/teaspressa/img/src/arena/ts-07-valentines-retail-guide-45589884.jpg"
+      "placeholderCopy": "Cropped 16:9 Valentine's retail guide image.",
+      "draftAsset": "/proposals/teaspressa/img/src/arena/ts-07-valentines-retail-guide-45589884.jpg",
+      "status": "live",
+      "liveAsset": "/proposals/teaspressa/img/ts-07-valentines-retail-guide.jpg"
     },
     {
       "slot": "TS-11",
@@ -102,7 +108,7 @@
     {
       "id": "TS-02",
       "name": "Wholesale buyer path",
-      "status": "draft-filled",
+      "status": "live",
       "section": "summary finding 01, research wholesale, scope area 1",
       "placementAnchor": "After Finding 01 in Summary, with possible reuse or expansion in Scope Area 1.",
       "beat": "Evidence",
@@ -128,8 +134,9 @@
         "job: proof",
         "move: evidence plate"
       ],
-      "currentUse": "selected Are.na image in local in-flow draft; final image not inserted into live proposal",
-      "draftAsset": "/proposals/teaspressa/img/src/arena/ts-02-wholesale-guide-45589756.png"
+      "currentUse": "Live in the Summary tab after Finding 01 as a cropped 16:9 Teaspressa wholesale guide image.",
+      "draftAsset": "/proposals/teaspressa/img/src/arena/ts-02-wholesale-guide-45589756.png",
+      "liveAsset": "/proposals/teaspressa/img/ts-02-wholesale-guide.jpg"
     },
     {
       "id": "TS-03",
@@ -163,7 +170,7 @@
     {
       "id": "TS-04",
       "name": "Empty subscription infrastructure",
-      "status": "draft-filled",
+      "status": "live",
       "section": "summary finding 03, scope area 2",
       "placementAnchor": "After Finding 03 in Summary.",
       "beat": "Evidence",
@@ -189,8 +196,9 @@
         "move: evidence plate",
         "priority: high"
       ],
-      "currentUse": "selected Are.na image in local in-flow draft; final image not inserted into live proposal",
-      "draftAsset": "/proposals/teaspressa/img/src/arena/ts-04-mothers-day-45587982.webp"
+      "currentUse": "Live in the Summary tab after Finding 03 as a cropped 16:9 seasonal Teaspressa campaign image.",
+      "draftAsset": "/proposals/teaspressa/img/src/arena/ts-04-mothers-day-45587982.webp",
+      "liveAsset": "/proposals/teaspressa/img/ts-04-seasonal-campaign.jpg"
     },
     {
       "id": "TS-05",
@@ -254,7 +262,7 @@
     {
       "id": "TS-07",
       "name": "Merchandising strength",
-      "status": "draft-filled",
+      "status": "live",
       "section": "summary what's working, research product catalog",
       "placementAnchor": "Inside What's working, after the paragraph on 100 plus collections and seasonal rotation.",
       "beat": "Recognition",
@@ -279,8 +287,9 @@
         "move: specimen grid",
         "priority: high"
       ],
-      "currentUse": "selected Are.na image in local in-flow draft; final image not inserted into live proposal",
-      "draftAsset": "/proposals/teaspressa/img/src/arena/ts-07-valentines-retail-guide-45589884.jpg"
+      "currentUse": "Live in the Summary tab after What's working as a cropped 16:9 Valentine's retail guide image.",
+      "draftAsset": "/proposals/teaspressa/img/src/arena/ts-07-valentines-retail-guide-45589884.jpg",
+      "liveAsset": "/proposals/teaspressa/img/ts-07-valentines-retail-guide.jpg"
     },
     {
       "id": "TS-08",

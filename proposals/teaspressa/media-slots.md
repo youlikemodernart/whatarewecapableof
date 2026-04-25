@@ -62,12 +62,12 @@ slot: TS-07
 | Slot | Name | Priority | What to collect |
 |---|---|---:|---|
 | TS-01 | Product world opener | Medium | Product, packaging, drink use, retail display, seasonal collection. |
-| TS-02 | Wholesale buyer path | High | Placeholder after Finding 01; single 16:9 image, atmosphere or proof. |
+| TS-02 | Wholesale buyer path | High | Live after Finding 01; single 16:9 image. |
 | TS-03 | Analytics stack diagram | High | Deferred for now unless a diagram is requested. |
-| TS-04 | Empty subscription infrastructure | High | Placeholder after Finding 03; single 16:9 image, seasonal atmosphere or proof. |
+| TS-04 | Empty subscription infrastructure | High | Live after Finding 03; single 16:9 seasonal campaign image. |
 | TS-05 | TikTok effort versus traction | Medium | TikTok profile, video grid, representative thumbnails. |
 | TS-06 | Wedding and corporate inquiry flow | Medium | Wedding Shop, corporate gifting, custom kit or quote flow material. |
-| TS-07 | Merchandising strength | High | Placeholder after What's working; single 4:3 or 16:9 image. Grid can wait. |
+| TS-07 | Merchandising strength | High | Live after What's working; single 16:9 retail guide image. |
 | TS-08 | Wholesale buyer tool artifact | Medium | Future-only reference; Scope Area 1 placeholder removed from the local draft before publish. |
 | TS-09 | Seasonal subscription possibility | Low | Seasonal rotation, subscription ritual, limited flavor or box references. |
 | TS-10 | Connected measurement path | Medium | No image required. Generated diagram from tool stack and scope. |
@@ -101,7 +101,8 @@ move: specimen grid
 - Job: Proof.
 - Move: single body-width image placeholder by default.
 - Need: a strong image near the wholesale/product-system claim. This can be atmosphere first; a proof screenshot can replace it if stronger.
-- Current draft asset: `proposals/teaspressa/img/src/arena/ts-02-wholesale-guide-45589756.png`.
+- Live asset: `proposals/teaspressa/img/ts-02-wholesale-guide.jpg`.
+- Source asset: `proposals/teaspressa/img/src/arena/ts-02-wholesale-guide-45589756.png`.
 - Select for: visible wholesale flow, login-gated structure, case-pack specificity, line-sheet or reorder implications.
 - Avoid: product images that do not show wholesale flow, unreadable screenshots, over-cropped fragments.
 
@@ -141,7 +142,8 @@ move: system diagram
 - Job: Proof.
 - Move: single body-width image placeholder by default.
 - Need: seasonal product world, subscription ritual, or empty subscription page screenshot if proof is stronger.
-- Current draft asset: `proposals/teaspressa/img/src/arena/ts-04-mothers-day-45587982.webp`.
+- Live asset: `proposals/teaspressa/img/ts-04-seasonal-campaign.jpg`.
+- Source asset: `proposals/teaspressa/img/src/arena/ts-04-mothers-day-45587982.webp`.
 - Select for: absence made visible, factual framing, seasonal product potential.
 - Avoid: mocked subscription design before approval, anything that implies an active subscription offer if one does not exist.
 
@@ -201,7 +203,8 @@ move: process strip
 - Job: Specimen.
 - Move: single body-width image placeholder by default.
 - Need: one strong merchandising image that shows taste, seasonality, product range, or retail intelligence.
-- Current draft asset: `proposals/teaspressa/img/src/arena/ts-07-valentines-retail-guide-45589884.jpg`.
+- Live asset: `proposals/teaspressa/img/ts-07-valentines-retail-guide.jpg`.
+- Source asset: `proposals/teaspressa/img/src/arena/ts-07-valentines-retail-guide-45589884.jpg`.
 - Select for: distinct merchandising logics such as drink type, season, occasion, gift, retail, flavor.
 - Avoid: six images that all say the same thing.
 
@@ -303,7 +306,7 @@ move: single image
 
 ## Selection rule
 
-Collect more than we use. The proposal should probably use five or fewer visual insertions unless the page clearly asks for more. Current in-flow draft priorities are:
+Collect more than we use. The proposal should probably use five or fewer visual insertions unless the page clearly asks for more. Current live placements are:
 
 1. TS-02: Wholesale buyer path, Summary
 2. TS-04: Empty subscription infrastructure, Summary

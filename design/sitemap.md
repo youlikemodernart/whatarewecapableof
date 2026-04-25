@@ -210,7 +210,7 @@ Max depth: 2 from the primary nav. 3 counting home as level 0.
 - Date display: mono, `--size-s`, ALL CAPS day names
 - Time slots: mono, `--size-m`, clickable text (underline on hover per link rules)
 - Form fields: serif labels, mono inputs, underline-below-input (no box border)
-- Submit: `(BOOK)` in mono, parenthesized per the Ellen Ole button pattern
+- Submit: `Book a call` in mono, sentence case, underlined, no box
 - Confirmation: serif sentence ("Booked. Check your email for the calendar invite.")
 - Loading states: replace content with "..." or similar; no spinner animation
 

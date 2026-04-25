@@ -75,6 +75,23 @@ footer a:hover {
 }
 
 /* ============================================
+   Quiet CTAs
+   ============================================ */
+
+.cta-link,
+.booking-form button {
+  font-family: var(--font-mono);
+  font-size: var(--size-s);
+  text-transform: none;
+  letter-spacing: var(--tracking-normal);
+}
+
+.cta-link {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+/* ============================================
    Content blocks
    ============================================ */
 
@@ -177,10 +194,6 @@ footer a:hover {
 }
 
 .booking-form button {
-  font-family: var(--font-mono);
-  font-size: var(--size-s);
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-caps);
   background: none;
   border: none;
   color: var(--color-text);

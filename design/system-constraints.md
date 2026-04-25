@@ -411,7 +411,8 @@ If a form is ever needed (contact, subscribe):
 Prefer links to buttons. When a button is required (form submit, JS-driven action):
 - Text-only. No box, no rounded corners, no background.
 - Mono, `--size-s`, underlined.
-- Wrapped in parens like Ellen Ole's `(PLAY)`, `(FS)` — optional but consistent with the profile.
+- Use sentence case for CTAs. Avoid all-caps action text; it reads too loud in this system.
+- Parentheses like Ellen Ole's `(PLAY)`, `(FS)` remain optional for utility controls, not primary CTAs.
 
 ---
 

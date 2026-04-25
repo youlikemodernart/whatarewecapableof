@@ -5,3 +5,6 @@ node_modules/
 design/claude-session.log
 design/reference-analysis/_quarantine/
 .env*.local
+
+# Local-only proposal planning boards
+proposals/*/slots/

@@ -1,0 +1,293 @@
+/* ============================================
+   Proposal media primitives
+   Use for proposal visuals that function as evidence, comparison,
+   artifact, sequence, diagram, specimen, video, or pause.
+   ============================================ */
+
+.proposal-media {
+  margin: var(--space-2) 0;
+}
+
+.proposal-media-wide {
+  width: min(calc(100vw - (var(--margin-inline) * 2)), 960px);
+  max-width: none;
+}
+
+.proposal-media img,
+.proposal-media video,
+.proposal-media svg,
+.proposal-media canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.proposal-media-label,
+.proposal-media-caption,
+.proposal-media-source {
+  font-family: var(--font-mono);
+  font-size: var(--size-xs);
+  letter-spacing: var(--tracking-caps);
+}
+
+.proposal-media-label {
+  text-transform: uppercase;
+  margin-bottom: var(--space-0-5);
+}
+
+.proposal-media-caption {
+  margin-top: var(--space-0-5);
+  max-width: 64ch;
+}
+
+.proposal-media-source {
+  margin-top: calc(var(--space-0-5) * 0.5);
+  opacity: 0.45;
+}
+
+.proposal-media-surface {
+  background: #f5f5f3;
+  padding: var(--space-1);
+}
+
+.proposal-media-ruled {
+  border-top: 1px solid var(--color-text);
+  border-bottom: 1px solid var(--color-text);
+  padding: var(--space-1) 0;
+}
+
+/* Evidence plate */
+
+.proposal-evidence-plate {
+  margin: var(--space-2) 0;
+}
+
+.proposal-evidence-plate img {
+  width: 100%;
+}
+
+/* Diptych */
+
+.proposal-diptych {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-1);
+  margin: var(--space-2) 0;
+}
+
+.proposal-diptych .proposal-media {
+  margin: 0;
+}
+
+.proposal-diptych-caption {
+  grid-column: 1 / -1;
+  margin-top: calc(-1 * var(--space-0-5));
+}
+
+/* Specimen grid */
+
+.proposal-specimen-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin: var(--space-2) 0;
+  border-top: 1px solid var(--color-text);
+  border-bottom: 1px solid var(--color-text);
+}
+
+.proposal-specimen {
+  padding: var(--space-1) var(--space-1) var(--space-2);
+}
+
+.proposal-specimen-number,
+.proposal-specimen-meta,
+.proposal-specimen-role {
+  font-family: var(--font-mono);
+  font-size: var(--size-xs);
+  letter-spacing: var(--tracking-caps);
+}
+
+.proposal-specimen-number,
+.proposal-specimen-role {
+  text-transform: uppercase;
+}
+
+.proposal-specimen-number,
+.proposal-specimen-meta {
+  opacity: 0.45;
+}
+
+.proposal-specimen-label {
+  font-family: var(--font-mono);
+  font-size: var(--size-s);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-caps);
+  margin-top: var(--space-0-5);
+}
+
+.proposal-specimen-media {
+  margin-top: var(--space-0-5);
+  margin-bottom: var(--space-1);
+}
+
+.proposal-specimen-media img,
+.proposal-specimen-media video {
+  width: 100%;
+}
+
+.proposal-specimen-desc {
+  font-family: var(--font-serif);
+  font-size: var(--size-s);
+  max-width: 38ch;
+}
+
+.proposal-specimen-meta,
+.proposal-specimen-role {
+  margin-top: var(--space-0-5);
+}
+
+/* Process strip */
+
+.proposal-process-strip {
+  display: flex;
+  gap: var(--space-1);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-gutter: stable;
+  margin: var(--space-2) 0;
+  padding-bottom: var(--space-0-5);
+}
+
+.proposal-process-step {
+  flex: 0 0 min(18rem, 80vw);
+  border-top: 1px solid var(--color-text);
+  padding-top: var(--space-0-5);
+}
+
+.proposal-process-step-label {
+  font-family: var(--font-mono);
+  font-size: var(--size-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-caps);
+  opacity: 0.45;
+  margin-bottom: var(--space-0-5);
+}
+
+.proposal-process-step-title {
+  font-family: var(--font-serif);
+  font-size: var(--size-m);
+  margin-bottom: var(--space-0-5);
+}
+
+.proposal-process-step p {
+  font-size: var(--size-s);
+}
+
+/* System diagram and document excerpt */
+
+.proposal-diagram,
+.proposal-excerpt {
+  margin: var(--space-2) 0;
+  border-top: 1px solid var(--color-text);
+  border-bottom: 1px solid var(--color-text);
+  padding: var(--space-1) 0;
+}
+
+.proposal-diagram pre,
+.proposal-excerpt pre {
+  font-family: var(--font-mono);
+  font-size: var(--size-s);
+  line-height: var(--line-height);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.proposal-excerpt blockquote {
+  font-family: var(--font-serif);
+  font-size: var(--size-m);
+  margin: 0;
+}
+
+.proposal-excerpt cite {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--size-xs);
+  font-style: normal;
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  margin-top: var(--space-0-5);
+  opacity: 0.45;
+}
+
+/* Quiet stat field */
+
+.proposal-stat-field {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-2) 0;
+  padding: var(--space-1) 0;
+  border-top: 1px solid var(--color-text);
+  border-bottom: 1px solid var(--color-text);
+}
+
+.proposal-stat {
+  font-family: var(--font-mono);
+  font-size: var(--size-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-caps);
+}
+
+.proposal-stat strong {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: var(--size-m);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* Video plate */
+
+.proposal-video-plate {
+  margin: var(--space-2) 0;
+}
+
+.proposal-video-plate video {
+  width: 100%;
+  background: var(--color-text);
+}
+
+.proposal-video-transcript {
+  margin-top: var(--space-1);
+  font-size: var(--size-s);
+}
+
+.proposal-video-transcript summary {
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: var(--size-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-caps);
+}
+
+.proposal-video-transcript summary:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+@media (max-width: 767px) {
+  .proposal-media-wide {
+    width: 100%;
+  }
+
+  .proposal-diptych,
+  .proposal-specimen-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .proposal-stat-field {
+    flex-direction: column;
+    gap: var(--space-0-5);
+  }
+}

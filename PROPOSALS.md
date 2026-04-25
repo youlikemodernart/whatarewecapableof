@@ -124,6 +124,8 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 
 **Next:** Tim reviews the output and decides whether to make the introduction to Allison. This is part of the Tim referral channel proof-of-concept (4 clients total: Teaspressa, Five Points Strategies, and 2 others TBD).
 
+**Media slots:** Teaspressa is the pilot for the proposal composition system. Slot map: `proposals/teaspressa/media-slots.md`; structured manifest: `proposals/teaspressa/media-slots.json`; local-only visual placeholder board: `proposals/teaspressa/slots/index.html`, ignored by git through `proposals/*/slots/` while Noah curates imagery.
+
 **Deep docs:** `~/Projects/consulting/clients/teaspressa/status.md`
 
 ---
@@ -131,6 +133,8 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 ## Pipeline context
 
 **Template:** `proposals/_template/index.html` defines the structural pattern: sticky header, meta line, title, tab guide, four tabs (customizable names), findings/stat-row/table/scope-phase components, ? tab CTA. As of 2026-04-24, the template and all active proposal pages use the stable tab scroll handler: on tab click, scroll the selected panel to the top under the sticky header and tab bar. Do not restore the old `.tabs.offsetTop - 10` smooth-scroll pattern; it caused viewport drift on repeated mobile tab switching.
+
+**Composition system:** `design/proposal-composition-system.md` and `docs/proposal-composition-partner.md` govern visual rhythm for text-heavy proposals. The system maps each proposal as an argument, identifies proof and fatigue points, then selects media jobs and composition moves. `css/proposal-media.css` contains optional primitives for evidence plates, diptychs, specimen grids, process strips, diagrams, excerpts, stat fields, and video plates. Use these to avoid page-specific visual inventions unless the content requires a new move.
 
 **Tim referral channel:** Austin's brother Tim served 4 clients in the past year. Plan is to run all 4 through the pipeline, show Tim the output, get buy-in, then Tim refers or sells on behalf. Clients identified so far: Teaspressa, Five Points Strategies.
 

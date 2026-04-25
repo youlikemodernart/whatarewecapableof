@@ -28,6 +28,7 @@ For proposal pages, also read:
 1. `PROPOSALS.md`
 2. `proposals/_template/index.html`
 3. The active proposal file, for example `proposals/compassion/index.html`.
+4. `design/proposal-composition-system.md` and `docs/proposal-composition-partner.md` when the task touches visual rhythm, media placement, images, video, diagrams, or proposal pacing.
 
 ## Cursor as viewer
 

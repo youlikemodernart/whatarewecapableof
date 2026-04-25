@@ -31,6 +31,7 @@ Production site: `https://whatarewecapableof.com`
     typography.css
     layout.css
     components.css
+    proposal-media.css
   js/
     booking.js
   api/
@@ -81,6 +82,7 @@ The site uses directory-style pages: each route is a folder with an `index.html`
 | `css/typography.css` | Type classes and text conventions. |
 | `css/layout.css` | The two permitted layout primitives and page-level layout. |
 | `css/components.css` | Navigation, footer, work lists, proposal tabs, booking form, repeated components. |
+| `css/proposal-media.css` | Optional proposal media primitives: evidence plates, diptychs, specimen grids, process strips, diagrams, excerpts, stat fields, and video plates. |
 | `js/booking.js` | Shared booking UI controller used by `/coach/book` and `/book`. |
 
 Design constraints live in `design/system-constraints.md`. Treat that file as the engineering contract for spacing, type, layout, color, and motion.
@@ -128,6 +130,16 @@ The active mismatches are:
 
 - `proposals/compassion/img/08_26740334.png`: extension says PNG, file data says JPG.
 - `proposals/compassion/img/square/02-day-in-life.png`: extension says PNG, file data says JPG.
+
+## Proposal composition system
+
+| File | Role |
+|---|---|
+| `design/proposal-composition-system.md` | Strategy for adding visual rhythm to text-heavy proposal pages without turning them into rigid templates. |
+| `docs/proposal-composition-partner.md` | Operating workflow for an AI or human partner reviewing proposal pacing, media jobs, asset opportunities, and implementation plans. |
+| `proposals/teaspressa/media-slots.md` | Teaspressa media-slot curation guide for Are.na collection. |
+| `proposals/teaspressa/media-slots.json` | Structured Teaspressa slot manifest. |
+| `proposals/teaspressa/slots/index.html` | Local-only visual placeholder board, ignored by git through `proposals/*/slots/`. Do not deploy unless Noah approves. |
 
 ## Path rules
 

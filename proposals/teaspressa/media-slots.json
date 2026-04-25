@@ -1,0 +1,254 @@
+{
+  "proposal": "teaspressa",
+  "updated": "2026-04-25",
+  "arenaChannel": null,
+  "localOnlyBoard": "proposals/teaspressa/slots/index.html",
+  "tagSyntax": {
+    "slot": "slot: TS-01",
+    "job": "job: proof",
+    "move": "move: evidence plate",
+    "section": "section: wholesale",
+    "priority": "priority: high"
+  },
+  "slots": [
+    {
+      "id": "TS-01",
+      "name": "Product world opener",
+      "status": "open",
+      "section": "summary",
+      "placementAnchor": "After the opening company paragraph and before the first stat row, or after the stat row if the numbers should land first.",
+      "beat": "Recognition",
+      "mediaJob": "Atmosphere",
+      "compositionMove": "Specimen grid or quiet evidence plate",
+      "priority": "medium",
+      "assetNeed": "Three to six images that make the Luxe Mixer Cube system immediately legible: product, packaging, drink use, retail display, or seasonal collection.",
+      "selectionCriteria": [
+        "Shows what Teaspressa sells without needing explanation",
+        "Feels like product system, not generic lifestyle",
+        "Can sit quietly under the proposal typography",
+        "Avoids images that are too polished compared with the rest of the page"
+      ],
+      "avoid": [
+        "Founder portraits",
+        "Stock-feeling cocktail imagery",
+        "Images where the product is not visible"
+      ],
+      "aspectPreference": "Square or 4:5 images work best if this becomes a specimen grid.",
+      "arenaTags": ["slot: TS-01", "section: product", "job: atmosphere", "move: specimen grid"]
+    },
+    {
+      "id": "TS-02",
+      "name": "Wholesale buyer path",
+      "status": "open",
+      "section": "summary finding 01, research wholesale, scope area 1",
+      "placementAnchor": "After Finding 01 in Summary, with possible reuse or expansion in Scope Area 1.",
+      "beat": "Evidence",
+      "mediaJob": "Proof",
+      "compositionMove": "Evidence plate or diptych",
+      "priority": "high",
+      "assetNeed": "Screenshots or collected images showing the wholesale store, login gate, case-pack product view, or any buyer-facing wholesale material.",
+      "selectionCriteria": [
+        "Makes the wholesale experience visible",
+        "Shows the login-gated or case-pack structure clearly",
+        "Supports the line-sheet and reorder-tool observation",
+        "Frames friction without making the client look careless"
+      ],
+      "avoid": [
+        "Beautiful product images that do not show wholesale flow",
+        "Screenshots with unreadable text",
+        "Over-cropped fragments with no browser context"
+      ],
+      "aspectPreference": "Wide desktop screenshot preferred, mobile screenshot optional as second half of a diptych.",
+      "arenaTags": ["slot: TS-02", "section: wholesale", "job: proof", "move: evidence plate"]
+    },
+    {
+      "id": "TS-03",
+      "name": "Analytics stack diagram",
+      "status": "generated",
+      "section": "summary finding 02, research technology, scope area 3",
+      "placementAnchor": "After Finding 02 in Summary or at the start of Scope Area 3.",
+      "beat": "Interpretation",
+      "mediaJob": "Diagram",
+      "compositionMove": "System diagram",
+      "priority": "high",
+      "assetNeed": "No external image required. Generate a text-first diagram from the six tools: GA4, Hotjar, Clarity, Facebook Pixel, Klaviyo, Postscript.",
+      "selectionCriteria": [
+        "Shows six tools collecting independently",
+        "Clarifies why a shared data layer matters",
+        "Uses words and lines, not logos unless logos add real clarity"
+      ],
+      "avoid": [
+        "Logo cloud",
+        "Generic funnel diagram",
+        "Complex architecture diagram that exceeds the claim"
+      ],
+      "aspectPreference": "Wide text diagram.",
+      "arenaTags": ["slot: TS-03", "section: analytics", "job: diagram", "move: system diagram"]
+    },
+    {
+      "id": "TS-04",
+      "name": "Empty subscription infrastructure",
+      "status": "open",
+      "section": "summary finding 03, scope area 2",
+      "placementAnchor": "After Finding 03 in Summary.",
+      "beat": "Evidence",
+      "mediaJob": "Proof",
+      "compositionMove": "Evidence plate",
+      "priority": "high",
+      "assetNeed": "Screenshot of the empty subscription page and, if helpful, a related seasonal product or collection image that shows why subscription could make sense.",
+      "selectionCriteria": [
+        "Shows absence clearly",
+        "Keeps the observation factual and neutral",
+        "Makes the subscription claim concrete",
+        "Can pair absence with seasonal product potential if needed"
+      ],
+      "avoid": [
+        "Mocked subscription design before the idea is approved",
+        "Images that imply Teaspressa has a current subscription offer if it does not"
+      ],
+      "aspectPreference": "Wide screenshot or diptych with screenshot plus seasonal product evidence.",
+      "arenaTags": ["slot: TS-04", "section: subscription", "job: proof", "move: evidence plate", "priority: high"]
+    },
+    {
+      "id": "TS-05",
+      "name": "TikTok effort versus traction",
+      "status": "open",
+      "section": "summary finding 04, research content and social",
+      "placementAnchor": "After Finding 04 in Summary or inside Research under Content and social.",
+      "beat": "Evidence",
+      "mediaJob": "Proof",
+      "compositionMove": "Evidence plate or quiet stat field",
+      "priority": "medium",
+      "assetNeed": "TikTok profile screenshot, representative video grid, or three thumbnails that show production volume and hook pattern.",
+      "selectionCriteria": [
+        "Shows volume of effort",
+        "Does not ridicule performance",
+        "Lets the 475 videos to 5,181 followers claim feel grounded",
+        "Can be read quickly"
+      ],
+      "avoid": [
+        "Selecting individual videos only because they look bad",
+        "Screenshots that make the critique feel petty",
+        "Video embeds unless a specific clip demonstrates the pattern"
+      ],
+      "aspectPreference": "Tall mobile screenshot or three-square thumbnail strip.",
+      "arenaTags": ["slot: TS-05", "section: tiktok", "job: proof", "move: evidence plate"]
+    },
+    {
+      "id": "TS-06",
+      "name": "Wedding and corporate inquiry flow",
+      "status": "open",
+      "section": "summary finding 05, scope area 2",
+      "placementAnchor": "After Finding 05 in Summary or inside Scope Area 2.",
+      "beat": "Interpretation",
+      "mediaJob": "Sequence",
+      "compositionMove": "Process strip or diptych",
+      "priority": "medium",
+      "assetNeed": "Screenshots of Wedding Shop and corporate gifting pages, plus any imagery that shows custom kits, gifting, or event use.",
+      "selectionCriteria": [
+        "Shows why the flow currently becomes manual",
+        "Connects custom offer to higher-order buyer value",
+        "Makes the quote process visible without overdesigning a new one"
+      ],
+      "avoid": [
+        "Wedding mood imagery with no connection to the page flow",
+        "Full custom quoting UI mockup unless explicitly approved"
+      ],
+      "aspectPreference": "Two-page diptych or three-step process strip.",
+      "arenaTags": ["slot: TS-06", "section: wedding", "section: corporate", "job: sequence", "move: process strip"]
+    },
+    {
+      "id": "TS-07",
+      "name": "Merchandising strength",
+      "status": "open",
+      "section": "summary what's working, research product catalog",
+      "placementAnchor": "Inside What's working, after the paragraph on 100 plus collections and seasonal rotation.",
+      "beat": "Recognition",
+      "mediaJob": "Specimen",
+      "compositionMove": "Specimen grid",
+      "priority": "high",
+      "assetNeed": "Six product, collection, retail, or seasonal images that demonstrate the sophistication of Teaspressa's merchandising system.",
+      "selectionCriteria": [
+        "Shows breadth without feeling random",
+        "Each image can represent a distinct merchandising logic: drink type, season, occasion, gift, retail, flavor",
+        "Makes the proposal feel observant before it becomes advisory"
+      ],
+      "avoid": [
+        "Six images that all communicate the same thing",
+        "Images that are pretty but do not reveal the merchandising system"
+      ],
+      "aspectPreference": "Square images preferred.",
+      "arenaTags": ["slot: TS-07", "section: merchandising", "job: specimen", "move: specimen grid", "priority: high"]
+    },
+    {
+      "id": "TS-08",
+      "name": "Wholesale buyer tool artifact",
+      "status": "reference-needed",
+      "section": "scope area 1",
+      "placementAnchor": "After Scope Area 1, once the wholesale buyer tools idea has been introduced.",
+      "beat": "Possibility",
+      "mediaJob": "Artifact",
+      "compositionMove": "Document excerpt or artifact plate",
+      "priority": "medium",
+      "assetNeed": "Reference images for strong wholesale line sheets, retail buyer tools, mobile reorder experiences, or campaign catalog pages. This can become a restrained mock artifact later.",
+      "selectionCriteria": [
+        "Shows the kind of buyer-facing clarity we mean",
+        "Feels useful, not decorative",
+        "Can inspire a Teaspressa-specific artifact without copying another brand"
+      ],
+      "avoid": [
+        "SaaS dashboard references",
+        "Generic ecommerce screenshots",
+        "Overly designed line sheets that would not fit the WARWCO proposal register"
+      ],
+      "aspectPreference": "Document-like vertical or landscape page reference.",
+      "arenaTags": ["slot: TS-08", "section: wholesale", "job: artifact", "move: document excerpt"]
+    },
+    {
+      "id": "TS-09",
+      "name": "Seasonal subscription possibility",
+      "status": "reference-needed",
+      "section": "scope area 2",
+      "placementAnchor": "After Scope Area 2, if recurring revenue needs a concrete visual object.",
+      "beat": "Possibility",
+      "mediaJob": "Artifact",
+      "compositionMove": "Specimen or evidence plate",
+      "priority": "low",
+      "assetNeed": "Images that show seasonal rotation, limited flavors, subscription boxes, or recurring product rituals. Use only if it adds clarity beyond TS-04.",
+      "selectionCriteria": [
+        "Makes the seasonal subscription logic visible",
+        "Does not imply final packaging or offer terms",
+        "Adds possibility after the proof of empty infrastructure"
+      ],
+      "avoid": [
+        "Generic subscription box inspiration",
+        "Images that pull the proposal into a consumer moodboard"
+      ],
+      "aspectPreference": "Square or document-like, depending on selected asset.",
+      "arenaTags": ["slot: TS-09", "section: subscription", "section: seasonal", "job: artifact", "move: specimen grid"]
+    },
+    {
+      "id": "TS-10",
+      "name": "Connected measurement path",
+      "status": "generated",
+      "section": "scope area 3",
+      "placementAnchor": "After Scope Area 3 or before What a conversation would look like.",
+      "beat": "Offer",
+      "mediaJob": "Diagram",
+      "compositionMove": "System diagram",
+      "priority": "medium",
+      "assetNeed": "No external image required. Generate a diagram showing independent tools becoming a shared measurement layer.",
+      "selectionCriteria": [
+        "Clarifies what connected measurement means",
+        "Avoids pretending we know their internal data model",
+        "Gives the scope area a concrete shape"
+      ],
+      "avoid": [
+        "Overly technical implementation diagram",
+        "Fake data dashboard"
+      ],
+      "aspectPreference": "Wide text diagram.",
+      "arenaTags": ["slot: TS-10", "section: analytics", "job: diagram", "move: system diagram"]
+    }
+  ]
+}

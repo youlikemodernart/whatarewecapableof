@@ -27,7 +27,7 @@
   </header>
   <main>
     <h1>Book a call</h1>
-    <p>Pick a time that works. You will receive a calendar invite at the email you provide.</p>
+    <p>Pick a time that works. Times are shown in Arizona time. You will receive a calendar invite at the email you provide.</p>
 
     <div id="step-dates" style="margin-top: var(--space-2);">
       <p class="section-label">Available dates</p>
@@ -157,7 +157,7 @@
     function selectSlot(slot) {
       selectedSlot = slot;
       document.getElementById('selected-slot-label').textContent =
-        formatDateDisplay(selectedDate) + ' at ' + slot.display;
+        formatDateDisplay(selectedDate) + ' at ' + slot.display + ' Arizona time';
       showStep($form);
     }
 

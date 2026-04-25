@@ -8,3 +8,6 @@ design/reference-analysis/_quarantine/
 
 # Local-only proposal planning boards
 proposals/*/slots/
+
+# Local source assets pulled for proposal image selection/cropping
+proposals/*/img/src/

@@ -1,10 +1,10 @@
 {
   "summary": {
-    "generatedAt": "2026-04-24",
+    "generatedAt": "2026-04-25",
     "root": "/Users/noah/Projects/whatarewecapableof",
-    "assetCount": 319,
-    "siteVisibleAssetCount": 27,
-    "referencedAssetCount": 12,
+    "assetCount": 320,
+    "siteVisibleAssetCount": 28,
+    "referencedAssetCount": 13,
     "unreferencedSiteVisibleAssetCount": 15,
     "missingReferenceCount": 0,
     "relativeLocalReferenceCount": 0,
@@ -17,7 +17,7 @@
       "design-reference-gifs": 2,
       "design-reference-images": 5,
       "design-reference-screenshots": 24,
-      "proposal-content": 23
+      "proposal-content": 24
     }
   },
   "assets": [
@@ -35,6 +35,7 @@
       "category": "site-shell",
       "usedIn": [
         "about/index.html",
+        "book/index.html",
         "coach/book/index.html",
         "coach/index.html",
         "consult/index.html",
@@ -4145,6 +4146,7 @@
       "category": "site-shell",
       "usedIn": [
         "about/index.html",
+        "book/index.html",
         "coach/book/index.html",
         "coach/index.html",
         "consult/index.html",
@@ -4154,6 +4156,7 @@
         "proposals/belhaus/index.html",
         "proposals/compassion/index.html",
         "proposals/fde/index.html",
+        "proposals/paste/index.html",
         "proposals/teaspressa/index.html",
         "question/index.html"
       ]
@@ -4172,6 +4175,7 @@
       "category": "site-shell",
       "usedIn": [
         "about/index.html",
+        "book/index.html",
         "coach/book/index.html",
         "coach/index.html",
         "consult/index.html",
@@ -4181,6 +4185,7 @@
         "proposals/belhaus/index.html",
         "proposals/compassion/index.html",
         "proposals/fde/index.html",
+        "proposals/paste/index.html",
         "proposals/teaspressa/index.html",
         "question/index.html"
       ]
@@ -4538,6 +4543,22 @@
       },
       "category": "proposal-content",
       "usedIn": []
+    },
+    {
+      "path": "proposals/teaspressa/img/ts-11-wholesale-product-collage.jpg",
+      "publicPath": "/proposals/teaspressa/img/ts-11-wholesale-product-collage.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 582690,
+      "size": "569.0 KB",
+      "dimensions": {
+        "width": 3000,
+        "height": 1600
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/teaspressa/index.html"
+      ]
     }
   ],
   "references": [
@@ -4559,6 +4580,30 @@
     },
     {
       "source": "about/index.html",
+      "raw": "/apple-touch-icon.png",
+      "normalizedPath": "apple-touch-icon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "book/index.html",
+      "raw": "/favicon.svg",
+      "normalizedPath": "favicon.svg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "book/index.html",
+      "raw": "/favicon.png",
+      "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "book/index.html",
       "raw": "/apple-touch-icon.png",
       "normalizedPath": "apple-touch-icon.png",
       "exists": true,
@@ -4846,6 +4891,22 @@
       "absolute": false
     },
     {
+      "source": "proposals/paste/index.html",
+      "raw": "/favicon.svg",
+      "normalizedPath": "favicon.svg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/paste/index.html",
+      "raw": "/favicon.png",
+      "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
       "source": "proposals/teaspressa/index.html",
       "raw": "/favicon.svg",
       "normalizedPath": "favicon.svg",
@@ -4857,6 +4918,14 @@
       "source": "proposals/teaspressa/index.html",
       "raw": "/favicon.png",
       "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/teaspressa/index.html",
+      "raw": "/proposals/teaspressa/img/ts-11-wholesale-product-collage.jpg",
+      "normalizedPath": "proposals/teaspressa/img/ts-11-wholesale-product-collage.jpg",
       "exists": true,
       "rootRelative": true,
       "absolute": false

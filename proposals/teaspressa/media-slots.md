@@ -6,6 +6,14 @@ Visual board: `proposals/teaspressa/slots/index.html` local-only while collectin
 
 Structured manifest: `proposals/teaspressa/media-slots.json`
 
+Current direction: the local board should look like the proposal itself, with grey image frames placed in the reading flow. Use it to judge cadence before choosing final images.
+
+Default frame: one body-width image or simple video. Start with 16:9. Use 4:3, 7:5, or 5:7 only when the surrounding text asks for it. Do not jump to diptychs, triptychs, or specimen grids unless Noah asks for that layout or one image cannot carry the point.
+
+For Teaspressa, images may work as loose atmosphere. They do not need to prove the adjacent sentence. The placeholder copy should suggest what could go there, but the most important thing is seeing the frame exactly where it would live on the page.
+
+Raw pulled Are.na assets live in `proposals/teaspressa/img/src/arena/`. Shopify wholesale scrape, contact sheets, tiles, and rough collage outputs live in `proposals/teaspressa/img/src/wholesale-products/`. Web-ready final crops should live in `proposals/teaspressa/img/`. Keep raw source files so framing can be adjusted without re-pulling.
+
 To view the board locally:
 
 ```bash
@@ -54,15 +62,16 @@ slot: TS-07
 | Slot | Name | Priority | What to collect |
 |---|---|---:|---|
 | TS-01 | Product world opener | Medium | Product, packaging, drink use, retail display, seasonal collection. |
-| TS-02 | Wholesale buyer path | High | Wholesale store, login gate, case-pack view, buyer-facing material. |
-| TS-03 | Analytics stack diagram | High | No image required. Generated diagram from known tool stack. |
-| TS-04 | Empty subscription infrastructure | High | Empty subscription page screenshot, optional seasonal product contrast. |
+| TS-02 | Wholesale buyer path | High | Placeholder after Finding 01; single 16:9 image, atmosphere or proof. |
+| TS-03 | Analytics stack diagram | High | Deferred for now unless a diagram is requested. |
+| TS-04 | Empty subscription infrastructure | High | Placeholder after Finding 03; single 16:9 image, seasonal atmosphere or proof. |
 | TS-05 | TikTok effort versus traction | Medium | TikTok profile, video grid, representative thumbnails. |
 | TS-06 | Wedding and corporate inquiry flow | Medium | Wedding Shop, corporate gifting, custom kit or quote flow material. |
-| TS-07 | Merchandising strength | High | Six images showing different merchandising logics. |
-| TS-08 | Wholesale buyer tool artifact | Medium | References for line sheets, reorder tools, mobile buyer pages, catalog pages. |
+| TS-07 | Merchandising strength | High | Placeholder after What's working; single 4:3 or 16:9 image. Grid can wait. |
+| TS-08 | Wholesale buyer tool artifact | Medium | Placeholder after Scope Area 1; single 16:9 artifact/reference image. |
 | TS-09 | Seasonal subscription possibility | Low | Seasonal rotation, subscription ritual, limited flavor or box references. |
 | TS-10 | Connected measurement path | Medium | No image required. Generated diagram from tool stack and scope. |
+| TS-11 | Research catalog breath | Medium | Live in Research after Product catalog as 120-image product-only edge-to-edge wholesale collage. |
 
 ## Slot details
 
@@ -90,8 +99,9 @@ move: specimen grid
 - Placement: after Finding 01 in Summary, with possible reuse or expansion in Scope Area 1.
 - Beat: Evidence.
 - Job: Proof.
-- Move: Evidence plate or diptych.
-- Need: screenshots or images showing the wholesale store, login gate, case-pack product view, or buyer-facing wholesale material.
+- Move: single body-width image placeholder by default.
+- Need: a strong image near the wholesale/product-system claim. This can be atmosphere first; a proof screenshot can replace it if stronger.
+- Current draft asset: `proposals/teaspressa/img/src/arena/ts-02-wholesale-guide-45589756.png`.
 - Select for: visible wholesale flow, login-gated structure, case-pack specificity, line-sheet or reorder implications.
 - Avoid: product images that do not show wholesale flow, unreadable screenshots, over-cropped fragments.
 
@@ -129,8 +139,9 @@ move: system diagram
 - Placement: after Finding 03 in Summary.
 - Beat: Evidence.
 - Job: Proof.
-- Move: Evidence plate.
-- Need: screenshot of the empty subscription page and, if helpful, a related seasonal product or collection image.
+- Move: single body-width image placeholder by default.
+- Need: seasonal product world, subscription ritual, or empty subscription page screenshot if proof is stronger.
+- Current draft asset: `proposals/teaspressa/img/src/arena/ts-04-mothers-day-45587982.webp`.
 - Select for: absence made visible, factual framing, seasonal product potential.
 - Avoid: mocked subscription design before approval, anything that implies an active subscription offer if one does not exist.
 
@@ -188,8 +199,9 @@ move: process strip
 - Placement: inside What's working, after the paragraph on 100 plus collections and seasonal rotation.
 - Beat: Recognition.
 - Job: Specimen.
-- Move: Specimen grid.
-- Need: six product, collection, retail, or seasonal images that demonstrate Teaspressa's merchandising system.
+- Move: single body-width image placeholder by default.
+- Need: one strong merchandising image that shows taste, seasonality, product range, or retail intelligence.
+- Current draft asset: `proposals/teaspressa/img/src/arena/ts-07-valentines-retail-guide-45589884.jpg`.
 - Select for: distinct merchandising logics such as drink type, season, occasion, gift, retail, flavor.
 - Avoid: six images that all say the same thing.
 
@@ -205,13 +217,13 @@ priority: high
 
 ### TS-08: Wholesale buyer tool artifact
 
-- Placement: after Scope Area 1, once wholesale buyer tools have been introduced.
+- Placement: Scope tab, after Area 1: Wholesale buyer tools.
 - Beat: Possibility.
-- Job: Artifact.
-- Move: Document excerpt or artifact plate.
-- Need: references for wholesale line sheets, retail buyer tools, mobile reorder experiences, or campaign catalog pages.
+- Job: Artifact/reference.
+- Move: single body-width image placeholder by default.
+- Need: line sheet, buyer guide, reorder tool, seasonal wholesale preview, retail catalog reference, or buyer-facing sales tool.
 - Select for: buyer-facing clarity and usefulness.
-- Avoid: SaaS dashboards, generic ecommerce screenshots, overdesigned line sheets that fight the WARWCO register.
+- Avoid: another Teaspressa product mood image, SaaS dashboards, generic ecommerce screenshots, overdesigned line sheets that fight the WARWCO register.
 
 Are.na tags:
 
@@ -219,7 +231,7 @@ Are.na tags:
 slot: TS-08
 section: wholesale
 job: artifact
-move: document excerpt
+move: single image
 ```
 
 ### TS-09: Seasonal subscription possibility
@@ -258,16 +270,45 @@ Are.na tags for references:
 slot: TS-10
 section: analytics
 job: diagram
-move: system diagram
+```
+
+### TS-11: Research catalog breath
+
+- Placement: Research tab, after the Product catalog table and the paragraph about 152 products and seasonal collections.
+- Beat: Evidence.
+- Job: Atmosphere.
+- Move: single edge-to-edge collage preview generated from Shopify wholesale product images.
+- Need: review the 120-image product-only edge-to-edge collage and decide whether the accessory-free version is stronger than the denser A+B comparison.
+- Source manifest: `proposals/teaspressa/img/src/wholesale-products/manifest.json`.
+- Contact sheet for review: `proposals/teaspressa/img/src/wholesale-products/contact-sheets/clean-candidates-top-40.jpg`.
+- Live asset: `proposals/teaspressa/img/ts-11-wholesale-product-collage.jpg`.
+- Source rough asset: `proposals/teaspressa/img/src/wholesale-products/collages/ts-11-wholesale-product-collage-120up-products-cubes-top-v2-edge-15x8.jpg`.
+- Source rough manifest: `proposals/teaspressa/img/src/wholesale-products/collages/ts-11-wholesale-product-collage-120up-products-cubes-top-v2-edge-15x8.json`.
+- Previous sorted asset: `proposals/teaspressa/img/src/wholesale-products/collages/ts-11-wholesale-product-collage-120up-products-sorted-edge-15x8.jpg`.
+- Previous unsorted product-only asset: `proposals/teaspressa/img/src/wholesale-products/collages/ts-11-wholesale-product-collage-120up-products-no-t-edge-15x8.jpg`.
+- Dense comparison asset: `proposals/teaspressa/img/src/wholesale-products/collages/ts-11-wholesale-product-collage-169up-ab-no-t-edge-13x13.jpg`.
+- Earlier rough assets: `ts-11-wholesale-product-collage-176up-edge-16x11.jpg`, `ts-11-wholesale-product-collage-160up-edge-16x10.jpg`, and `ts-11-wholesale-product-collage-180up-edge-15x12.jpg`.
+- Status: live in `proposals/teaspressa/index.html`; generated from A-clean/B-usable product images, excluding sample/T-logo placeholders, obvious accessories, glassware, signage, and display fixtures. The sorted grid groups rows by product family with the narrow stick and mini cube packs in the top rows, then tea line, then kits/gifts/boxed collections, then tallboys. The tiles use tight square crops and no gutters, strokes, or borders.
+- Select for: catalog breadth, product clarity, seasonal merchandising, ability to give the Research tab air before the wholesale and technology sections.
+- Avoid: another image that repeats an existing Summary image, tiny product details that do not read at text width, overly decorative campaign images.
+
+Are.na tags:
+
+```txt
+slot: TS-11
+section: product catalog
+job: atmosphere
+move: single image
 ```
 
 ## Selection rule
 
-Collect more than we use. The proposal should probably use four to six visual insertions, not all ten slots. The high-priority slots to fill first are:
+Collect more than we use. The proposal should probably use five or fewer visual insertions unless the page clearly asks for more. Current in-flow draft priorities are:
 
-1. TS-02: Wholesale buyer path
-2. TS-04: Empty subscription infrastructure
-3. TS-07: Merchandising strength
-4. TS-03: Analytics stack diagram, generated from known facts
+1. TS-02: Wholesale buyer path, Summary
+2. TS-04: Empty subscription infrastructure, Summary
+3. TS-07: Merchandising strength, Summary
+4. TS-11: Research catalog breath, Research
+5. TS-08: Wholesale buyer tool artifact, Scope
 
-Then consider TS-05 and TS-06 if the page still needs rhythm or proof.
+Then consider TS-03, TS-05, or TS-06 only if the page still needs clarity, rhythm, or proof.

@@ -1,8 +1,22 @@
 {
   "proposal": "teaspressa",
   "updated": "2026-04-25",
-  "arenaChannel": null,
+  "arenaChannel": "teaspressa-media",
   "localOnlyBoard": "proposals/teaspressa/slots/index.html",
+  "compositionDirection": "First create an in-flow local composition draft that uses the actual proposal copy with grey placeholder frames. Default to a single body-width image or simple video. Use 16:9 by default, with 4:3, 7:5, or 5:7 only when the surrounding context asks for it. Teaspressa images can work as loose atmosphere; they do not need to prove the adjacent sentence.",
+  "defaultFrame": {
+    "layout": "single-image",
+    "width": "proposal text body",
+    "defaultRatio": "16:9",
+    "allowedRatios": [
+      "16:9",
+      "4:3",
+      "7:5",
+      "5:7"
+    ],
+    "placeholderPage": "proposals/teaspressa/slots/index.html",
+    "note": "Use alternate layouts such as grids, diptychs, or tall paired screenshots only when Noah asks for them or the proposal clearly needs them."
+  },
   "tagSyntax": {
     "slot": "slot: TS-01",
     "job": "job: proof",
@@ -10,6 +24,57 @@
     "section": "section: wholesale",
     "priority": "priority: high"
   },
+  "draftPlacements": [
+    {
+      "slot": "TS-02",
+      "placement": "After Finding 01 in the Summary tab.",
+      "frame": "single-image 16:9",
+      "currentJob": "atmosphere or proof",
+      "placeholderCopy": "Selected Are.na image currently previewed in a 16:9 CSS crop.",
+      "draftAsset": "/proposals/teaspressa/img/src/arena/ts-02-wholesale-guide-45589756.png"
+    },
+    {
+      "slot": "TS-04",
+      "placement": "After Finding 03 in the Summary tab.",
+      "frame": "single-image 16:9",
+      "currentJob": "atmosphere or proof",
+      "placeholderCopy": "Selected Are.na image currently previewed in a 16:9 CSS crop.",
+      "draftAsset": "/proposals/teaspressa/img/src/arena/ts-04-mothers-day-45587982.webp"
+    },
+    {
+      "slot": "TS-07",
+      "placement": "Inside What's working after the merchandising paragraph.",
+      "frame": "single-image 16:9",
+      "currentJob": "atmosphere",
+      "placeholderCopy": "Selected Are.na image currently previewed in a 16:9 CSS crop.",
+      "draftAsset": "/proposals/teaspressa/img/src/arena/ts-07-valentines-retail-guide-45589884.jpg"
+    },
+    {
+      "slot": "TS-11",
+      "placement": "Research tab, after the Product catalog table and the paragraph about 152 products and seasonal collections. Live in proposals/teaspressa/index.html.",
+      "frame": "single-image 15:8",
+      "currentJob": "atmosphere / catalog breadth",
+      "placeholderCopy": "Edge-to-edge collage of 120 A-clean/B-usable product images, sorted by product family with narrow stick and mini cube packs in the top rows.",
+      "roughAsset": "/proposals/teaspressa/img/src/wholesale-products/collages/ts-11-wholesale-product-collage-120up-products-cubes-top-v2-edge-15x8.jpg",
+      "sourceManifest": "proposals/teaspressa/img/src/wholesale-products/manifest.json",
+      "contactSheet": "proposals/teaspressa/img/src/wholesale-products/contact-sheets/clean-candidates-top-40.jpg",
+      "alternateAsset": "/proposals/teaspressa/img/src/wholesale-products/collages/ts-11-wholesale-product-collage-169up-ab-no-t-edge-13x13.jpg",
+      "comparisonAsset": "/proposals/teaspressa/img/src/wholesale-products/collages/ts-11-wholesale-product-collage-120up-products-sorted-edge-15x8.jpg",
+      "collageManifest": "proposals/teaspressa/img/src/wholesale-products/collages/ts-11-wholesale-product-collage-120up-products-cubes-top-v2-edge-15x8.json",
+      "cropRule": "Tight square crop around detected product/object; no gutters, strokes, or borders.",
+      "filters": "A-clean/B-usable buckets only; removed sample/T-logo placeholders, obvious accessories, glassware, signage, and display fixtures; dropped three lowest-scored remaining product images to make a 15x8 grid.",
+      "sortRule": "Rows 1-2: narrow stick and mini cube formats. Row 3: tea line and sampler. Rows 4-7: kits, gifts, and boxed collections. Row 8: tallboys.",
+      "status": "live",
+      "liveAsset": "/proposals/teaspressa/img/ts-11-wholesale-product-collage.jpg"
+    },
+    {
+      "slot": "TS-08",
+      "placement": "Scope tab, after Area 1: Wholesale buyer tools.",
+      "frame": "single-image 16:9",
+      "currentJob": "artifact reference",
+      "placeholderCopy": "Line sheet, buyer guide, reorder tool, seasonal wholesale preview, or retail catalog reference."
+    }
+  ],
   "slots": [
     {
       "id": "TS-01",
@@ -34,17 +99,22 @@
         "Images where the product is not visible"
       ],
       "aspectPreference": "Square or 4:5 images work best if this becomes a specimen grid.",
-      "arenaTags": ["slot: TS-01", "section: product", "job: atmosphere", "move: specimen grid"]
+      "arenaTags": [
+        "slot: TS-01",
+        "section: product",
+        "job: atmosphere",
+        "move: specimen grid"
+      ]
     },
     {
       "id": "TS-02",
       "name": "Wholesale buyer path",
-      "status": "open",
+      "status": "draft-filled",
       "section": "summary finding 01, research wholesale, scope area 1",
       "placementAnchor": "After Finding 01 in Summary, with possible reuse or expansion in Scope Area 1.",
       "beat": "Evidence",
-      "mediaJob": "Proof",
-      "compositionMove": "Evidence plate or diptych",
+      "mediaJob": "Atmosphere or proof",
+      "compositionMove": "Single body-width image placeholder",
       "priority": "high",
       "assetNeed": "Screenshots or collected images showing the wholesale store, login gate, case-pack product view, or any buyer-facing wholesale material.",
       "selectionCriteria": [
@@ -58,8 +128,15 @@
         "Screenshots with unreadable text",
         "Over-cropped fragments with no browser context"
       ],
-      "aspectPreference": "Wide desktop screenshot preferred, mobile screenshot optional as second half of a diptych.",
-      "arenaTags": ["slot: TS-02", "section: wholesale", "job: proof", "move: evidence plate"]
+      "aspectPreference": "Default 16:9. Use a proof screenshot only if it feels stronger than atmosphere.",
+      "arenaTags": [
+        "slot: TS-02",
+        "section: wholesale",
+        "job: proof",
+        "move: evidence plate"
+      ],
+      "currentUse": "selected Are.na image in local in-flow draft; final image not inserted into live proposal",
+      "draftAsset": "/proposals/teaspressa/img/src/arena/ts-02-wholesale-guide-45589756.png"
     },
     {
       "id": "TS-03",
@@ -83,17 +160,22 @@
         "Complex architecture diagram that exceeds the claim"
       ],
       "aspectPreference": "Wide text diagram.",
-      "arenaTags": ["slot: TS-03", "section: analytics", "job: diagram", "move: system diagram"]
+      "arenaTags": [
+        "slot: TS-03",
+        "section: analytics",
+        "job: diagram",
+        "move: system diagram"
+      ]
     },
     {
       "id": "TS-04",
       "name": "Empty subscription infrastructure",
-      "status": "open",
+      "status": "draft-filled",
       "section": "summary finding 03, scope area 2",
       "placementAnchor": "After Finding 03 in Summary.",
       "beat": "Evidence",
-      "mediaJob": "Proof",
-      "compositionMove": "Evidence plate",
+      "mediaJob": "Atmosphere or proof",
+      "compositionMove": "Single body-width image placeholder",
       "priority": "high",
       "assetNeed": "Screenshot of the empty subscription page and, if helpful, a related seasonal product or collection image that shows why subscription could make sense.",
       "selectionCriteria": [
@@ -106,8 +188,16 @@
         "Mocked subscription design before the idea is approved",
         "Images that imply Teaspressa has a current subscription offer if it does not"
       ],
-      "aspectPreference": "Wide screenshot or diptych with screenshot plus seasonal product evidence.",
-      "arenaTags": ["slot: TS-04", "section: subscription", "job: proof", "move: evidence plate", "priority: high"]
+      "aspectPreference": "Default 16:9. Seasonal atmosphere is acceptable; empty-page proof can replace it.",
+      "arenaTags": [
+        "slot: TS-04",
+        "section: subscription",
+        "job: proof",
+        "move: evidence plate",
+        "priority: high"
+      ],
+      "currentUse": "selected Are.na image in local in-flow draft; final image not inserted into live proposal",
+      "draftAsset": "/proposals/teaspressa/img/src/arena/ts-04-mothers-day-45587982.webp"
     },
     {
       "id": "TS-05",
@@ -132,7 +222,12 @@
         "Video embeds unless a specific clip demonstrates the pattern"
       ],
       "aspectPreference": "Tall mobile screenshot or three-square thumbnail strip.",
-      "arenaTags": ["slot: TS-05", "section: tiktok", "job: proof", "move: evidence plate"]
+      "arenaTags": [
+        "slot: TS-05",
+        "section: tiktok",
+        "job: proof",
+        "move: evidence plate"
+      ]
     },
     {
       "id": "TS-06",
@@ -155,17 +250,23 @@
         "Full custom quoting UI mockup unless explicitly approved"
       ],
       "aspectPreference": "Two-page diptych or three-step process strip.",
-      "arenaTags": ["slot: TS-06", "section: wedding", "section: corporate", "job: sequence", "move: process strip"]
+      "arenaTags": [
+        "slot: TS-06",
+        "section: wedding",
+        "section: corporate",
+        "job: sequence",
+        "move: process strip"
+      ]
     },
     {
       "id": "TS-07",
       "name": "Merchandising strength",
-      "status": "open",
+      "status": "draft-filled",
       "section": "summary what's working, research product catalog",
       "placementAnchor": "Inside What's working, after the paragraph on 100 plus collections and seasonal rotation.",
       "beat": "Recognition",
-      "mediaJob": "Specimen",
-      "compositionMove": "Specimen grid",
+      "mediaJob": "Atmosphere",
+      "compositionMove": "Single body-width image placeholder",
       "priority": "high",
       "assetNeed": "Six product, collection, retail, or seasonal images that demonstrate the sophistication of Teaspressa's merchandising system.",
       "selectionCriteria": [
@@ -177,18 +278,26 @@
         "Six images that all communicate the same thing",
         "Images that are pretty but do not reveal the merchandising system"
       ],
-      "aspectPreference": "Square images preferred.",
-      "arenaTags": ["slot: TS-07", "section: merchandising", "job: specimen", "move: specimen grid", "priority: high"]
+      "aspectPreference": "Current local draft uses 16:9 CSS crop. Use 4:3 or 16:9 depending on mobile review.",
+      "arenaTags": [
+        "slot: TS-07",
+        "section: merchandising",
+        "job: specimen",
+        "move: specimen grid",
+        "priority: high"
+      ],
+      "currentUse": "selected Are.na image in local in-flow draft; final image not inserted into live proposal",
+      "draftAsset": "/proposals/teaspressa/img/src/arena/ts-07-valentines-retail-guide-45589884.jpg"
     },
     {
       "id": "TS-08",
       "name": "Wholesale buyer tool artifact",
-      "status": "reference-needed",
+      "status": "placeholder-draft",
       "section": "scope area 1",
-      "placementAnchor": "After Scope Area 1, once the wholesale buyer tools idea has been introduced.",
+      "placementAnchor": "Scope tab, after Area 1: Wholesale buyer tools.",
       "beat": "Possibility",
       "mediaJob": "Artifact",
-      "compositionMove": "Document excerpt or artifact plate",
+      "compositionMove": "Single body-width image placeholder",
       "priority": "medium",
       "assetNeed": "Reference images for strong wholesale line sheets, retail buyer tools, mobile reorder experiences, or campaign catalog pages. This can become a restrained mock artifact later.",
       "selectionCriteria": [
@@ -201,8 +310,14 @@
         "Generic ecommerce screenshots",
         "Overly designed line sheets that would not fit the WARWCO proposal register"
       ],
-      "aspectPreference": "Document-like vertical or landscape page reference.",
-      "arenaTags": ["slot: TS-08", "section: wholesale", "job: artifact", "move: document excerpt"]
+      "aspectPreference": "Default 16:9. Use a document-like reference crop only if it still reads at proposal text width.",
+      "arenaTags": [
+        "slot: TS-08",
+        "section: wholesale",
+        "job: artifact",
+        "move: document excerpt"
+      ],
+      "currentUse": "in-flow local placeholder; final image not inserted yet"
     },
     {
       "id": "TS-09",
@@ -225,7 +340,13 @@
         "Images that pull the proposal into a consumer moodboard"
       ],
       "aspectPreference": "Square or document-like, depending on selected asset.",
-      "arenaTags": ["slot: TS-09", "section: subscription", "section: seasonal", "job: artifact", "move: specimen grid"]
+      "arenaTags": [
+        "slot: TS-09",
+        "section: subscription",
+        "section: seasonal",
+        "job: artifact",
+        "move: specimen grid"
+      ]
     },
     {
       "id": "TS-10",
@@ -248,7 +369,53 @@
         "Fake data dashboard"
       ],
       "aspectPreference": "Wide text diagram.",
-      "arenaTags": ["slot: TS-10", "section: analytics", "job: diagram", "move: system diagram"]
+      "arenaTags": [
+        "slot: TS-10",
+        "section: analytics",
+        "job: diagram",
+        "move: system diagram"
+      ]
+    },
+    {
+      "id": "TS-11",
+      "name": "Research catalog breath",
+      "status": "live",
+      "section": "research product catalog",
+      "placementAnchor": "Research tab, after the Product catalog table and the paragraph about 152 products and seasonal collections.",
+      "beat": "Evidence",
+      "mediaJob": "Atmosphere",
+      "compositionMove": "Single edge-to-edge product collage",
+      "priority": "medium",
+      "assetNeed": "Review in production after deploy. If it feels too dense on mobile, create a smaller variant or a wide-only treatment.",
+      "selectionCriteria": [
+        "Shows catalog breadth or product world without requiring explanation",
+        "Breaks up the table-heavy Research tab",
+        "Feels tied to product range rather than generic lifestyle",
+        "Works as a single 16:9 image at proposal text width"
+      ],
+      "avoid": [
+        "Another image that repeats an existing Summary image",
+        "Tiny product details that do not read at text width",
+        "Overly decorative campaign images that distract from the research flow"
+      ],
+      "aspectPreference": "Current local draft uses a 15:8 frame matching a 15-column by 8-row square-tile collage.",
+      "arenaTags": [
+        "slot: TS-11",
+        "section: product catalog",
+        "job: atmosphere",
+        "move: single image"
+      ],
+      "currentUse": "Live in the Research tab after Product catalog as a 120-image product-only edge-to-edge wholesale product collage sorted by product family.",
+      "roughAsset": "/proposals/teaspressa/img/src/wholesale-products/collages/ts-11-wholesale-product-collage-120up-products-cubes-top-v2-edge-15x8.jpg",
+      "sourceManifest": "proposals/teaspressa/img/src/wholesale-products/manifest.json",
+      "contactSheet": "proposals/teaspressa/img/src/wholesale-products/contact-sheets/clean-candidates-top-40.jpg",
+      "alternateAsset": "/proposals/teaspressa/img/src/wholesale-products/collages/ts-11-wholesale-product-collage-169up-ab-no-t-edge-13x13.jpg",
+      "comparisonAsset": "/proposals/teaspressa/img/src/wholesale-products/collages/ts-11-wholesale-product-collage-120up-products-sorted-edge-15x8.jpg",
+      "collageManifest": "proposals/teaspressa/img/src/wholesale-products/collages/ts-11-wholesale-product-collage-120up-products-cubes-top-v2-edge-15x8.json",
+      "cropRule": "Tight square crop around detected product/object; no gutters, strokes, or borders.",
+      "filters": "A-clean/B-usable buckets only; removed sample/T-logo placeholders, obvious accessories, glassware, signage, and display fixtures; dropped three lowest-scored remaining product images to make a 15x8 grid.",
+      "sortRule": "Rows 1-2: narrow stick and mini cube formats. Row 3: tea line and sampler. Rows 4-7: kits, gifts, and boxed collections. Row 8: tallboys.",
+      "liveAsset": "/proposals/teaspressa/img/ts-11-wholesale-product-collage.jpg"
     }
   ]
 }

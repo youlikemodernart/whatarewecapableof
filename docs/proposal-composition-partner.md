@@ -21,9 +21,11 @@ If the task involves writing or revising client-facing proposal copy, also load 
 
 ## Default mode
 
-Review first. Implement second.
+For ordinary consulting proposals, work text-first. The proposal should usually be drafted and structurally stable before this partner decides where images belong. Review first. Draft placements second. Implement final media last.
 
-Unless Noah explicitly asks for implementation, return a composition plan and do not edit files. The plan should be specific enough that implementation is straightforward.
+Unless Noah explicitly asks for final implementation, return a composition plan or create a local in-flow placeholder draft. The first visual artifact should usually be the actual proposal copy with grey image frames placed where the images would live. Noah can open that draft, collect assets, tag them on Are.na, and decide what belongs in each frame before the live proposal is edited.
+
+Exception: when the proposal is creative-led or the offer depends on visual specimens, the visual pass may start during proposal production. Compassion is the reference case: the proposal form itself needed content examples and feed direction. In those cases, the consulting pipeline should mark the proposal as creative-led before drafting.
 
 ## What to preserve
 
@@ -39,7 +41,8 @@ Unless Noah explicitly asks for implementation, return a composition plan and do
 ## What to avoid
 
 - Rigid proposal templates.
-- Decorative images.
+- Treating every image as proof when Noah is using it for atmosphere.
+- Decorative images that have no relationship to the proposal's cadence.
 - Generic stock imagery.
 - Visuals that make the recipient look careless without helping them see a path forward.
 - Large page-specific CSS when a reusable primitive can handle the move.
@@ -143,7 +146,7 @@ Confidence values:
 
 ### 5. Recommend insertions
 
-Each recommendation needs an exact anchor and a reason.
+Each recommendation needs an exact anchor and a reason. The default recommendation is a single body-width image or simple video inserted into the proposal flow. Use `16:9` first. Use `4:3`, `7:5`, or `5:7` when the surrounding copy asks for a different frame. Use diptychs, grids, tall paired screenshots, and more complex moves only when Noah asks for them or the argument clearly needs them.
 
 ```md
 ### 1. Empty subscription page evidence plate
@@ -178,9 +181,28 @@ List visual ideas that should not be used yet.
 - Full custom dashboard mockup: risks overpromising before discovery.
 ```
 
-### 7. Implement only when asked
+### 7. Create the local placeholder draft
 
-If Noah asks for implementation, follow this structure before editing:
+When Noah wants to collect imagery, create or update:
+
+```txt
+proposals/<slug>/slots/index.html
+```
+
+This page should look like the proposal, not a separate planning board. Use the actual proposal copy and insert grey frames exactly where images would live. Each frame should show:
+
+- slot ID
+- default frame ratio
+- one-line curation suggestion
+- Are.na tag, for example `slot: TS-04`
+
+Keep the draft local-only and ignored by git unless Noah explicitly approves sharing it.
+
+### 8. Implement final media only when asked
+
+Implementation turns draft-slot media into public proposal assets. Move final crops from ignored `proposals/<slug>/img/src/` into tracked `proposals/<slug>/img/`, add `/css/proposal-media.css` to existing proposal pages before using media primitives, and insert only the approved media into the live proposal.
+
+If Noah asks for final implementation, follow this structure before editing:
 
 ```md
 Goal:
@@ -228,6 +250,10 @@ Do not use:
 - Add `width` and `height` attributes when dimensions are known.
 - Use captions for evidence, comparison, and artifact media.
 - Use native aspect ratio unless the composition requires a fixed frame.
+- For draft previews, use non-destructive CSS cropping first, typically `object-fit: cover` and `object-position` on a local source image.
+- Preserve raw source files under ignored `proposals/<slug>/img/src/`; Noah may manually crop and overwrite these files before final export.
+- Move only final deployable crops into `proposals/<slug>/img/`.
+- Filled draft images should render without visible borders or frames unless the edge needs definition for evidence.
 - Avoid cropping evidence screenshots. Cropping can weaken trust.
 
 ### Video
@@ -268,7 +294,7 @@ Do not use:
 
 ## Slot board preview
 
-Slot boards are static HTML inside the repo and are local-only planning artifacts unless Noah approves deployment. They are ignored by git via `proposals/*/slots/`.
+Slot boards are local-only in-flow composition drafts unless Noah approves deployment. They should show the actual proposal text with grey image frames or draft images placed in the reading flow. They are ignored by git via `proposals/*/slots/`.
 
 To view a board locally, serve the project root:
 

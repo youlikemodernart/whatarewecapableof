@@ -12,6 +12,10 @@ const today = new Date().toISOString().slice(0, 10);
 const IMAGE_EXTS = new Set(['.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg', '.avif']);
 const REFERENCE_EXTS = new Set(['.html', '.css', '.js', '.mjs']);
 const SKIP_DIRS = new Set(['.git', 'node_modules', '.vercel']);
+const SKIP_PATH_PATTERNS = [
+  /^proposals\/[^/]+\/img\/src(?:\/|$)/,
+  /^proposals\/[^/]+\/slots(?:\/|$)/,
+];
 const INVENTORY_MD = 'docs/asset-inventory.md';
 const INVENTORY_JSON = 'docs/asset-inventory.json';
 const DASHBOARD_HTML = 'docs/site-dashboard.html';
@@ -24,11 +28,17 @@ function stripQueryAndHash(value) {
   return value.split('#')[0].split('?')[0];
 }
 
+function shouldSkipDir(dirPath, entryName) {
+  if (SKIP_DIRS.has(entryName)) return true;
+  const rel = toPosix(path.relative(root, dirPath));
+  return SKIP_PATH_PATTERNS.some((pattern) => pattern.test(rel));
+}
+
 async function walk(dir, files = []) {
   const entries = await fs.readdir(dir, { withFileTypes: true });
   for (const entry of entries) {
-    if (entry.isDirectory() && SKIP_DIRS.has(entry.name)) continue;
     const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory() && shouldSkipDir(fullPath, entry.name)) continue;
     if (entry.isDirectory()) {
       await walk(fullPath, files);
     } else if (entry.isFile()) {

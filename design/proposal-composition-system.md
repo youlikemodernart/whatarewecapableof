@@ -4,7 +4,21 @@ Created 2026-04-24.
 
 This system governs how visual rhythm enters What are we capable of? proposal pages. It is built for long, text-heavy proposal sites whose final form should follow the argument rather than a rigid template.
 
-The repeatable part is the thinking: read the proposal, map the argument, identify where the reader needs proof or air, then choose the few visual interruptions that make the document clearer.
+The repeatable part is the thinking: read the proposal, map the argument, identify where the reader needs proof or air, then show the proposed interruptions in an in-flow placeholder draft before final media is chosen.
+
+## Pipeline position
+
+Default sequence: make the proposal first, then run a visual composition pass. Let the text, findings, research structure, and scope take shape before deciding where images belong. This keeps proposals from becoming templates and prevents available imagery from controlling the argument.
+
+Exception: if the proposal's subject is inherently creative or media-led, the visual system can shape the proposal from the beginning. Compassion is the model: the form of the proposal depended on showing content direction, feed logic, and visual examples. In those cases, the proposal production pipeline should mark the work as creative-led before drafting so images, specimens, video, or mockups become part of the core argument rather than a post-pass.
+
+For the ordinary consulting proposal, treat images as a second pass:
+
+1. Draft and stabilize the text-first proposal.
+2. Read it as an argument and identify density, proof, atmosphere, and fatigue points.
+3. Create an in-flow slot draft using the real proposal copy.
+4. Curate or generate media for the approved slots.
+5. Implement only the images that materially improve trust, comprehension, or cadence.
 
 ## Purpose
 
@@ -35,9 +49,9 @@ The proposal pages are allowed to become denser than the public site because the
 
 ## Core principle
 
-Every visual insertion needs a job.
+Every visual insertion needs a job, but the job can be atmosphere.
 
-Before adding any image, video, diagram, screenshot, or specimen, write one sentence that explains what it does for the reader. If that sentence is weak, cut the insertion.
+Before adding any image, video, diagram, screenshot, or specimen, write one sentence that explains what it does for the reader. If that sentence is weak, cut the insertion. The sentence does not need to prove the adjacent paragraph. Sometimes the right job is to give the reader air, mark the client's product world, or reset the cadence before the next finding.
 
 Good rationale examples:
 
@@ -334,11 +348,20 @@ Classify each asset by job, quality, and confidence.
 
 ### Phase 4: Propose
 
-Recommend insertions with exact placement anchors. Each recommendation needs:
+Recommend insertions with exact placement anchors. Default to a single body-width image or simple video unless the argument clearly needs another structure.
+
+Default frame logic:
+
+- `16:9` for the first pass
+- `4:3` or `7:5` when the image should feel less cinematic and more object-like
+- `5:7` when the surrounding context wants a vertical image
+- diptychs, grids, and tall paired screenshots only when Noah asks for them or the proposal clearly needs comparison, sequence, or specimens
+
+Each recommendation needs:
 
 - section or line anchor
 - media job
-- composition move
+- frame ratio
 - asset source or asset needed
 - rationale
 - mobile treatment
@@ -350,11 +373,15 @@ Recommend insertions with exact placement anchors. Each recommendation needs:
 
 Cut aggressively. A good proposal may need three visual insertions, not ten. Prioritize the insertions that increase trust, clarify the offer, or give the reader needed air.
 
-### Phase 6: Implement
+### Phase 6: Draft placeholders
 
-Implement only after the composition plan is approved or the task explicitly asks for implementation. Use reusable classes where possible. Keep page-specific CSS small.
+Before final images are inserted, create an in-flow placeholder draft when Noah is collecting imagery. The draft should use the actual proposal copy and grey frames at the proposed insertion points. The frame itself carries the slot ID, ratio, suggested content, and Are.na tag.
 
-### Phase 7: Review
+### Phase 7: Implement
+
+Implement final media only after the placeholder draft is approved or the task explicitly asks for implementation. Use reusable classes where possible. Keep page-specific CSS small.
+
+### Phase 8: Review
 
 Review at 375px, 768px, 1280px, and 1600px. For each insertion, ask:
 
@@ -366,7 +393,7 @@ Review at 375px, 768px, 1280px, and 1600px. For each insertion, ask:
 
 ## Local slot boards
 
-A slot board can be created when Noah wants to curate media intentionally before insertion. Slot boards are planning artifacts, not client-facing proposal pages.
+A slot board should usually be an in-flow composition draft. It is a local copy of the proposal with grey placeholder frames inserted exactly where the images would live. The goal is to let Noah judge cadence in the real page format before collecting, cropping, or inserting final images.
 
 Default location while developing:
 
@@ -375,6 +402,12 @@ proposals/<slug>/slots/index.html
 ```
 
 These boards are local-only unless Noah approves deployment. The repo ignores `proposals/*/slots/` to prevent accidental publishing. To preview a board, serve the project root with `python3 -m http.server 8888` and open the local URL.
+
+Each placeholder frame should show the slot ID, default ratio, curation suggestion, and Are.na tag. The page should default to a single image frame, not a grid of all possible slots.
+
+When draft images are available, use non-destructive CSS cropping first. Keep raw source files under `proposals/<slug>/img/src/`, which is ignored. Noah may manually crop a source image, overwrite the local file, and ask for a re-preview. Final deployable crops should later move to `proposals/<slug>/img/`.
+
+Filled draft images should not have visible borders or frames unless a specific evidence object needs edge definition.
 
 ## Output format for a composition pass
 
@@ -423,17 +456,21 @@ Use this format when the partner reviews a proposal.
 
 ### Teaspressa
 
-Strongest visual opportunities:
+Current in-flow draft slots:
 
-- wholesale store flow
-- DTC versus wholesale comparison
-- analytics stack as system diagram
-- empty subscription page as evidence plate
+- `TS-02`: Summary after Finding 01, single `16:9` image, atmosphere or proof.
+- `TS-04`: Summary after Finding 03, single `16:9` image, atmosphere or proof.
+- `TS-07`: Summary after What's working, single image, merchandising atmosphere.
+- `TS-11`: Research after Product catalog, live 120-image product-only edge-to-edge wholesale collage generated from Shopify product images.
+- `TS-08`: Scope after Area 1, single `16:9` artifact/reference placeholder.
+
+Still-available visual opportunities:
+
+- analytics stack as system diagram, deferred unless requested
 - TikTok effort versus traction as quiet stat field
 - wedding and corporate quote flow as process strip
-- seasonal collection merchandising as specimen grid
 
-Likely best moves: evidence plates, diptych, process strip, and system diagram.
+Likely best moves: single body-width images first, then a collage or artifact only when the argument needs one.
 
 ### Compassion
 

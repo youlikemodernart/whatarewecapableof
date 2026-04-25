@@ -109,6 +109,10 @@ Do not commit secrets. Calendar credentials belong in Vercel environment variabl
 | `og.png` | Site-wide Open Graph card for the home page. |
 | `proposals/compassion/img/` | Compassion proposal images and feed composites. |
 | `proposals/compassion/img/square/` | Square specimens used in the Compassion proposal content section. |
+| `proposals/teaspressa/img/ts-11-wholesale-product-collage.jpg` | Live Teaspressa Research tab product collage, generated from Shopify wholesale product images. |
+| `proposals/<slug>/img/src/` | Ignored local source/crop workspace for proposal media. Keep raw source files here until final crops are exported. |
+| `proposals/teaspressa/img/src/arena/` | Ignored local source images pulled from the Teaspressa Are.na channel. |
+| `proposals/teaspressa/img/src/wholesale-products/` | Ignored local Shopify wholesale product scrape, contact sheets, tiles, and rough collage outputs for TS-11. |
 | `design/reference-analysis/` | Working design research assets, screenshots, frames, GIFs, and extracted reference material. |
 
 Production page imagery currently lives inside proposal folders. Future creative work images should use a predictable public path such as `creative/<project>/img/` or a shared `public/images/` folder after that decision is made.
@@ -141,7 +145,7 @@ The active mismatches are:
 | `docs/proposal-composition-partner.md` | Operating workflow for an AI or human partner reviewing proposal pacing, media jobs, asset opportunities, and implementation plans. |
 | `proposals/teaspressa/media-slots.md` | Teaspressa media-slot curation guide for Are.na collection. |
 | `proposals/teaspressa/media-slots.json` | Structured Teaspressa slot manifest. |
-| `proposals/teaspressa/slots/index.html` | Local-only visual placeholder board, ignored by git through `proposals/*/slots/`. Do not deploy unless Noah approves. |
+| `proposals/teaspressa/slots/index.html` | Local-only in-flow placeholder draft, ignored by git through `proposals/*/slots/`. It uses actual proposal copy and grey frames or draft images at the proposed insertion points. Do not deploy unless Noah approves. |
 
 ## Path rules
 
@@ -165,6 +169,7 @@ Vercel can serve directory pages with and without trailing slashes. Root-relativ
 - Edit source HTML, CSS, API files, docs, or scripts.
 - Do not edit `design/reference-analysis/frames/` by hand. Those are extracted working frames.
 - Do not rename proposal images without running `npm run scan:assets` and checking every affected HTML reference.
-- Do not clean untracked proposal assets until `git status --short` has been reviewed.
+- Do not clean untracked or ignored proposal media workspaces until `git status --short --ignored` has been reviewed.
+- Do not delete ignored `proposals/*/img/src/` assets without confirming with Noah; they may contain source images, manual crops, contact sheets, or draft collages.
 - Preview locally before pushing: `python3 -m http.server 8888`, then open `http://localhost:8888`.
 - Use Chrome or Safari review after structural HTML/CSS changes.

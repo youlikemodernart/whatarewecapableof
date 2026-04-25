@@ -4,8 +4,12 @@ const {
   CALENDAR_ID,
   NOTIFY_EMAIL,
   getBookingConfig,
-  isBookableStart,
+  addDays,
+  dateStringInTimeZone,
+  getDayRange,
+  getCandidateSlots,
   getCalendar,
+  getAvailabilityEvents,
   getBusyPeriods,
   slotOverlapsBusy,
 } = require('./_calendar');
@@ -65,13 +69,28 @@ module.exports = async function handler(req, res) {
   }
 
   const startTime = new Date(start);
-  if (!isBookableStart(startTime, bookingConfig)) {
+  if (Number.isNaN(startTime.getTime())) {
+    return res.status(400).json({ error: 'Choose an available time from the booking page.' });
+  }
+
+  const dateStr = dateStringInTimeZone(startTime);
+  const earliestDate = addDays(dateStringInTimeZone(new Date()), 1);
+  if (dateStr < earliestDate) {
     return res.status(400).json({ error: 'Choose an available time from the booking page.' });
   }
 
   try {
     const calendar = getCalendar(['https://www.googleapis.com/auth/calendar']);
-    const endTime = new Date(startTime.getTime() + bookingConfig.slotDurationMin * 60000);
+    const dayRange = getDayRange(dateStr);
+    const availabilityEvents = await getAvailabilityEvents(calendar, bookingConfig, dayRange.start, dayRange.end);
+    const candidateSlot = getCandidateSlots(dateStr, bookingConfig, availabilityEvents)
+      .find((slot) => slot.start.getTime() === startTime.getTime());
+
+    if (!candidateSlot) {
+      return res.status(400).json({ error: 'Choose an available time from the booking page.' });
+    }
+
+    const endTime = candidateSlot.end;
     const bufferMs = bookingConfig.bufferMinutes * 60000;
 
     const freeBusy = await calendar.freebusy.query({
@@ -79,11 +98,11 @@ module.exports = async function handler(req, res) {
         timeMin: new Date(startTime.getTime() - bufferMs).toISOString(),
         timeMax: new Date(endTime.getTime() + bufferMs).toISOString(),
         timeZone: TIMEZONE,
-        items: [{ id: CALENDAR_ID }],
+        items: bookingConfig.busyCalendarIds.map((id) => ({ id })),
       },
     });
 
-    const busyPeriods = getBusyPeriods(freeBusy);
+    const busyPeriods = getBusyPeriods(freeBusy, bookingConfig.busyCalendarIds);
     if (slotOverlapsBusy({ start: startTime, end: endTime }, busyPeriods, bookingConfig.bufferMinutes)) {
       return res.status(409).json({ error: 'This time slot is no longer available' });
     }

@@ -9,11 +9,24 @@ function intEnv(name, fallback) {
   return Number.isFinite(value) ? value : fallback;
 }
 
+function listEnv(name, fallback = []) {
+  const value = env(name);
+  if (!value) return [...fallback];
+
+  const items = value
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean);
+
+  return items.length > 0 ? [...new Set(items)] : [...fallback];
+}
+
 const TIMEZONE = env('BOOKING_TIMEZONE', 'America/Phoenix');
 const CALENDAR_EMAIL = env('BOOKING_CALENDAR_EMAIL');
 const IMPERSONATE_EMAIL = env('BOOKING_IMPERSONATE_EMAIL', CALENDAR_EMAIL);
 const CALENDAR_ID = env('BOOKING_CALENDAR_ID', IMPERSONATE_EMAIL ? 'primary' : CALENDAR_EMAIL || 'primary');
 const NOTIFY_EMAIL = env('BOOKING_NOTIFY_EMAIL');
+const BUSY_CALENDAR_IDS = listEnv('BOOKING_BUSY_CALENDAR_IDS', [CALENDAR_ID]);
 
 const DAY_ALIASES = {
   sun: 0,
@@ -99,9 +112,9 @@ function createBookingConfig({
   defaultSummaryPrefix,
   defaultSourceLabel,
 }) {
-  const slotDurationMin = intEnv(`${envPrefix}_SLOT_MINUTES`, defaultSlotMinutes);
-  const bufferMinutes = intEnv(`${envPrefix}_BUFFER_MINUTES`, defaultBufferMinutes);
-  const slotIntervalMin = intEnv(`${envPrefix}_SLOT_INTERVAL_MINUTES`, slotDurationMin + bufferMinutes);
+  const slotDurationMin = Math.max(1, intEnv(`${envPrefix}_SLOT_MINUTES`, defaultSlotMinutes));
+  const bufferMinutes = Math.max(0, intEnv(`${envPrefix}_BUFFER_MINUTES`, defaultBufferMinutes));
+  const slotIntervalMin = Math.max(1, intEnv(`${envPrefix}_SLOT_INTERVAL_MINUTES`, slotDurationMin + bufferMinutes));
   const daysOfWeek = parseDaysOfWeek(env(`${envPrefix}_DAYS_OF_WEEK`, env(`${envPrefix}_DAYS`)), defaultDaysOfWeek);
   const windows = parseWindows(env(`${envPrefix}_WINDOWS`), defaultWindows);
 
@@ -116,6 +129,9 @@ function createBookingConfig({
     lookaheadDays: intEnv(`${envPrefix}_LOOKAHEAD_DAYS`, defaultLookaheadDays),
     summaryPrefix: env(`${envPrefix}_EVENT_SUMMARY`, defaultSummaryPrefix),
     sourceLabel: env(`${envPrefix}_EVENT_SOURCE`, defaultSourceLabel),
+    busyCalendarIds: listEnv(`${envPrefix}_BUSY_CALENDAR_IDS`, BUSY_CALENDAR_IDS),
+    availabilityCalendarId: env(`${envPrefix}_AVAILABILITY_CALENDAR_ID`),
+    availabilityEventQuery: env(`${envPrefix}_AVAILABILITY_EVENT_QUERY`),
   };
 }
 
@@ -278,11 +294,24 @@ function getDayRange(dateStr, timeZone = TIMEZONE) {
   };
 }
 
-function getBusinessSlots(dateStr, config = getBookingConfig()) {
-  if (!isBookableDate(dateStr, config)) return [];
+function getEarliestBookableDate() {
+  return addDays(dateStringInTimeZone(new Date()), 1);
+}
 
+function getAvailabilitySearchRange(config = getBookingConfig()) {
+  const startDate = getEarliestBookableDate();
+  const maxCalendarDays = Math.max(config.lookaheadDays * 14, 60);
+  const endDate = addDays(startDate, maxCalendarDays);
+
+  return {
+    start: getDayRange(startDate).start,
+    end: getDayRange(endDate).end,
+  };
+}
+
+function getSlotsFromWindows(dateStr, windows, config = getBookingConfig()) {
   const slots = [];
-  for (const window of config.windows) {
+  for (const window of windows) {
     for (
       let minuteOfDay = window.start;
       minuteOfDay + config.slotDurationMin <= window.end;
@@ -299,9 +328,63 @@ function getBusinessSlots(dateStr, config = getBookingConfig()) {
   return slots;
 }
 
+function getBusinessSlots(dateStr, config = getBookingConfig()) {
+  if (!isBookableDate(dateStr, config)) return [];
+  return getSlotsFromWindows(dateStr, config.windows, config);
+}
+
+function eventDateTime(event, field) {
+  const value = event?.[field]?.dateTime;
+  if (!value) return null;
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function minutesInTimeZone(date, timeZone = TIMEZONE) {
+  const parts = partsInTimeZone(date, timeZone);
+  return parts.hour * 60 + parts.minute;
+}
+
+function getAvailabilityWindows(dateStr, availabilityEvents = []) {
+  const range = getDayRange(dateStr);
+  const windows = [];
+
+  for (const event of availabilityEvents || []) {
+    if (event.status === 'cancelled') continue;
+
+    const eventStart = eventDateTime(event, 'start');
+    const eventEnd = eventDateTime(event, 'end');
+    if (!eventStart || !eventEnd || eventEnd <= eventStart) continue;
+
+    const start = new Date(Math.max(eventStart.getTime(), range.start.getTime()));
+    const end = new Date(Math.min(eventEnd.getTime(), range.end.getTime()));
+    if (end <= start) continue;
+
+    windows.push({
+      start: minutesInTimeZone(start),
+      end: minutesInTimeZone(end),
+    });
+  }
+
+  return windows;
+}
+
+function getSlotsFromAvailabilityEvents(dateStr, availabilityEvents = [], config = getBookingConfig()) {
+  const windows = getAvailabilityWindows(dateStr, availabilityEvents);
+  return getSlotsFromWindows(dateStr, windows, config);
+}
+
+function getCandidateSlots(dateStr, config = getBookingConfig(), availabilityEvents = null) {
+  if (config.availabilityCalendarId) {
+    return getSlotsFromAvailabilityEvents(dateStr, availabilityEvents || [], config);
+  }
+
+  return getBusinessSlots(dateStr, config);
+}
+
 function getBookableDates(config = getBookingConfig()) {
   const dates = [];
-  let cursor = addDays(dateStringInTimeZone(new Date()), 1);
+  let cursor = getEarliestBookableDate();
   let inspectedDays = 0;
   const maxCalendarDays = Math.max(config.lookaheadDays * 14, 60);
 
@@ -314,8 +397,41 @@ function getBookableDates(config = getBookingConfig()) {
   return dates;
 }
 
+function getBookableDatesFromAvailabilityEvents(availabilityEvents = [], config = getBookingConfig()) {
+  const dates = [];
+  const seen = new Set();
+  const earliest = getEarliestBookableDate();
+
+  const events = [...(availabilityEvents || [])].sort((a, b) => {
+    const aStart = eventDateTime(a, 'start')?.getTime() ?? 0;
+    const bStart = eventDateTime(b, 'start')?.getTime() ?? 0;
+    return aStart - bStart;
+  });
+
+  for (const event of events) {
+    const eventStart = eventDateTime(event, 'start');
+    const eventEnd = eventDateTime(event, 'end');
+    if (!eventStart || !eventEnd || eventEnd <= eventStart) continue;
+
+    let cursor = dateStringInTimeZone(eventStart);
+    const lastDate = dateStringInTimeZone(new Date(eventEnd.getTime() - 1));
+
+    while (cursor <= lastDate) {
+      if (cursor >= earliest && !seen.has(cursor) && getSlotsFromAvailabilityEvents(cursor, events, config).length > 0) {
+        seen.add(cursor);
+        dates.push(cursor);
+        if (dates.length >= config.lookaheadDays) return dates;
+      }
+      cursor = addDays(cursor, 1);
+    }
+  }
+
+  return dates;
+}
+
 function isBookableStart(startTime, config = getBookingConfig()) {
   if (!(startTime instanceof Date) || Number.isNaN(startTime.getTime())) return false;
+  if (config.availabilityCalendarId) return false;
 
   const dateStr = dateStringInTimeZone(startTime);
   if (!getBookableDates(config).includes(dateStr)) return false;
@@ -354,8 +470,50 @@ function getCalendar(scopes) {
   return google.calendar({ version: 'v3', auth: getAuth(scopes) });
 }
 
-function getBusyPeriods(freeBusyResponse) {
-  return freeBusyResponse.data.calendars?.[CALENDAR_ID]?.busy || [];
+async function getAvailabilityEvents(calendar, config, rangeStart, rangeEnd) {
+  if (!config.availabilityCalendarId) return null;
+
+  const response = await calendar.events.list({
+    calendarId: config.availabilityCalendarId,
+    timeMin: rangeStart.toISOString(),
+    timeMax: rangeEnd.toISOString(),
+    singleEvents: true,
+    orderBy: 'startTime',
+    q: config.availabilityEventQuery || undefined,
+  });
+
+  return response.data.items || [];
+}
+
+function getBusyPeriods(freeBusyResponse, calendarIds = [CALENDAR_ID]) {
+  const calendars = freeBusyResponse.data.calendars || {};
+  const inaccessible = [];
+  const busyPeriods = [];
+
+  for (const calendarId of calendarIds) {
+    const calendar = calendars[calendarId];
+    if (!calendar) {
+      inaccessible.push({ id: calendarId, reason: 'No free/busy response' });
+      continue;
+    }
+
+    if (calendar.errors?.length) {
+      inaccessible.push({
+        id: calendarId,
+        reason: calendar.errors.map((error) => error.reason || error.domain || 'unknown').join(', '),
+      });
+      continue;
+    }
+
+    busyPeriods.push(...(calendar.busy || []));
+  }
+
+  if (inaccessible.length) {
+    const details = inaccessible.map((calendar) => `${calendar.id} (${calendar.reason})`).join(', ');
+    throw new Error(`Could not read busy calendar(s): ${details}`);
+  }
+
+  return busyPeriods;
 }
 
 function slotOverlapsBusy(slot, busyPeriods, bufferMinutes = 0) {
@@ -376,17 +534,25 @@ module.exports = {
   CALENDAR_EMAIL,
   IMPERSONATE_EMAIL,
   NOTIFY_EMAIL,
+  BUSY_CALENDAR_IDS,
   BOOKING_CONFIGS,
   getBookingConfig,
   parseDateString,
+  addDays,
+  dateStringInTimeZone,
   isWeekend,
   isBookableDate,
   getDayRange,
+  getEarliestBookableDate,
+  getAvailabilitySearchRange,
   getBusinessSlots,
+  getCandidateSlots,
   getBookableDates,
+  getBookableDatesFromAvailabilityEvents,
   isBookableStart,
   formatTime,
   getCalendar,
+  getAvailabilityEvents,
   getBusyPeriods,
   slotOverlapsBusy,
 };

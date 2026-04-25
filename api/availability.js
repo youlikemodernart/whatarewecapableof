@@ -1,20 +1,34 @@
 const {
   TIMEZONE,
-  CALENDAR_ID,
   getBookingConfig,
   parseDateString,
-  isBookableDate,
   getDayRange,
-  getBusinessSlots,
+  getAvailabilitySearchRange,
+  getCandidateSlots,
   getBookableDates,
+  getBookableDatesFromAvailabilityEvents,
   formatTime,
   getCalendar,
+  getAvailabilityEvents,
   getBusyPeriods,
   slotOverlapsBusy,
 } = require('./_calendar');
 
 function getTypeFromRequest(req) {
   return String(req.query?.type || req.query?.bookingType || req.query?.flow || 'coach').trim();
+}
+
+async function loadBookableDates(calendar, bookingConfig) {
+  if (!bookingConfig.availabilityCalendarId) {
+    return { bookableDates: getBookableDates(bookingConfig), availabilityEvents: null };
+  }
+
+  const range = getAvailabilitySearchRange(bookingConfig);
+  const availabilityEvents = await getAvailabilityEvents(calendar, bookingConfig, range.start, range.end);
+  return {
+    bookableDates: getBookableDatesFromAvailabilityEvents(availabilityEvents, bookingConfig),
+    availabilityEvents,
+  };
 }
 
 module.exports = async function handler(req, res) {
@@ -35,14 +49,19 @@ module.exports = async function handler(req, res) {
   try {
     const calendar = getCalendar(['https://www.googleapis.com/auth/calendar']);
     const { date } = req.query;
-    const bookableDates = getBookableDates(bookingConfig);
+    const { bookableDates, availabilityEvents } = await loadBookableDates(calendar, bookingConfig);
 
     if (date) {
       if (!parseDateString(date)) {
         return res.status(400).json({ error: 'Invalid date. Use YYYY-MM-DD.' });
       }
 
-      if (!isBookableDate(date, bookingConfig) || !bookableDates.includes(date)) {
+      const dateAvailabilityEvents = bookingConfig.availabilityCalendarId
+        ? await getAvailabilityEvents(calendar, bookingConfig, getDayRange(date).start, getDayRange(date).end)
+        : availabilityEvents;
+      const candidateSlots = getCandidateSlots(date, bookingConfig, dateAvailabilityEvents);
+
+      if (!bookableDates.includes(date) || candidateSlots.length === 0) {
         return res.json({
           type: bookingConfig.key,
           timezone: TIMEZONE,
@@ -59,12 +78,12 @@ module.exports = async function handler(req, res) {
           timeMin: range.start.toISOString(),
           timeMax: range.end.toISOString(),
           timeZone: TIMEZONE,
-          items: [{ id: CALENDAR_ID }],
+          items: bookingConfig.busyCalendarIds.map((id) => ({ id })),
         },
       });
 
-      const busyPeriods = getBusyPeriods(freeBusy);
-      const available = getBusinessSlots(date, bookingConfig)
+      const busyPeriods = getBusyPeriods(freeBusy, bookingConfig.busyCalendarIds);
+      const available = candidateSlots
         .filter((slot) => !slotOverlapsBusy(slot, busyPeriods, bookingConfig.bufferMinutes));
 
       return res.json({
@@ -99,13 +118,13 @@ module.exports = async function handler(req, res) {
         timeMin: firstRange.start.toISOString(),
         timeMax: lastRange.end.toISOString(),
         timeZone: TIMEZONE,
-        items: [{ id: CALENDAR_ID }],
+        items: bookingConfig.busyCalendarIds.map((id) => ({ id })),
       },
     });
 
-    const busyPeriods = getBusyPeriods(freeBusy);
+    const busyPeriods = getBusyPeriods(freeBusy, bookingConfig.busyCalendarIds);
     const result = bookableDates.map((dateStr) => {
-      const available = getBusinessSlots(dateStr, bookingConfig)
+      const available = getCandidateSlots(dateStr, bookingConfig, availabilityEvents)
         .filter((slot) => !slotOverlapsBusy(slot, busyPeriods, bookingConfig.bufferMinutes));
       return {
         date: dateStr,

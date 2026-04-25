@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#ffffff">
+<title>PäSTE MVP Build Outline | What are we capable of?</title>
+<meta property="og:title" content="PäSTE MVP Build Outline">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&amp;family=Geist+Mono:wght@400&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/typography.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<style>
+  html {
+    overflow-x: clip;
+  }
+
+  .skip-link {
+    position: fixed;
+    top: var(--space-0-5);
+    left: var(--margin-inline);
+    z-index: 100;
+    transform: translateY(-200%);
+    background: var(--color-bg);
+    color: var(--color-text);
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--color-text);
+  }
+
+  .skip-link:focus-visible {
+    transform: translateY(0);
+  }
+
+  .page-proposal {
+    --proposal-header-height: calc(var(--space-1) + var(--space-0-5));
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    padding: 0 var(--margin-inline) var(--margin-block);
+  }
+
+  .page-proposal main {
+    flex: 1;
+    max-width: var(--content-width-prose);
+    padding-top: var(--space-1);
+  }
+
+  .proposal-header {
+    min-height: var(--proposal-header-height);
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--color-bg);
+    margin-inline: calc(-1 * var(--margin-inline));
+    padding-inline: var(--margin-inline);
+  }
+
+  .proposal-home {
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .proposal-meta {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--color-text);
+    opacity: 0.4;
+  }
+
+  .proposal-title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: var(--size-m);
+    margin-top: var(--space-1);
+    max-width: 52ch;
+  }
+
+  .tabs {
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-0-5) 0;
+    position: sticky;
+    top: var(--proposal-header-height);
+    background: var(--color-bg);
+    z-index: 15;
+  }
+
+  .tabs::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: calc(-1 * var(--margin-inline));
+    width: 100vw;
+    height: 1px;
+    background: var(--color-text);
+  }
+
+  .tab {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    text-decoration: none;
+    cursor: pointer;
+    color: var(--color-text);
+    opacity: 0.35;
+    border: none;
+    background: none;
+    padding: 0;
+    transition: opacity var(--transition-default);
+  }
+
+  .tab:hover { text-decoration: none; opacity: 0.7; }
+  .tab.active { opacity: 1; }
+
+  .tab-content {
+    padding-top: var(--space-2);
+  }
+
+  .tab-content-full {
+    padding-top: var(--space-2);
+  }
+
+  .tabbed .tab-content {
+    display: none;
+    padding-top: var(--space-2);
+  }
+  .tabbed .tab-content.active { display: block; }
+
+  .tabbed .tab-content-full {
+    display: none;
+    min-height: calc(100svh - 4rem);
+    flex-direction: column;
+    justify-content: center;
+  }
+  .tabbed .tab-content-full.active { display: flex; }
+
+  .section-heading {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    margin-top: var(--space-4);
+    margin-bottom: var(--space-1);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-text);
+  }
+
+  .section-heading:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .finding {
+    margin-bottom: var(--space-2);
+  }
+
+  .finding-label {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.4;
+    margin-bottom: calc(var(--space-0-5) * 0.5);
+  }
+
+  .finding p:last-child {
+    margin-bottom: 0;
+  }
+
+  .evidence {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    opacity: 0.35;
+    margin-top: calc(var(--space-0-5));
+  }
+
+  .stat-row {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin: var(--space-1) 0 var(--space-2);
+  }
+
+  .stat-item {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+  }
+
+  .stat-item strong {
+    font-weight: 400;
+    font-family: var(--font-serif);
+    font-size: var(--size-m);
+    text-transform: none;
+    letter-spacing: 0;
+    display: block;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--space-1) 0;
+    font-size: var(--size-s);
+    table-layout: fixed;
+    word-wrap: break-word;
+  }
+
+  th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    font-weight: 400;
+    opacity: 0.4;
+    padding: var(--space-0-5) 0;
+    border-bottom: 1px solid var(--color-text);
+  }
+
+  td {
+    padding: var(--space-0-5) 0;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    vertical-align: top;
+    font-family: var(--font-serif);
+  }
+
+  th + th, td + td {
+    padding-left: var(--space-1);
+  }
+
+  .scope-phase {
+    margin-bottom: var(--space-3);
+  }
+
+  .scope-phase .phase-label {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.4;
+  }
+
+  .scope-phase h3 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: var(--size-m);
+    margin-bottom: var(--space-0-5);
+  }
+
+  .scope-phase ul {
+    margin: var(--space-0-5) 0 0;
+    padding-left: 1.25rem;
+    list-style: none;
+  }
+
+  .scope-phase li {
+    font-size: var(--size-s);
+    margin-bottom: var(--space-0-5);
+    position: relative;
+  }
+
+  .scope-phase li::before {
+    content: "";
+    position: absolute;
+    left: -1rem;
+    top: 0.55em;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--color-text);
+    opacity: 0.25;
+  }
+
+  .closing {
+    margin-top: var(--space-3);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-text);
+  }
+
+  .closing p:last-of-type {
+    margin-top: var(--space-1);
+  }
+
+  .proposal-guide {
+    margin-top: var(--space-1);
+    font-size: var(--size-s);
+    max-width: 52ch;
+  }
+
+  .mt-1 {
+    margin-top: var(--space-1);
+  }
+
+  .mt-3 {
+    margin-top: var(--space-3);
+  }
+
+  .question-underline {
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .page-proposal footer {
+    margin-top: var(--space-4);
+    padding-top: var(--space-1);
+    border-top: 1px solid rgba(0,0,0,0.08);
+  }
+
+  @media (max-width: 767px) {
+    :root {
+      --margin-inline: var(--space-1);
+    }
+    .stat-row {
+      flex-direction: column;
+      gap: var(--space-0-5);
+    }
+    .tabs {
+      gap: var(--space-1);
+    }
+    .responsive-table,
+    .responsive-table tbody,
+    .responsive-table tr,
+    .responsive-table td {
+      display: block;
+      width: 100%;
+    }
+    .responsive-table tr:first-child {
+      display: none;
+    }
+    .responsive-table tr {
+      padding: var(--space-1) 0;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+    .responsive-table td {
+      border-bottom: none;
+      padding: 0;
+    }
+    .responsive-table td + td {
+      padding-left: 0;
+      margin-top: var(--space-0-5);
+    }
+    .responsive-table td::before {
+      content: attr(data-label);
+      display: block;
+      font-family: var(--font-mono);
+      font-size: var(--size-xs);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-caps);
+      opacity: 0.4;
+      margin-bottom: calc(var(--space-0-5) * 0.5);
+    }
+  }
+</style>
+</head>
+<body class="page-proposal">
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="proposal-header">
+  <a href="/" class="proposal-home">What are we capable of?</a>
+</header>
+
+<main id="main">
+
+<div class="proposal-meta">Prepared for PäSTE / April 2026</div>
+
+<h1 class="proposal-title mt-1">A first-build outline for PäSTE: a Shopify-connected collage interface, durable design state, automatic production packets, and a factory handoff simple enough to operate before the full marketplace is built.</h1>
+
+<p class="proposal-guide"><strong>Overview</strong> is what the first build should prove. <strong>System</strong> is the loose architecture. <strong>First Build</strong> is the MVP boundary, milestones, and questions to confirm with Davey and Andres.</p>
+
+<nav class="tabs" aria-label="Sections">
+  <a class="tab active" href="#overview">Overview</a>
+  <a class="tab" href="#system">System</a>
+  <a class="tab" href="#first-build">First Build</a>
+  <a class="tab" href="#question">?</a>
+</nav>
+
+<div id="overview" class="tab-content active">
+
+<p>PäSTE already has the right sketch: fans collage licensed IP onto garments, buy through Shopify, and the factory prints one unit at a time. The Cargo beta proves the interaction. The first MVP should prove the operating loop.</p>
+
+<p>One paid line item should move from customer design to factory-ready packet without a screenshot, email reply, or manual recreation step. Once that works, the marketplace, affiliate layer, dashboards, and partner embeds have something real to attach to.</p>
+
+<div class="stat-row">
+  <div class="stat-item"><strong>1</strong> IP partner</div>
+  <div class="stat-item"><strong>1-2</strong> Garments</div>
+  <div class="stat-item"><strong>1</strong> Factory workflow</div>
+  <div class="stat-item"><strong>1</strong> Saved design object per order</div>
+  <div class="stat-item"><strong>0</strong> Manual recreation steps</div>
+</div>
+
+<h2 class="section-heading">What the MVP proves</h2>
+
+<div class="finding">
+  <div class="finding-label">01</div>
+  <p>A customer can work inside an approved asset pack: drag, scale, rotate, layer, and place artwork on front and back garment templates.</p>
+</div>
+
+<div class="finding">
+  <div class="finding-label">02</div>
+  <p>The finished design is stored as a structured object: asset IDs, asset pack version, garment choice, side, position, scale, rotation, and layer order.</p>
+</div>
+
+<div class="finding">
+  <div class="finding-label">03</div>
+  <p>Shopify receives the design ID at checkout, keeps the product and payment flow clean, and triggers the next step when the order is paid.</p>
+</div>
+
+<div class="finding">
+  <div class="finding-label">04</div>
+  <p>The backend turns the paid order into a production packet with proof images, print files, product details, shipping details, and QC instructions.</p>
+</div>
+
+<div class="finding">
+  <div class="finding-label">05</div>
+  <p>The royalty ledger records who should be credited: IP holder, guest designer if present, affiliate if present, and PäSTE retained margin.</p>
+</div>
+
+<h2 class="section-heading">What remains open</h2>
+
+<p>The first build can leave several ideas in planning: partner-site embeds, automated payouts, AI-assisted collage, user uploads, a public resale marketplace, and multi-IP dashboards. Those layers become easier to design once the production loop works.</p>
+
+<h2 class="section-heading mt-3">Working principle</h2>
+
+<p>The factory should receive one packet with everything it needs to print and ship. If a person has to interpret a screenshot, redraw the design, or search through Shopify for context, the system has not reached MVP.</p>
+
+</div>
+
+<div id="system" class="tab-content">
+
+<p>The system has two centers. Shopify handles commerce. The PäSTE app handles the custom work around the order: design state, asset approval, rendering, factory handoff, and royalty accounting.</p>
+
+<h2 class="section-heading">Operating map</h2>
+
+<table class="responsive-table">
+  <tbody>
+    <tr><th>Stage</th><th>Owner</th><th>Output</th></tr>
+    <tr><td data-label="Stage">Asset prep and approval</td><td data-label="Owner">PäSTE admin</td><td data-label="Output">Approved asset pack with version history</td></tr>
+    <tr><td data-label="Stage">Customer designer</td><td data-label="Owner">PäSTE app</td><td data-label="Output">Saved design JSON and preview images</td></tr>
+    <tr><td data-label="Stage">Cart and checkout</td><td data-label="Owner">Shopify</td><td data-label="Output">Paid order with design ID attached</td></tr>
+    <tr><td data-label="Stage">Order orchestration</td><td data-label="Owner">PäSTE backend</td><td data-label="Output">Production packet and royalty ledger row</td></tr>
+    <tr><td data-label="Stage">Printing and fulfillment</td><td data-label="Owner">Factory and 3PL</td><td data-label="Output">Printed garment and tracking number</td></tr>
+    <tr><td data-label="Stage">Fulfillment sync</td><td data-label="Owner">Shopify plus PäSTE backend</td><td data-label="Output">Customer notification and closed order loop</td></tr>
+  </tbody>
+</table>
+
+<h2 class="section-heading">Component split</h2>
+
+<div class="scope-phase">
+  <div class="phase-label">Shopify</div>
+  <h3>Commerce system</h3>
+  <p>Shopify owns products, variants, cart, checkout, taxes, shipping, customer records, payment status, and fulfillment status. PäSTE passes a design ID and preview into the cart line item.</p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">PäSTE designer</div>
+  <h3>Design surface</h3>
+  <p>The designer owns the collage interaction: front and back templates, approved assets, drag, scale, rotate, layer order, preview, and saved design JSON.</p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">PäSTE backend</div>
+  <h3>Order orchestrator</h3>
+  <p>The backend saves designs, receives Shopify webhooks, locks the design to the paid order, generates production packets, tracks status, and writes royalty ledger rows.</p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Renderer</div>
+  <h3>Proof and print files</h3>
+  <p>The renderer outputs customer previews, QC proofs, and print-ready files. Exact output depends on the factory's required format, DPI, artboard size, color profile, and bleed.</p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Factory packet</div>
+  <h3>One paid line item, one packet</h3>
+  <p>Each packet includes Shopify order ID, line item ID, blank SKU, garment color, size, quantity, shipping address, front and back proofs, front and back print files, asset manifest, label instructions, packaging instructions, QC image, notes, and tracking return path.</p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Royalty ledger</div>
+  <h3>Accounting before automation</h3>
+  <p>The ledger records IP holder, guest designer, affiliate, order value, refund status, eligibility thresholds, and payout status. Automated payout can wait; ledger accuracy should come first.</p>
+</div>
+
+</div>
+
+<div id="first-build" class="tab-content">
+
+<p>The first build should be small enough to ship and complete enough to test the business. The goal is one real operating loop. Future surfaces can follow after the loop works.</p>
+
+<h2 class="section-heading">Three-phase MVP</h2>
+
+<div class="scope-phase">
+  <div class="phase-label">Phase 1</div>
+  <h3>Confirm production specs</h3>
+  <p>Before the interface is finalized, the factory requirements need to be known: file format, DPI, artboard size, color profile, bleed, print area, garment color rules, order intake method, status updates, and tracking return method.</p>
+  <p class="mt-1"><strong>Output: a factory data contract.</strong></p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Phase 2</div>
+  <h3>Build the working loop</h3>
+  <p>Build one IP page, one approved asset pack, one garment workflow, front and back design surfaces, saved design JSON, Shopify cart handoff, paid order webhook, and automatic production packet generation.</p>
+  <p class="mt-1"><strong>Output: a test order that produces a real packet.</strong></p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Phase 3</div>
+  <h3>Operate the first orders</h3>
+  <p>Send packets through the factory's preferred channel. Track exceptions. Return tracking to Shopify. Calculate royalty rows. Document the operator workflow while the first orders expose what needs to be tightened.</p>
+  <p class="mt-1"><strong>Output: an operator-ready v1 process.</strong></p>
+</div>
+
+<h2 class="section-heading">First technical milestone</h2>
+
+<table class="responsive-table">
+  <tbody>
+    <tr><th>Step</th><th>What happens</th></tr>
+    <tr><td data-label="Step">1</td><td data-label="What happens">Create a design using approved assets.</td></tr>
+    <tr><td data-label="Step">2</td><td data-label="What happens">Save the design as structured JSON.</td></tr>
+    <tr><td data-label="Step">3</td><td data-label="What happens">Attach the design ID to a Shopify cart line.</td></tr>
+    <tr><td data-label="Step">4</td><td data-label="What happens">Create a Shopify test order.</td></tr>
+    <tr><td data-label="Step">5</td><td data-label="What happens">Receive the paid order webhook.</td></tr>
+    <tr><td data-label="Step">6</td><td data-label="What happens">Generate the production packet.</td></tr>
+    <tr><td data-label="Step">7</td><td data-label="What happens">Send the packet to a test factory inbox or folder.</td></tr>
+    <tr><td data-label="Step">8</td><td data-label="What happens">Enter tracking and push fulfillment back to Shopify.</td></tr>
+    <tr><td data-label="Step">9</td><td data-label="What happens">Create a royalty ledger row.</td></tr>
+  </tbody>
+</table>
+
+<h2 class="section-heading">Questions to confirm</h2>
+
+<div class="finding">
+  <div class="finding-label">Production</div>
+  <p>Who is the production partner, what exact files do they need, what does zero-dimensional printing mean in their workflow, and what does the 100-shirt minimum apply to?</p>
+</div>
+
+<div class="finding">
+  <div class="finding-label">Shopify</div>
+  <p>Does the store already exist, which plan is expected, and should v1 be a PäSTE-owned storefront before any partner-site embed work begins?</p>
+</div>
+
+<div class="finding">
+  <div class="finding-label">IP</div>
+  <p>What is the first real IP partner, who approves the asset pack, and can users use only approved assets in v1?</p>
+</div>
+
+<div class="finding">
+  <div class="finding-label">Royalties</div>
+  <p>Are royalties calculated on gross retail, net merchandise revenue, or post-discount revenue? Are the first three designer and affiliate sales unpaid forever or paid retroactively once the threshold is reached?</p>
+</div>
+
+<div class="finding">
+  <div class="finding-label">Role</div>
+  <p>Is Noah being asked to build the first system, operate it day to day, train an operator, or hold a technical product lead role after launch? The answer affects scope, economics, and pace.</p>
+</div>
+
+<h2 class="section-heading">Noah's role</h2>
+
+<p>Noah would build the first working system, translate the business model into operational data flows, design the factory handoff, and document the process so an operator can run it. Longer-term involvement should be defined after the first loop shows what requires daily attention.</p>
+
+<div class="closing">
+  <p>A call with Davey and Andres should confirm production specs, first IP partner, Shopify plan, and operator expectations before build scope locks.</p>
+  <p><a href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a></p>
+</div>
+
+</div>
+
+<div id="question" class="tab-content-full">
+
+<div>
+  <p class="proposal-title">What are <span class="question-underline">we</span> capable of?</p>
+  <p class="mono size-s mt-1"><a class="cta-link" href="/book">Book a call</a></p>
+</div>
+
+</div>
+
+</main>
+
+<footer>
+  <span class="proposal-meta">Prepared April 2026. Built from deck, message thread, and beta review.</span>
+</footer>
+
+<script>
+(function() {
+  var container = document.querySelector('main');
+  var tabsNav = document.querySelector('.tabs');
+  var header = document.querySelector('.proposal-header');
+  var tabs = document.querySelectorAll('.tab');
+  var panels = document.querySelectorAll('.tab-content, .tab-content-full');
+
+  container.classList.add('tabbed');
+
+  function stickyOffset() {
+    var headerHeight = header ? header.getBoundingClientRect().height : 0;
+    var tabsHeight = tabsNav ? tabsNav.getBoundingClientRect().height : 0;
+    return headerHeight + tabsHeight;
+  }
+
+  function scrollPanelToTop(panel) {
+    var top = panel.getBoundingClientRect().top + window.scrollY - stickyOffset();
+    var scrollTarget = Math.max(0, Math.round(top));
+    var root = document.documentElement;
+    var previousScrollBehavior = root.style.scrollBehavior;
+
+    root.style.scrollBehavior = 'auto';
+    window.scrollTo(0, scrollTarget);
+    root.style.scrollBehavior = previousScrollBehavior;
+  }
+
+  function activateTab(tab) {
+    var id = tab.getAttribute('href').slice(1);
+    var panel = document.getElementById(id);
+    if (!panel) return;
+
+    panels.forEach(function(el) { el.classList.remove('active'); });
+    tabs.forEach(function(t) { t.classList.remove('active'); });
+    panel.classList.add('active');
+    tab.classList.add('active');
+    scrollPanelToTop(panel);
+  }
+
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function(e) {
+      e.preventDefault();
+      activateTab(this);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

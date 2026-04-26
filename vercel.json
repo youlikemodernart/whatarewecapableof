@@ -1,0 +1,14 @@
+{
+  "functions": {
+    "api/tracker-data.js": {
+      "includeFiles": "PROPOSALS.md"
+    }
+  },
+  "routes": [
+    { "src": "/.*\\.md", "status": 404 },
+    { "src": "/.*\\.json", "status": 404 },
+    { "src": "/docs(?:/.*)?", "status": 404 },
+    { "src": "/design(?:/.*)?", "status": 404 },
+    { "handle": "filesystem" }
+  ]
+}

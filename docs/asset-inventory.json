@@ -1,6 +1,6 @@
 {
   "summary": {
-    "generatedAt": "2026-04-25",
+    "generatedAt": "2026-04-26",
     "root": "/Users/noah/Projects/whatarewecapableof",
     "assetCount": 323,
     "siteVisibleAssetCount": 31,
@@ -41,7 +41,8 @@
         "consult/index.html",
         "creative/index.html",
         "index.html",
-        "question/index.html"
+        "question/index.html",
+        "tracker/index.html"
       ]
     },
     {
@@ -4158,7 +4159,8 @@
         "proposals/fde/index.html",
         "proposals/paste/index.html",
         "proposals/teaspressa/index.html",
-        "question/index.html"
+        "question/index.html",
+        "tracker/index.html"
       ]
     },
     {
@@ -4187,7 +4189,8 @@
         "proposals/fde/index.html",
         "proposals/paste/index.html",
         "proposals/teaspressa/index.html",
-        "question/index.html"
+        "question/index.html",
+        "tracker/index.html"
       ]
     },
     {
@@ -5020,6 +5023,30 @@
     },
     {
       "source": "question/index.html",
+      "raw": "/apple-touch-icon.png",
+      "normalizedPath": "apple-touch-icon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "tracker/index.html",
+      "raw": "/favicon.svg",
+      "normalizedPath": "favicon.svg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "tracker/index.html",
+      "raw": "/favicon.png",
+      "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "tracker/index.html",
       "raw": "/apple-touch-icon.png",
       "normalizedPath": "apple-touch-icon.png",
       "exists": true,

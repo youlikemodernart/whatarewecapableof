@@ -22,6 +22,7 @@ Footer-only (secondary):
   CONTACT                   email in footer text (no dedicated page unless needed)
 
 Non-navigation (direct link only):
+  /tracker/                 Password-gated internal proposal tracker (noindex, nofollow)
   /proposals/teaspressa/    Proof-of-insight proposal (noindex, nofollow)
   /proposals/compassion/    Compassion Causes proposal (noindex, nofollow)
   /proposals/belhaus/       Belhaus proposal (noindex, nofollow)
@@ -173,6 +174,20 @@ Footer placement means visitors who want this page will find it; visitors who do
 **Content:** `hello@whatarewecapableof.com` as a mailto link. Possibly Austin's email separately if coaching inquiries should route differently. Location if relevant.
 
 If a contact form is ever needed, it becomes `/contact` as a minimal page. For now, footer text is sufficient. The booking tool at `/coach/book` handles Austin's coaching inbound path. The booking tool at `/book` handles proposal CTA discovery calls.
+
+---
+
+### `/tracker/`: Proposal tracker
+
+**Access:** Direct URL only. Password-gated. Not linked from the public site navigation.
+
+**Layout:** Internal two-column operating view in the whatarewecapableof visual system: proposal list on the left, selected proposal detail on the right. No cards, no status-color system, no imagery.
+
+**Source of truth:** `PROPOSALS.md`. The tracker reads parsed proposal data through authenticated API data. It should not become a second proposal database.
+
+**Comments:** Notes are captured locally in the browser and exported as Markdown for manual ingestion into `PROPOSALS.md`. This keeps v1 low-bloat and avoids automatic source-file mutation.
+
+**Security:** Password session is handled through signed HttpOnly cookies. Required Vercel env vars: `TRACKER_PASSWORD_HASH` or `TRACKER_PASSWORD`; recommended: `TRACKER_SESSION_SECRET`.
 
 ---
 

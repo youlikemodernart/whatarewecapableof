@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#ffffff">
+<title>Proposal tracker | What are we capable of?</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/typography.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<style>
+  html {
+    overflow-x: clip;
+  }
+
+  body.page-tracker {
+    min-height: 100svh;
+    padding: 0 var(--margin-inline) var(--margin-block);
+  }
+
+  .tracker-header {
+    min-height: calc(var(--space-1) + var(--space-0-5));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-1);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--color-bg);
+    margin-inline: calc(-1 * var(--margin-inline));
+    padding-inline: var(--margin-inline);
+  }
+
+  .tracker-home {
+    color: inherit;
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+
+  .tracker-session {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+  }
+
+  .tracker-session button,
+  .text-button {
+    color: inherit;
+    font: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .tracker-session button:hover,
+  .text-button:hover {
+    color: var(--color-accent);
+  }
+
+  .tracker-login {
+    max-width: var(--content-width-narrow);
+    padding-top: var(--space-4);
+  }
+
+  .tracker-login h1,
+  .tracker-title {
+    font-family: var(--font-serif);
+    font-size: var(--size-l);
+    font-weight: 400;
+    line-height: var(--line-height-body);
+    margin: 0;
+  }
+
+  .tracker-login p,
+  .tracker-intro {
+    margin-top: var(--space-1);
+  }
+
+  .tracker-form {
+    margin-top: var(--space-2);
+  }
+
+  .tracker-form label,
+  .note-form label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    margin-bottom: var(--space-0-5);
+  }
+
+  .tracker-form input {
+    display: block;
+    width: 100%;
+    min-height: var(--space-2);
+    border: 0;
+    border-bottom: 1px solid var(--color-text);
+    border-radius: 0;
+    background: transparent;
+    color: var(--color-text);
+    font: var(--size-m) / var(--line-height-body) var(--font-serif);
+  }
+
+  .tracker-form input:focus-visible,
+  .note-form textarea:focus-visible,
+  .proposal-item:focus-visible,
+  .filter-button:focus-visible,
+  .text-button:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+  }
+
+  .tracker-form button {
+    margin-top: var(--space-1);
+  }
+
+  .tracker-error,
+  .tracker-message {
+    margin-top: var(--space-1);
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+  }
+
+  .tracker-error {
+    color: var(--color-accent);
+  }
+
+  .tracker-app {
+    padding-top: var(--space-2);
+  }
+
+  .tracker-topline {
+    max-width: var(--content-width-prose);
+  }
+
+  .tracker-source {
+    margin-top: var(--space-1);
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.45;
+  }
+
+  .tracker-grid {
+    display: grid;
+    grid-template-columns: minmax(0, var(--content-width-narrow)) minmax(0, var(--content-width-prose));
+    column-gap: var(--space-4);
+    align-items: start;
+    margin-top: var(--space-3);
+  }
+
+  .tracker-index {
+    position: sticky;
+    top: calc(var(--space-2) + var(--space-0-5));
+  }
+
+  .filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-0-5) var(--space-1);
+    margin-bottom: var(--space-1);
+  }
+
+  .filter-button {
+    min-height: var(--space-2);
+    border: 0;
+    background: transparent;
+    color: var(--color-text);
+    padding: 0;
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    cursor: pointer;
+  }
+
+  .filter-button[aria-pressed="true"] {
+    color: var(--color-accent);
+  }
+
+  .proposal-list {
+    border-top: 1px solid var(--color-text);
+  }
+
+  .proposal-item {
+    display: block;
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid var(--color-text);
+    background: transparent;
+    color: inherit;
+    padding: var(--space-0-5) 0 var(--space-1);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .proposal-item[aria-current="true"] .proposal-name {
+    color: var(--color-accent);
+  }
+
+  .proposal-name {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: var(--size-m);
+    line-height: var(--line-height-body);
+  }
+
+  .proposal-status,
+  .proposal-next,
+  .detail-meta,
+  .detail-label,
+  .note-meta {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    letter-spacing: var(--tracking-caps);
+  }
+
+  .proposal-status {
+    display: block;
+    margin-top: var(--space-0-5);
+    text-transform: uppercase;
+    opacity: 0.55;
+  }
+
+  .proposal-next {
+    display: block;
+    margin-top: var(--space-0-5);
+    letter-spacing: 0;
+    opacity: 0.8;
+  }
+
+  .detail-section {
+    border-top: 1px solid var(--color-text);
+    padding-top: var(--space-1);
+    margin-top: var(--space-2);
+  }
+
+  .detail-section:first-child {
+    margin-top: 0;
+  }
+
+  .detail-heading {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    font-weight: 400;
+    margin: 0 0 var(--space-1);
+  }
+
+  .detail-label {
+    display: block;
+    text-transform: uppercase;
+    opacity: 0.45;
+    margin-bottom: calc(var(--space-0-5) * 0.5);
+  }
+
+  .detail-text + .detail-text,
+  .detail-block + .detail-block {
+    margin-top: var(--space-1);
+  }
+
+  .detail-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-1) var(--space-2);
+  }
+
+  .detail-meta {
+    text-transform: uppercase;
+    opacity: 0.65;
+  }
+
+  .detail-link-list {
+    display: grid;
+    gap: var(--space-0-5);
+    margin-top: var(--space-1);
+  }
+
+  .detail-link-list a {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+  }
+
+  .open-list,
+  .history-list,
+  .note-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .open-list li,
+  .history-list li,
+  .note-list li {
+    border-top: 1px solid rgba(0,0,0,0.15);
+    padding-top: var(--space-0-5);
+    margin-top: var(--space-0-5);
+  }
+
+  details {
+    margin-top: var(--space-1);
+  }
+
+  summary {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    cursor: pointer;
+  }
+
+  .note-form {
+    margin-top: var(--space-1);
+  }
+
+  .note-form textarea {
+    display: block;
+    width: 100%;
+    min-height: calc(var(--space-4) + var(--space-1));
+    resize: vertical;
+    border: 0;
+    border-top: 1px solid var(--color-text);
+    border-bottom: 1px solid var(--color-text);
+    border-radius: 0;
+    background: transparent;
+    color: var(--color-text);
+    padding: var(--space-0-5) 0;
+    font: var(--size-m) / var(--line-height-body) var(--font-serif);
+  }
+
+  .note-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-0-5) var(--space-1);
+    margin-top: var(--space-1);
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+  }
+
+  .note-count {
+    margin-top: var(--space-1);
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.5;
+  }
+
+  .note-list {
+    margin-top: var(--space-1);
+  }
+
+  .note-body {
+    white-space: pre-wrap;
+  }
+
+  .empty-state {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.45;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+
+  @media (max-width: 900px) {
+    .tracker-grid {
+      grid-template-columns: 1fr;
+      row-gap: var(--space-3);
+    }
+
+    .tracker-index {
+      position: static;
+    }
+  }
+
+  @media (max-width: 767px) {
+    :root {
+      --margin-inline: var(--space-1);
+    }
+
+    .tracker-header {
+      align-items: flex-start;
+      flex-direction: column;
+      justify-content: center;
+      padding-block: var(--space-0-5);
+    }
+
+    .detail-meta-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body class="page-tracker">
+<header class="tracker-header">
+  <a class="tracker-home" href="/">What are we capable of?</a>
+  <div class="tracker-session" id="sessionActions" hidden>
+    <button type="button" id="logoutButton">Log out</button>
+  </div>
+</header>
+
+<main>
+  <div class="tracker-login" id="loginView">
+    <h1 id="loginTitle">Proposal tracker</h1>
+    <p>This page is private. Enter the tracker password to view proposal status and capture working notes.</p>
+    <form class="tracker-form" id="loginForm">
+      <label for="trackerPassword">Password</label>
+      <input id="trackerPassword" name="password" type="password" autocomplete="current-password" required>
+      <button class="text-button" type="submit">Enter tracker</button>
+    </form>
+    <p class="tracker-error" id="loginError" role="alert" hidden></p>
+  </div>
+
+  <div class="tracker-app" id="trackerApp" hidden>
+    <div class="tracker-topline">
+      <h1 class="tracker-title" id="trackerTitle" tabindex="-1">Proposal tracker</h1>
+      <p class="tracker-intro">A read-only view of <code>PROPOSALS.md</code>. Notes saved here stay in this browser until copied or downloaded for manual ingestion.</p>
+      <p class="tracker-source" id="sourceMeta"></p>
+    </div>
+
+    <div class="tracker-grid">
+      <section class="tracker-index" aria-label="Proposal list">
+        <div class="filter-row" id="filterRow"></div>
+        <div class="proposal-list" id="proposalList"></div>
+      </section>
+
+      <section class="tracker-detail" id="proposalDetail" aria-live="polite" aria-label="Selected proposal"></section>
+    </div>
+  </div>
+</main>
+
+<script>
+(function() {
+  var state = {
+    data: null,
+    selectedSlug: null,
+    filter: 'all'
+  };
+
+  var filters = [
+    { key: 'all', label: 'All' },
+    { key: 'attention', label: 'Needs attention' },
+    { key: 'awaiting', label: 'Awaiting' },
+    { key: 'delivered', label: 'Delivered' },
+    { key: 'parked', label: 'Parked' }
+  ];
+
+  var els = {
+    loginView: document.getElementById('loginView'),
+    loginForm: document.getElementById('loginForm'),
+    loginError: document.getElementById('loginError'),
+    password: document.getElementById('trackerPassword'),
+    trackerApp: document.getElementById('trackerApp'),
+    sessionActions: document.getElementById('sessionActions'),
+    logoutButton: document.getElementById('logoutButton'),
+    sourceMeta: document.getElementById('sourceMeta'),
+    filterRow: document.getElementById('filterRow'),
+    proposalList: document.getElementById('proposalList'),
+    proposalDetail: document.getElementById('proposalDetail')
+  };
+
+  function escapeHtml(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  function formatDate(value) {
+    if (!value) return '';
+    var date = new Date(value);
+    if (Number.isNaN(date.getTime())) return value;
+    return date.toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit'
+    });
+  }
+
+  function showLogin(message) {
+    els.loginView.hidden = false;
+    els.trackerApp.hidden = true;
+    els.sessionActions.hidden = true;
+    if (message) {
+      els.loginError.textContent = message;
+      els.loginError.hidden = false;
+    }
+  }
+
+  function showApp() {
+    els.loginView.hidden = true;
+    els.trackerApp.hidden = false;
+    els.sessionActions.hidden = false;
+    els.loginError.hidden = true;
+    document.getElementById('trackerTitle').focus({ preventScroll: true });
+  }
+
+  async function loadTracker() {
+    try {
+      var response = await fetch('/api/tracker-data', {
+        credentials: 'same-origin',
+        cache: 'no-store'
+      });
+
+      if (response.status === 401) {
+        showLogin();
+        return;
+      }
+
+      var payload = await response.json().catch(function() { return {}; });
+      if (!response.ok) {
+        showLogin(payload.error || 'Could not load tracker.');
+        return;
+      }
+
+      state.data = payload;
+      if (!state.selectedSlug && payload.proposals && payload.proposals.length) {
+        var firstAttention = payload.proposals.find(function(proposal) {
+          return proposal.tags && proposal.tags.indexOf('attention') !== -1;
+        });
+        state.selectedSlug = (firstAttention || payload.proposals[0]).slug;
+      }
+
+      showApp();
+      render();
+    } catch (err) {
+      showLogin('Could not reach tracker data.');
+    }
+  }
+
+  function getNotes() {
+    try {
+      var parsed = JSON.parse(localStorage.getItem('wawco-tracker-notes-v1') || '[]');
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (err) {
+      return [];
+    }
+  }
+
+  function setNotes(notes) {
+    try {
+      localStorage.setItem('wawco-tracker-notes-v1', JSON.stringify(notes));
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  function notesForProposal(slug) {
+    return getNotes()
+      .filter(function(note) { return note.proposalSlug === slug; })
+      .sort(function(a, b) { return String(b.createdAt).localeCompare(String(a.createdAt)); });
+  }
+
+  function saveNote(proposal, body) {
+    var notes = getNotes();
+    notes.push({
+      id: 'note-' + Date.now() + '-' + Math.random().toString(16).slice(2),
+      createdAt: new Date().toISOString(),
+      proposalName: proposal.name,
+      proposalSlug: proposal.slug,
+      statusAtCapture: proposal.status || '',
+      nextAtCapture: proposal.next || '',
+      body: body.trim()
+    });
+    return setNotes(notes);
+  }
+
+  function deleteNote(id) {
+    setNotes(getNotes().filter(function(note) { return note.id !== id; }));
+  }
+
+  function filteredProposals() {
+    var proposals = state.data ? state.data.proposals || [] : [];
+    if (state.filter === 'all') return proposals;
+    return proposals.filter(function(proposal) {
+      return proposal.tags && proposal.tags.indexOf(state.filter) !== -1;
+    });
+  }
+
+  function selectedProposal() {
+    var proposals = state.data ? state.data.proposals || [] : [];
+    return proposals.find(function(proposal) { return proposal.slug === state.selectedSlug; }) || proposals[0] || null;
+  }
+
+  function render() {
+    if (!state.data) return;
+    els.sourceMeta.textContent = state.data.count + ' active proposals / Source updated ' + formatDate(state.data.sourceUpdatedAt);
+    renderFilters();
+    renderList();
+    renderDetail();
+  }
+
+  function renderFilters() {
+    var proposals = state.data.proposals || [];
+    els.filterRow.innerHTML = filters.map(function(filter) {
+      var count = filter.key === 'all'
+        ? proposals.length
+        : proposals.filter(function(proposal) { return proposal.tags && proposal.tags.indexOf(filter.key) !== -1; }).length;
+      return '<button class="filter-button" type="button" data-filter="' + escapeHtml(filter.key) + '" aria-pressed="' + (state.filter === filter.key ? 'true' : 'false') + '">' + escapeHtml(filter.label) + ' ' + count + '</button>';
+    }).join('');
+  }
+
+  function renderList() {
+    var proposals = filteredProposals();
+    if (!proposals.length) {
+      els.proposalList.innerHTML = '<p class="empty-state" style="padding-top: var(--space-1);">No proposals in this filter.</p>';
+      return;
+    }
+
+    els.proposalList.innerHTML = proposals.map(function(proposal) {
+      return '<button class="proposal-item" type="button" data-slug="' + escapeHtml(proposal.slug) + '" aria-current="' + (proposal.slug === state.selectedSlug ? 'true' : 'false') + '">'
+        + '<span class="proposal-name">' + escapeHtml(proposal.name) + '</span>'
+        + '<span class="proposal-status">' + escapeHtml(proposal.status || 'No status') + '</span>'
+        + (proposal.next ? '<span class="proposal-next">NEXT: ' + escapeHtml(proposal.next) + '</span>' : '')
+        + '</button>';
+    }).join('');
+  }
+
+  function renderDetail() {
+    var proposal = selectedProposal();
+    if (!proposal) {
+      els.proposalDetail.innerHTML = '<p class="empty-state">No proposal selected.</p>';
+      return;
+    }
+
+    var notes = notesForProposal(proposal.slug);
+    var openQuestions = proposal.openQuestions && proposal.openQuestions.length
+      ? '<ul class="open-list">' + proposal.openQuestions.map(function(item) { return '<li>' + escapeHtml(item) + '</li>'; }).join('') + '</ul>'
+      : '<p class="empty-state">No open questions listed.</p>';
+
+    var history = proposal.history && proposal.history.length
+      ? '<details><summary>History</summary><ul class="history-list">' + proposal.history.map(function(item) { return '<li>' + escapeHtml(item) + '</li>'; }).join('') + '</ul></details>'
+      : '';
+
+    var links = [];
+    if (proposal.url) links.push('<a href="' + escapeHtml(proposal.url) + '" target="_blank" rel="noreferrer">Live proposal</a>');
+    if (proposal.deepDocs) links.push('<span>' + escapeHtml(proposal.deepDocs) + '</span>');
+
+    els.proposalDetail.innerHTML = ''
+      + '<article>'
+      + '<section class="detail-section">'
+      + '<h2 class="tracker-title">' + escapeHtml(proposal.name) + '</h2>'
+      + '<div class="detail-meta-grid" style="margin-top: var(--space-1);">'
+      + metaBlock('Prepared', proposal.prepared)
+      + metaBlock('Relationship', proposal.relationship)
+      + metaBlock('Tabs', proposal.tabs)
+      + metaBlock('Source', proposal.source)
+      + '</div>'
+      + (links.length ? '<div class="detail-link-list">' + links.join('') + '</div>' : '')
+      + '</section>'
+      + detailBlock('Status', proposal.status)
+      + detailBlock('Next', proposal.next)
+      + detailBlock("What we're proposing", proposal.proposedWork)
+      + '<section class="detail-section"><h3 class="detail-heading">Open questions</h3>' + openQuestions + '</section>'
+      + (proposal.lastHistory ? detailBlock('Last history item', proposal.lastHistory) : '')
+      + history
+      + renderNotesSection(proposal, notes)
+      + '</article>';
+  }
+
+  function metaBlock(label, value) {
+    return '<div><span class="detail-label">' + escapeHtml(label) + '</span><span class="detail-meta">' + escapeHtml(value || 'Not listed') + '</span></div>';
+  }
+
+  function detailBlock(label, value) {
+    if (!value) return '';
+    return '<section class="detail-section"><span class="detail-label">' + escapeHtml(label) + '</span><p class="detail-text">' + escapeHtml(value) + '</p></section>';
+  }
+
+  function renderNotesSection(proposal, notes) {
+    var noteItems = notes.length
+      ? '<ul class="note-list">' + notes.map(function(note) {
+          return '<li data-note-id="' + escapeHtml(note.id) + '">'
+            + '<div class="note-meta">' + escapeHtml(formatDate(note.createdAt)) + '</div>'
+            + '<p class="note-body">' + escapeHtml(note.body) + '</p>'
+            + '<button class="text-button" type="button" data-delete-note="' + escapeHtml(note.id) + '">Delete note</button>'
+            + '</li>';
+        }).join('') + '</ul>'
+      : '<p class="empty-state">No pending notes for this proposal.</p>';
+
+    return '<section class="detail-section">'
+      + '<h3 class="detail-heading">Notes</h3>'
+      + '<p>Use this as a low-friction comment queue. Notes are stored locally in this browser, then copied or downloaded for manual ingestion into <code>PROPOSALS.md</code>.</p>'
+      + '<form class="note-form" id="noteForm">'
+      + '<label for="noteBody">Add note for ' + escapeHtml(proposal.name) + '</label>'
+      + '<textarea id="noteBody" name="note" maxlength="4000" required></textarea>'
+      + '<div class="note-actions">'
+      + '<button class="text-button" type="submit">Save note</button>'
+      + '<button class="text-button" type="button" data-copy-notes>Copy pending notes</button>'
+      + '<button class="text-button" type="button" data-download-notes>Download notes</button>'
+      + '<button class="text-button" type="button" data-clear-proposal-notes>Clear proposal notes</button>'
+      + '</div>'
+      + '</form>'
+      + '<div class="note-count">' + notes.length + ' pending note' + (notes.length === 1 ? '' : 's') + '</div>'
+      + noteItems
+      + '<p class="tracker-message" id="noteMessage" role="status" hidden></p>'
+      + '</section>';
+  }
+
+  function notesToMarkdown(notes) {
+    if (!notes.length) return '';
+    var grouped = notes.reduce(function(map, note) {
+      if (!map[note.proposalName]) map[note.proposalName] = [];
+      map[note.proposalName].push(note);
+      return map;
+    }, {});
+
+    var lines = [
+      '# Proposal tracker notes',
+      '',
+      'Generated: ' + new Date().toISOString(),
+      '',
+      'Manual ingestion target: PROPOSALS.md',
+      ''
+    ];
+
+    Object.keys(grouped).sort().forEach(function(name) {
+      lines.push('## ' + name, '');
+      grouped[name]
+        .sort(function(a, b) { return String(a.createdAt).localeCompare(String(b.createdAt)); })
+        .forEach(function(note) {
+          lines.push('### ' + note.createdAt);
+          if (note.statusAtCapture) lines.push('', '**Status at capture:** ' + note.statusAtCapture);
+          if (note.nextAtCapture) lines.push('', '**Next at capture:** ' + note.nextAtCapture);
+          lines.push('', note.body, '');
+        });
+    });
+
+    return lines.join('\n');
+  }
+
+  async function copyNotes(notes) {
+    var markdown = notesToMarkdown(notes);
+    if (!markdown) return false;
+    await navigator.clipboard.writeText(markdown);
+    return true;
+  }
+
+  function downloadNotes(notes) {
+    var markdown = notesToMarkdown(notes);
+    if (!markdown) return false;
+    var blob = new Blob([markdown], { type: 'text/markdown' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'proposal-tracker-notes-' + new Date().toISOString().slice(0, 10) + '.md';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    return true;
+  }
+
+  function showNoteMessage(message) {
+    var messageEl = document.getElementById('noteMessage');
+    if (!messageEl) return;
+    messageEl.textContent = message;
+    messageEl.hidden = false;
+  }
+
+  els.loginForm.addEventListener('submit', async function(event) {
+    event.preventDefault();
+    els.loginError.hidden = true;
+
+    try {
+      var response = await fetch('/api/tracker-login', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: els.password.value })
+      });
+      var payload = await response.json().catch(function() { return {}; });
+
+      if (!response.ok) {
+        showLogin(payload.error || 'Incorrect password.');
+        return;
+      }
+
+      els.password.value = '';
+      await loadTracker();
+    } catch (err) {
+      showLogin('Could not submit password.');
+    }
+  });
+
+  els.logoutButton.addEventListener('click', async function() {
+    await fetch('/api/tracker-logout', {
+      method: 'POST',
+      credentials: 'same-origin'
+    }).catch(function() {});
+    state.data = null;
+    state.selectedSlug = null;
+    showLogin();
+  });
+
+  els.filterRow.addEventListener('click', function(event) {
+    var button = event.target.closest('[data-filter]');
+    if (!button) return;
+    state.filter = button.getAttribute('data-filter');
+    var visible = filteredProposals();
+    if (visible.length && !visible.some(function(proposal) { return proposal.slug === state.selectedSlug; })) {
+      state.selectedSlug = visible[0].slug;
+    }
+    render();
+  });
+
+  els.proposalList.addEventListener('click', function(event) {
+    var button = event.target.closest('[data-slug]');
+    if (!button) return;
+    state.selectedSlug = button.getAttribute('data-slug');
+    render();
+  });
+
+  els.proposalDetail.addEventListener('submit', function(event) {
+    if (event.target.id !== 'noteForm') return;
+    event.preventDefault();
+    var proposal = selectedProposal();
+    var textarea = document.getElementById('noteBody');
+    if (!proposal || !textarea || !textarea.value.trim()) return;
+    var saved = saveNote(proposal, textarea.value);
+    if (!saved) {
+      showNoteMessage('Could not save note locally. Copy the text before leaving this page.');
+      return;
+    }
+    textarea.value = '';
+    renderDetail();
+    showNoteMessage('Saved locally. Copy or download when ready to ingest.');
+  });
+
+  els.proposalDetail.addEventListener('click', async function(event) {
+    var proposal = selectedProposal();
+    if (!proposal) return;
+
+    var deleteButton = event.target.closest('[data-delete-note]');
+    if (deleteButton) {
+      deleteNote(deleteButton.getAttribute('data-delete-note'));
+      renderDetail();
+      showNoteMessage('Deleted note.');
+      return;
+    }
+
+    if (event.target.closest('[data-copy-notes]')) {
+      var copied = await copyNotes(notesForProposal(proposal.slug)).catch(function() { return false; });
+      showNoteMessage(copied ? 'Copied proposal notes.' : 'No notes to copy.');
+      return;
+    }
+
+    if (event.target.closest('[data-download-notes]')) {
+      var downloaded = downloadNotes(notesForProposal(proposal.slug));
+      showNoteMessage(downloaded ? 'Downloaded proposal notes.' : 'No notes to download.');
+      return;
+    }
+
+    if (event.target.closest('[data-clear-proposal-notes]')) {
+      var notes = getNotes().filter(function(note) { return note.proposalSlug !== proposal.slug; });
+      setNotes(notes);
+      renderDetail();
+      showNoteMessage('Cleared proposal notes.');
+    }
+  });
+
+  loadTracker();
+})();
+</script>
+</body>
+</html>

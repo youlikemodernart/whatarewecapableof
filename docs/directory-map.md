@@ -10,6 +10,7 @@ Production site: `https://whatarewecapableof.com`
 
 ```txt
 ~/Projects/whatarewecapableof/
+  vercel.json
   index.html
   about/index.html
   question/index.html
@@ -18,6 +19,7 @@ Production site: `https://whatarewecapableof.com`
   book/index.html
   consult/index.html
   creative/index.html
+  tracker/index.html
   proposals/
     _template/index.html
     belhaus/index.html
@@ -48,6 +50,7 @@ Production site: `https://whatarewecapableof.com`
     directory-map.md
     agent-routing.md
     cursor-workflow.md
+    tracker.md
     asset-inventory.md
     asset-inventory.json
     site-dashboard.html
@@ -67,6 +70,7 @@ Production site: `https://whatarewecapableof.com`
 | `/consult` | `consult/index.html` | Shared advisory vertical. |
 | `/creative` | `creative/index.html` | Noah design and build vertical. |
 | `/about` | `about/index.html` | Bios and contact. Footer-only access. |
+| `/tracker` | `tracker/index.html` | Password-gated internal proposal tracker. Reads `PROPOSALS.md` through authenticated API data. |
 | `/proposals/teaspressa` | `proposals/teaspressa/index.html` | Direct-link proposal. |
 | `/proposals/compassion` | `proposals/compassion/index.html` | Direct-link proposal with image-heavy content. |
 | `/proposals/belhaus` | `proposals/belhaus/index.html` | Direct-link proposal. |
@@ -96,6 +100,10 @@ Design constraints live in `design/system-constraints.md`. Treat that file as th
 | `api/_calendar.js` | Shared Google Calendar auth, timezone conversion, booking type config, bookable slot generation, buffer enforcement, and free/busy helpers. |
 | `api/availability.js` | Reads Austin's Google Calendar free/busy data and returns available slots for `type=coach` or `type=discovery`. |
 | `api/book.js` | Books calendar events after availability is confirmed, enforces buffers, creates a Google Meet link, and sends attendee updates. |
+| `api/_tracker.js` | Shared tracker authentication, signed-cookie session helpers, and `PROPOSALS.md` parsing. |
+| `api/tracker-login.js` | Checks the tracker password and sets the private session cookie. |
+| `api/tracker-logout.js` | Clears the tracker session cookie. |
+| `api/tracker-data.js` | Returns parsed proposal tracker data only when the signed session cookie is valid. |
 
 Do not commit secrets. Calendar credentials belong in Vercel environment variables.
 

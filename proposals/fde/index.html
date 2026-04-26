@@ -18,6 +18,7 @@
 <link rel="stylesheet" href="/css/typography.css">
 <link rel="stylesheet" href="/css/layout.css">
 <link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/proposal-media.css">
 <style>
   html {
     overflow-x: clip;
@@ -149,6 +150,13 @@
     border-top: none;
   }
 
+  .proposal-media + .section-heading,
+  .fde-timeline + .proposal-media + .section-heading {
+    border-top: none;
+    padding-top: var(--space-1);
+    margin-top: var(--space-2);
+  }
+
   .finding {
     margin-bottom: var(--space-2);
   }
@@ -164,13 +172,6 @@
 
   .finding p:last-child {
     margin-bottom: 0;
-  }
-
-  .evidence {
-    font-family: var(--font-mono);
-    font-size: var(--size-xs);
-    opacity: 0.35;
-    margin-top: calc(var(--space-0-5));
   }
 
   .stat-row {
@@ -295,15 +296,70 @@
     margin-top: var(--space-3);
   }
 
-  .question-underline {
-    text-decoration: underline;
-    text-underline-offset: 0.15em;
-  }
-
   .page-proposal footer {
     margin-top: var(--space-4);
     padding-top: var(--space-1);
     border-top: 1px solid rgba(0,0,0,0.08);
+  }
+
+  /* Vertical timeline */
+  .fde-timeline {
+    margin: var(--space-2) 0;
+    border-top: 1px solid var(--color-text);
+    padding-top: var(--space-1);
+  }
+
+  .fde-timeline-step {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: var(--space-0-5);
+    padding-bottom: var(--space-2);
+  }
+
+  .fde-timeline-step:last-child {
+    padding-bottom: 0;
+  }
+
+  .fde-timeline-marker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 2px;
+  }
+
+  .fde-timeline-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-text);
+    flex-shrink: 0;
+  }
+
+  .fde-timeline-line {
+    width: 1px;
+    flex: 1;
+    background: var(--color-text);
+    opacity: 0.15;
+    margin-top: var(--space-0-5);
+  }
+
+  .fde-timeline-content .proposal-process-step-label {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.45;
+    margin-bottom: calc(var(--space-0-5) * 0.5);
+  }
+
+  .fde-timeline-content .proposal-process-step-title {
+    font-family: var(--font-serif);
+    font-size: var(--size-m);
+    margin-bottom: calc(var(--space-0-5) * 0.5);
+  }
+
+  .fde-timeline-content p {
+    font-size: var(--size-s);
   }
 
   @media (max-width: 767px) {
@@ -373,9 +429,15 @@
   <a class="tab" href="#question">?</a>
 </nav>
 
+<!-- ===== OVERVIEW ===== -->
 <div id="overview" class="tab-content active">
 
 <p>Faith Driven Entrepreneur has built the content, community, and language for entrepreneurs who see their work as spiritual worship. The campus initiative moves that formation one stage earlier: before the first company, before the pressure of payroll, while students are deciding what money, leadership, and calling are for.</p>
+
+<!-- FDE-01 -->
+<div class="proposal-media">
+  <img src="/proposals/fde/img/fde-01-atmosphere.jpg" alt="Person standing on sand dune with arms outstretched at dusk" width="1080" height="720">
+</div>
 
 <p>The proposal launches student-led FDE campus clubs with enough structure to protect the mission and enough ownership for students to carry it themselves.</p>
 
@@ -404,6 +466,11 @@
   <p>Student leadership matters. A club run by students can feel like a movement on campus. A club delivered to students from the outside usually feels like programming. The proposed model gives students real responsibility, with coaching and guardrails around them.</p>
 </div>
 
+<!-- FDE-02 -->
+<div class="proposal-media">
+  <img src="/proposals/fde/img/fde-02-growth.jpg" alt="5 to 10 clubs in the first year: five by January, ten by September, a launch playbook FDE owns after that" width="1920" height="1080">
+</div>
+
 <div class="finding">
   <div class="finding-label">04</div>
   <p>Local church partnerships keep the work grounded in each city. The campus club becomes a bridge between students, churches, entrepreneurs, and the national FDE network.</p>
@@ -418,15 +485,26 @@
 
 <p>The proposal starts from existing FDE strengths: founder-level language, curriculum, a national entrepreneur network, local churches already connected to the movement, and a clear theological frame for work. The campus initiative builds the container where students can practice the mission.</p>
 
+<!-- FDE-03 -->
+<div class="proposal-media">
+  <img src="/proposals/fde/img/fde-03-mission-quote.jpg" alt="A ruthless fervor to advance the mission for God's glory, not our own — FDE stated value" width="1920" height="1080">
+</div>
+
 <h2 class="section-heading mt-3">What we would want to confirm</h2>
 
 <p>The plan depends on the first 5 campuses having the right conditions: a credible student director, a local church partner, at least one entrepreneur mentor, and enough institutional openness to gather weekly. A conversation would identify the first campuses, define the student director profile, and set the reporting cadence FDE leadership wants.</p>
 
 </div>
 
+<!-- ===== PROGRAM ===== -->
 <div id="program" class="tab-content">
 
 <p>The program has three leader development layers and five recurring touchpoints. The layers define what each student leader receives. The touchpoints define the rhythm each campus lives inside.</p>
+
+<!-- FDE-08 -->
+<div class="proposal-media">
+  <img src="/proposals/fde/img/fde-08-prayer.jpg" alt="Two men praying together in a church gathering, hands on each other's shoulders" width="1080" height="720">
+</div>
 
 <h2 class="section-heading">Leader development framework</h2>
 
@@ -448,6 +526,12 @@
   <p>Student directors connect bi-weekly with local and national Faith Driven Entrepreneurs: church FDE graduates, Christian business owners, and people who have carried faith through real operational pressure.</p>
 </div>
 
+<!-- FDE-04 -->
+<div class="proposal-media">
+  <img src="/proposals/fde/img/fde-04-bible.jpg" alt="Open Bible on a white surface, Psalms visible" width="1080" height="771">
+</div>
+
+
 <h2 class="section-heading">Five touchpoints</h2>
 
 <table class="responsive-table">
@@ -461,6 +545,11 @@
   </tbody>
 </table>
 
+<!-- FDE-05 -->
+<div class="proposal-media">
+  <img src="/proposals/fde/img/fde-05-yearly-rhythm.jpg" alt="Five touchpoints across the academic year: weekly club gatherings, bi-weekly coaching, semester events and cohorts, annual conference" width="1920" height="1080">
+</div>
+
 <h2 class="section-heading">Operating principle</h2>
 
 <p>FDE provides the mission, the curriculum, the network, and the guardrails. Students carry the campus expression. That division protects the movement from becoming another centralized program while giving FDE the consistency it needs to scale responsibly.</p>
@@ -472,6 +561,7 @@
 
 </div>
 
+<!-- ===== INVESTMENT ===== -->
 <div id="investment" class="tab-content">
 
 <p>The first year is a build, launch, and scale cycle. It gives FDE a live campus program and a documented playbook the organization can own after the initial year.</p>
@@ -482,21 +572,62 @@
   <div class="phase-label">Phase 1 / Now through December 2026</div>
   <h3>Recruit and build</h3>
   <p>Identify and confirm 5 campuses. Recruit and develop founding student directors. Establish local church partnerships. Run launch events and founding gatherings. Build spring curriculum cadence and coaching pairings. Send weekly reports to FDE leadership throughout the build.</p>
-  <p class="mt-1"><strong>Output: 5 clubs ready for the January 2027 spring semester.</strong></p>
+  <p class="mt-1" style="font-size: var(--size-s);"><strong>Output: 5 clubs ready for the January 2027 spring semester.</strong></p>
 </div>
 
 <div class="scope-phase">
   <div class="phase-label">Phase 2 / January 2027 spring semester</div>
   <h3>Launch</h3>
   <p>Five FDE campus clubs begin weekly gatherings. Bi-weekly coaching starts with all student directors. The national student cohort connects for the first time. Each campus runs a semester event. The next 5 campuses are identified and recruitment begins.</p>
-  <p class="mt-1"><strong>Output: 5 clubs fully operating and the second 5 in development.</strong></p>
+  <p class="mt-1" style="font-size: var(--size-s);"><strong>Output: 5 clubs fully operating and the second 5 in development.</strong></p>
 </div>
 
 <div class="scope-phase">
   <div class="phase-label">Phase 3 / September 2027 fall semester</div>
   <h3>Scale</h3>
   <p>Ten clubs operate nationally. The first cohort of student directors has one full year of experience. The national cohort is active. The first yearly conference brings the campuses together. The launch playbook is documented and handed to FDE.</p>
-  <p class="mt-1"><strong>Output: 10 clubs operating and a repeatable process for the next 50 or 100.</strong></p>
+  <p class="mt-1" style="font-size: var(--size-s);"><strong>Output: 10 clubs operating and a repeatable process for the next 50 or 100.</strong></p>
+</div>
+
+<!-- ═══ SLOT FDE-06 (redesigned: vertical timeline, no scroll) ═══ -->
+<div class="fde-timeline" data-slot="FDE-06">
+  <div class="fde-timeline-step">
+    <div class="fde-timeline-marker">
+      <div class="fde-timeline-dot"></div>
+      <div class="fde-timeline-line"></div>
+    </div>
+    <div class="fde-timeline-content">
+      <div class="proposal-process-step-label">Now — Dec 2026</div>
+      <div class="proposal-process-step-title">Recruit and build</div>
+      <p>5 campuses confirmed. Student directors developed. Church partners established. Launch events run.</p>
+    </div>
+  </div>
+  <div class="fde-timeline-step">
+    <div class="fde-timeline-marker">
+      <div class="fde-timeline-dot"></div>
+      <div class="fde-timeline-line"></div>
+    </div>
+    <div class="fde-timeline-content">
+      <div class="proposal-process-step-label">Jan 2027</div>
+      <div class="proposal-process-step-title">Launch</div>
+      <p>5 clubs begin weekly gatherings. Coaching, cohorts, and semester events go live. Next 5 campuses identified.</p>
+    </div>
+  </div>
+  <div class="fde-timeline-step">
+    <div class="fde-timeline-marker">
+      <div class="fde-timeline-dot"></div>
+    </div>
+    <div class="fde-timeline-content">
+      <div class="proposal-process-step-label">Sep 2027</div>
+      <div class="proposal-process-step-title">Scale</div>
+      <p>10 clubs operating. First yearly conference. Launch playbook documented and handed to FDE.</p>
+    </div>
+  </div>
+</div>
+
+<!-- FDE-09 -->
+<div class="proposal-media">
+  <img src="/proposals/fde/img/fde-09-entrepreneur.jpg" alt="Young entrepreneur gesturing while talking outside a building" width="1080" height="608">
 </div>
 
 <h2 class="section-heading">Deliverables</h2>
@@ -514,6 +645,11 @@
     <tr><td data-label="Deliverable">Weekly reporting</td><td data-label="What FDE receives">Clear updates to FDE leadership, with no day-to-day management required from Mark.</td></tr>
   </tbody>
 </table>
+
+<!-- FDE-07 -->
+<div class="proposal-media">
+  <img src="/proposals/fde/img/fde-07-cross.jpg" alt="Cross at dusk, warm light on weathered metal" width="1080" height="1620" style="aspect-ratio: 16/9; object-fit: cover; object-position: center 30%;">
+</div>
 
 <h2 class="section-heading">Investment</h2>
 
@@ -537,11 +673,13 @@
 
 </div>
 
+<!-- ===== ? ===== -->
 <div id="question" class="tab-content-full">
 
 <div>
-  <p class="proposal-title">What are <span class="question-underline">we</span> capable of?</p>
-  <p class="mono size-s mt-1"><a class="cta-link" href="/book">Book a call</a></p>
+  <p class="proposal-title">What are <strong style="font-weight: 700;">we</strong> capable of?</p>
+  <p class="proposal-title" style="margin-top: var(--space-1);">Let's find out.</p>
+  <p class="mono size-s" style="margin-top: var(--space-1);"><a class="cta-link" href="/book">Book a call</a></p>
 </div>
 
 </div>

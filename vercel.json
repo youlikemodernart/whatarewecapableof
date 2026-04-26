@@ -5,10 +5,10 @@
     }
   },
   "routes": [
-    { "src": "/.*\\.md", "status": 404 },
-    { "src": "/.*\\.json", "status": 404 },
-    { "src": "/docs(?:/.*)?", "status": 404 },
-    { "src": "/design(?:/.*)?", "status": 404 },
+    { "src": "/.*\\.md", "status": 404, "dest": "/404.html" },
+    { "src": "/.*\\.json", "status": 404, "dest": "/404.html" },
+    { "src": "/docs(?:/.*)?", "status": 404, "dest": "/404.html" },
+    { "src": "/design(?:/.*)?", "status": 404, "dest": "/404.html" },
     { "handle": "filesystem" }
   ]
 }

@@ -4146,6 +4146,7 @@
       },
       "category": "site-shell",
       "usedIn": [
+        "404.html",
         "about/index.html",
         "book/index.html",
         "coach/book/index.html",
@@ -4176,6 +4177,7 @@
       },
       "category": "site-shell",
       "usedIn": [
+        "404.html",
         "about/index.html",
         "book/index.html",
         "coach/book/index.html",
@@ -4613,6 +4615,22 @@
     }
   ],
   "references": [
+    {
+      "source": "404.html",
+      "raw": "/favicon.svg",
+      "normalizedPath": "favicon.svg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "404.html",
+      "raw": "/favicon.png",
+      "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
     {
       "source": "about/index.html",
       "raw": "/favicon.svg",

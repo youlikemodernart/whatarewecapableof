@@ -12,6 +12,7 @@ Production site: `https://whatarewecapableof.com`
 ~/Projects/whatarewecapableof/
   vercel.json
   index.html
+  404.html
   about/index.html
   question/index.html
   coach/index.html

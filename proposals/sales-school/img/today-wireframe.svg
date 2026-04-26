@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
+  <rect width="1400" height="900" fill="#f6f7f8"/>
+  <rect x="90" y="70" width="1220" height="760" rx="34" fill="#ffffff" stroke="#d5dae3" stroke-width="2"/>
+  <text x="140" y="132" font-family="Helvetica, Arial, sans-serif" font-size="24" font-weight="700" fill="#111827">Sales School</text>
+  <text x="140" y="168" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#64748b">Day One / Live now</text>
+  <rect x="1080" y="104" width="170" height="44" rx="22" fill="#e8f2ff" stroke="#93c5fd"/>
+  <text x="1165" y="132" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#1d4ed8">Active breakout</text>
+
+  <rect x="140" y="220" width="720" height="250" rx="26" fill="#0f172a"/>
+  <text x="190" y="290" font-family="Helvetica, Arial, sans-serif" font-size="18" fill="#93c5fd">Video Breakout #2</text>
+  <text x="190" y="338" font-family="Helvetica, Arial, sans-serif" font-size="44" font-weight="700" fill="#ffffff">Leadership and metrics</text>
+  <text x="190" y="384" font-family="Helvetica, Arial, sans-serif" font-size="18" fill="#cbd5e1">2 videos / about 60 minutes</text>
+  <rect x="190" y="420" width="180" height="42" rx="21" fill="#ffffff"/>
+  <text x="280" y="447" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#0f172a">Start breakout</text>
+  <rect x="895" y="220" width="355" height="250" rx="26" fill="#f8fafc" stroke="#d5dae3"/>
+  <text x="935" y="284" font-family="Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#111827">Return to Zoom</text>
+  <text x="935" y="324" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#64748b">The facilitator can set this block to show the return time, Zoom link, or next instruction.</text>
+  <rect x="935" y="392" width="220" height="40" rx="20" fill="#eef2ff"/>
+  <text x="1045" y="418" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#3730a3">Placeholder instruction</text>
+
+  <text x="140" y="548" font-family="Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#111827">Lesson queue</text>
+  <g>
+    <rect x="140" y="590" width="340" height="150" rx="22" fill="#f8fafc" stroke="#d5dae3"/>
+    <rect x="164" y="614" width="116" height="76" rx="14" fill="#dbeafe"/>
+    <polygon points="210,638 210,666 234,652" fill="#1d4ed8"/>
+    <text x="305" y="642" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#111827">Leadership in Sales</text>
+    <text x="305" y="672" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#64748b">33 minutes</text>
+  </g>
+  <g>
+    <rect x="530" y="590" width="340" height="150" rx="22" fill="#f8fafc" stroke="#d5dae3"/>
+    <rect x="554" y="614" width="116" height="76" rx="14" fill="#dbeafe"/>
+    <polygon points="600,638 600,666 624,652" fill="#1d4ed8"/>
+    <text x="695" y="642" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#111827">Metrics that Matter</text>
+    <text x="695" y="672" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#64748b">28 minutes</text>
+  </g>
+  <g>
+    <rect x="920" y="590" width="330" height="150" rx="22" fill="#fff7ed" stroke="#fdba74"/>
+    <text x="950" y="642" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#111827">Resource slot</text>
+    <text x="950" y="672" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#64748b">Worksheet, script, or reading can live here.</text>
+  </g>
+  <text x="140" y="800" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#64748b">Low-fidelity placeholder. Final look and feel should follow collected design references.</text>
+</svg>

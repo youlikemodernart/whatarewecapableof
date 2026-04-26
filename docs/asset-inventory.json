@@ -2,9 +2,9 @@
   "summary": {
     "generatedAt": "2026-04-26",
     "root": "/Users/noah/Projects/whatarewecapableof",
-    "assetCount": 323,
-    "siteVisibleAssetCount": 31,
-    "referencedAssetCount": 16,
+    "assetCount": 341,
+    "siteVisibleAssetCount": 49,
+    "referencedAssetCount": 34,
     "unreferencedSiteVisibleAssetCount": 15,
     "missingReferenceCount": 0,
     "relativeLocalReferenceCount": 0,
@@ -17,7 +17,7 @@
       "design-reference-gifs": 2,
       "design-reference-images": 5,
       "design-reference-screenshots": 24,
-      "proposal-content": 27
+      "proposal-content": 45
     }
   },
   "assets": [
@@ -4159,6 +4159,7 @@
         "proposals/compassion/index.html",
         "proposals/fde/index.html",
         "proposals/paste/index.html",
+        "proposals/sales-school/index.html",
         "proposals/teaspressa/index.html",
         "question/index.html",
         "tracker/index.html"
@@ -4190,6 +4191,7 @@
         "proposals/compassion/index.html",
         "proposals/fde/index.html",
         "proposals/paste/index.html",
+        "proposals/sales-school/index.html",
         "proposals/teaspressa/index.html",
         "question/index.html",
         "tracker/index.html"
@@ -4548,6 +4550,294 @@
       },
       "category": "proposal-content",
       "usedIn": []
+    },
+    {
+      "path": "proposals/fde/img/fde-01-atmosphere.jpg",
+      "publicPath": "/proposals/fde/img/fde-01-atmosphere.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 43856,
+      "size": "42.8 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 720
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/fde/index.html"
+      ]
+    },
+    {
+      "path": "proposals/fde/img/fde-02-growth-mobile.jpg",
+      "publicPath": "/proposals/fde/img/fde-02-growth-mobile.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 57299,
+      "size": "56.0 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 1080
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/fde/index.html"
+      ]
+    },
+    {
+      "path": "proposals/fde/img/fde-02-growth.jpg",
+      "publicPath": "/proposals/fde/img/fde-02-growth.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 78880,
+      "size": "77.0 KB",
+      "dimensions": {
+        "width": 1920,
+        "height": 1080
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/fde/index.html"
+      ]
+    },
+    {
+      "path": "proposals/fde/img/fde-03-birds.jpg",
+      "publicPath": "/proposals/fde/img/fde-03-birds.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 54242,
+      "size": "53.0 KB",
+      "dimensions": {
+        "width": 1043,
+        "height": 710
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/fde/index.html"
+      ]
+    },
+    {
+      "path": "proposals/fde/img/fde-05-yearly-rhythm-mobile.jpg",
+      "publicPath": "/proposals/fde/img/fde-05-yearly-rhythm-mobile.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 49118,
+      "size": "48.0 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 700
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/fde/index.html"
+      ]
+    },
+    {
+      "path": "proposals/fde/img/fde-05-yearly-rhythm.jpg",
+      "publicPath": "/proposals/fde/img/fde-05-yearly-rhythm.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 59788,
+      "size": "58.4 KB",
+      "dimensions": {
+        "width": 1920,
+        "height": 560
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/fde/index.html"
+      ]
+    },
+    {
+      "path": "proposals/fde/img/fde-08-prayer.jpg",
+      "publicPath": "/proposals/fde/img/fde-08-prayer.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 136246,
+      "size": "133.1 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 720
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/fde/index.html"
+      ]
+    },
+    {
+      "path": "proposals/fde/img/fde-09-entrepreneur.jpg",
+      "publicPath": "/proposals/fde/img/fde-09-entrepreneur.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 68782,
+      "size": "67.2 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 608
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/fde/index.html"
+      ]
+    },
+    {
+      "path": "proposals/fde/img/fde-10-community.jpg",
+      "publicPath": "/proposals/fde/img/fde-10-community.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 103412,
+      "size": "101.0 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 720
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/fde/index.html"
+      ]
+    },
+    {
+      "path": "proposals/fde/img/fde-14-classroom.jpg",
+      "publicPath": "/proposals/fde/img/fde-14-classroom.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 96393,
+      "size": "94.1 KB",
+      "dimensions": {
+        "width": 1080,
+        "height": 608
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/fde/index.html"
+      ]
+    },
+    {
+      "path": "proposals/sales-school/img/current-email-preview.png",
+      "publicPath": "/proposals/sales-school/img/current-email-preview.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 271948,
+      "size": "265.6 KB",
+      "dimensions": {
+        "width": 2560,
+        "height": 1568
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/sales-school/index.html"
+      ]
+    },
+    {
+      "path": "proposals/sales-school/img/current-flow.png",
+      "publicPath": "/proposals/sales-school/img/current-flow.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 62647,
+      "size": "61.2 KB",
+      "dimensions": {
+        "width": 1480,
+        "height": 390
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/sales-school/index.html"
+      ]
+    },
+    {
+      "path": "proposals/sales-school/img/current-wistia-sample.png",
+      "publicPath": "/proposals/sales-school/img/current-wistia-sample.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 1473530,
+      "size": "1.41 MB",
+      "dimensions": {
+        "width": 2560,
+        "height": 2992
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/sales-school/index.html"
+      ]
+    },
+    {
+      "path": "proposals/sales-school/img/live-break-flow.png",
+      "publicPath": "/proposals/sales-school/img/live-break-flow.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 54366,
+      "size": "53.1 KB",
+      "dimensions": {
+        "width": 1360,
+        "height": 330
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/sales-school/index.html"
+      ]
+    },
+    {
+      "path": "proposals/sales-school/img/pdf-index-contact-sheet.png",
+      "publicPath": "/proposals/sales-school/img/pdf-index-contact-sheet.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 168803,
+      "size": "164.8 KB",
+      "dimensions": {
+        "width": 1056,
+        "height": 968
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/sales-school/index.html"
+      ]
+    },
+    {
+      "path": "proposals/sales-school/img/proposed-sitemap.png",
+      "publicPath": "/proposals/sales-school/img/proposed-sitemap.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 85768,
+      "size": "83.8 KB",
+      "dimensions": {
+        "width": 1340,
+        "height": 820
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/sales-school/index.html"
+      ]
+    },
+    {
+      "path": "proposals/sales-school/img/today-wireframe.svg",
+      "publicPath": "/proposals/sales-school/img/today-wireframe.svg",
+      "ext": "svg",
+      "detectedFormat": "svg",
+      "bytes": 3868,
+      "size": "3.8 KB",
+      "dimensions": {
+        "width": 1400,
+        "height": 900
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/sales-school/index.html"
+      ]
+    },
+    {
+      "path": "proposals/sales-school/img/wistia-thumbnails-contact-sheet.jpg",
+      "publicPath": "/proposals/sales-school/img/wistia-thumbnails-contact-sheet.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 291127,
+      "size": "284.3 KB",
+      "dimensions": {
+        "width": 1077,
+        "height": 896
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/sales-school/index.html"
+      ]
     },
     {
       "path": "proposals/teaspressa/img/ts-02-wholesale-guide.jpg",
@@ -4960,6 +5250,86 @@
       "absolute": false
     },
     {
+      "source": "proposals/fde/index.html",
+      "raw": "/proposals/fde/img/fde-01-atmosphere.jpg",
+      "normalizedPath": "proposals/fde/img/fde-01-atmosphere.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/fde/index.html",
+      "raw": "/proposals/fde/img/fde-02-growth-mobile.jpg",
+      "normalizedPath": "proposals/fde/img/fde-02-growth-mobile.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/fde/index.html",
+      "raw": "/proposals/fde/img/fde-02-growth.jpg",
+      "normalizedPath": "proposals/fde/img/fde-02-growth.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/fde/index.html",
+      "raw": "/proposals/fde/img/fde-03-birds.jpg",
+      "normalizedPath": "proposals/fde/img/fde-03-birds.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/fde/index.html",
+      "raw": "/proposals/fde/img/fde-08-prayer.jpg",
+      "normalizedPath": "proposals/fde/img/fde-08-prayer.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/fde/index.html",
+      "raw": "/proposals/fde/img/fde-10-community.jpg",
+      "normalizedPath": "proposals/fde/img/fde-10-community.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/fde/index.html",
+      "raw": "/proposals/fde/img/fde-05-yearly-rhythm-mobile.jpg",
+      "normalizedPath": "proposals/fde/img/fde-05-yearly-rhythm-mobile.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/fde/index.html",
+      "raw": "/proposals/fde/img/fde-05-yearly-rhythm.jpg",
+      "normalizedPath": "proposals/fde/img/fde-05-yearly-rhythm.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/fde/index.html",
+      "raw": "/proposals/fde/img/fde-09-entrepreneur.jpg",
+      "normalizedPath": "proposals/fde/img/fde-09-entrepreneur.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/fde/index.html",
+      "raw": "/proposals/fde/img/fde-14-classroom.jpg",
+      "normalizedPath": "proposals/fde/img/fde-14-classroom.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
       "source": "proposals/paste/index.html",
       "raw": "/favicon.svg",
       "normalizedPath": "favicon.svg",
@@ -4971,6 +5341,86 @@
       "source": "proposals/paste/index.html",
       "raw": "/favicon.png",
       "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/sales-school/index.html",
+      "raw": "/favicon.svg",
+      "normalizedPath": "favicon.svg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/sales-school/index.html",
+      "raw": "/favicon.png",
+      "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/sales-school/index.html",
+      "raw": "/proposals/sales-school/img/current-email-preview.png",
+      "normalizedPath": "proposals/sales-school/img/current-email-preview.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/sales-school/index.html",
+      "raw": "/proposals/sales-school/img/current-flow.png",
+      "normalizedPath": "proposals/sales-school/img/current-flow.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/sales-school/index.html",
+      "raw": "/proposals/sales-school/img/pdf-index-contact-sheet.png",
+      "normalizedPath": "proposals/sales-school/img/pdf-index-contact-sheet.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/sales-school/index.html",
+      "raw": "/proposals/sales-school/img/wistia-thumbnails-contact-sheet.jpg",
+      "normalizedPath": "proposals/sales-school/img/wistia-thumbnails-contact-sheet.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/sales-school/index.html",
+      "raw": "/proposals/sales-school/img/proposed-sitemap.png",
+      "normalizedPath": "proposals/sales-school/img/proposed-sitemap.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/sales-school/index.html",
+      "raw": "/proposals/sales-school/img/live-break-flow.png",
+      "normalizedPath": "proposals/sales-school/img/live-break-flow.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/sales-school/index.html",
+      "raw": "/proposals/sales-school/img/today-wireframe.svg",
+      "normalizedPath": "proposals/sales-school/img/today-wireframe.svg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/sales-school/index.html",
+      "raw": "/proposals/sales-school/img/current-wistia-sample.png",
+      "normalizedPath": "proposals/sales-school/img/current-wistia-sample.png",
       "exists": true,
       "rootRelative": true,
       "absolute": false

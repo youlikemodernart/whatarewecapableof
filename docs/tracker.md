@@ -58,6 +58,36 @@ node -e "console.log('sha256:' + require('crypto').createHash('sha256').update(p
 
 Use the printed value as `TRACKER_PASSWORD_HASH` in Vercel.
 
+## Password rotation
+
+The setup password was temporary. Rotate it later to a generated password or passphrase.
+
+Rotation steps:
+
+1. Generate a new password outside the repo.
+2. Generate a SHA-256 hash with the command above.
+3. Update `TRACKER_PASSWORD_HASH` in Vercel for Production, Preview, and Development.
+4. Redeploy production.
+5. Smoke-test `/tracker/`, login, and `/api/tracker-data`.
+
+Do not write the raw password, hash value, session secret, cookies, or `.env.local` values into docs, memory, commits, or handoffs.
+
+## Production source blocking
+
+`vercel.json` blocks direct public access to Markdown files, static JSON files, `/docs/*`, and `/design/*`. `PROPOSALS.md` is still available to the tracker data function through `functions.api/tracker-data.js.includeFiles`.
+
+Keep `404.html` and the blocked-route `dest: "/404.html"` rules. A Vercel route with only `"status": 404` may still send the original static file body with a 404 status. The generic destination prevents source-body exposure.
+
+After changing `vercel.json`, retest:
+
+```bash
+curl -s https://whatarewecapableof.com/PROPOSALS.md | head -1
+curl -s https://whatarewecapableof.com/docs/tracker.md | head -1
+curl -s https://whatarewecapableof.com/package.json | head -1
+```
+
+Each should return the generic 404 HTML body, not source contents.
+
 ## Notes workflow
 
 Notes are stored in browser `localStorage` under `wawco-tracker-notes-v1`. Individual notes are capped at 4,000 characters.

@@ -118,7 +118,7 @@ Do not commit secrets. Calendar credentials belong in Vercel environment variabl
 | `og.png` | Site-wide Open Graph card for the home page. |
 | `proposals/compassion/img/` | Compassion proposal images and feed composites. |
 | `proposals/compassion/img/square/` | Square specimens used in the Compassion proposal content section. |
-| `proposals/teaspressa/img/ts-11-wholesale-product-collage.jpg` | Live Teaspressa Research tab product collage, generated from Shopify wholesale product images. |
+| `proposals/teaspressa/img/` | Live Teaspressa proposal images: Summary images TS-02, TS-04, TS-07, plus the Research TS-11 wholesale product collage. |
 | `proposals/<slug>/img/src/` | Ignored local source/crop workspace for proposal media. Keep raw source files here until final crops are exported. |
 | `proposals/teaspressa/img/src/arena/` | Ignored local source images pulled from the Teaspressa Are.na channel. |
 | `proposals/teaspressa/img/src/wholesale-products/` | Ignored local Shopify wholesale product scrape, contact sheets, tiles, and rough collage outputs for TS-11. |
@@ -132,9 +132,9 @@ Run `npm run scan:assets` to refresh `docs/asset-inventory.md`, `docs/asset-inve
 
 Current scan summary:
 
-- 319 image assets total.
-- 27 site and proposal assets.
-- 23 proposal-content assets.
+- 323 image assets total.
+- 31 site and proposal assets.
+- 27 proposal-content assets.
 - 4 site-shell assets.
 - 15 unreferenced site or proposal assets.
 - 0 missing local asset references.

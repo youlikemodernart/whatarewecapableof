@@ -231,6 +231,41 @@ Handoff:
 List every changed reference and any remaining relative local path.
 ```
 
+### Tracker work
+
+```txt
+Project root: ~/Projects/whatarewecapableof
+
+Goal:
+Modify or validate the private proposal tracker without changing proposal source-of-truth rules.
+
+Read:
+- docs/tracker.md
+- PROPOSALS.md
+- api/_tracker.js
+- api/tracker-data.js
+- tracker/index.html
+- ~/.pi/projects/-Users-noah--pi/memory/reference_whatarewecapableof_tracker.md
+
+Rules:
+- Do not store passwords, password hashes, session secrets, cookies, or .env.local values in docs, memory, commits, or handoffs.
+- PROPOSALS.md remains the source of truth.
+- Notes remain local/export-only unless Noah explicitly approves server-side capture.
+- Use vercel dev, not python3 -m http.server, for tracker validation.
+- Keep blocked source routes returning a generic 404 body, not source file contents.
+
+Validation:
+- npx --yes html-validate tracker/index.html
+- node --check api/_tracker.js api/tracker-login.js api/tracker-data.js api/tracker-logout.js
+- TRACKER_PASSWORD=test TRACKER_SESSION_SECRET=test npx vercel dev --listen 3333
+- Confirm /api/tracker-data returns 401 without a cookie.
+- Confirm login works with the test env vars.
+- Confirm /PROPOSALS.md, /docs/tracker.md, and /package.json return generic 404 bodies.
+
+Handoff:
+List changed files, validation results, whether source-file blocking was retested, and any parser assumptions changed.
+```
+
 ## Claude review templates
 
 ### Proposal page review

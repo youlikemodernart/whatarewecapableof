@@ -33,7 +33,9 @@
       "placeholderCopy": "Cropped 16:9 Teaspressa wholesale guide image.",
       "draftAsset": "/proposals/teaspressa/img/src/arena/ts-02-wholesale-guide-45589756.png",
       "status": "live",
-      "liveAsset": "/proposals/teaspressa/img/ts-02-wholesale-guide.jpg"
+      "liveAsset": "/proposals/teaspressa/img/ts-02-wholesale-guide.jpg",
+      "visibleCaption": false,
+      "captionNote": "Visible caption removed at Noah's request; keep descriptive alt text."
     },
     {
       "slot": "TS-04",
@@ -43,7 +45,9 @@
       "placeholderCopy": "Cropped 16:9 seasonal Teaspressa campaign image.",
       "draftAsset": "/proposals/teaspressa/img/src/arena/ts-04-mothers-day-45587982.webp",
       "status": "live",
-      "liveAsset": "/proposals/teaspressa/img/ts-04-seasonal-campaign.jpg"
+      "liveAsset": "/proposals/teaspressa/img/ts-04-seasonal-campaign.jpg",
+      "visibleCaption": false,
+      "captionNote": "Visible caption removed at Noah's request; keep descriptive alt text."
     },
     {
       "slot": "TS-07",
@@ -53,7 +57,9 @@
       "placeholderCopy": "Cropped 16:9 Valentine's retail guide image.",
       "draftAsset": "/proposals/teaspressa/img/src/arena/ts-07-valentines-retail-guide-45589884.jpg",
       "status": "live",
-      "liveAsset": "/proposals/teaspressa/img/ts-07-valentines-retail-guide.jpg"
+      "liveAsset": "/proposals/teaspressa/img/ts-07-valentines-retail-guide.jpg",
+      "visibleCaption": false,
+      "captionNote": "Visible caption removed at Noah's request; keep descriptive alt text."
     },
     {
       "slot": "TS-11",
@@ -71,7 +77,9 @@
       "filters": "A-clean/B-usable buckets only; removed sample/T-logo placeholders, obvious accessories, glassware, signage, and display fixtures; dropped three lowest-scored remaining product images to make a 15x8 grid.",
       "sortRule": "Rows 1-2: narrow stick and mini cube formats. Row 3: tea line and sampler. Rows 4-7: kits, gifts, and boxed collections. Row 8: tallboys.",
       "status": "live",
-      "liveAsset": "/proposals/teaspressa/img/ts-11-wholesale-product-collage.jpg"
+      "liveAsset": "/proposals/teaspressa/img/ts-11-wholesale-product-collage.jpg",
+      "visibleCaption": false,
+      "captionNote": "Visible caption removed at Noah's request; keep descriptive alt text."
     }
   ],
   "slots": [
@@ -136,7 +144,9 @@
       ],
       "currentUse": "Live in the Summary tab after Finding 01 as a cropped 16:9 Teaspressa wholesale guide image.",
       "draftAsset": "/proposals/teaspressa/img/src/arena/ts-02-wholesale-guide-45589756.png",
-      "liveAsset": "/proposals/teaspressa/img/ts-02-wholesale-guide.jpg"
+      "liveAsset": "/proposals/teaspressa/img/ts-02-wholesale-guide.jpg",
+      "visibleCaption": false,
+      "captionNote": "Visible caption removed at Noah's request; keep descriptive alt text."
     },
     {
       "id": "TS-03",
@@ -198,7 +208,9 @@
       ],
       "currentUse": "Live in the Summary tab after Finding 03 as a cropped 16:9 seasonal Teaspressa campaign image.",
       "draftAsset": "/proposals/teaspressa/img/src/arena/ts-04-mothers-day-45587982.webp",
-      "liveAsset": "/proposals/teaspressa/img/ts-04-seasonal-campaign.jpg"
+      "liveAsset": "/proposals/teaspressa/img/ts-04-seasonal-campaign.jpg",
+      "visibleCaption": false,
+      "captionNote": "Visible caption removed at Noah's request; keep descriptive alt text."
     },
     {
       "id": "TS-05",
@@ -289,7 +301,9 @@
       ],
       "currentUse": "Live in the Summary tab after What's working as a cropped 16:9 Valentine's retail guide image.",
       "draftAsset": "/proposals/teaspressa/img/src/arena/ts-07-valentines-retail-guide-45589884.jpg",
-      "liveAsset": "/proposals/teaspressa/img/ts-07-valentines-retail-guide.jpg"
+      "liveAsset": "/proposals/teaspressa/img/ts-07-valentines-retail-guide.jpg",
+      "visibleCaption": false,
+      "captionNote": "Visible caption removed at Noah's request; keep descriptive alt text."
     },
     {
       "id": "TS-08",
@@ -417,7 +431,10 @@
       "cropRule": "Tight square crop around detected product/object; no gutters, strokes, or borders.",
       "filters": "A-clean/B-usable buckets only; removed sample/T-logo placeholders, obvious accessories, glassware, signage, and display fixtures; dropped three lowest-scored remaining product images to make a 15x8 grid.",
       "sortRule": "Rows 1-2: narrow stick and mini cube formats. Row 3: tea line and sampler. Rows 4-7: kits, gifts, and boxed collections. Row 8: tallboys.",
-      "liveAsset": "/proposals/teaspressa/img/ts-11-wholesale-product-collage.jpg"
+      "liveAsset": "/proposals/teaspressa/img/ts-11-wholesale-product-collage.jpg",
+      "visibleCaption": false,
+      "captionNote": "Visible caption removed at Noah's request; keep descriptive alt text."
     }
-  ]
+  ],
+  "visibleCaptionPolicy": "Live Teaspressa proposal images intentionally have no visible captions per Noah's request. Keep descriptive alt text and do not re-add figcaptions unless asked."
 }

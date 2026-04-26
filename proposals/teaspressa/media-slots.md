@@ -12,6 +12,8 @@ Default frame: one body-width image or simple video. Start with 16:9. Use 4:3, 7
 
 For Teaspressa, images may work as loose atmosphere. They do not need to prove the adjacent sentence. The placeholder copy should suggest what could go there, but the most important thing is seeing the frame exactly where it would live on the page.
 
+Live Teaspressa proposal images intentionally have no visible captions. Keep descriptive alt text. Do not re-add figcaptions unless Noah asks.
+
 Raw pulled Are.na assets live in `proposals/teaspressa/img/src/arena/`. Shopify wholesale scrape, contact sheets, tiles, and rough collage outputs live in `proposals/teaspressa/img/src/wholesale-products/`. Web-ready final crops should live in `proposals/teaspressa/img/`. Keep raw source files so framing can be adjusted without re-pulling.
 
 To view the board locally:
@@ -102,6 +104,7 @@ move: specimen grid
 - Move: single body-width image placeholder by default.
 - Need: a strong image near the wholesale/product-system claim. This can be atmosphere first; a proof screenshot can replace it if stronger.
 - Live asset: `proposals/teaspressa/img/ts-02-wholesale-guide.jpg`.
+- Visible caption: none, per Noah's request.
 - Source asset: `proposals/teaspressa/img/src/arena/ts-02-wholesale-guide-45589756.png`.
 - Select for: visible wholesale flow, login-gated structure, case-pack specificity, line-sheet or reorder implications.
 - Avoid: product images that do not show wholesale flow, unreadable screenshots, over-cropped fragments.
@@ -143,6 +146,7 @@ move: system diagram
 - Move: single body-width image placeholder by default.
 - Need: seasonal product world, subscription ritual, or empty subscription page screenshot if proof is stronger.
 - Live asset: `proposals/teaspressa/img/ts-04-seasonal-campaign.jpg`.
+- Visible caption: none, per Noah's request.
 - Source asset: `proposals/teaspressa/img/src/arena/ts-04-mothers-day-45587982.webp`.
 - Select for: absence made visible, factual framing, seasonal product potential.
 - Avoid: mocked subscription design before approval, anything that implies an active subscription offer if one does not exist.
@@ -204,6 +208,7 @@ move: process strip
 - Move: single body-width image placeholder by default.
 - Need: one strong merchandising image that shows taste, seasonality, product range, or retail intelligence.
 - Live asset: `proposals/teaspressa/img/ts-07-valentines-retail-guide.jpg`.
+- Visible caption: none, per Noah's request.
 - Source asset: `proposals/teaspressa/img/src/arena/ts-07-valentines-retail-guide-45589884.jpg`.
 - Select for: distinct merchandising logics such as drink type, season, occasion, gift, retail, flavor.
 - Avoid: six images that all say the same thing.
@@ -285,6 +290,7 @@ job: diagram
 - Source manifest: `proposals/teaspressa/img/src/wholesale-products/manifest.json`.
 - Contact sheet for review: `proposals/teaspressa/img/src/wholesale-products/contact-sheets/clean-candidates-top-40.jpg`.
 - Live asset: `proposals/teaspressa/img/ts-11-wholesale-product-collage.jpg`.
+- Visible caption: none, per Noah's request.
 - Source rough asset: `proposals/teaspressa/img/src/wholesale-products/collages/ts-11-wholesale-product-collage-120up-products-cubes-top-v2-edge-15x8.jpg`.
 - Source rough manifest: `proposals/teaspressa/img/src/wholesale-products/collages/ts-11-wholesale-product-collage-120up-products-cubes-top-v2-edge-15x8.json`.
 - Previous sorted asset: `proposals/teaspressa/img/src/wholesale-products/collages/ts-11-wholesale-product-collage-120up-products-sorted-edge-15x8.jpg`.

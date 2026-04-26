@@ -4,13 +4,41 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 
 ## Active
 
+### Sales School Portal
+
+| | |
+|---|---|
+| URL | [whatarewecapableof.com/proposals/sales-school](https://whatarewecapableof.com/proposals/sales-school) |
+| Prepared | April 2026 |
+| Status | Draft built with placeholders; ready for Austin review and later visual direction pass |
+| Relationship | Austin pitching a sales company with a partially live, partially video-based sales school |
+| Tabs | Overview / Architecture / Experience / Scope / ? |
+| Source | Built from GoHighLevel preview link, six PDF indexes, Wistia pages, and IA notes at `~/Projects/austin-sales-school` |
+
+**Client:** Sales company name still pending. The visible training material uses HIRE branding on Wistia.
+
+**What we're proposing:** A restrained course portal around the existing Wistia video library: Course Home, Today, Day One, Day Two, six Breakout pages, Resources, and Facilitator. Phase 2 options include search, progress, admin editing, cohort management, and login.
+
+**History:**
+- 2026-04-25: Current link flow mapped from preview email to PDF indexes to Wistia pages.
+- 2026-04-25: IA packet created at `~/Projects/austin-sales-school` with current flow, proposed sitemap, and live-break diagrams.
+- 2026-04-25: Proposal draft created at `/proposals/sales-school` with current-state evidence, architecture diagrams, low-fidelity Today-page wireframe, and placeholder cards for missing material.
+
+**Open questions:** Final client name, brand assets, design references, exact course location, login/progress requirements, facilitator control needs, maintenance model, budget, and timeline.
+
+**Next:** Austin reviews the architecture and proposal language. Noah collects design references later, then the proposal gets a visual direction pass before send.
+
+**Deep docs:** IA project at `~/Projects/austin-sales-school`; proposal page at `~/Projects/whatarewecapableof/proposals/sales-school/index.html`
+
+---
+
 ### PäSTE
 
 | | |
 |---|---|
 | URL | [whatarewecapableof.com/proposals/paste](https://whatarewecapableof.com/proposals/paste) |
 | Prepared | April 2026 |
-| Status | Build outline deployed; needs Davey and Andres review |
+| Status | In progress; Davey coordinating initial meeting to reveal proposal-shaping context |
 | Relationship | Davey Leavitt, through BELHAUS and Phoenix context |
 | Tabs | Overview / System / First Build / ? |
 | Source | Built from Davey's deck, Cargo beta, web captures, and message thread (2026-04-25) |
@@ -27,10 +55,11 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 - 2026-04-24: PäSTE project context created at `~/Projects/paste/`; deck, Cargo beta, web sources, and message export parsed into project-local notes.
 - 2026-04-25: Loose architecture map created at `~/Projects/paste/notes/architecture-v0.md`.
 - 2026-04-25: Proposal page deployed at `/proposals/paste` and verified on production.
+- 2026-04-25: Status updated: Davey is coordinating an initial meeting; the context from that meeting should shape the proposal direction.
 
 **Open questions:** Factory file requirements, order intake channel, tracking return path, first IP partner, royalty base, threshold rules, Shopify plan/store status, and Noah's exact role and economics.
 
-**Next:** Review the live page with Davey and Andres. Before build work begins, turn the open questions into a discovery checklist centered on the production packet and factory workflow.
+**Next:** Wait for the initial meeting with Davey, Andres, and the PäSTE team. Use that conversation to clarify the context, then reshape the proposal and discovery checklist around what the meeting reveals.
 
 **Deep docs:** `~/Projects/paste/PROJECT.md`, memory at `project_paste.md`, architecture map at `~/Projects/paste/notes/architecture-v0.md`, proposal implementation note at `~/Projects/paste/notes/2026-04-25-proposal-page.md`
 
@@ -42,7 +71,7 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 |---|---|
 | URL | [whatarewecapableof.com/proposals/fde](https://whatarewecapableof.com/proposals/fde) |
 | Prepared | April 2026 |
-| Status | Migration complete; needs final campus-assumption review before sending |
+| Status | In progress; finishing images before Austin feedback |
 | Relationship | Austin to Mark / Faith Driven Entrepreneur |
 | Tabs | Overview / Program / Investment / ? |
 | Source | Migrated from `~/Projects/faith-driven-campus-initiative-migration-base44` (2026-04-24) |
@@ -57,8 +86,9 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 - 2026-04-24: Base44 migrated repo cloned locally from `youlikemodernart/faith-driven-campus-initiative-migration-base44`.
 - 2026-04-24: Standalone iframe/Base44 design rebuilt as a static whatarewecapableof proposal page at `/proposals/fde`.
 - 2026-04-24: Confirmed Mark as recipient, `hello@whatarewecapableof.com` as CTA, visible pricing, restrained language, and `/proposals/fde` as the final route.
+- 2026-04-25: Image pass still in progress before the proposal enters Austin feedback.
 
-**Next:** Noah and Austin should review the first 5 campus assumptions and send path before sharing with Mark.
+**Next:** Finish the images, then send the proposal to Austin for feedback before sharing with Mark.
 
 **Deep docs:** Source repo at `~/Projects/faith-driven-campus-initiative-migration-base44`, migrated page at `~/Projects/whatarewecapableof/proposals/fde/index.html`
 
@@ -70,7 +100,7 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 |---|---|
 | URL | [whatarewecapableof.com/proposals/belhaus/](https://whatarewecapableof.com/proposals/belhaus/) |
 | Prepared | April 2026 |
-| Status | Proposal delivered; awaiting Gino's review |
+| Status | Sent; waiting for Gino to digest and discuss value |
 | Relationship | Existing (Noah does videography for Gino) |
 | Tabs | Overview / System / Approach / ? |
 | Source | Moved from standalone belhaus-proposal.vercel.app (2026-04-23) |
@@ -89,6 +119,7 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 - 2026-04-13: Call with Georgie. Both walled gardens proved limiting. Composable stack direction established.
 - 2026-04-17: V2 proposal (Overview/System/Approach) rebuilt and deployed. Overview reworked after Noah flagged first draft as too prescriptive.
 - 2026-04-23: Moved to whatarewecapableof.com/proposals/belhaus/ from standalone site.
+- 2026-04-25: Proposal is done and sent; waiting for Gino to digest it and discuss value.
 
 **Open questions (on Approach tab):**
 1. Keep paused Artlogic or cancel
@@ -97,7 +128,7 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 4. Scope of web app v1
 5. Access scope for Chloe
 
-**Next:** Gino needs to read the proposal and schedule a call.
+**Next:** Let Gino digest the proposal, then schedule a conversation focused on value, scope, and the right first build.
 
 **Deep docs:** `~/Projects/belhaus-proposal/PROJECT.md`, agent at `~/.pi/agents/belhaus-advisor/`, memory at `project_belhaus.md`
 
@@ -109,7 +140,7 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 |---|---|
 | URL | [whatarewecapableof.com/proposals/compassion/](https://whatarewecapableof.com/proposals/compassion/) |
 | Prepared | April 2026 |
-| Status | Austin reviewed; ready to send to Causes team |
+| Status | Sent; awaiting Causes team response |
 | Relationship | Warm via Austin (in their orbit since Jul 2025) |
 | Tabs | Research / Content / Proposal / ? |
 
@@ -125,10 +156,11 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 - 2026-04-22: Research complete. Hypotheses and content ideas synthesized. Deliverable built and deployed.
 - 2026-04-23: Specimen grid images filled from Are.na. Numbers card composites produced. Feed comparison added. OG image set. Image path bug fixed (relative paths broke without trailing slash).
 - 2026-04-24: Proposal page updated with final images and layout refinements.
+- 2026-04-25: Proposal sent to the Causes team; waiting to hear back.
 
 **Access challenge (from Caroline Ridings):** Contact is the director, not the president. Options: pitch "you win, I win" to bring proposal to boss together; go directly to the president; or work within the director's budget ceiling.
 
-**Next:** Austin sends to the Causes team. Moodboard complete (12 Are.na images). Content deep-dives deferred until team shows interest.
+**Next:** Wait to hear back from the Causes team. Content deep-dives remain deferred until the team shows interest.
 
 **Deep docs:** `~/Projects/consulting/clients/compassion/`, memory at `project_compassion.md`
 
@@ -140,7 +172,7 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 |---|---|
 | URL | [whatarewecapableof.com/proposals/teaspressa/](https://whatarewecapableof.com/proposals/teaspressa/) |
 | Prepared | April 2026 |
-| Status | Media pass complete; outreach not yet started |
+| Status | Complete; ready to send pending Austin approval |
 | Relationship | Cold (via Tim referral channel) |
 | Tabs | Summary / Research / Scope / ? |
 
@@ -154,10 +186,12 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 - 2026-04-22: Full pipeline run (intake through deliverable) in a single session. First proposal using the observation/conditional/bridge framework and whatarewecapableof design system.
 - 2026-04-23: iOS Safari status bar debugging. Double-sticky header pattern implemented (Puma-inspired). Template and pipeline files updated.
 - 2026-04-25: Media pass added three Summary images (TS-02, TS-04, TS-07) plus the TS-11 wholesale product collage in Research, and cut the Scope-tab TS-08 placeholder from the local draft before publish.
+- 2026-04-25: Removed visible captions from all Teaspressa proposal images at Noah's request; alt text remains on images.
+- 2026-04-25: Proposal is complete and ready to send, pending Austin approval.
 
-**Next:** Tim reviews the output and decides whether to make the introduction to Allison. This is part of the Tim referral channel proof-of-concept (4 clients total: Teaspressa, Five Points Strategies, and 2 others TBD).
+**Next:** Austin reviews and approves the finished proposal. After approval, send through the Tim referral channel or make the next outreach move to Allison.
 
-**Media slots:** Teaspressa is the pilot for the proposal composition system. Slot map: `proposals/teaspressa/media-slots.md`; structured manifest: `proposals/teaspressa/media-slots.json`; local-only in-flow draft: `proposals/teaspressa/slots/index.html`, ignored by git through `proposals/*/slots/` while Noah curates imagery. Live placements: TS-02 after Finding 01 in Summary, TS-04 after Finding 03 in Summary, TS-07 after What's working in Summary, and TS-11 after Product catalog in Research. TS-08 is parked for a future pass after the Scope-tab placeholder was removed. Raw source and crop workspace assets live under ignored `proposals/teaspressa/img/src/`.
+**Media slots:** Teaspressa is the pilot for the proposal composition system. Slot map: `proposals/teaspressa/media-slots.md`; structured manifest: `proposals/teaspressa/media-slots.json`; local-only in-flow draft: `proposals/teaspressa/slots/index.html`, ignored by git through `proposals/*/slots/` while Noah curates imagery. Live placements: TS-02 after Finding 01 in Summary, TS-04 after Finding 03 in Summary, TS-07 after What's working in Summary, and TS-11 after Product catalog in Research. Live Teaspressa images intentionally render without visible captions. TS-08 is parked for a future pass after the Scope-tab placeholder was removed. Raw source and crop workspace assets live under ignored `proposals/teaspressa/img/src/`.
 
 **Deep docs:** `~/Projects/consulting/clients/teaspressa/status.md`
 

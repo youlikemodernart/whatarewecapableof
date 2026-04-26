@@ -70,6 +70,8 @@ Weak rationale examples:
 
 Breaking up the page is a symptom-level goal. The deeper question is why the reader needs a break at that point.
 
+Captions are part of the rhetoric. Evidence, comparison, and artifact media usually need captions or visible source context so the reader knows what they are looking at. Atmosphere and product-world images can be captionless when the surrounding text already supplies context and the caption would add noise.
+
 ## Proposal beat map
 
 Start every composition pass by mapping the proposal into rhetorical beats. The beat map identifies what the reader is being asked to do at each point.
@@ -186,9 +188,9 @@ Rules:
 - Three to six specimens is the useful range.
 - The grid should demonstrate the system, not exhaust it.
 
-### Process strip
+### Process strip and timeline
 
-A horizontal or vertical sequence of steps, frames, or states.
+A sequence of steps, frames, or states. Use the vertical timeline as the default for short text processes. Use the horizontal strip only when lateral movement has a job or when a partial next item is visible enough to signal continuation.
 
 Use for:
 
@@ -202,7 +204,9 @@ Rules:
 
 - Each step needs one verb.
 - Keep the sequence short enough to remember.
-- Use horizontal scroll only when the sequence benefits from lateral movement.
+- Use `.proposal-process-timeline` for 3 to 5 text steps by default.
+- Use `.proposal-process-strip` only when the sequence benefits from lateral movement.
+- Do not hide required steps off-screen without a visible scroll affordance.
 
 ### System diagram
 
@@ -371,7 +375,7 @@ Each recommendation needs:
 
 ### Phase 5: Cut
 
-Cut aggressively. A good proposal may need three visual insertions, not ten. Prioritize the insertions that increase trust, clarify the offer, or give the reader needed air.
+Cut aggressively. The default target is 3 to 5 visual insertions across the full proposal. Higher density is allowed when each tab has its own cadence problem, but any tab with more than 3 visual moments needs a written reason. Prioritize the insertions that increase trust, clarify the offer, or give the reader needed air.
 
 ### Phase 6: Draft placeholders
 
@@ -381,11 +385,16 @@ Before final images are inserted, create an in-flow placeholder draft when Noah 
 
 Implement final media only after the placeholder draft is approved or the task explicitly asks for implementation. Use reusable classes where possible. Keep page-specific CSS small.
 
+When a proposal visual directly precedes a section heading, suppress the heading rule by default. The visual already resets attention; the rule becomes a second break unless the heading explicitly opts back in with `.section-heading--ruled`.
+
+For phase output lines, use `.proposal-output` on the paragraph and keep the bold text. The smaller size preserves wayfinding without letting the output line overpower the surrounding phase copy.
+
 ### Phase 8: Review
 
 Review at 375px, 768px, 1280px, and 1600px. For each insertion, ask:
 
 - Does it change what the reader understands?
+- Does the full proposal stay within the 3 to 5 visual target, or is the exception documented?
 - Does it appear at the right moment in the argument?
 - Does it preserve the site register?
 - Does it make the section easier to read on mobile?
@@ -404,6 +413,8 @@ proposals/<slug>/slots/index.html
 These boards are local-only unless Noah approves deployment. The repo ignores `proposals/*/slots/` to prevent accidental publishing. To preview a board, serve the project root with `python3 -m http.server 8888` and open the local URL.
 
 Each placeholder frame should show the slot ID, default ratio, curation suggestion, and Are.na tag. The page should default to a single image frame, not a grid of all possible slots.
+
+If Noah owns the Are.na block, use the block metadata for slot IDs and curation notes. If Noah collected another person's block and cannot edit its description, use the Are.na workflow to download the original media, reupload it to the project channel with source attribution, and then apply the project metadata to the owned block.
 
 When draft images are available, use non-destructive CSS cropping first. Keep raw source files under `proposals/<slug>/img/src/`, which is ignored. Noah may manually crop a source image, overwrite the local file, and ask for a re-preview. Final deployable crops should later move to `proposals/<slug>/img/`.
 
@@ -450,19 +461,28 @@ Use this format when the partner reviews a proposal.
 - [viewport checks]
 - [tab scroll checks if tabs are affected]
 - [asset path checks]
+
+## Override log
+| Slot | System recommendation | Noah decision | Reason | Pattern learned |
+|---|---|---|---|---|
 ```
 
 ## Proposal-specific starting hypotheses
 
 ### Teaspressa
 
-Current in-flow draft slots:
+Current live slots:
 
-- `TS-02`: Summary after Finding 01, single `16:9` image, atmosphere or proof.
-- `TS-04`: Summary after Finding 03, single `16:9` image, atmosphere or proof.
-- `TS-07`: Summary after What's working, single image, merchandising atmosphere.
+- `TS-02`: Summary after Finding 01, single `16:9` image, atmosphere/proof.
+- `TS-04`: Summary after Finding 03, single `16:9` seasonal campaign image, atmosphere/proof.
+- `TS-07`: Summary after What's working, single `16:9` merchandising atmosphere image.
 - `TS-11`: Research after Product catalog, live 120-image product-only edge-to-edge wholesale collage generated from Shopify product images.
-- `TS-08`: Scope after Area 1, single `16:9` artifact/reference placeholder.
+
+Noah asked to remove visible captions from all live Teaspressa proposal images. Keep descriptive alt text and do not re-add figcaptions unless asked.
+
+Parked:
+
+- `TS-08`: Scope after Area 1 artifact/reference placeholder was removed before publish and is parked for a future pass.
 
 Still-available visual opportunities:
 
@@ -470,7 +490,7 @@ Still-available visual opportunities:
 - TikTok effort versus traction as quiet stat field
 - wedding and corporate quote flow as process strip
 
-Likely best moves: single body-width images first, then a collage or artifact only when the argument needs one.
+Likely best moves: keep the current four live insertions unless a specific proof gap appears; add future diagrams or process strips only when the argument needs one.
 
 ### Compassion
 

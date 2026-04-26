@@ -34,6 +34,7 @@ Exception: when the proposal is creative-led or the offer depends on visual spec
 - Root-relative asset paths.
 - Sticky proposal header and tab behavior.
 - Existing proposal tabs unless the content demands a different section model.
+- Standard `?` tab CTA: bold `we`, `Let's find out.`, then `Book a call`.
 - Noindex proposal behavior.
 - Accessibility floors.
 - The current tab scroll handler. Do not restore older tab scroll code.
@@ -144,6 +145,12 @@ Confidence values:
 - Medium: likely useful but needs review
 - Low: speculative or may distract
 
+Are.na ownership rule:
+
+- If Noah owns the Are.na block, use the block metadata for slot ID, job, status, crop notes, and rationale.
+- If Noah collected another person's block and cannot edit its description, use the Are.na skill to download the original media, reupload it to the project channel with source attribution, and then apply the project metadata to the owned block.
+- Preserve attribution when reuploading collected media. Metadata control does not remove source responsibility.
+
 ### 5. Recommend insertions
 
 Each recommendation needs an exact anchor and a reason. The default recommendation is a single body-width image or simple video inserted into the proposal flow. Use `16:9` first. Use `4:3`, `7:5`, or `5:7` when the surrounding copy asks for a different frame. Use diptychs, grids, tall paired screenshots, and more complex moves only when Noah asks for them or the argument clearly needs them.
@@ -195,6 +202,7 @@ This page should look like the proposal, not a separate planning board. Use the 
 - default frame ratio
 - one-line curation suggestion
 - Are.na tag, for example `slot: TS-04`
+- ownership status: owned block, collected block, or reuploaded owned copy
 
 Keep the draft local-only and ignored by git unless Noah explicitly approves sharing it.
 
@@ -249,6 +257,8 @@ Do not use:
 - Add descriptive `alt` text.
 - Add `width` and `height` attributes when dimensions are known.
 - Use captions for evidence, comparison, and artifact media.
+- Atmosphere and product-world images can be captionless when adjacent text already supplies enough context and the caption would add noise.
+- Do not remove captions from proof screenshots or artifacts unless the source context is visible inside the image.
 - Use native aspect ratio unless the composition requires a fixed frame.
 - For draft previews, use non-destructive CSS cropping first, typically `object-fit: cover` and `object-position` on a local source image.
 - Preserve raw source files under ignored `proposals/<slug>/img/src/`; Noah may manually crop and overwrite these files before final export.
@@ -272,6 +282,9 @@ Do not use:
 - Keep spacing on the 24px baseline.
 - Use CSS custom properties already defined in `tokens.css`.
 - Avoid adding new colors.
+- Suppress the section-heading rule when a proposal visual directly precedes the heading; use `.section-heading--ruled` only when the rule carries a new grouping job.
+- Use `.proposal-process-timeline` for 3 to 5 text steps by default. Use `.proposal-process-strip` only when lateral movement has a job and the overflow affordance is visible.
+- Use `.proposal-output` for bold output lines inside scope phases so the line stays subordinate to the phase title.
 - Avoid shadows, rounded card treatments, gradients, and decorative surfaces.
 - Keep media treatment quieter than the content it supports.
 - The proposal template loads `/css/proposal-media.css` for future proposals. Existing proposal pages do not inherit template changes automatically. Add the stylesheet link to any existing proposal page before using proposal media classes.
@@ -319,6 +332,7 @@ Before handing off a composition plan or implementation, answer:
 
 - Does every visual insertion have a clear job?
 - Does the proposed rhythm match the argument's rhythm?
+- Does the full proposal stay within the 3 to 5 visual target, or is the exception documented?
 - Are the strongest proof points visible?
 - Are any visuals merely decorative?
 - Does the page still feel like What are we capable of?
@@ -354,4 +368,8 @@ Before handing off a composition plan or implementation, answer:
 
 ### Open questions
 - ...
+
+### Override log
+| Slot | System recommendation | Noah decision | Reason | Pattern learned |
+|---|---|---|---|---|
 ```

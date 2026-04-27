@@ -95,7 +95,7 @@ Non-navigation (direct link only):
 1. Brief context line: what happens when you book (system UI, one sentence).
 2. Date selection in mono.
 3. Time slots for the selected date as clickable mono text.
-4. Booking form: name, email, optional note. Three fields.
+4. Booking form: name, email, required purpose, optional note. Four fields.
 5. Confirmation state after booking.
 
 **What this is NOT:**
@@ -115,6 +115,8 @@ Non-navigation (direct link only):
 **Implementation:** Custom Google Calendar API integration using booking type `discovery`.
 
 **Availability rules:** Thursday and Friday, 10am to 1pm Arizona time. Calls are 30 minutes. A 15-minute buffer is enforced around meetings, so the default generated starts are 10:00, 10:45, 11:30, and 12:15 when the window is fully open.
+
+**Content:** Same shared booking form as `/coach/book`: name, email, required purpose, optional note.
 
 **Intention:** This route is for acquisition/discovery calls from proposals and CTAs. It keeps that inbound path separate from Austin's coaching business page while sharing the same calendar infrastructure.
 

@@ -58,10 +58,11 @@ module.exports = async function handler(req, res) {
   const start = clean(req.body?.start);
   const name = clean(req.body?.name);
   const email = clean(req.body?.email);
+  const purpose = clean(req.body?.purpose);
   const note = clean(req.body?.note);
 
-  if (!start || !name || !email) {
-    return res.status(400).json({ error: 'Missing required fields: start, name, email' });
+  if (!start || !name || !email || !purpose) {
+    return res.status(400).json({ error: 'Missing required fields: start, name, email, purpose' });
   }
 
   if (!isValidEmail(email)) {
@@ -119,6 +120,7 @@ module.exports = async function handler(req, res) {
           `Booking type: ${bookingConfig.label}`,
           `Name: ${name}`,
           `Email: ${email}`,
+          `Purpose:\n${purpose}`,
           note ? `Note:\n${note}` : '',
         ].filter(Boolean).join('\n\n'),
         start: { dateTime: startTime.toISOString(), timeZone: TIMEZONE },

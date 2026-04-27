@@ -140,6 +140,7 @@
           start: selectedSlot.start,
           name: document.getElementById('name').value,
           email: document.getElementById('email').value,
+          purpose: document.getElementById('purpose').value,
           note: document.getElementById('note').value,
         }),
       });

@@ -25,7 +25,7 @@
   }
 
   .page-proposal {
-    --proposal-header-height: calc(var(--space-1) + var(--space-0-5));
+    --proposal-header-height: var(--space-2);
     min-height: 100svh;
     display: flex;
     flex-direction: column;
@@ -51,9 +51,13 @@
   }
 
   .proposal-home {
-    letter-spacing: -0.02em;
     text-decoration: none;
     color: inherit;
+    transition: opacity var(--transition-default);
+  }
+
+  .proposal-home:hover {
+    opacity: 0.6;
   }
 
   .proposal-meta {
@@ -70,30 +74,43 @@
     font-weight: 400;
     font-size: var(--size-m);
     margin-top: var(--space-1);
-    max-width: 54ch;
+    max-width: 52ch;
   }
 
   .proposal-guide {
     margin-top: var(--space-1);
     font-size: var(--size-s);
-    max-width: 54ch;
+    max-width: 52ch;
+  }
+
+  .proposal-guide strong {
+    font-weight: 400;
   }
 
   .tabs {
     display: flex;
     gap: var(--space-2);
-    padding: var(--space-0-5) 0;
+    min-height: var(--space-2);
+    align-items: center;
     position: sticky;
     top: var(--proposal-header-height);
     background: var(--color-bg);
     z-index: 15;
+    margin-inline: calc(-1 * var(--margin-inline));
+    padding-inline: var(--margin-inline);
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .tabs::-webkit-scrollbar {
+    display: none;
   }
 
   .tabs::after {
     content: "";
     position: absolute;
     bottom: 0;
-    left: calc(-1 * var(--margin-inline));
+    left: 0;
     width: 100vw;
     height: 1px;
     background: var(--color-text);
@@ -111,6 +128,7 @@
     border: none;
     background: none;
     padding: 0;
+    flex-shrink: 0;
     transition: opacity var(--transition-default);
   }
 
@@ -133,7 +151,7 @@
 
   .tabbed .tab-content-full {
     display: none;
-    min-height: calc(100svh - 4rem);
+    min-height: calc(100svh - var(--proposal-header-height) - var(--space-2));
     flex-direction: column;
     justify-content: center;
   }
@@ -168,7 +186,7 @@
     text-transform: uppercase;
     letter-spacing: var(--tracking-caps);
     opacity: 0.45;
-    margin-bottom: calc(var(--space-0-5) * 0.5);
+    margin-bottom: var(--space-0-5);
   }
 
   .finding p:last-child,
@@ -236,7 +254,7 @@
   }
 
   .scope-phase h3,
-  .placeholder-card h3 {
+  .placeholder-item h3 {
     font-family: var(--font-serif);
     font-weight: 400;
     font-size: var(--size-m);
@@ -245,7 +263,7 @@
 
   .scope-phase ul {
     margin: var(--space-0-5) 0 0;
-    padding-left: 1.25rem;
+    padding-left: var(--space-1);
     list-style: none;
   }
 
@@ -270,32 +288,16 @@
   .placeholder-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-1);
+    gap: var(--space-1) var(--space-2);
     margin: var(--space-2) 0;
   }
 
-  .placeholder-card {
-    border: 1px solid rgba(0,0,0,0.16);
-    background: #f7f7f4;
-    padding: var(--space-1);
-    min-height: 12rem;
-  }
-
-  .placeholder-card p {
+  .placeholder-item p {
     font-size: var(--size-s);
   }
 
   .proposal-output {
     font-size: var(--size-s);
-  }
-
-  .image-shell {
-    background: #f5f5f3;
-    padding: var(--space-1);
-  }
-
-  .image-shell img {
-    background: #fff;
   }
 
   .closing {
@@ -314,14 +316,21 @@
     :root {
       --margin-inline: var(--space-1);
     }
-    .stat-row,
     .tabs {
-      gap: var(--space-1);
+      gap: var(--space-0-5);
+      overflow-x: auto;
+      border-bottom: 1px solid var(--color-text);
     }
-    .stat-row,
+    .tabs::after {
+      display: none;
+    }
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-0-5);
+    }
     .placeholder-grid {
       grid-template-columns: 1fr;
-      flex-direction: column;
     }
     .responsive-table,
     .responsive-table tbody,
@@ -330,7 +339,7 @@
       display: block;
       width: 100%;
     }
-    .responsive-table tr:first-child {
+    .responsive-table thead {
       display: none;
     }
     .responsive-table tr {
@@ -353,7 +362,7 @@
       text-transform: uppercase;
       letter-spacing: var(--tracking-caps);
       opacity: 0.4;
-      margin-bottom: calc(var(--space-0-5) * 0.5);
+      margin-bottom: var(--space-0-5);
     }
   }
 </style>
@@ -372,22 +381,22 @@
 
 <p class="proposal-guide"><strong>Overview</strong> is the current state and opportunity. <strong>Architecture</strong> is the proposed sitemap and page model. <strong>Experience</strong> is how the student and facilitator flows could work. <strong>Scope</strong> is the build path and the material still needed.</p>
 
-<nav class="tabs" aria-label="Sections">
-  <a class="tab active" href="#overview">Overview</a>
-  <a class="tab" href="#architecture">Architecture</a>
-  <a class="tab" href="#experience">Experience</a>
-  <a class="tab" href="#scope">Scope</a>
-  <a class="tab" href="#question">?</a>
+<nav class="tabs" aria-label="Sections" role="tablist">
+  <a class="tab active" href="#overview" role="tab" id="tab-overview" aria-selected="true" aria-controls="overview">Overview</a>
+  <a class="tab" href="#architecture" role="tab" id="tab-architecture" aria-selected="false" aria-controls="architecture">Architecture</a>
+  <a class="tab" href="#experience" role="tab" id="tab-experience" aria-selected="false" aria-controls="experience">Experience</a>
+  <a class="tab" href="#scope" role="tab" id="tab-scope" aria-selected="false" aria-controls="scope">Scope</a>
+  <a class="tab" href="#question" role="tab" id="tab-question" aria-selected="false" aria-controls="question">?</a>
 </nav>
 
-<div id="overview" class="tab-content active">
+<div id="overview" class="tab-content active" role="tabpanel" aria-labelledby="tab-overview">
 
-<p>The sales school already has the hard part: recorded training, a live delivery rhythm, and Wistia-hosted video content. The current experience wraps that content in an email preview and six PDF indexes. Students can get to the videos. The route feels like a temporary link system rather than a learning environment.</p>
+<p>The sales school already has the hard part: recorded training, a live delivery rhythm, and Wistia-hosted video content. The current experience wraps that content in an email preview and six PDF indexes. Students can get to the videos. The route feels like a temporary link system.</p>
 
-<div class="proposal-media image-shell">
-  <img src="/proposals/sales-school/img/current-email-preview.png" alt="Current Sales School Training Videos email preview showing Day One and Day Two breakout buttons" width="2560" height="1568">
-  <div class="proposal-media-caption">Current entry point: a GoHighLevel email preview with Day One and Day Two sections.</div>
-</div>
+<figure class="proposal-media proposal-media-surface">
+  <img src="/proposals/sales-school/img/current-email-preview.png" alt="Current Sales School Training Videos email preview showing Day One and Day Two breakout buttons" width="2560" height="1568" fetchpriority="high">
+  <figcaption class="proposal-media-caption">Current entry point: a GoHighLevel email preview with Day One and Day Two sections.</figcaption>
+</figure>
 
 <div class="stat-row">
   <div class="stat-item"><strong>2</strong> Day sections</div>
@@ -397,20 +406,22 @@
   <div class="stat-item"><strong>0</strong> Visible progress state</div>
 </div>
 
+<p>Build a restrained course portal around the existing content. The first version can stay short of a full LMS. It needs to remove the PDF index layer, give the live session one stable home, and make the videos and resources navigable.</p>
+
 <h2 class="section-heading">What we found</h2>
 
 <div class="finding">
   <div class="finding-label">01</div>
-  <p>The current path has three layers before a student reaches the actual learning object: email preview, PDF index, Wistia page. That works as distribution. It creates friction during a timed Zoom break.</p>
+  <p>The current path has three layers before a student reaches the actual learning object: email preview, PDF index, Wistia page. That works as distribution. During a timed Zoom break, three layers is a lot of navigation.</p>
 </div>
 
-<div class="proposal-media image-shell">
+<figure class="proposal-media proposal-media-surface">
   <img src="/proposals/sales-school/img/current-flow.png" alt="Diagram of current flow from GoHighLevel preview to Firebase email HTML to email index to breakout buttons to PDF indexes to Wistia pages" width="1480" height="390">
-</div>
+</figure>
 
 <div class="finding">
   <div class="finding-label">02</div>
-  <p>The curriculum already has a natural structure: Day, Breakout, Lesson, Resource. The current interface presents those relationships as buttons and PDF links. A portal can turn the same structure into navigation.</p>
+  <p>The curriculum has a natural structure: Day, Breakout, Lesson, Resource. The current interface presents those relationships as buttons and PDF links. A portal can turn the same structure into navigation.</p>
 </div>
 
 <div class="finding">
@@ -423,29 +434,25 @@
   <p>Wistia can remain the media layer. The upgrade is the architecture around the videos: current-session access, breakout pages, resource separation, and clearer wayfinding.</p>
 </div>
 
-<div class="proposal-diptych">
-  <div class="proposal-media image-shell">
+<figure class="proposal-diptych">
+  <div class="proposal-media proposal-media-surface">
     <img src="/proposals/sales-school/img/pdf-index-contact-sheet.png" alt="Contact sheet of current PDF index pages for six video breakouts" width="1056" height="968">
   </div>
-  <div class="proposal-media image-shell">
+  <div class="proposal-media proposal-media-surface">
     <img src="/proposals/sales-school/img/wistia-thumbnails-contact-sheet.jpg" alt="Contact sheet of Wistia video thumbnails from the training library" width="1077" height="896">
   </div>
-  <div class="proposal-diptych-caption proposal-media-caption">The visible material suggests a link index on one side and a real video library on the other.</div>
-</div>
-
-<h2 class="section-heading">Proposal position</h2>
-
-<p>Build a restrained course portal around the existing content. The first version can stay short of a full LMS. It needs to remove the PDF index layer, give the live session one stable home, and make the videos and resources feel organized.</p>
+  <figcaption class="proposal-diptych-caption proposal-media-caption">The visible material suggests a link index on one side and a real video library on the other.</figcaption>
+</figure>
 
 </div>
 
-<div id="architecture" class="tab-content">
+<div id="architecture" class="tab-content" role="tabpanel" aria-labelledby="tab-architecture">
 
 <p>The proposed architecture starts with the course as a place, then branches into the live session, the two days, the breakout sections, and the supporting resources.</p>
 
-<div class="proposal-media image-shell proposal-media-wide">
-  <img src="/proposals/sales-school/img/proposed-sitemap.png" alt="Proposed sitemap showing Sales School Home, Today, Day One, Day Two, Resources, Facilitator, Breakouts, and optional Search, Progress, and Admin" width="1340" height="820">
-</div>
+<figure class="proposal-media proposal-media-surface proposal-media-wide">
+  <img src="/proposals/sales-school/img/proposed-sitemap.png" alt="Proposed sitemap showing Sales School Home, Today, Day One, Day Two, Resources, Facilitator, Breakouts, and optional Search, Progress, and Admin" width="1340" height="820" loading="lazy">
+</figure>
 
 <h2 class="section-heading">MVP sitemap</h2>
 
@@ -481,8 +488,10 @@
 <h2 class="section-heading">Page types</h2>
 
 <table class="responsive-table">
+  <thead>
+    <tr><th scope="col">Page</th><th scope="col">Role</th><th scope="col">Core content</th></tr>
+  </thead>
   <tbody>
-    <tr><th>Page</th><th>Role</th><th>Core content</th></tr>
     <tr><td data-label="Page">Course home</td><td data-label="Role">Orient the student to the full school.</td><td data-label="Core content">Day cards, breakout cards, resume CTA, total runtime, resources link.</td></tr>
     <tr><td data-label="Page">Today</td><td data-label="Role">Support the live Zoom session.</td><td data-label="Core content">Active breakout, watch order, return instructions, current status.</td></tr>
     <tr><td data-label="Page">Day page</td><td data-label="Role">Group breakouts into the existing two-day structure.</td><td data-label="Core content">Three breakout cards, short theme labels, progress or completion state.</td></tr>
@@ -531,13 +540,13 @@
 
 </div>
 
-<div id="experience" class="tab-content">
+<div id="experience" class="tab-content" role="tabpanel" aria-labelledby="tab-experience">
 
 <p>The strongest interface idea is a live-break console. The course is partly synchronous, so the site should have a current-state screen instead of only a library.</p>
 
-<div class="proposal-media image-shell proposal-media-wide">
-  <img src="/proposals/sales-school/img/live-break-flow.png" alt="Live break flow showing Live Zoom to instructor announcement to Today page to watch sequence to return prompt" width="1360" height="330">
-</div>
+<figure class="proposal-media proposal-media-surface proposal-media-wide">
+  <img src="/proposals/sales-school/img/live-break-flow.png" alt="Live break flow showing Live Zoom to instructor announcement to Today page to watch sequence to return prompt" width="1360" height="330" loading="lazy">
+</figure>
 
 <h2 class="section-heading">Direction 1: Live Break Console</h2>
 
@@ -547,10 +556,10 @@
   <p>A live dashboard shows the active breakout, the watch sequence, and the return instruction. The instructor can share one link during Zoom. Students land on the right thing immediately.</p>
 </div>
 
-<div class="proposal-media image-shell proposal-media-wide">
-  <img src="/proposals/sales-school/img/today-wireframe.svg" alt="Low fidelity wireframe of a Today page with active breakout, return to Zoom instructions, and lesson queue" width="1400" height="900">
-  <div class="proposal-media-caption">Placeholder wireframe. Final visual direction should follow the design references we collect later.</div>
-</div>
+<figure class="proposal-media proposal-media-surface proposal-media-wide">
+  <img src="/proposals/sales-school/img/today-wireframe.svg" alt="Low fidelity wireframe of a Today page with active breakout, return to Zoom instructions, and lesson queue" width="1400" height="900" loading="lazy">
+  <figcaption class="proposal-media-caption">Placeholder wireframe. Final visual direction should follow the design references we collect later.</figcaption>
+</figure>
 
 <h2 class="section-heading">Direction 2: Two-Day Course Map</h2>
 
@@ -568,16 +577,18 @@
   <p>After the live session, students can return to the library, filter by day or breakout, and find videos or resources without reopening a PDF.</p>
 </div>
 
-<div class="proposal-media image-shell">
-  <img src="/proposals/sales-school/img/current-wistia-sample.png" alt="Current Wistia video page with player and transcript below" width="2560" height="2992">
-  <div class="proposal-media-caption">Current Wistia pages already include the player and transcript area. The portal can embed or link to this layer instead of replacing it.</div>
-</div>
+<figure class="proposal-media proposal-media-surface">
+  <img src="/proposals/sales-school/img/current-wistia-sample.png" alt="Current Wistia video page with player and transcript below" width="2560" height="2992" loading="lazy">
+  <figcaption class="proposal-media-caption">Wistia pages include the player and transcript area. The portal can embed or link to this layer instead of replacing it.</figcaption>
+</figure>
 
 <h2 class="section-heading">Component set</h2>
 
 <table class="responsive-table">
+  <thead>
+    <tr><th scope="col">Component</th><th scope="col">Function</th></tr>
+  </thead>
   <tbody>
-    <tr><th>Component</th><th>Function</th></tr>
     <tr><td data-label="Component">Active Break Card</td><td data-label="Function">Shows the breakout students should watch now.</td></tr>
     <tr><td data-label="Component">Breakout Card</td><td data-label="Function">Groups videos into a curriculum unit.</td></tr>
     <tr><td data-label="Component">Lesson Card</td><td data-label="Function">Shows thumbnail, title, duration, and status.</td></tr>
@@ -590,7 +601,7 @@
 
 </div>
 
-<div id="scope" class="tab-content">
+<div id="scope" class="tab-content" role="tabpanel" aria-labelledby="tab-scope">
 
 <p>This can be scoped in two layers. The first layer makes the current training feel coherent. The second layer turns it into a fuller learning product.</p>
 
@@ -615,33 +626,35 @@
 <h2 class="section-heading">Material still needed</h2>
 
 <div class="placeholder-grid">
-  <div class="placeholder-card">
+  <div class="placeholder-item">
     <div class="placeholder-label">Placeholder</div>
     <h3>Design references</h3>
     <p>Visual direction should wait until references are collected. The current wireframe is structural only.</p>
   </div>
-  <div class="placeholder-card">
+  <div class="placeholder-item">
     <div class="placeholder-label">Placeholder</div>
     <h3>Brand assets</h3>
     <p>Final logo files, colors, type preferences, and any existing brand rules from the sales company.</p>
   </div>
-  <div class="placeholder-card">
+  <div class="placeholder-item">
     <div class="placeholder-label">Placeholder</div>
     <h3>Curriculum labels</h3>
     <p>Final breakout themes, lesson names, resource labels, and any student-facing instructions.</p>
   </div>
-  <div class="placeholder-card">
+  <div class="placeholder-item">
     <div class="placeholder-label">Placeholder</div>
     <h3>Commercial terms</h3>
-    <p>Budget, timeline, maintenance model, and whether the build includes only the portal or the platform layer.</p>
+    <p>Budget, timeline, and maintenance model depend on the scope decisions above. We can walk through Phase 1 options as a starting point.</p>
   </div>
 </div>
 
 <h2 class="section-heading">Questions to answer</h2>
 
 <table class="responsive-table">
+  <thead>
+    <tr><th scope="col">Question</th><th scope="col">Why it matters</th></tr>
+  </thead>
   <tbody>
-    <tr><th>Question</th><th>Why it matters</th></tr>
     <tr><td data-label="Question">Will students log in?</td><td data-label="Why it matters">Login affects progress, privacy, cohort management, and implementation cost.</td></tr>
     <tr><td data-label="Question">Who controls the active breakout?</td><td data-label="Why it matters">A facilitator view may be enough, or the site may need admin controls.</td></tr>
     <tr><td data-label="Question">Will the course repeat?</td><td data-label="Why it matters">Repeated cohorts justify search, admin editing, and progress tracking.</td></tr>
@@ -651,13 +664,13 @@
 </table>
 
 <div class="closing">
-  <p>The useful pitch is simple: keep the content, replace the chain of links with a course portal, and design the live break around the school&apos;s live teaching rhythm.</p>
-  <p><a href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a></p>
+  <p>Keep the content. Replace the chain of links with a course portal. Design the live break around the school&apos;s live teaching rhythm.</p>
+  <p><a class="cta-link" href="/book">Book a call</a> or reach us at <a href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a></p>
 </div>
 
 </div>
 
-<div id="question" class="tab-content-full">
+<div id="question" class="tab-content-full" role="tabpanel" aria-labelledby="tab-question">
 
 <div>
   <p class="proposal-title">What are <strong style="font-weight: 700;">we</strong> capable of?</p>
@@ -706,9 +719,13 @@
     if (!panel) return;
 
     panels.forEach(function(el) { el.classList.remove('active'); });
-    tabs.forEach(function(t) { t.classList.remove('active'); });
+    tabs.forEach(function(t) {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
     panel.classList.add('active');
     tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
     scrollPanelToTop(panel);
   }
 

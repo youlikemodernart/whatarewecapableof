@@ -286,12 +286,44 @@
     border-top: 1px solid rgba(0,0,0,0.08);
   }
 
-  .bel-atmosphere {
+  @media (max-width: 767px) {
+    :root {
+      --margin-inline: var(--space-1);
+    }
+    .stat-row {
+      flex-direction: column;
+      gap: var(--space-0-5);
+    }
+    .tabs {
+      gap: var(--space-1);
+    }
+  }
+</style>
+
+<style>
+  .slot-board-note {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.45;
+    margin-top: var(--space-1);
+    margin-bottom: var(--space-1);
+    max-width: 64ch;
+  }
+
+  .slot-local-media {
     margin: var(--space-2) 0;
   }
 
-  .bel-atmosphere img {
+  .slot-local-media img {
+    display: block;
     width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .slot-atmosphere img {
     aspect-ratio: 16 / 9;
     object-fit: cover;
   }
@@ -300,44 +332,22 @@
     object-position: center 44%;
   }
 
-  .bel-catalog-artifact {
-    margin: var(--space-2) 0;
-    border-top: 1px solid var(--color-text);
-    padding-top: var(--space-1);
+  .slot-local-caption {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.45;
+    margin-top: var(--space-0-5);
   }
 
-  .bel-diagram {
-    margin: var(--space-2) 0;
+  .slot-catalog-preview {
     border-top: 1px solid var(--color-text);
     border-bottom: 1px solid var(--color-text);
     padding: var(--space-1) 0;
   }
 
-  .bel-diagram + .section-heading,
-  .bel-catalog-artifact + .section-heading {
-    border-top: none;
-    padding-top: var(--space-1);
-    margin-top: var(--space-2);
-  }
-
-  .bel-catalog-artifact p,
-  .bel-diagram p {
-    margin: 0;
-  }
-
-  .bel-artsy-note {
-    margin: var(--space-2) 0 0;
-    padding-top: var(--space-1);
-    border-top: 1px solid var(--color-text);
-  }
-
-  .bel-artsy-note + .section-heading {
-    margin-top: var(--space-3);
-    padding-top: 0;
-    border-top: none;
-  }
-
-  .bel-catalog-grid {
+  .slot-catalog-grid {
     display: grid;
     grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
     gap: var(--space-1);
@@ -345,32 +355,182 @@
     margin-top: var(--space-1);
   }
 
-  .bel-catalog-primary img {
-    width: 100%;
+  .slot-catalog-primary img {
     aspect-ratio: 5 / 6;
     object-fit: cover;
   }
 
-  .bel-catalog-copy {
+  .slot-catalog-copy {
     display: flex;
     flex-direction: column;
     gap: var(--space-1);
   }
 
-  .bel-catalog-thumbs {
+  .slot-catalog-note {
+    font-size: var(--size-m);
+    max-width: 34ch;
+  }
+
+  .slot-catalog-thumbs {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-0-5);
   }
 
-  .bel-catalog-thumbs img {
-    width: 100%;
+  .slot-catalog-thumbs img {
     aspect-ratio: 1;
     object-fit: cover;
   }
 
-  .bel-catalog-label,
-  .bel-diagram-label,
+  .slot-placeholder {
+    margin: var(--space-2) 0;
+    border-top: 1px solid var(--color-text);
+    border-bottom: 1px solid var(--color-text);
+    padding: var(--space-1) 0;
+  }
+
+  .slot-placeholder-frame {
+    min-height: calc(var(--baseline) * 10);
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-1);
+  }
+
+  .slot-placeholder-frame[data-ratio="16:9"] {
+    aspect-ratio: 16 / 9;
+  }
+
+  .slot-placeholder-frame[data-ratio="7:5"] {
+    aspect-ratio: 7 / 5;
+  }
+
+  .slot-placeholder-meta,
+  .slot-placeholder-tag,
+  .slot-placeholder-note,
+  .slot-diagram-label,
+  .slot-artifact-meta {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+  }
+
+  .slot-placeholder-meta,
+  .slot-placeholder-tag,
+  .slot-placeholder-note,
+  .slot-diagram-label,
+  .slot-artifact-meta {
+    opacity: 0.45;
+  }
+
+  .slot-placeholder-title {
+    font-family: var(--font-serif);
+    font-size: var(--size-m);
+    max-width: 42ch;
+  }
+
+  .slot-placeholder-body {
+    font-size: var(--size-s);
+    max-width: 54ch;
+  }
+
+  .slot-diagram-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-1);
+    align-items: end;
+  }
+
+  .slot-diagram-node {
+    border-top: 1px solid var(--color-text);
+    padding-top: var(--space-0-5);
+    min-height: calc(var(--baseline) * 2);
+  }
+
+  .slot-diagram-node-primary {
+    min-height: calc(var(--baseline) * 3);
+  }
+
+  .slot-artifact {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    gap: var(--space-1);
+    align-items: stretch;
+  }
+
+  .slot-artifact-image {
+    border-top: 1px solid var(--color-text);
+    border-bottom: 1px solid var(--color-text);
+    min-height: calc(var(--baseline) * 7);
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: var(--space-0-5);
+  }
+
+  .slot-artifact-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-1);
+  }
+
+  .slot-artifact-line {
+    height: 1px;
+    background: var(--color-text);
+    opacity: 0.25;
+    margin-bottom: var(--space-0-5);
+  }
+
+  .slot-artifact-thumbs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-0-5);
+  }
+
+  .slot-artifact-thumb {
+    aspect-ratio: 1;
+    border-top: 1px solid var(--color-text);
+    border-bottom: 1px solid var(--color-text);
+    opacity: 0.45;
+  }
+
+  .slot-relationship-list {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--space-0-5);
+  }
+
+  .slot-relationship-list div {
+    border-top: 1px solid var(--color-text);
+    padding-top: var(--space-0-5);
+    min-height: calc(var(--baseline) * 3);
+  }
+
+  .slot-placeholder .proposal-process-timeline {
+    margin-bottom: 0;
+  }
+
+  .slot-placeholder + .section-heading,
+  .slot-live-diagram + .section-heading {
+    border-top: none;
+    padding-top: var(--space-1);
+    margin-top: var(--space-2);
+  }
+
+  .slot-live-diagram {
+    margin: var(--space-2) 0;
+    border-top: 1px solid var(--color-text);
+    border-bottom: 1px solid var(--color-text);
+    padding: var(--space-1) 0;
+  }
+
+  .slot-live-diagram p {
+    margin: 0;
+  }
+
+  .slot-live-label,
   .bel-band-label,
   .bel-status,
   .bel-relation-label,
@@ -380,35 +540,18 @@
     font-size: var(--size-xs);
     text-transform: uppercase;
     letter-spacing: var(--tracking-caps);
+  }
+
+  .slot-live-label,
+  .bel-band-label,
+  .bel-status,
+  .bel-relation-label,
+  .bel-relation-header,
+  .bel-relation-note {
     opacity: 0.45;
   }
 
-  .bel-catalog-title {
-    font-family: var(--font-mono);
-    font-size: var(--size-xs);
-    letter-spacing: var(--tracking-caps);
-    opacity: 0.45;
-  }
-
-  .bel-band-title,
-  .bel-relation-title {
-    font-family: var(--font-serif);
-    font-size: var(--size-m);
-    line-height: var(--line-height);
-  }
-
-  .bel-catalog-note,
-  .bel-band-text {
-    font-size: var(--size-m);
-    max-width: 34ch;
-  }
-
-  .bel-catalog-artifact .bel-catalog-note,
-  .bel-diagram .bel-band-text {
-    margin-top: calc(var(--space-0-5) * 0.5);
-  }
-
-  .bel-diagram-label {
+  .slot-live-label {
     margin-bottom: var(--space-1);
   }
 
@@ -439,6 +582,18 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
+  .bel-band-title {
+    font-family: var(--font-serif);
+    font-size: var(--size-m);
+    line-height: var(--line-height);
+  }
+
+  .bel-band-text {
+    font-size: var(--size-m);
+    margin-top: calc(var(--space-0-5) * 0.5);
+    max-width: 34ch;
+  }
+
   .bel-status {
     display: block;
     margin-bottom: calc(var(--space-0-5) * 0.25);
@@ -449,6 +604,11 @@
     grid-template-columns: minmax(8.5rem, 0.46fr) minmax(0, 1.54fr);
     gap: var(--space-1);
     padding-bottom: var(--space-0-5);
+  }
+
+  .bel-relation-title {
+    font-family: var(--font-serif);
+    font-size: var(--size-m);
   }
 
   .bel-relation-grid {
@@ -474,41 +634,54 @@
     font-size: var(--size-m);
   }
 
-  .bel-diagram .bel-relation-note {
+  .bel-relation-note {
     margin-top: var(--space-1);
     max-width: 58ch;
   }
 
-  .bel-approval-sequence .proposal-process-timeline-content p {
-    font-size: var(--size-m);
-  }
-
   @media (max-width: 767px) {
-    :root {
-      --margin-inline: var(--space-1);
+    .slot-placeholder-frame[data-ratio="16:9"],
+    .slot-placeholder-frame[data-ratio="7:5"] {
+      aspect-ratio: auto;
+      min-height: 0;
     }
-    .stat-row {
-      flex-direction: column;
-      gap: var(--space-0-5);
+
+    .slot-diagram-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-    .tabs {
-      gap: var(--space-1);
+
+    .slot-artifact,
+    .slot-catalog-grid {
+      grid-template-columns: 1fr;
     }
-    .bel-catalog-grid,
+
+    .slot-relationship-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .slot-diagram-node,
+    .slot-diagram-node-primary,
+    .slot-relationship-list div {
+      min-height: calc(var(--baseline) * 1.5);
+    }
+
     .bel-operating-band,
     .bel-relation-intro {
       grid-template-columns: 1fr;
       gap: var(--space-0-5);
     }
+
     .bel-band-items {
       grid-template-columns: 1fr;
       gap: var(--space-0-5);
     }
+
     .bel-relation-row,
     .bel-relation-grid-head {
       gap: var(--space-0-5);
     }
-    .bel-diagram .bel-relation-note {
+
+    .bel-relation-note {
       margin-top: var(--space-0-5);
     }
   }
@@ -521,6 +694,8 @@
 </header>
 
 <main>
+
+<div class="slot-board-note">Local composition draft. Uses the What are we capable of? proposal surface. Do not deploy.</div>
 
 <div class="proposal-meta">Prepared for BELHAUS / April 2026</div>
 
@@ -540,8 +715,9 @@
 
 <p>A private database you own. A custom web app sits on top for daily use. An AI agent drafts outreach, prepares new records, and answers questions; the populating doesn't land on you or Chloe. You decide what goes out.</p>
 
-<figure class="proposal-media bel-atmosphere" id="bel-atmo-overview">
-  <img src="/proposals/belhaus/img/atmosphere-overview-interior.jpg" width="1600" height="1075" alt="Interior view of the BELHAUS gallery with artworks visible through glass.">
+<figure class="slot-local-media slot-atmosphere" id="bel-atmo-overview">
+  <img src="/proposals/belhaus/img/src/atmosphere-overview-interior.jpg" width="2244" height="1508" loading="lazy" alt="Interior view of the BELHAUS gallery with artworks visible through glass.">
+  <figcaption class="slot-local-caption">FAVE / atmosphere / Overview page opener / local draft</figcaption>
 </figure>
 
 <div class="stat-row">
@@ -550,13 +726,15 @@
   <div class="stat-item"><strong>&lt;$200/mo</strong> Composable stack cost</div>
 </div>
 
-<figure class="bel-diagram" id="bel-operating-model" aria-label="Operating model: source of truth, working surfaces, outputs and integrations">
+
+<figure class="slot-live-diagram" id="bel-01" aria-labelledby="bel-01-title">
+  <div class="slot-live-label">slot: BEL-01 / operating model / live HTML draft</div>
   <div class="bel-operating-bands">
     <div class="bel-operating-band bel-band-source">
       <div class="bel-band-label">source of truth</div>
       <div class="bel-band-items">
         <div>
-          <p class="bel-band-title" id="bel-operating-title">Airtable records</p>
+          <p class="bel-band-title" id="bel-01-title">Airtable records</p>
           <p class="bel-band-text">One database for artworks, collectors, exhibitions, consignments, and relationships.</p>
         </div>
       </div>
@@ -600,7 +778,7 @@
   </div>
 </figure>
 
-<h2 class="section-heading">What you'd have</h2>
+<div class="section-heading">What you'd have</div>
 
 <p>One private database holds every artwork and every collector. Every artwork: artist, title, medium, dimensions, edition, provenance, pricing, consignment terms, current location (main gallery, Aftermarket, or out at a fair), status, exhibition history. Every collector: who they are, what they've bought, what they've asked about, which fairs you've met at (Intersect, Scottsdale Ferrari Week, others), what they've passed on, when you last spoke. Any record is one search away.</p>
 
@@ -608,30 +786,30 @@
 
 <p>Private catalog views live at URLs you share with specific collectors. You build a page for one person in thirty seconds; they see exactly what you chose to show them.</p>
 
-<figure class="bel-catalog-artifact" id="bel-private-catalog" aria-labelledby="bel-private-catalog-title">
-  <div class="bel-catalog-label">private catalog artifact</div>
-  <div class="bel-catalog-grid">
-    <div class="bel-catalog-primary">
-      <img src="/proposals/belhaus/img/bel-02-trophy-head-iii.webp" width="1200" height="1196" loading="lazy" alt="Trophy Head III, selected as the primary work in a private catalog draft.">
+
+<figure class="slot-local-media slot-catalog-preview" id="bel-02">
+  <div class="slot-placeholder-meta">slot: BEL-02 / job: artifact / source: Are.na BEL-02</div>
+  <p class="slot-placeholder-title" style="margin-top: var(--space-1);">Private catalog artifact.</p>
+  <div class="slot-catalog-grid">
+    <div class="slot-catalog-primary">
+      <img src="/proposals/belhaus/img/src/bel-02-trophy-head-iii.webp" width="1500" height="1495" loading="lazy" alt="Artwork candidate tagged BEL-02 for a private catalog preview.">
     </div>
-    <div class="bel-catalog-copy">
-      <div>
-        <p class="bel-catalog-title" id="bel-private-catalog-title">Draft: Five works I thought you'd want to see.</p>
-        <p class="bel-catalog-note">Draft collector-facing view built from selected artwork records, commentary, and related works.</p>
+    <div class="slot-catalog-copy">
+      <p class="slot-catalog-note">Six works I thought you'd want to see. Draft artifact using the images tagged BEL-02.</p>
+      <div class="slot-catalog-thumbs" aria-label="Additional BEL-02 artwork candidates">
+        <img src="/proposals/belhaus/img/src/bel-02-borders.webp" width="1184" height="1552" loading="lazy" alt="Artwork candidate tagged BEL-02.">
+        <img src="/proposals/belhaus/img/src/bel-02-tiles.webp" width="1160" height="1492" loading="lazy" alt="Artwork candidate tagged BEL-02.">
+        <img src="/proposals/belhaus/img/src/bel-02-cause-effect-iii.webp" width="1500" height="1500" loading="lazy" alt="Artwork candidate tagged BEL-02.">
+        <img src="/proposals/belhaus/img/src/bel-02-sound-of-resonance.webp" width="1500" height="1490" loading="lazy" alt="Artwork candidate tagged BEL-02.">
       </div>
-      <div class="bel-catalog-thumbs" aria-label="Additional artworks selected for the private catalog draft">
-        <img src="/proposals/belhaus/img/bel-02-borders.webp" width="687" height="900" loading="lazy" alt="Borders, related work in a private catalog draft.">
-        <img src="/proposals/belhaus/img/bel-02-tiles.webp" width="700" height="900" loading="lazy" alt="Tiles, related work in a private catalog draft.">
-        <img src="/proposals/belhaus/img/bel-02-cause-effect-iii.webp" width="900" height="900" loading="lazy" alt="Cause and Effect III, related work in a private catalog draft.">
-        <img src="/proposals/belhaus/img/bel-02-sound-of-resonance.webp" width="900" height="894" loading="lazy" alt="Sound of Resonance, related work in a private catalog draft.">
-      </div>
+      <p class="slot-local-caption">Are.na tag: BEL-02 / status: local image draft, not final UI</p>
     </div>
   </div>
 </figure>
 
-<p class="bel-artsy-note">Artsy can stay synced once Georgie confirms the Partner API path. The goal is that artwork records update from the database instead of through separate re-entry.</p>
+<p>Artsy can stay synced once Georgie confirms the Partner API path. The goal is that artwork records update from the database instead of through separate re-entry.</p>
 
-<h2 class="section-heading">Why not the alternatives</h2>
+<div class="section-heading">Why not the alternatives</div>
 
 <p>Georgie recommended ArtCloud because it matches what a lot of galleries at your scale use. Two things about both platforms make them weak fits for this specific goal.</p>
 
@@ -646,22 +824,18 @@
 </div>
 
 <table>
-  <thead>
-  <tr><th scope="col">Dimension</th><th scope="col">Artlogic</th><th scope="col">ArtCloud</th><th scope="col">Composable stack</th></tr>
-  </thead>
-  <tbody>
+  <tr><th>Dimension</th><th>Artlogic</th><th>ArtCloud</th><th>Composable stack</th></tr>
   <tr><td>API</td><td>Excel import/export</td><td>CSV import/export</td><td>Full REST API</td></tr>
   <tr><td>Custom fields</td><td>Fixed schema, 150+ fields</td><td>Limited</td><td>Fields you define</td></tr>
   <tr><td>Cost</td><td>$530-900/mo</td><td>$440-700/mo</td><td>&lt;$200/mo</td></tr>
   <tr><td>Data portability</td><td>WeTransfer Export (paid)</td><td>CSV export</td><td>Standard schemas, one-time export</td></tr>
   <tr><td>AI integration</td><td>File preparation only</td><td>File preparation only</td><td>Real-time read/write</td></tr>
   <tr><td>Artsy sync</td><td>Built-in</td><td>Exists, less documented</td><td>Scripted via Partner API, pending confirmation</td></tr>
-  </tbody>
 </table>
 
 <p style="margin-top: var(--space-2);">A composable stack gives you both: real APIs and a schema you control. If you ever want to migrate to Artlogic later, the data exports to their schema.</p>
 
-<h2 class="section-heading">Your part and Chloe's</h2>
+<div class="section-heading">Your part and Chloe's</div>
 
 <p>Noah handles the initial build: schema, data import, interface, agent. The database is populated at launch.</p>
 
@@ -676,32 +850,22 @@
 
 <p>Airtable holds the records. A web app at a BELHAUS subdomain provides the daily interface. An AI agent reads and writes via the API and sends nothing without you. Four integrations connect to Artsy, email, the image pipeline, and the existing Squarespace store.</p>
 
-<figure class="proposal-media bel-atmosphere" id="bel-atmo-system">
-  <img src="/proposals/belhaus/img/atmosphere-system-crowd.jpg" width="1400" height="1400" loading="lazy" alt="Crowd gathered in front of paintings at BELHAUS.">
+<figure class="slot-local-media slot-atmosphere" id="bel-atmo-system">
+  <img src="/proposals/belhaus/img/src/atmosphere-system-crowd.jpg" width="1667" height="1667" loading="lazy" alt="Crowd gathered in front of paintings at BELHAUS.">
+  <figcaption class="slot-local-caption">FAVE / atmosphere / System page opener / local draft</figcaption>
 </figure>
 
-<h2 class="section-heading">Data model</h2>
+<div class="section-heading">Data model</div>
 
 <p>Five connected tables in Airtable.</p>
 
-<table>
-  <thead>
-  <tr><th scope="col">Table</th><th scope="col">What it holds</th></tr>
-  </thead>
-  <tbody>
-  <tr><td>Artworks</td><td>Artist, title, year, medium, dimensions, edition, provenance, pricing, consignment terms, current location, status, exhibition history, images</td></tr>
-  <tr><td>Collectors and contacts</td><td>Name, email, phone, shipping address, cities, source, artists they collect, fairs met at, price range, purchase history, passed-on history, referral source, conversation notes, last contact date</td></tr>
-  <tr><td>Exhibitions and fairs</td><td>Name, dates, location, artists, works shown, works sold, collectors attended</td></tr>
-  <tr><td>Consignments</td><td>Works in and out of BELHAUS, terms, dates, contact</td></tr>
-  <tr><td>Relationships</td><td>Links between people (spouses, families, advisors), between collectors and artists, between artworks and collections</td></tr>
-  </tbody>
-</table>
 
-<figure class="bel-diagram" id="bel-data-model" aria-labelledby="bel-data-model-title">
+<figure class="slot-live-diagram" id="bel-03" aria-labelledby="bel-03-title">
+  <div class="slot-live-label">slot: BEL-03 / data model / live HTML draft</div>
   <div class="bel-relation-intro">
     <div class="bel-relation-label">relationships</div>
     <div>
-      <p class="bel-relation-title" id="bel-data-model-title">A connective index for the other four tables.</p>
+      <p class="bel-relation-title" id="bel-03-title">A connective index for the other four tables.</p>
       <p class="bel-band-text">Each relationship record connects two things the gallery already tracks.</p>
     </div>
   </div>
@@ -734,9 +898,18 @@
   <p class="bel-relation-note">Tables in play: Artworks, Collectors and contacts, Exhibitions and fairs, Consignments, Relationships.</p>
 </figure>
 
+<table>
+  <tr><th>Table</th><th>What it holds</th></tr>
+  <tr><td>Artworks</td><td>Artist, title, year, medium, dimensions, edition, provenance, pricing, consignment terms, current location, status, exhibition history, images</td></tr>
+  <tr><td>Collectors and contacts</td><td>Name, email, phone, shipping address, cities, source, artists they collect, fairs met at, price range, purchase history, passed-on history, referral source, conversation notes, last contact date</td></tr>
+  <tr><td>Exhibitions and fairs</td><td>Name, dates, location, artists, works shown, works sold, collectors attended</td></tr>
+  <tr><td>Consignments</td><td>Works in and out of BELHAUS, terms, dates, contact</td></tr>
+  <tr><td>Relationships</td><td>Links between people (spouses, families, advisors), between collectors and artists, between artworks and collections</td></tr>
+</table>
+
 <p style="margin-top: var(--space-1);">The fields are yours. Adding a new field takes a minute. As your practice changes, the schema changes with it.</p>
 
-<h2 class="section-heading">Interfaces</h2>
+<div class="section-heading">Interfaces</div>
 
 <div class="finding">
   <div class="finding-label">Gallery web app</div>
@@ -750,10 +923,10 @@
 
 <div class="finding">
   <div class="finding-label">Private catalog URLs</div>
-  <p>A page you can build in thirty seconds and share with a specific collector: "Five works I thought you'd want to see." The link shows exactly what you selected, with your commentary, at your domain. You can see when they opened it.</p>
+  <p>A page you can build in thirty seconds and share with a specific collector: "Six works I thought you'd want to see." The link shows exactly what you selected, with your commentary, at your domain. You can see when they opened it.</p>
 </div>
 
-<h2 class="section-heading">The AI agent</h2>
+<div class="section-heading">The AI agent</div>
 
 <p>The agent reads from Airtable, drafts into the web app, and sends nothing without you. It has three jobs.</p>
 
@@ -774,41 +947,44 @@
 
 <p>The agent proposes; you decide. Sending emails, changing pricing, publishing content: everything outward-facing requires your approval.</p>
 
-<figure class="proposal-process-timeline bel-approval-sequence" aria-labelledby="bel-approval-title">
-  <div class="proposal-media-label" id="bel-approval-title">Approval sequence</div>
-  <div class="proposal-process-timeline-step">
-    <div class="proposal-process-timeline-marker"><span class="proposal-process-timeline-dot"></span><span class="proposal-process-timeline-line"></span></div>
-    <div class="proposal-process-timeline-content"><p>Source arrives: invoice, photo, email, voice memo, or sign-up sheet.</p></div>
-  </div>
-  <div class="proposal-process-timeline-step">
-    <div class="proposal-process-timeline-marker"><span class="proposal-process-timeline-dot"></span><span class="proposal-process-timeline-line"></span></div>
-    <div class="proposal-process-timeline-content"><p>AI prepares a draft record or draft outreach.</p></div>
-  </div>
-  <div class="proposal-process-timeline-step">
-    <div class="proposal-process-timeline-marker"><span class="proposal-process-timeline-dot"></span><span class="proposal-process-timeline-line"></span></div>
-    <div class="proposal-process-timeline-content"><p>Gino or Chloe reviews and approves.</p></div>
-  </div>
-  <div class="proposal-process-timeline-step">
-    <div class="proposal-process-timeline-marker"><span class="proposal-process-timeline-dot"></span><span class="proposal-process-timeline-line"></span></div>
-    <div class="proposal-process-timeline-content"><p>The database updates, then catalog pages, outreach, or Artsy sync can use the record.</p></div>
+
+<figure class="slot-placeholder" id="bel-04">
+  <div>
+    <div class="slot-placeholder-meta">slot: BEL-04 / job: sequence / move: process timeline</div>
+    <p class="slot-placeholder-title" style="margin-top: var(--space-1);">Approval sequence.</p>
+    <div class="proposal-process-timeline" aria-label="Draft sequence for human approval workflow">
+      <div class="proposal-process-timeline-step">
+        <div class="proposal-process-timeline-marker"><span class="proposal-process-timeline-dot"></span><span class="proposal-process-timeline-line"></span></div>
+        <div class="proposal-process-timeline-content"><p>Source arrives: invoice, photo, email, voice memo, or sign-up sheet.</p></div>
+      </div>
+      <div class="proposal-process-timeline-step">
+        <div class="proposal-process-timeline-marker"><span class="proposal-process-timeline-dot"></span><span class="proposal-process-timeline-line"></span></div>
+        <div class="proposal-process-timeline-content"><p>AI prepares a draft record or draft outreach.</p></div>
+      </div>
+      <div class="proposal-process-timeline-step">
+        <div class="proposal-process-timeline-marker"><span class="proposal-process-timeline-dot"></span><span class="proposal-process-timeline-line"></span></div>
+        <div class="proposal-process-timeline-content"><p>Gino or Chloe reviews and approves.</p></div>
+      </div>
+      <div class="proposal-process-timeline-step">
+        <div class="proposal-process-timeline-marker"><span class="proposal-process-timeline-dot"></span><span class="proposal-process-timeline-line"></span></div>
+        <div class="proposal-process-timeline-content"><p>The database updates, then catalog pages, outreach, or Artsy sync can use the record.</p></div>
+      </div>
+    </div>
+    <p class="slot-placeholder-tag" style="margin-top: var(--space-0-5);">Are.na tag: slot: BEL-04 / status: generated local placeholder</p>
   </div>
 </figure>
 
-<h2 class="section-heading">Integrations</h2>
+<div class="section-heading">Integrations</div>
 
 <table>
-  <thead>
-  <tr><th scope="col">Integration</th><th scope="col">How it works</th></tr>
-  </thead>
-  <tbody>
+  <tr><th>Integration</th><th>How it works</th></tr>
   <tr><td>Artsy</td><td>If Georgie confirms the route, the Partner API can keep your Artsy profile synced with the Airtable artwork records. Scripted sync, runs when you want it to.</td></tr>
   <tr><td>Email</td><td>Outbound drafted by the agent, sent by you from your existing email. Resend or similar handles transactional email (catalog-share notifications, private view links). Marketing email stays on whatever tool you pick; the system feeds segments to the tool.</td></tr>
   <tr><td>Image pipeline</td><td>Gallery photography processed once: resized for each platform (website, Instagram, Artsy, catalog PDFs), metadata embedded (artist, title, medium, dimensions) so the file is self-describing. Processed images live in Airtable, available to every integration.</td></tr>
   <tr><td>Squarespace</td><td>The Commerce API can feed sales data back into the collector records when an online purchase happens. Available if useful; not required.</td></tr>
-  </tbody>
 </table>
 
-<h2 class="section-heading">What's portable</h2>
+<div class="section-heading">What's portable</div>
 
 <p>The data model uses standard field names. If you ever want to move to Artlogic or ArtCloud, a one-time export matches their schema. You own the records, the images, and the history. Nothing's locked in.</p>
 
@@ -819,8 +995,9 @@
 
 <p>Three phases. The first produces a populated database. The second puts the full system in daily use. The third extends capabilities based on what proves useful.</p>
 
-<figure class="proposal-media bel-atmosphere" id="bel-atmo-approach">
-  <img src="/proposals/belhaus/img/atmosphere-approach-conversation.jpg" width="1600" height="1075" loading="lazy" alt="People in conversation at a BELHAUS event.">
+<figure class="slot-local-media slot-atmosphere" id="bel-atmo-approach">
+  <img src="/proposals/belhaus/img/src/atmosphere-approach-conversation.jpg" width="1801" height="1210" loading="lazy" alt="People in conversation at a BELHAUS event.">
+  <figcaption class="slot-local-caption">FAVE / atmosphere / Approach page opener / local draft</figcaption>
 </figure>
 
 <div class="scope-phase">
@@ -861,21 +1038,17 @@
   <p style="margin-top: var(--space-1);"><strong>Duration: ongoing, at your pace.</strong></p>
 </div>
 
-<h2 class="section-heading">Division of labor</h2>
+<div class="section-heading">Division of labor</div>
 
 <table>
-  <thead>
-  <tr><th scope="col">Role</th><th scope="col">Responsibility</th></tr>
-  </thead>
-  <tbody>
+  <tr><th>Role</th><th>Responsibility</th></tr>
   <tr><td>You</td><td>Strategic input during build. Approval of the schema and field choices. Review of the initial data before it goes live. After launch: approval of AI-prepared records, direction for capabilities that get added, the decision on every collector-facing action.</td></tr>
   <tr><td>Chloe</td><td>Data cleanup during Phase 1, field validation during Phase 2, ongoing record review. The system reduces her entry burden.</td></tr>
   <tr><td>Noah</td><td>Builds the schema, the web app, the agent, and the integrations. Trains you and Chloe on what you use. Documents the system so it's transferable. Continues after launch for support and incremental work.</td></tr>
   <tr><td>The AI</td><td>Drafts new records, outreach, and content. Waits for your approval before anything reaches a person. Reads and writes only inside the database.</td></tr>
-  </tbody>
 </table>
 
-<h2 class="section-heading">Open questions</h2>
+<div class="section-heading">Open questions</div>
 
 <div class="finding">
   <div class="finding-label">01</div>

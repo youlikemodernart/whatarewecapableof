@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#ffffff">
+<title>BELHAUS diagram review</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/typography.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/proposal-media.css">
+<style>
+  html {
+    overflow-x: clip;
+  }
+
+  .page-proposal {
+    --proposal-header-height: calc(var(--space-1) + var(--space-0-5));
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    padding: 0 var(--margin-inline) var(--margin-block);
+  }
+
+  .page-proposal main {
+    flex: 1;
+    max-width: 960px;
+    padding-top: var(--space-1);
+  }
+
+  .proposal-header {
+    min-height: var(--proposal-header-height);
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--color-bg);
+    margin-inline: calc(-1 * var(--margin-inline));
+    padding-inline: var(--margin-inline);
+  }
+
+  .proposal-home {
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .proposal-meta,
+  .review-label,
+  .slot-placeholder-meta,
+  .slot-diagram-label,
+  .slot-live-label,
+  .bel-band-label,
+  .bel-status,
+  .bel-relation-label,
+  .bel-relation-header,
+  .bel-relation-note {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+  }
+
+  .proposal-meta,
+  .review-label,
+  .slot-placeholder-meta,
+  .slot-diagram-label,
+  .slot-live-label,
+  .bel-band-label,
+  .bel-status,
+  .bel-relation-label,
+  .bel-relation-header,
+  .bel-relation-note {
+    opacity: 0.45;
+  }
+
+  .proposal-title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: var(--size-m);
+    margin-top: var(--space-1);
+    max-width: 52ch;
+  }
+
+  .review-section {
+    margin-top: var(--space-4);
+  }
+
+  .review-section:first-of-type {
+    margin-top: var(--space-2);
+  }
+
+  .review-heading {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    border-top: 1px solid var(--color-text);
+    padding-top: var(--space-2);
+    margin-bottom: var(--space-1);
+  }
+
+  .review-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-2);
+    align-items: start;
+  }
+
+  .review-card {
+    min-width: 0;
+  }
+
+  .review-frame {
+    margin-top: var(--space-0-5);
+  }
+
+  .review-frame-desktop {
+    inline-size: min(724px, 100%);
+  }
+
+  .review-frame-mobile {
+    inline-size: min(327px, 100%);
+  }
+
+  .slot-placeholder {
+    border-top: 1px solid var(--color-text);
+    border-bottom: 1px solid var(--color-text);
+    padding: var(--space-1) 0;
+  }
+
+  .slot-placeholder-frame {
+    min-height: calc(var(--baseline) * 9);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-1);
+  }
+
+  .slot-placeholder-title {
+    font-family: var(--font-serif);
+    font-size: var(--size-m);
+    max-width: 42ch;
+  }
+
+  .slot-diagram-grid,
+  .slot-relationship-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-0-5);
+  }
+
+  .slot-diagram-node,
+  .slot-relationship-list div {
+    border-top: 1px solid var(--color-text);
+    padding-top: var(--space-0-5);
+    min-height: calc(var(--baseline) * 1.5);
+  }
+
+  .slot-live-diagram {
+    border-top: 1px solid var(--color-text);
+    border-bottom: 1px solid var(--color-text);
+    padding: var(--space-1) 0;
+  }
+
+  .slot-live-diagram p {
+    margin: 0;
+  }
+
+  .slot-live-label {
+    margin-bottom: var(--space-1);
+  }
+
+  .bel-operating-band {
+    display: grid;
+    grid-template-columns: minmax(8.5rem, 0.46fr) minmax(0, 1.54fr);
+    gap: var(--space-1);
+    padding: var(--space-0-5) 0;
+    border-top: 1px solid rgba(0,0,0,0.16);
+  }
+
+  .bel-operating-band:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .bel-operating-band:last-child {
+    padding-bottom: 0;
+  }
+
+  .bel-band-items {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-1);
+  }
+
+  .bel-band-source .bel-band-items {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bel-band-title {
+    font-family: var(--font-serif);
+    font-size: var(--size-m);
+    line-height: var(--line-height);
+  }
+
+  .bel-band-text {
+    font-size: var(--size-m);
+    margin-top: calc(var(--space-0-5) * 0.5);
+    max-width: 34ch;
+  }
+
+  .bel-status {
+    display: block;
+    margin-bottom: calc(var(--space-0-5) * 0.25);
+  }
+
+  .bel-relation-intro {
+    display: grid;
+    grid-template-columns: minmax(8.5rem, 0.46fr) minmax(0, 1.54fr);
+    gap: var(--space-1);
+    padding-bottom: var(--space-0-5);
+  }
+
+  .bel-relation-title {
+    font-family: var(--font-serif);
+    font-size: var(--size-m);
+  }
+
+  .bel-relation-grid {
+    border-top: 1px solid rgba(0,0,0,0.16);
+  }
+
+  .bel-relation-row,
+  .bel-relation-grid-head {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: var(--space-1);
+    padding: var(--space-0-5) 0;
+    border-bottom: 1px solid rgba(0,0,0,0.16);
+  }
+
+  .bel-relation-row:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .bel-relation-record,
+  .bel-relation-connects {
+    font-size: var(--size-m);
+  }
+
+  .bel-relation-note {
+    margin-top: var(--space-1);
+    max-width: 58ch;
+  }
+
+  .review-card-wide {
+    grid-column: 1 / -1;
+  }
+
+  .review-frame-mobile .bel-operating-band,
+  .review-frame-mobile .bel-relation-intro {
+    grid-template-columns: 1fr;
+    gap: var(--space-0-5);
+  }
+
+  .review-frame-mobile .bel-band-items {
+    grid-template-columns: 1fr;
+    gap: var(--space-0-5);
+  }
+
+  .review-frame-mobile .bel-relation-row,
+  .review-frame-mobile .bel-relation-grid-head {
+    gap: var(--space-0-5);
+  }
+
+  @media (max-width: 767px) {
+    :root {
+      --margin-inline: var(--space-1);
+    }
+
+    .review-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .bel-operating-band,
+    .bel-relation-intro {
+      grid-template-columns: 1fr;
+      gap: var(--space-0-5);
+    }
+
+    .bel-band-items {
+      grid-template-columns: 1fr;
+      gap: var(--space-0-5);
+    }
+
+    .bel-relation-row,
+    .bel-relation-grid-head {
+      gap: var(--space-0-5);
+    }
+  }
+</style>
+</head>
+<body class="page-proposal">
+<header class="proposal-header">
+  <a href="/" class="proposal-home">What are we capable of?</a>
+</header>
+
+<main>
+  <div class="proposal-meta">BELHAUS / diagram review / local draft</div>
+  <p class="proposal-title">Live HTML replacements for BEL-01 and BEL-03. The bitmap drafts remain reference only while these versions test the proposal-native direction.</p>
+
+  <section class="review-section" aria-labelledby="bel-01-review-heading">
+    <h1 class="review-heading" id="bel-01-review-heading">BEL-01 operating model</h1>
+    <div class="review-grid">
+      <article class="review-card">
+        <div class="review-label">current placeholder</div>
+        <div class="review-frame">
+          <figure class="slot-placeholder">
+            <div class="slot-placeholder-frame">
+              <div>
+                <div class="slot-placeholder-meta">slot: BEL-01 / job: diagram / ratio: 16:9</div>
+                <p class="slot-placeholder-title" style="margin-top: var(--space-1);">Operating system map.</p>
+              </div>
+              <div class="slot-diagram-grid" aria-hidden="true">
+                <div class="slot-diagram-node"><div class="slot-diagram-label">database</div></div>
+                <div class="slot-diagram-node"><div class="slot-diagram-label">web app</div></div>
+                <div class="slot-diagram-node"><div class="slot-diagram-label">AI agent</div></div>
+                <div class="slot-diagram-node"><div class="slot-diagram-label">private catalog</div></div>
+                <div class="slot-diagram-node"><div class="slot-diagram-label">Artsy</div></div>
+                <div class="slot-diagram-node"><div class="slot-diagram-label">email</div></div>
+              </div>
+            </div>
+          </figure>
+        </div>
+      </article>
+      <article class="review-card review-card-wide">
+        <div class="review-label">refined desktop width / 724px target</div>
+        <div class="review-frame review-frame-desktop">
+          <figure class="slot-live-diagram" aria-labelledby="review-bel-01-title">
+            <div class="slot-live-label">slot: BEL-01 / operating model / live HTML draft</div>
+            <div class="bel-operating-bands">
+              <div class="bel-operating-band bel-band-source">
+                <div class="bel-band-label">source of truth</div>
+                <div class="bel-band-items">
+                  <div>
+                    <p class="bel-band-title" id="review-bel-01-title">Airtable records</p>
+                    <p class="bel-band-text">One database for artworks, collectors, exhibitions, consignments, and relationships.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="bel-operating-band">
+                <div class="bel-band-label">working surfaces</div>
+                <div class="bel-band-items">
+                  <div>
+                    <p class="bel-band-title">BELHAUS app</p>
+                    <p class="bel-band-text">Daily interface for search, edits, profiles, and catalog building.</p>
+                  </div>
+                  <div>
+                    <p class="bel-band-title">AI agent</p>
+                    <p class="bel-band-text">Prepares records and outreach drafts. Gino or Chloe approves.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="bel-operating-band">
+                <div class="bel-band-label">outputs and integrations</div>
+                <div class="bel-band-items">
+                  <div>
+                    <p class="bel-band-title">Private catalog links</p>
+                    <p class="bel-band-text">Collector-facing pages from selected artwork records.</p>
+                  </div>
+                  <div>
+                    <p class="bel-band-title">Email drafts</p>
+                    <p class="bel-band-text">Segments and copy prepared from collector history.</p>
+                  </div>
+                  <div>
+                    <span class="bel-status">pending</span>
+                    <p class="bel-band-title">Artsy sync</p>
+                    <p class="bel-band-text">Conditional until Georgie confirms the Partner API route.</p>
+                  </div>
+                  <div>
+                    <span class="bel-status">optional</span>
+                    <p class="bel-band-title">Squarespace sales data</p>
+                    <p class="bel-band-text">Sales feedback into collector records if it proves useful.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </figure>
+        </div>
+      </article>
+      <article class="review-card">
+        <div class="review-label">refined mobile width / 327px target</div>
+        <div class="review-frame review-frame-mobile">
+          <figure class="slot-live-diagram" aria-labelledby="review-bel-01-mobile-title">
+            <div class="slot-live-label">slot: BEL-01 / operating model / live HTML draft</div>
+            <div class="bel-operating-bands">
+              <div class="bel-operating-band bel-band-source">
+                <div class="bel-band-label">source of truth</div>
+                <div class="bel-band-items">
+                  <div>
+                    <p class="bel-band-title" id="review-bel-01-mobile-title">Airtable records</p>
+                    <p class="bel-band-text">One database for artworks, collectors, exhibitions, consignments, and relationships.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="bel-operating-band">
+                <div class="bel-band-label">working surfaces</div>
+                <div class="bel-band-items">
+                  <div>
+                    <p class="bel-band-title">BELHAUS app</p>
+                    <p class="bel-band-text">Daily interface for search, edits, profiles, and catalog building.</p>
+                  </div>
+                  <div>
+                    <p class="bel-band-title">AI agent</p>
+                    <p class="bel-band-text">Prepares records and outreach drafts. Gino or Chloe approves.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="bel-operating-band">
+                <div class="bel-band-label">outputs and integrations</div>
+                <div class="bel-band-items">
+                  <div>
+                    <p class="bel-band-title">Private catalog links</p>
+                    <p class="bel-band-text">Collector-facing pages from selected artwork records.</p>
+                  </div>
+                  <div>
+                    <p class="bel-band-title">Email drafts</p>
+                    <p class="bel-band-text">Segments and copy prepared from collector history.</p>
+                  </div>
+                  <div>
+                    <span class="bel-status">pending</span>
+                    <p class="bel-band-title">Artsy sync</p>
+                    <p class="bel-band-text">Conditional until Georgie confirms the Partner API route.</p>
+                  </div>
+                  <div>
+                    <span class="bel-status">optional</span>
+                    <p class="bel-band-title">Squarespace sales data</p>
+                    <p class="bel-band-text">Sales feedback into collector records if it proves useful.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </figure>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="review-section" aria-labelledby="bel-03-review-heading">
+    <h1 class="review-heading" id="bel-03-review-heading">BEL-03 relationship index</h1>
+    <div class="review-grid">
+      <article class="review-card">
+        <div class="review-label">current placeholder</div>
+        <div class="review-frame">
+          <figure class="slot-placeholder">
+            <div class="slot-placeholder-frame">
+              <div>
+                <div class="slot-placeholder-meta">slot: BEL-03 / job: diagram / ratio: 16:9</div>
+                <p class="slot-placeholder-title" style="margin-top: var(--space-1);">Data model diagram.</p>
+              </div>
+              <div class="slot-relationship-list" aria-hidden="true">
+                <div><span class="slot-diagram-label">artworks</span></div>
+                <div><span class="slot-diagram-label">collectors</span></div>
+                <div><span class="slot-diagram-label">exhibitions and fairs</span></div>
+                <div><span class="slot-diagram-label">consignments</span></div>
+                <div><span class="slot-diagram-label">relationships</span></div>
+              </div>
+            </div>
+          </figure>
+        </div>
+      </article>
+      <article class="review-card review-card-wide">
+        <div class="review-label">refined desktop width / 724px target</div>
+        <div class="review-frame review-frame-desktop">
+          <figure class="slot-live-diagram" aria-labelledby="review-bel-03-title">
+            <div class="slot-live-label">slot: BEL-03 / data model / live HTML draft</div>
+            <div class="bel-relation-intro">
+              <div class="bel-relation-label">relationships</div>
+              <div>
+                <p class="bel-relation-title" id="review-bel-03-title">A connective index for the other four tables.</p>
+                <p class="bel-band-text">Each relationship record connects two things the gallery already tracks.</p>
+              </div>
+            </div>
+            <div class="bel-relation-grid" role="table" aria-label="Examples of records held in the Relationships table">
+              <div class="bel-relation-grid-head" role="row">
+                <div class="bel-relation-header" role="columnheader">relationship record</div>
+                <div class="bel-relation-header" role="columnheader">connects</div>
+              </div>
+              <div class="bel-relation-row" role="row"><div class="bel-relation-record" role="cell">Artist interest</div><div class="bel-relation-connects" role="cell">Person + artist</div></div>
+              <div class="bel-relation-row" role="row"><div class="bel-relation-record" role="cell">Inquiry, purchase, or passed-on work</div><div class="bel-relation-connects" role="cell">Collector + artwork</div></div>
+              <div class="bel-relation-row" role="row"><div class="bel-relation-record" role="cell">Exhibition or fair context</div><div class="bel-relation-connects" role="cell">Artwork + exhibition or fair</div></div>
+              <div class="bel-relation-row" role="row"><div class="bel-relation-record" role="cell">Consignment path</div><div class="bel-relation-connects" role="cell">Artwork + consignment</div></div>
+              <div class="bel-relation-row" role="row"><div class="bel-relation-record" role="cell">Spouse, advisor, referral, family</div><div class="bel-relation-connects" role="cell">Person + person</div></div>
+            </div>
+            <p class="bel-relation-note">Tables in play: Artworks, Collectors and contacts, Exhibitions and fairs, Consignments, Relationships.</p>
+          </figure>
+        </div>
+      </article>
+      <article class="review-card">
+        <div class="review-label">refined mobile width / 327px target</div>
+        <div class="review-frame review-frame-mobile">
+          <figure class="slot-live-diagram" aria-labelledby="review-bel-03-mobile-title">
+            <div class="slot-live-label">slot: BEL-03 / data model / live HTML draft</div>
+            <div class="bel-relation-intro">
+              <div class="bel-relation-label">relationships</div>
+              <div>
+                <p class="bel-relation-title" id="review-bel-03-mobile-title">A connective index for the other four tables.</p>
+                <p class="bel-band-text">Each relationship record connects two things the gallery already tracks.</p>
+              </div>
+            </div>
+            <div class="bel-relation-grid" role="table" aria-label="Examples of records held in the Relationships table">
+              <div class="bel-relation-grid-head" role="row">
+                <div class="bel-relation-header" role="columnheader">relationship record</div>
+                <div class="bel-relation-header" role="columnheader">connects</div>
+              </div>
+              <div class="bel-relation-row" role="row"><div class="bel-relation-record" role="cell">Artist interest</div><div class="bel-relation-connects" role="cell">Person + artist</div></div>
+              <div class="bel-relation-row" role="row"><div class="bel-relation-record" role="cell">Inquiry, purchase, or passed-on work</div><div class="bel-relation-connects" role="cell">Collector + artwork</div></div>
+              <div class="bel-relation-row" role="row"><div class="bel-relation-record" role="cell">Exhibition or fair context</div><div class="bel-relation-connects" role="cell">Artwork + exhibition or fair</div></div>
+              <div class="bel-relation-row" role="row"><div class="bel-relation-record" role="cell">Consignment path</div><div class="bel-relation-connects" role="cell">Artwork + consignment</div></div>
+              <div class="bel-relation-row" role="row"><div class="bel-relation-record" role="cell">Spouse, advisor, referral, family</div><div class="bel-relation-connects" role="cell">Person + person</div></div>
+            </div>
+            <p class="bel-relation-note">Tables in play: Artworks, Collectors and contacts, Exhibitions and fairs, Consignments, Relationships.</p>
+          </figure>
+        </div>
+      </article>
+    </div>
+  </section>
+</main>
+</body>
+</html>

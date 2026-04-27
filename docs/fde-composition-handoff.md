@@ -12,7 +12,7 @@ Your job: examine the complete context below, evaluate the decisions, work throu
 
 ### What the agency builds
 
-Noah and Austin run a consulting agency at whatarewecapableof.com. They produce proposal pages for prospective clients. Each proposal is a static HTML page with tabbed sections (usually Summary/Research/Scope or Overview/Program/Investment), built from a shared design system: left-anchored layout, EB Garamond + Geist Mono type pair, 24px baseline grid, black on white, no decoration. Proposals are noindex, direct-link only.
+Noah and Austin run a consulting agency at whatarewecapableof.com. They produce proposal pages for prospective clients. Each proposal is a static HTML page with tabbed sections (usually Summary/Research/Scope or Overview/Program/Investment), built from a shared design system: left-anchored layout, system font + Geist Mono type pair, 24px baseline grid, black on white, no decoration. Proposals are noindex, direct-link only.
 
 There are currently five proposals: Teaspressa, Compassion, Belhaus, PäSTE, and FDE. Each was text-first. Teaspressa was the pilot for the proposal composition system (adding images after the text is stable). FDE is the second proposal to go through the full composition workflow.
 

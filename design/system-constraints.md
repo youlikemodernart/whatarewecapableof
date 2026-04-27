@@ -74,7 +74,7 @@ The `--space-0-5` (12px) token exists for one case: grouping a line of mono meta
 
 ```css
 :root {
-  --font-serif: 'Lyon Text', 'GT Sectra', 'Recoleta', 'EB Garamond', Garamond, serif;
+  --font-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   --font-mono: 'Söhne Mono', 'ABC Diatype Mono', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 }
 ```

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#ffffff">
-<title>Teaspressa</title>
+<title>Teaspressa composition draft</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +16,6 @@
 <link rel="stylesheet" href="/css/typography.css">
 <link rel="stylesheet" href="/css/layout.css">
 <link rel="stylesheet" href="/css/components.css">
-<link rel="stylesheet" href="/css/proposal-media.css">
 <style>
   html {
     overflow-x: clip;
@@ -288,6 +287,106 @@
     border-top: 1px solid rgba(0,0,0,0.08);
   }
 
+
+  .composition-draft-note {
+    max-width: 52ch;
+    margin: var(--space-1) 0 var(--space-2);
+    padding-top: var(--space-0-5);
+    border-top: 1px solid rgba(0,0,0,0.16);
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    opacity: 0.55;
+  }
+
+  .composition-slot {
+    --slot-ratio: 16 / 9;
+    margin: var(--space-2) 0;
+    max-width: 100%;
+  }
+
+  .composition-slot--16x9 { --slot-ratio: 16 / 9; }
+  .composition-slot--4x3 { --slot-ratio: 4 / 3; }
+  .composition-slot--16x11 { --slot-ratio: 16 / 11; }
+  .composition-slot--15x8 { --slot-ratio: 15 / 8; }
+  .composition-slot--7x5 { --slot-ratio: 7 / 5; }
+  .composition-slot--5x7 { --slot-ratio: 5 / 7; max-width: min(100%, 28rem); }
+
+  .composition-slot-frame {
+    aspect-ratio: var(--slot-ratio);
+    width: 100%;
+    border: 1px solid rgba(0,0,0,0.42);
+    background:
+      linear-gradient(135deg, transparent calc(50% - 0.5px), rgba(0,0,0,0.16) 50%, transparent calc(50% + 0.5px)),
+      linear-gradient(45deg, transparent calc(50% - 0.5px), rgba(0,0,0,0.16) 50%, transparent calc(50% + 0.5px)),
+      #f1f1ee;
+    display: grid;
+    place-items: center;
+    padding: var(--space-1);
+  }
+
+
+  .composition-slot-frame--filled {
+    display: block;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    background: transparent;
+  }
+
+  .composition-slot-frame--filled img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: var(--slot-position, 50% 50%);
+  }
+
+  .composition-slot-source {
+    margin-top: calc(var(--space-0-5) * 0.5);
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    opacity: 0.45;
+  }
+
+  .composition-slot-copy {
+    max-width: 38ch;
+    background: var(--color-bg);
+    padding: var(--space-0-5);
+    text-align: left;
+  }
+
+  .composition-slot-kicker,
+  .composition-slot-tag,
+  .composition-slot-note {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+  }
+
+  .composition-slot-kicker,
+  .composition-slot-note {
+    opacity: 0.48;
+  }
+
+  .composition-slot-title {
+    font-family: var(--font-serif);
+    font-size: var(--size-m);
+    margin-top: calc(var(--space-0-5) * 0.5);
+  }
+
+  .composition-slot-note {
+    margin-top: calc(var(--space-0-5) * 0.5);
+  }
+
+  .composition-slot-tag {
+    margin-top: var(--space-0-5);
+  }
+
   @media (max-width: 767px) {
     :root {
       --margin-inline: var(--space-1);
@@ -309,6 +408,8 @@
 </header>
 
 <main>
+
+<div class="composition-draft-note">Local composition draft. Grey frames show proposed single-image placements. Collect in Are.na using the slot IDs.</div>
 
 <div class="proposal-meta">Prepared for Teaspressa / April 2026</div>
 
@@ -347,8 +448,10 @@
   <div class="evidence">wholesale.teaspressa.com product catalog, login-gated pricing, DNS subdomain analysis</div>
 </div>
 
-<figure class="proposal-media">
-  <img src="/proposals/teaspressa/img/ts-02-wholesale-guide.jpg" alt="Hand reaching toward Teaspressa mixer cubes in a bowl beside apples and a bottle." width="1500" height="844" loading="lazy" decoding="async">
+<figure class="composition-slot composition-slot--16x9" id="slot-ts-02">
+  <div class="composition-slot-frame composition-slot-frame--filled" style="--slot-position: 50% 50%;">
+    <img src="/proposals/teaspressa/img/src/arena/ts-02-wholesale-guide-45589756.png" alt="Hand reaching toward Teaspressa mixer cubes in a bowl beside apples and a bottle." width="1500" height="1000" loading="lazy" decoding="async">
+  </div>
 </figure>
 
 <div class="finding">
@@ -363,8 +466,10 @@
   <div class="evidence">Apple Pay config ("supportsSubscriptions": true), /collections/teaspressa-tea-subscription, /pages/tea-subscribe-page (empty)</div>
 </div>
 
-<figure class="proposal-media">
-  <img src="/proposals/teaspressa/img/ts-04-seasonal-campaign.jpg" alt="Flowers and candles in a dark red room from a Teaspressa seasonal campaign." width="1800" height="1012" loading="lazy" decoding="async">
+<figure class="composition-slot composition-slot--16x9" id="slot-ts-04">
+  <div class="composition-slot-frame composition-slot-frame--filled" style="--slot-position: 50% 50%;">
+    <img src="/proposals/teaspressa/img/src/arena/ts-04-mothers-day-45587982.webp" alt="Flowers and candles in a dark red room from a Teaspressa seasonal campaign." width="1800" height="1097" loading="lazy" decoding="async">
+  </div>
 </figure>
 
 <div class="finding">
@@ -383,8 +488,10 @@
 
 <p>The product merchandising is sophisticated: 100+ collections organized by drink type, format, flavor profile, base spirit, caffeine level, occasion, and price point. Seasonal rotation keeps the catalog fresh. Product-specific landing page subdomains (champagnekit.teaspressa.com, mimosakit.teaspressa.com, drink.teaspressa.com) suggest campaign-level marketing with QR codes on packaging. The wholesale blog coaching retailers on seasonal prep is a differentiator most CPG brands at this scale don't offer. Premium partnerships include NetJets x Monaco Grand Prix and a Greenwood Brewery collaboration.</p>
 
-<figure class="proposal-media">
-  <img src="/proposals/teaspressa/img/ts-07-valentines-retail-guide.jpg" alt="Teaspressa products, champagne, flowers, and a cocktail arranged in a gift basket." width="1778" height="1000" loading="lazy" decoding="async">
+<figure class="composition-slot composition-slot--16x9" id="slot-ts-07">
+  <div class="composition-slot-frame composition-slot-frame--filled" style="--slot-position: 50% 50%;">
+    <img src="/proposals/teaspressa/img/src/arena/ts-07-valentines-retail-guide-45589884.jpg" alt="Teaspressa products, champagne, flowers, and a cocktail arranged in a gift basket." width="1800" height="1000" loading="lazy" decoding="async">
+  </div>
 </figure>
 
 <div class="section-heading" style="margin-top: var(--space-3);">What we'd want to learn</div>
@@ -418,8 +525,10 @@
 
 <p>152 products in the sitemap. Seasonal collections rotate actively: Holiday, Apres Ski, Fireside, Pumpkin Spice, Summer, and the current "Moments" collection. GTINs are assigned (e.g., 858798007981 on Vanilla Bean Tallboy, SKU TB002).</p>
 
-<figure class="proposal-media">
-  <img src="/proposals/teaspressa/img/ts-11-wholesale-product-collage.jpg" alt="A grid of Teaspressa wholesale product images grouped by product family." width="3000" height="1600" loading="lazy" decoding="async">
+<figure class="composition-slot composition-slot--15x8" id="slot-ts-11">
+  <div class="composition-slot-frame composition-slot-frame--filled">
+    <img src="/proposals/teaspressa/img/src/wholesale-products/collages/ts-11-wholesale-product-collage-120up-products-cubes-top-v2-edge-15x8.jpg" alt="Edge-to-edge collage of 120 Teaspressa wholesale product images sorted by category, with narrow cube packs in the top rows." width="3000" height="1600" loading="lazy" decoding="async">
+  </div>
 </figure>
 
 <div class="section-heading">Wholesale</div>
@@ -517,8 +626,7 @@
 <div id="question" class="tab-content-full">
 
 <div>
-  <p class="proposal-title">What are <strong style="font-weight: 700;">we</strong> capable of?</p>
-  <p class="proposal-title" style="margin-top: var(--space-1);">Let's find out.</p>
+  <p class="proposal-title">What are <span style="text-decoration: underline; text-underline-offset: 0.15em;">we</span> capable of?</p>
   <p class="mono size-s" style="margin-top: var(--space-1);"><a class="cta-link" href="/book">Book a call</a></p>
 </div>
 
@@ -527,7 +635,7 @@
 </main>
 
 <footer>
-  <span class="proposal-meta">Research conducted April 22, 2026. All findings from publicly available sources.</span>
+  <span class="proposal-meta">Local-only composition draft. Final proposal remains proposals/teaspressa/index.html.</span>
 </footer>
 
 <script>

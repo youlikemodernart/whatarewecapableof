@@ -73,7 +73,8 @@
 .proposal-diagram + .section-heading,
 .proposal-excerpt + .section-heading,
 .proposal-stat-field + .section-heading,
-.proposal-video-plate + .section-heading {
+.proposal-video-plate + .section-heading,
+.proposal-text-graphic + .section-heading {
   border-top: none;
   padding-top: var(--space-1);
   margin-top: var(--space-2);
@@ -88,7 +89,8 @@
 .proposal-diagram + .section-heading.section-heading--ruled,
 .proposal-excerpt + .section-heading.section-heading--ruled,
 .proposal-stat-field + .section-heading.section-heading--ruled,
-.proposal-video-plate + .section-heading.section-heading--ruled {
+.proposal-video-plate + .section-heading.section-heading--ruled,
+.proposal-text-graphic + .section-heading.section-heading--ruled {
   border-top: 1px solid var(--color-text);
   padding-top: var(--space-2);
   margin-top: var(--space-4);
@@ -362,9 +364,16 @@
 
 .proposal-text-graphic {
   margin: var(--space-2) 0;
+  padding: var(--space-1) 0;
+}
+
+.proposal-text-graphic--ruled {
   border-top: 1px solid var(--color-text);
   border-bottom: 1px solid var(--color-text);
-  padding: var(--space-1) 0;
+}
+
+.proposal-text-graphic--top-rule {
+  border-top: 1px solid var(--color-text);
 }
 
 .proposal-flow {
@@ -381,8 +390,6 @@
 }
 
 .proposal-flow-step {
-  border-top: 1px solid var(--color-text);
-  padding-top: var(--space-0-5);
   position: relative;
 }
 
@@ -414,8 +421,6 @@
   display: grid;
   grid-template-columns: minmax(8rem, 0.42fr) minmax(0, 1.58fr);
   gap: var(--space-1);
-  padding-top: var(--space-0-5);
-  border-top: 1px solid var(--color-text);
 }
 
 .proposal-map-children {
@@ -450,8 +455,7 @@
 
 .proposal-wireframe-region,
 .proposal-wireframe-item {
-  border-top: 1px solid var(--color-text);
-  padding-top: var(--space-0-5);
+  padding-top: 0;
 }
 
 .proposal-wireframe-list {

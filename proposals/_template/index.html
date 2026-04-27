@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="/css/typography.css">
 <link rel="stylesheet" href="/css/layout.css">
 <link rel="stylesheet" href="/css/components.css">
-<link rel="stylesheet" href="/css/proposal-media.css?v=type-hierarchy-20260426">
+<link rel="stylesheet" href="/css/proposal-media.css?v=rules-20260427">
 <style>
   html {
     overflow-x: clip;
@@ -150,6 +150,12 @@
     margin-top: 0;
     padding-top: 0;
     border-top: none;
+  }
+
+  .section-heading.section-heading--plain {
+    border-top: none;
+    padding-top: 0;
+    margin-top: var(--space-3);
   }
 
   .finding {
@@ -370,7 +376,7 @@
 <!-- ===== RESEARCH ===== -->
 <div id="research" class="tab-content">
 
-<!-- Full technical depth. Section headings with border-top for hierarchy. -->
+<!-- Full technical depth. Use ruled section headings for major argument turns; use section-heading--plain for local labels. -->
 <!-- Sections: Company, Product catalog, Technology, Content and social, Subdomains, Structured data, What we don't know -->
 
 <div class="section-heading">Company</div>

@@ -398,6 +398,8 @@ Implement final media only after the placeholder draft is approved or the task e
 
 When a proposal visual directly precedes a section heading, suppress the heading rule by default. The visual already resets attention; the rule becomes a second break unless the heading explicitly opts back in with `.section-heading--ruled`. More broadly, rules should group, introduce, or compare content. Do not bracket every artifact by default.
 
+Text-carrying graphics are open by default. Use `.proposal-text-graphic--ruled` only when the graphic needs to read as a formal specimen or comparison plate. Internal lines in flows, maps, and wireframes must encode structure; do not add a top rule to every item as decoration.
+
 For phase output lines, use `.proposal-output` on the paragraph and keep the bold text. The line stays at body size; wayfinding comes from the inline word `Output:`, its placement after the phase copy, and the approved inline bold treatment.
 
 ### Phase 8: Review

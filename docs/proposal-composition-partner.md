@@ -285,6 +285,7 @@ Do not use:
 - Avoid adding new colors.
 - Suppress the section-heading rule when a proposal visual directly precedes the heading; use `.section-heading--ruled` only when the rule carries a new grouping job.
 - Use rules to group, introduce, or compare content. Do not bracket every artifact by default.
+- Keep text-carrying graphics open by default. Use `.proposal-text-graphic--ruled` only when the graphic needs to read as a formal specimen or comparison plate. Internal lines in flows, maps, and wireframes must encode structure; do not add a top rule to every item as decoration.
 - If a diagram carries substantial readable text, live HTML/CSS may be the final artifact. Do not force a bitmap when live text reads better at proposal width.
 - Use size for role, never rank. Body prose, proposal titles, section headings, scope phase titles, scope lists, table body cells, output lines, placeholder descriptions, specimen descriptions, and readable diagram text stay at `--size-m`. Small mono type is for labels, metadata, captions, counters, table headers, source notes, nav, and tabs.
 - Use `.proposal-process-timeline` for 3 to 5 text steps by default. Use `.proposal-process-strip` only when lateral movement has a job and the overflow affordance is visible.

@@ -114,7 +114,7 @@ The `--space-0-5` (12px) token exists for one case: grouping a line of mono meta
 
 **Type-size invariant:** recurring hierarchy is flat by size. A page can run entirely on `--size-m` with no visual heading-vs-body distinction, relying on position, grouping, sequence, case, and spacing. That is the correct default.
 
-**Proposal-page invariant:** proposal titles, section headings, scope phase titles, scope lists, table body cells, output lines, placeholder descriptions, and readable diagram text stay at `--size-m`. `--size-s` and `--size-xs` are apparatus sizes: metadata, labels, captions, counters, table headers, source notes, nav, and tabs. Do not shrink body-like content to make it subordinate. Do not enlarge headings to make them primary.
+**Proposal-page invariant:** proposal titles, guide paragraphs, section headings, scope phase titles, scope lists, table body cells, output lines, placeholder descriptions, and readable diagram text stay at `--size-m`. `--size-s` and `--size-xs` are apparatus sizes: metadata, labels, captions, counters, table headers, source notes, nav, and tabs. Any readable prose in the system UI font is body-like content and stays at `--size-m`. Do not shrink body-like content to make it subordinate. Do not enlarge headings to make them primary.
 
 ### Line-height and letter-spacing
 

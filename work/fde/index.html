@@ -55,6 +55,13 @@
       margin-top: var(--space-3);
     }
 
+    .client-section--after-media,
+    .client-section:has(> .client-media:last-child) + .client-section {
+      border-top: none;
+      padding-top: var(--space-1);
+      margin-top: var(--space-2);
+    }
+
     .client-section .section-label {
       margin-bottom: var(--space-1);
     }
@@ -181,7 +188,7 @@
       </figure>
     </section>
 
-    <section class="client-section" aria-labelledby="suggestion">
+    <section class="client-section client-section--after-media" aria-labelledby="suggestion">
       <h2 id="suggestion" class="section-label">What we are suggesting</h2>
 
       <article class="artifact">
@@ -208,7 +215,7 @@
     </section>
 
 
-    <section class="client-section" aria-labelledby="what-we-could-carry">
+    <section class="client-section client-section--after-media" aria-labelledby="what-we-could-carry">
       <h2 id="what-we-could-carry" class="section-label">What we could carry</h2>
 
       <article class="artifact">

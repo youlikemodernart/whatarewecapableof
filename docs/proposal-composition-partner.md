@@ -12,10 +12,11 @@ Before any proposal composition work, read:
 2. `PROPOSALS.md`
 3. `design/taste-profile/profile.md`
 4. `design/system-constraints.md`
-5. `design/proposal-composition-system.md`
-6. `proposals/_template/index.html`
-7. The active proposal file, for example `proposals/teaspressa/index.html`
-8. Any client-specific source docs, screenshots, assets, or research notes named in `PROPOSALS.md`
+5. `design/rules-and-dividers.md`
+6. `design/proposal-composition-system.md`
+7. `proposals/_template/index.html`
+8. The active proposal file, for example `proposals/teaspressa/index.html`
+9. Any client-specific source docs, screenshots, assets, or research notes named in `PROPOSALS.md`
 
 If the task involves writing or revising client-facing proposal copy, also load Noah's writing style guidance before editing prose.
 
@@ -284,7 +285,9 @@ Do not use:
 - Keep spacing on the 24px baseline.
 - Use CSS custom properties already defined in `tokens.css`.
 - Avoid adding new colors.
+- Read `design/rules-and-dividers.md` before making or changing section systems, media-heavy pages, proposal pages, or client-facing work indexes.
 - Suppress the section-heading rule when a proposal visual directly precedes the heading; use `.section-heading--ruled` only when the rule carries a new grouping job.
+- Suppress horizontal rules after images, videos, diagrams, artifacts, timelines, stat fields, or text graphics unless the rule has a new structural job. The media already acts as the break.
 - Use rules to group, introduce, or compare content. Do not bracket every artifact by default.
 - Keep text-carrying graphics open by default. Use `.proposal-text-graphic--ruled` only when the graphic needs to read as a formal specimen or comparison plate. Internal lines in flows, maps, and wireframes must encode structure; do not add a top rule to every item as decoration.
 - If a diagram carries substantial readable text, live HTML/CSS may be the final artifact. Do not force a bitmap when live text reads better at proposal width.

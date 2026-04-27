@@ -34,7 +34,7 @@ A page full of prose can do this, but the reader pays a cost. Dense paragraphs a
 
 ## Relationship to the existing design system
 
-The proposal composition system sits inside the locked whatarewecapableof design language:
+The proposal composition system sits inside the locked whatarewecapableof design language. Rule and divider behavior is governed centrally by `design/rules-and-dividers.md`.
 
 - Typography carries the page.
 - Images and video enter as content, never as chrome.
@@ -396,7 +396,7 @@ Before final images are inserted, create an in-flow placeholder draft when Noah 
 
 Implement final media only after the placeholder draft is approved or the task explicitly asks for implementation. Use reusable classes where possible. Keep page-specific CSS small.
 
-When a proposal visual directly precedes a section heading, suppress the heading rule by default. The visual already resets attention; the rule becomes a second break unless the heading explicitly opts back in with `.section-heading--ruled`. More broadly, rules should group, introduce, or compare content. Do not bracket every artifact by default.
+When a proposal visual directly precedes a section heading, suppress the heading rule by default. The visual already resets attention; the rule becomes a second break unless the heading explicitly opts back in with `.section-heading--ruled`. More broadly, rules should group, introduce, or compare content. Do not bracket every artifact by default. See `design/rules-and-dividers.md` before creating new section systems or media-heavy page structures.
 
 Text-carrying graphics are open by default. Use `.proposal-text-graphic--ruled` only when the graphic needs to read as a formal specimen or comparison plate. Internal lines in flows, maps, and wireframes must encode structure; do not add a top rule to every item as decoration.
 

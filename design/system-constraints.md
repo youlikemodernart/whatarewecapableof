@@ -374,6 +374,12 @@ No exceptions.
 
 ## 7. Component rules
 
+### Rules and dividers
+
+See `design/rules-and-dividers.md` for the central rule-density guidance.
+
+Horizontal rules are structural marks, not decoration. Use them for major argument turns, formal grouping, real comparison, table structure, or persistent chrome. Suppress them when an image, video, diagram, artifact, timeline, stat field, or text graphic has already reset the reader's attention. No horizontal rule should appear immediately after media unless the rule has a new structural job.
+
 ### Links
 
 - Body prose links: `color: var(--color-text)` with `text-decoration: underline`. Underline is always on. No hover-appear underlines.

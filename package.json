@@ -1,7 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "scan:assets": "node scripts/scan-assets.mjs"
+    "scan:assets": "node scripts/scan-assets.mjs",
+    "check:type-hierarchy": "node scripts/check-type-hierarchy.mjs"
   },
   "dependencies": {
     "googleapis": "^171.4.0"

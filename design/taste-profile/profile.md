@@ -16,7 +16,7 @@ layout:
 typography:
   primary: system-ui sans-serif
   secondary: Geist Mono
-  scale-ratio: 1.125
+  scale-ratio: 1.0
   body-size: 16-18px
   weight-range: 400 default; 700 inline wayfinding only
   spacing: normal
@@ -86,7 +86,7 @@ Quality bar lives in deployment: baseline grid, spacing, case, restrained scale,
 
 Weight is 400 by default. Bold 700 is allowed only for inline wayfinding where it has already been accepted in the proposal system. No semibold, light, or display-weight hierarchy.
 
-Scale ratio sits near 1.0 between headings and body. The schema's 1.125 (major second) best captures this, because hierarchy is subtle and positional. In practice, `h1`, `h2`, `h3`, and `p` may all render at the same size and weight, distinguished only by position and content. A smaller secondary size is reserved for counters, pagination, or incidental metadata.
+Scale ratio is flat for ranked content. `h1`, `h2`, `h3`, body prose, body-like lists, table body text, diagram body text, card titles, scope phase titles, and proposal section titles all default to `--size-m`. Size changes are role changes, not rank changes. A smaller size is reserved for apparatus: counters, pagination, captions, labels, table headers, metadata, nav, and other content whose job is labeling or source context. Do not make a thing larger because it matters more. Move it earlier, isolate it, group it differently, or change the case role.
 
 Body size sits at 16–18px at desktop. The reference sites go smaller (Lola 11px, Ellen Ole 10px, Loyal 21.76px via viewport scaling), but the smaller sites risk illegibility for a partnership that will host proposals and project text.
 
@@ -114,13 +114,16 @@ Saturation: desaturated except for the one structural blue. Temperature: neutral
 
 ## Hierarchy character
 
-Radically gentle. Carried by position, grouping, and case.
+Flat by size. Carried by position, grouping, case, sequence, and spacing.
 
-In the reference set, headings do not enlarge. `h1`, `h2`, `h3`, body paragraphs, and nav links all render at identical or near-identical size and weight. The visual hierarchy comes from three mechanisms, in order of strength:
+In the reference set, headings do not enlarge. `h1`, `h2`, `h3`, body paragraphs, and nav links all render at identical or near-identical size and weight. WAWCO treats this as an invariant, not a preference. General web hierarchy advice often reaches for size because size is an efficient perceptual channel. This site chooses a different discipline: if hierarchy requires a larger heading, the composition has already failed the profile.
+
+The visual hierarchy comes from four mechanisms, in order of strength:
 
 1. **Position.** Content at the top of a page is the most important; the reading axis descends. The home page leads with identity (name/mark), then work index, then secondary nav, then contact — this order is constant across all three live sites.
 2. **Grouping.** Elements sitting together (with consistent spacing) read as a unit; elements separated by a baseline multiple read as distinct. Loyal's two-column content page is the clearest execution — the metadata column and the prose column are clearly separated groups without any dividing line or heading.
-3. **Case.** ALL CAPS Geist Mono for metadata, role, and project-type labels; sentence case system UI for content. The case change carries what a designer would usually solve with weight or size. Ellen Ole's project list ("Daniel Caesar PERFORMANCE") is the clearest demonstration: same size, same weight, same face — only the case of the project type differs, and that single mechanism establishes role differentiation.
+3. **Case.** ALL CAPS Geist Mono for metadata, role, and project-type labels; sentence case system UI for content. The case change carries what a designer would usually solve with weight or size. Ellen Ole's project list ("Daniel Caesar PERFORMANCE") is the clearest demonstration: same size, same weight, same face, with only the case of the project type establishing role differentiation.
+4. **Sequence.** The first encounter carries priority. When something needs emphasis, it should arrive earlier or be given its own beat rather than being enlarged.
 
 Image role on the interface layer is **absent.** Home, index, about, archive, and navigation pages carry no imagery (or at most a single small mark, like Lola's peace symbol or Loyal's single exhibition thumbnail). On content pages, images can be dense — but this is an allowed departure, not the default. The taste profile's first instinct at any new page is "no image."
 
@@ -153,7 +156,7 @@ Explicit rules against the most common drifts.
 - **No more than one accent color.** The blue is the entire color departure from black and white. Adding a second accent (red for errors, green for success, purple for links) breaks the restraint.
 - **No rounded corners over 4px, no drop shadows, no gradients.** None of the references use these; introducing them would read as "template styling."
 - **No card UI.** Content sits directly on the background. No bordered containers, no box-shadow "cards," no hover-lift effects on list items.
-- **No size-based hierarchy.** No 48px headings next to 16px body. Scale stays tight (1.125 ratio maximum). If something needs to be bigger, ask whether it needs to be first instead.
+- **No text-size hierarchy.** No recurring heading scale, no enlarged section titles, no shrunken body-like lists, no small table bodies, no diagram text scaled by importance, no 48px heading next to 16px body. If something needs emphasis, ask whether it should come first, stand alone, move into a separate group, or change role. Size is for role, never rank.
 - **No title case.** Sentence case for content, ALL CAPS for metadata. Title Case Of Every Word looks tentative; it belongs to newsletter SaaS.
 - **No "About Us" as conventional long-form prose.** Ellen Ole's voice memo reframes the format: consider whether the introduction to Noah and Austin's practice could be audio, film, image, silence, or a single sentence rather than three paragraphs.
 - **No `text-transform: lowercase` on the whole site.** That is Lola's voice marker. Borrowed, it reads as imitation.
@@ -266,10 +269,10 @@ When this profile enters Phase 2 (Strategy) of 11-create-workflow.md, the strong
 
 1. **Baseline grid first.** Before any content placement, establish `fontSize × lineHeight` as the vertical unit. Every margin, padding, and gap inherits from it.
 2. **Type system second.** Use the production type contract: system UI for prose, titles, and data display; Geist Mono for metadata, navigation, and proposal chrome. Do not audition a prose serif unless Noah explicitly reopens the type system.
-3. **Single default weight, near-flat scale.** Do not introduce weight-based hierarchy. Bold 700 is limited to approved inline wayfinding. Do not let headings get bigger than 1.125× body.
+3. **Single default weight, flat ranked scale.** Do not introduce weight-based or text-size hierarchy. Bold 700 is limited to approved inline wayfinding. Headings, body-like lists, tables, and readable diagrams stay at `--size-m`; small sizes are apparatus only.
 4. **Left anchor, asymmetric composition.** Default to content at left with right margin dominant. Center alignment is a signature moment, not a default.
 5. **No images on chrome.** Navigation, about, home, and index pages have no hero images. Only content pages (work, proposals, detailed writing) may carry imagery.
 6. **Motion as punctuation.** If motion is specified, it is hold-heavy, triggered by state change, and positional (not stylistic). Default to no motion; add it only where it earns its place.
 7. **Black on white default; one blue accent for state; one optional warm ground.** No second accent.
 
-When this profile enters the critique framework (10-critique-framework.md), failures to flag: weight variation, size-based hierarchy, gray text for secondary content, hero images on nav pages, micro-animations on hover, multi-color palettes, and anything that feels "template minimal" rather than "specific minimal."
+When this profile enters the critique framework (10-critique-framework.md), failures to flag: weight variation, text-size hierarchy, gray text for secondary content, body-like content set small, readable graphics with generic SaaS sizing, hero images on nav pages, micro-animations on hover, multi-color palettes, and anything that feels "template minimal" rather than "specific minimal."

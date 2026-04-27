@@ -31,6 +31,7 @@ Exception: when the proposal is creative-led or the offer depends on visual spec
 
 - Left-anchored proposal surface.
 - Restrained type-led visual language.
+- Flat text-size hierarchy: body-like proposal content stays at `--size-m`.
 - Root-relative asset paths.
 - Sticky proposal header and tab behavior.
 - Existing proposal tabs unless the content demands a different section model.
@@ -285,9 +286,10 @@ Do not use:
 - Suppress the section-heading rule when a proposal visual directly precedes the heading; use `.section-heading--ruled` only when the rule carries a new grouping job.
 - Use rules to group, introduce, or compare content. Do not bracket every artifact by default.
 - If a diagram carries substantial readable text, live HTML/CSS may be the final artifact. Do not force a bitmap when live text reads better at proposal width.
-- Use size for role, not emphasis. Body-like diagram and table text should stay at `--size-m`; small mono type is for labels, metadata, captions, counters, and headers.
+- Use size for role, never rank. Body prose, proposal titles, section headings, scope phase titles, scope lists, table body cells, output lines, placeholder descriptions, specimen descriptions, and readable diagram text stay at `--size-m`. Small mono type is for labels, metadata, captions, counters, table headers, source notes, nav, and tabs.
 - Use `.proposal-process-timeline` for 3 to 5 text steps by default. Use `.proposal-process-strip` only when lateral movement has a job and the overflow affordance is visible.
-- Use `.proposal-output` for bold output lines inside scope phases so the line stays subordinate to the phase title.
+- Use `.proposal-output` for output lines inside scope phases; keep it at body size. Inline bold is allowed for `Output:` wayfinding, not structural hierarchy.
+- Prefer live HTML/CSS for diagrams, maps, wireframes, and artifact mockups that carry readable words. If an SVG or bitmap carries readable text, it still follows the same size contract and avoids generic SaaS hierarchy: large bold titles, colored cards, gray secondary text, rounded boxes, shadows, and multi-size text ladders.
 - Avoid shadows, rounded card treatments, gradients, and decorative surfaces.
 - Keep media treatment quieter than the content it supports.
 - The proposal template loads `/css/proposal-media.css` for future proposals. Existing proposal pages do not inherit template changes automatically. Add the stylesheet link to any existing proposal page before using proposal media classes.
@@ -340,6 +342,8 @@ Before handing off a composition plan or implementation, answer:
 - Are the strongest proof points visible?
 - Are any visuals merely decorative?
 - Does the page still feel like What are we capable of?
+- Does any hierarchy depend on text size? If yes, revise before handoff.
+- Are all body-like proposal elements at `--size-m`: scope lists, table bodies, output lines, placeholder descriptions, specimen descriptions, and readable diagram text?
 - Does mobile reading improve?
 - Do captions make the media self-explanatory?
 - Are all assets path-safe with and without a trailing slash?

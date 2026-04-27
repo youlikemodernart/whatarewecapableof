@@ -89,7 +89,7 @@ The site uses directory-style pages: each route is a folder with an `index.html`
 | `css/typography.css` | Type classes and text conventions. |
 | `css/layout.css` | The two permitted layout primitives and page-level layout. |
 | `css/components.css` | Navigation, footer, work lists, proposal tabs, booking form, repeated components. |
-| `css/proposal-media.css` | Optional proposal media primitives: evidence plates, diptychs, specimen grids, process strips, diagrams, excerpts, stat fields, and video plates. |
+| `css/proposal-media.css` | Optional proposal media primitives: evidence plates, diptychs, specimen grids, process strips, timelines, diagrams, text graphics, maps, wireframes, excerpts, stat fields, and video plates. |
 | `js/booking.js` | Shared booking UI controller used by `/coach/book` and `/book`. |
 
 Design constraints live in `design/system-constraints.md`. Treat that file as the engineering contract for spacing, type, layout, color, and motion.

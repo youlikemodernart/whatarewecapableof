@@ -16,11 +16,15 @@
 <link rel="stylesheet" href="/css/typography.css">
 <link rel="stylesheet" href="/css/layout.css">
 <link rel="stylesheet" href="/css/components.css">
-<link rel="stylesheet" href="/css/proposal-media.css">
+<link rel="stylesheet" href="/css/proposal-media.css?v=type-hierarchy-20260426">
 <style>
   html {
     overflow-x: clip;
   }
+
+  /* Type-size invariant: use size for role, never rank. Body-like proposal
+     content stays at --size-m; small sizes are only for labels, metadata,
+     captions, counters, table headers, nav, and tabs. */
 
   .page-proposal {
     --proposal-header-height: calc(var(--space-1) + var(--space-0-5));

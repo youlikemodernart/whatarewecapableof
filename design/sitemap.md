@@ -38,7 +38,7 @@ Non-navigation (direct link only):
 **Layout:** Primitive A (single-column, left-anchored). One viewport, no scroll.
 
 **Content:**
-- "What are we capable of?" as the primary typographic element. Clickable (links to `/question/`) but with no visible link styling — no underline, no color change. Cursor change on hover is the only signal. System UI via `--font-serif`, `--size-m` or `--size-l`. Takes up 60-70% of the viewport. Breathes.
+- "What are we capable of?" as the primary typographic element. Clickable (links to `/question/`) but with no visible link styling: no underline, no color change. Cursor change on hover is the only signal. System UI via `--font-serif`, `--size-m` by default. `--size-l` requires explicit one-off approval as a signature lockup. Takes up 60-70% of the viewport through placement and whitespace, not a heading scale. Breathes.
 - Below the question: `COACH  CONSULT  CREATIVE` as three mono ALL CAPS links. No descriptions. The words are self-explanatory.
 - Footer visible at bottom: `ABOUT` link + contact info (email).
 

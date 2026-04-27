@@ -147,7 +147,7 @@ Use this when starting a Cursor chat inside the repo:
 ```txt
 Read docs/directory-map.md, docs/asset-inventory.md, docs/agent-routing.md, design/sitemap.md, and design/system-constraints.md before proposing edits.
 
-We are working on whatarewecapableof.com, a static Vercel site using directory-style index.html routes. Use root-relative paths for local assets and links. Preserve the design constraints: 24px baseline, quiet typography, no gray hierarchy, two layout primitives, minimal motion.
+We are working on whatarewecapableof.com, a static Vercel site using directory-style index.html routes. Use root-relative paths for local assets and links. Preserve the design constraints: 24px baseline, quiet typography, no text-size hierarchy, no gray hierarchy, two layout primitives, minimal motion.
 
 For this session, focus on the specific task I give you. Do not rename or delete images unless I explicitly ask. After any asset or HTML change, run npm run scan:assets and report missing references, relative local asset references, and unreferenced site/proposal assets.
 ```

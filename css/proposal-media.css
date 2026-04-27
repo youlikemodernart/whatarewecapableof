@@ -175,7 +175,7 @@
 
 .proposal-specimen-desc {
   font-family: var(--font-serif);
-  font-size: var(--size-s);
+  font-size: var(--size-m);
   max-width: 38ch;
 }
 
@@ -218,7 +218,7 @@
 }
 
 .proposal-process-step p {
-  font-size: var(--size-s);
+  font-size: var(--size-m);
 }
 
 .proposal-process-timeline {
@@ -262,7 +262,7 @@
 }
 
 .proposal-process-timeline-content p {
-  font-size: var(--size-s);
+  font-size: var(--size-m);
 }
 
 /* System diagram and document excerpt */
@@ -278,7 +278,7 @@
 .proposal-diagram pre,
 .proposal-excerpt pre {
   font-family: var(--font-mono);
-  font-size: var(--size-s);
+  font-size: var(--size-m);
   line-height: var(--line-height);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
@@ -342,7 +342,7 @@
 
 .proposal-video-transcript {
   margin-top: var(--space-1);
-  font-size: var(--size-s);
+  font-size: var(--size-m);
 }
 
 .proposal-video-transcript summary {
@@ -358,13 +358,127 @@
   text-underline-offset: 0.15em;
 }
 
+/* Text-carrying proposal graphics */
+
+.proposal-text-graphic {
+  margin: var(--space-2) 0;
+  border-top: 1px solid var(--color-text);
+  border-bottom: 1px solid var(--color-text);
+  padding: var(--space-1) 0;
+}
+
+.proposal-flow {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.proposal-flow--five {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.proposal-flow--six {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.proposal-flow-step {
+  border-top: 1px solid var(--color-text);
+  padding-top: var(--space-0-5);
+  position: relative;
+}
+
+.proposal-flow-step-label,
+.proposal-map-item-label,
+.proposal-wireframe-title {
+  font-family: var(--font-serif);
+  font-size: var(--size-m);
+  font-weight: 400;
+  line-height: var(--line-height);
+}
+
+.proposal-flow-step-note,
+.proposal-map-item-note,
+.proposal-wireframe-note,
+.proposal-wireframe-label {
+  font-family: var(--font-mono);
+  font-size: var(--size-xs);
+  letter-spacing: var(--tracking-caps);
+  margin-top: var(--space-0-5);
+}
+
+.proposal-map {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.proposal-map-row {
+  display: grid;
+  grid-template-columns: minmax(8rem, 0.42fr) minmax(0, 1.58fr);
+  gap: var(--space-1);
+  padding-top: var(--space-0-5);
+  border-top: 1px solid var(--color-text);
+}
+
+.proposal-map-children {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-1);
+}
+
+.proposal-wireframe {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.proposal-wireframe-header,
+.proposal-wireframe-grid,
+.proposal-wireframe-queue {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.proposal-wireframe-header {
+  grid-template-columns: minmax(0, 1fr) minmax(10rem, 0.5fr);
+}
+
+.proposal-wireframe-grid {
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+}
+
+.proposal-wireframe-queue {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.proposal-wireframe-region,
+.proposal-wireframe-item {
+  border-top: 1px solid var(--color-text);
+  padding-top: var(--space-0-5);
+}
+
+.proposal-wireframe-list {
+  list-style: none;
+  margin: var(--space-0-5) 0 0;
+  padding: 0;
+}
+
+.proposal-wireframe-list li {
+  font-size: var(--size-m);
+  margin-bottom: var(--space-0-5);
+}
+
 @media (max-width: 767px) {
   .proposal-media-wide {
     width: 100%;
   }
 
   .proposal-diptych,
-  .proposal-specimen-grid {
+  .proposal-specimen-grid,
+  .proposal-flow--five,
+  .proposal-flow--six,
+  .proposal-map-row,
+  .proposal-map-children,
+  .proposal-wireframe-header,
+  .proposal-wireframe-grid,
+  .proposal-wireframe-queue {
     grid-template-columns: 1fr;
   }
 

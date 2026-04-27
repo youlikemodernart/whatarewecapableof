@@ -1,10 +1,10 @@
 {
   "summary": {
-    "generatedAt": "2026-04-26",
+    "generatedAt": "2026-04-27",
     "root": "/Users/noah/Projects/whatarewecapableof",
-    "assetCount": 349,
-    "siteVisibleAssetCount": 57,
-    "referencedAssetCount": 42,
+    "assetCount": 345,
+    "siteVisibleAssetCount": 53,
+    "referencedAssetCount": 38,
     "unreferencedSiteVisibleAssetCount": 15,
     "missingReferenceCount": 0,
     "relativeLocalReferenceCount": 0,
@@ -17,7 +17,7 @@
       "design-reference-gifs": 2,
       "design-reference-images": 5,
       "design-reference-screenshots": 24,
-      "proposal-content": 53
+      "proposal-content": 49
     }
   },
   "assets": [
@@ -4856,22 +4856,6 @@
       ]
     },
     {
-      "path": "proposals/sales-school/img/current-flow.png",
-      "publicPath": "/proposals/sales-school/img/current-flow.png",
-      "ext": "png",
-      "detectedFormat": "png",
-      "bytes": 62647,
-      "size": "61.2 KB",
-      "dimensions": {
-        "width": 1480,
-        "height": 390
-      },
-      "category": "proposal-content",
-      "usedIn": [
-        "proposals/sales-school/index.html"
-      ]
-    },
-    {
       "path": "proposals/sales-school/img/current-wistia-sample.png",
       "publicPath": "/proposals/sales-school/img/current-wistia-sample.png",
       "ext": "png",
@@ -4888,22 +4872,6 @@
       ]
     },
     {
-      "path": "proposals/sales-school/img/live-break-flow.png",
-      "publicPath": "/proposals/sales-school/img/live-break-flow.png",
-      "ext": "png",
-      "detectedFormat": "png",
-      "bytes": 54366,
-      "size": "53.1 KB",
-      "dimensions": {
-        "width": 1360,
-        "height": 330
-      },
-      "category": "proposal-content",
-      "usedIn": [
-        "proposals/sales-school/index.html"
-      ]
-    },
-    {
       "path": "proposals/sales-school/img/pdf-index-contact-sheet.png",
       "publicPath": "/proposals/sales-school/img/pdf-index-contact-sheet.png",
       "ext": "png",
@@ -4913,38 +4881,6 @@
       "dimensions": {
         "width": 1056,
         "height": 968
-      },
-      "category": "proposal-content",
-      "usedIn": [
-        "proposals/sales-school/index.html"
-      ]
-    },
-    {
-      "path": "proposals/sales-school/img/proposed-sitemap.png",
-      "publicPath": "/proposals/sales-school/img/proposed-sitemap.png",
-      "ext": "png",
-      "detectedFormat": "png",
-      "bytes": 85768,
-      "size": "83.8 KB",
-      "dimensions": {
-        "width": 1340,
-        "height": 820
-      },
-      "category": "proposal-content",
-      "usedIn": [
-        "proposals/sales-school/index.html"
-      ]
-    },
-    {
-      "path": "proposals/sales-school/img/today-wireframe.svg",
-      "publicPath": "/proposals/sales-school/img/today-wireframe.svg",
-      "ext": "svg",
-      "detectedFormat": "svg",
-      "bytes": 3868,
-      "size": "3.8 KB",
-      "dimensions": {
-        "width": 1400,
-        "height": 900
       },
       "category": "proposal-content",
       "usedIn": [
@@ -5563,14 +5499,6 @@
     },
     {
       "source": "proposals/sales-school/index.html",
-      "raw": "/proposals/sales-school/img/current-flow.png",
-      "normalizedPath": "proposals/sales-school/img/current-flow.png",
-      "exists": true,
-      "rootRelative": true,
-      "absolute": false
-    },
-    {
-      "source": "proposals/sales-school/index.html",
       "raw": "/proposals/sales-school/img/pdf-index-contact-sheet.png",
       "normalizedPath": "proposals/sales-school/img/pdf-index-contact-sheet.png",
       "exists": true,
@@ -5581,30 +5509,6 @@
       "source": "proposals/sales-school/index.html",
       "raw": "/proposals/sales-school/img/wistia-thumbnails-contact-sheet.jpg",
       "normalizedPath": "proposals/sales-school/img/wistia-thumbnails-contact-sheet.jpg",
-      "exists": true,
-      "rootRelative": true,
-      "absolute": false
-    },
-    {
-      "source": "proposals/sales-school/index.html",
-      "raw": "/proposals/sales-school/img/proposed-sitemap.png",
-      "normalizedPath": "proposals/sales-school/img/proposed-sitemap.png",
-      "exists": true,
-      "rootRelative": true,
-      "absolute": false
-    },
-    {
-      "source": "proposals/sales-school/index.html",
-      "raw": "/proposals/sales-school/img/live-break-flow.png",
-      "normalizedPath": "proposals/sales-school/img/live-break-flow.png",
-      "exists": true,
-      "rootRelative": true,
-      "absolute": false
-    },
-    {
-      "source": "proposals/sales-school/index.html",
-      "raw": "/proposals/sales-school/img/today-wireframe.svg",
-      "normalizedPath": "proposals/sales-school/img/today-wireframe.svg",
       "exists": true,
       "rootRelative": true,
       "absolute": false

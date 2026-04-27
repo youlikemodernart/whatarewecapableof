@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="/css/typography.css">
 <link rel="stylesheet" href="/css/layout.css">
 <link rel="stylesheet" href="/css/components.css">
-<link rel="stylesheet" href="/css/proposal-media.css">
+<link rel="stylesheet" href="/css/proposal-media.css?v=type-hierarchy-20260426">
 <style>
   html, body {
     overflow-x: clip;
@@ -221,7 +221,7 @@
     width: 100%;
     border-collapse: collapse;
     margin: var(--space-1) 0;
-    font-size: var(--size-s);
+    font-size: var(--size-m);
     table-layout: fixed;
     word-wrap: break-word;
   }
@@ -268,7 +268,7 @@
   }
 
   .scope-phase li {
-    font-size: var(--size-s);
+    font-size: var(--size-m);
     margin-bottom: var(--space-0-5);
     position: relative;
   }
@@ -293,11 +293,11 @@
   }
 
   .placeholder-item p {
-    font-size: var(--size-s);
+    font-size: var(--size-m);
   }
 
   .proposal-output {
-    font-size: var(--size-s);
+    font-size: var(--size-m);
   }
 
   .closing {
@@ -415,8 +415,34 @@
   <p>The current path has three layers before a student reaches the actual learning object: email preview, PDF index, Wistia page. That works as distribution. During a timed Zoom break, three layers is a lot of navigation.</p>
 </div>
 
-<figure class="proposal-media proposal-media-surface">
-  <img src="/proposals/sales-school/img/current-flow.png" alt="Diagram of current flow from GoHighLevel preview to Firebase email HTML to email index to breakout buttons to PDF indexes to Wistia pages" width="1480" height="390">
+<figure class="proposal-text-graphic" aria-label="Current flow from email preview to PDF index to Wistia pages">
+  <div class="proposal-flow proposal-flow--six">
+    <div class="proposal-flow-step">
+      <div class="proposal-flow-step-label">GoHighLevel preview</div>
+      <div class="proposal-flow-step-note">Entry URL</div>
+    </div>
+    <div class="proposal-flow-step">
+      <div class="proposal-flow-step-label">Firebase email HTML</div>
+      <div class="proposal-flow-step-note">Iframe layer</div>
+    </div>
+    <div class="proposal-flow-step">
+      <div class="proposal-flow-step-label">Email index</div>
+      <div class="proposal-flow-step-note">Day One / Day Two</div>
+    </div>
+    <div class="proposal-flow-step">
+      <div class="proposal-flow-step-label">Breakout buttons</div>
+      <div class="proposal-flow-step-note">Six buttons</div>
+    </div>
+    <div class="proposal-flow-step">
+      <div class="proposal-flow-step-label">PDF indexes</div>
+      <div class="proposal-flow-step-note">Six Canva PDFs</div>
+    </div>
+    <div class="proposal-flow-step">
+      <div class="proposal-flow-step-label">Wistia pages</div>
+      <div class="proposal-flow-step-note">35 videos</div>
+    </div>
+  </div>
+  <figcaption class="proposal-media-caption">Architecture issue: the learning content exists, but students reach it through intermediate documents.</figcaption>
 </figure>
 
 <div class="finding">
@@ -450,8 +476,43 @@
 
 <p>The proposed architecture starts with the course as a place, then branches into the live session, the two days, the breakout sections, and the supporting resources.</p>
 
-<figure class="proposal-media proposal-media-surface proposal-media-wide">
-  <img src="/proposals/sales-school/img/proposed-sitemap.png" alt="Proposed sitemap showing Sales School Home, Today, Day One, Day Two, Resources, Facilitator, Breakouts, and optional Search, Progress, and Admin" width="1340" height="820" loading="lazy">
+<figure class="proposal-text-graphic proposal-media-wide" aria-label="Proposed course portal sitemap">
+  <div class="proposal-map">
+    <div class="proposal-map-row">
+      <div class="proposal-map-item">
+        <div class="proposal-map-item-label">Sales School home</div>
+        <div class="proposal-map-item-note">Overview + resume</div>
+      </div>
+      <div class="proposal-map-children">
+        <div class="proposal-map-item"><div class="proposal-map-item-label">Today</div><div class="proposal-map-item-note">Live session</div></div>
+        <div class="proposal-map-item"><div class="proposal-map-item-label">Day One</div><div class="proposal-map-item-note">Three breakouts</div></div>
+        <div class="proposal-map-item"><div class="proposal-map-item-label">Day Two</div><div class="proposal-map-item-note">Three breakouts</div></div>
+      </div>
+    </div>
+    <div class="proposal-map-row">
+      <div class="proposal-map-item">
+        <div class="proposal-map-item-label">Support pages</div>
+        <div class="proposal-map-item-note">MVP layer</div>
+      </div>
+      <div class="proposal-map-children">
+        <div class="proposal-map-item"><div class="proposal-map-item-label">Resources</div><div class="proposal-map-item-note">PDFs + worksheets</div></div>
+        <div class="proposal-map-item"><div class="proposal-map-item-label">Facilitator</div><div class="proposal-map-item-note">Launch active break</div></div>
+        <div class="proposal-map-item"><div class="proposal-map-item-label">Breakout pages</div><div class="proposal-map-item-note">Video queue + context</div></div>
+      </div>
+    </div>
+    <div class="proposal-map-row">
+      <div class="proposal-map-item">
+        <div class="proposal-map-item-label">Phase 2 options</div>
+        <div class="proposal-map-item-note">Only if repeated cohorts need them</div>
+      </div>
+      <div class="proposal-map-children">
+        <div class="proposal-map-item"><div class="proposal-map-item-label">Search</div><div class="proposal-map-item-note">Indexed lessons</div></div>
+        <div class="proposal-map-item"><div class="proposal-map-item-label">Progress</div><div class="proposal-map-item-note">Watched state</div></div>
+        <div class="proposal-map-item"><div class="proposal-map-item-label">Admin</div><div class="proposal-map-item-note">Curriculum + cohorts</div></div>
+      </div>
+    </div>
+  </div>
+  <figcaption class="proposal-media-caption">MVP keeps Wistia and replaces PDF indexes with navigable course pages. Optional layers add search, progress, and admin.</figcaption>
 </figure>
 
 <h2 class="section-heading">MVP sitemap</h2>
@@ -544,8 +605,30 @@
 
 <p>The strongest interface idea is a live-break console. The course is partly synchronous, so the site should have a current-state screen instead of only a library.</p>
 
-<figure class="proposal-media proposal-media-surface proposal-media-wide">
-  <img src="/proposals/sales-school/img/live-break-flow.png" alt="Live break flow showing Live Zoom to instructor announcement to Today page to watch sequence to return prompt" width="1360" height="330" loading="lazy">
+<figure class="proposal-text-graphic proposal-media-wide" aria-label="Live break flow during Zoom">
+  <div class="proposal-flow proposal-flow--five">
+    <div class="proposal-flow-step">
+      <div class="proposal-flow-step-label">Live Zoom</div>
+      <div class="proposal-flow-step-note">Cohort session</div>
+    </div>
+    <div class="proposal-flow-step">
+      <div class="proposal-flow-step-label">Instructor cue</div>
+      <div class="proposal-flow-step-note">Announce break</div>
+    </div>
+    <div class="proposal-flow-step">
+      <div class="proposal-flow-step-label">Today page</div>
+      <div class="proposal-flow-step-note">Active breakout</div>
+    </div>
+    <div class="proposal-flow-step">
+      <div class="proposal-flow-step-label">Watch sequence</div>
+      <div class="proposal-flow-step-note">Assigned videos</div>
+    </div>
+    <div class="proposal-flow-step">
+      <div class="proposal-flow-step-label">Return prompt</div>
+      <div class="proposal-flow-step-note">Back to Zoom</div>
+    </div>
+  </div>
+  <figcaption class="proposal-media-caption">The Today page gives the live course one stable student URL.</figcaption>
 </figure>
 
 <h2 class="section-heading">Direction 1: Live Break Console</h2>
@@ -556,8 +639,41 @@
   <p>A live dashboard shows the active breakout, the watch sequence, and the return instruction. The instructor can share one link during Zoom. Students land on the right thing immediately.</p>
 </div>
 
-<figure class="proposal-media proposal-media-surface proposal-media-wide">
-  <img src="/proposals/sales-school/img/today-wireframe.svg" alt="Low fidelity wireframe of a Today page with active breakout, return to Zoom instructions, and lesson queue" width="1400" height="900" loading="lazy">
+<figure class="proposal-text-graphic proposal-media-wide" aria-label="Low fidelity Today page wireframe">
+  <div class="proposal-wireframe">
+    <div class="proposal-wireframe-header">
+      <div class="proposal-wireframe-region">
+        <div class="proposal-wireframe-label">Course state</div>
+        <div class="proposal-wireframe-title">Day One / live now</div>
+        <div class="proposal-wireframe-note">Video Breakout 2</div>
+      </div>
+      <div class="proposal-wireframe-region">
+        <div class="proposal-wireframe-label">Status</div>
+        <div class="proposal-wireframe-title">Active breakout</div>
+        <div class="proposal-wireframe-note">Set by facilitator</div>
+      </div>
+    </div>
+    <div class="proposal-wireframe-grid">
+      <div class="proposal-wireframe-region">
+        <div class="proposal-wireframe-label">Student task</div>
+        <div class="proposal-wireframe-title">Watch this breakout now</div>
+        <ul class="proposal-wireframe-list">
+          <li>Leadership in Sales</li>
+          <li>Metrics that Matter</li>
+        </ul>
+      </div>
+      <div class="proposal-wireframe-region">
+        <div class="proposal-wireframe-label">Return instruction</div>
+        <div class="proposal-wireframe-title">Return to Zoom</div>
+        <div class="proposal-wireframe-note">Time, link, or next cue</div>
+      </div>
+    </div>
+    <div class="proposal-wireframe-queue">
+      <div class="proposal-wireframe-item"><div class="proposal-wireframe-title">Lesson queue</div><div class="proposal-wireframe-note">Two assigned videos</div></div>
+      <div class="proposal-wireframe-item"><div class="proposal-wireframe-title">Resource slot</div><div class="proposal-wireframe-note">Worksheet, script, or reading</div></div>
+      <div class="proposal-wireframe-item"><div class="proposal-wireframe-title">Next action</div><div class="proposal-wireframe-note">Resume or return</div></div>
+    </div>
+  </div>
   <figcaption class="proposal-media-caption">Placeholder wireframe. Final visual direction should follow the design references we collect later.</figcaption>
 </figure>
 

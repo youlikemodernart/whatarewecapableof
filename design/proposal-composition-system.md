@@ -42,10 +42,19 @@ The proposal composition system sits inside the locked whatarewecapableof design
 - The baseline grid stays intact.
 - Black text on white remains the default.
 - Blue remains a state color, not a decorative accent.
-- Visual hierarchy comes from position, grouping, scale restraint, and content order.
+- Visual hierarchy comes from position, grouping, sequence, case, spacing, and content order.
+- Text size never carries rank. Body-like proposal content stays at body size.
 - No cards, shadows, hero imagery, decorative icons, gradients, or template polish.
 
 The proposal pages are allowed to become denser than the public site because the proposal is a work object. The density still needs rhythm. A reader should feel carried through the argument rather than dropped into a wall of evidence.
+
+## Proposal typography invariant
+
+Size is for role, never rank. Use `--size-m` for body prose, proposal titles, section headings, scope phase titles, scope lists, table body cells, output lines, placeholder descriptions, specimen descriptions, readable diagram text, and text-carrying graphic labels. Use `--size-s` or `--size-xs` only for apparatus: mono labels, metadata, captions, counters, table headers, source notes, tabs, and nav.
+
+Do not make a heading larger because it is important. Do not make a list, table, output line, card description, or diagram paragraph smaller because it is subordinate. To create hierarchy, change position, sequence, grouping, spacing, rule placement, or case role.
+
+Text-carrying graphics follow the same contract as the page. Flow diagrams, maps, wireframes, system diagrams, and artifact mockups should be live HTML/CSS by default when they carry readable words. If a bitmap or SVG is used, it must still avoid generic SaaS hierarchy: large bold titles, card stacks, gray secondary text, colored badges, rounded boxes, shadows, and multi-size text ladders.
 
 ## Core principle
 
@@ -389,7 +398,7 @@ Implement final media only after the placeholder draft is approved or the task e
 
 When a proposal visual directly precedes a section heading, suppress the heading rule by default. The visual already resets attention; the rule becomes a second break unless the heading explicitly opts back in with `.section-heading--ruled`. More broadly, rules should group, introduce, or compare content. Do not bracket every artifact by default.
 
-For phase output lines, use `.proposal-output` on the paragraph and keep the bold text. The smaller size preserves wayfinding without letting the output line overpower the surrounding phase copy.
+For phase output lines, use `.proposal-output` on the paragraph and keep the bold text. The line stays at body size; wayfinding comes from the inline word `Output:`, its placement after the phase copy, and the approved inline bold treatment.
 
 ### Phase 8: Review
 
@@ -535,6 +544,7 @@ Likely best moves: program diagram, process strip, and document artifact. Use im
 - Filling every section with a visual.
 - Using images as decoration after dense prose instead of choosing the right interruption point.
 - Making proposal pages look like case study templates.
+- Using text size to establish rank: large headings, small body-like tables, small scope lists, small diagram paragraphs, or text-carrying graphics with generic product hierarchy.
 - Letting the media become more polished than the offer.
 - Mocking artifacts so specifically that the recipient thinks the work is already decided.
 - Using screenshots that embarrass the client without giving them a path forward.

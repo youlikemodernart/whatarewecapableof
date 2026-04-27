@@ -26,7 +26,7 @@ Every vertical measurement — margin, padding, gap, line-height — is a multip
   --baseline: 24px;
   --body-size: 16px;          /* mobile default */
   --line-height: 1.5;         /* = 24px, the baseline */
-  --font-size-ratio: 1.125;   /* major second — gentle hierarchy */
+  --font-size-ratio: 1.0;     /* flat rank: size differences are role-only */
 }
 
 @media (min-width: 768px) {
@@ -97,8 +97,8 @@ The `--space-0-5` (12px) token exists for one case: grouping a line of mono meta
   --size-xs: calc(var(--body-size) * 0.75);   /* ~12–14px: counters, pagination, fine print */
   --size-s: calc(var(--body-size) * 0.889);   /* ~14–16px: mono metadata, ALL CAPS labels, nav */
   --size-m: var(--body-size);                  /* 16–18px: body prose, most headings */
-  --size-l: calc(var(--body-size) * 1.125);    /* ~18–20px: page titles, larger headings */
-  --size-xl: calc(var(--body-size) * 1.266);   /* ~20–23px: signature moments only */
+  --size-l: calc(var(--body-size) * 1.125);    /* exception token: not for recurring hierarchy */
+  --size-xl: calc(var(--body-size) * 1.266);   /* exception token: signature lockup only */
 }
 ```
 
@@ -108,11 +108,13 @@ The `--space-0-5` (12px) token exists for one case: grouping a line of mono meta
 |-------|------|------|------|
 | `--size-xs` | Image counters, pagination, footnotes | mono | sentence |
 | `--size-s` | Mono metadata, ALL CAPS labels, nav items, project-type tags | mono | ALL CAPS (for labels) or sentence |
-| `--size-m` | Body prose, h1–h3 on most pages, list items | system UI | sentence |
-| `--size-l` | Page title (when title is given its own line), heading in a two-column detail page | system UI | sentence |
-| `--size-xl` | Landing lockup, single-moment title. Rare. | system UI | sentence |
+| `--size-m` | Body prose, h1–h3, page titles, section titles, card titles, body-like list items, table body text, readable diagram text | system UI | sentence |
+| `--size-l` | Disabled by default. Use only when Noah explicitly approves a one-off signature lockup. | system UI | sentence |
+| `--size-xl` | Disabled by default. Use only for a single landing or lockup moment Noah has approved. | system UI | sentence |
 
-**Never use `--size-l` or `--size-xl` for every heading.** The gentle hierarchy is the point. A page can run entirely on `--size-m` with no visual heading-vs-body distinction, relying on position and grouping. That is the correct default.
+**Type-size invariant:** recurring hierarchy is flat by size. A page can run entirely on `--size-m` with no visual heading-vs-body distinction, relying on position, grouping, sequence, case, and spacing. That is the correct default.
+
+**Proposal-page invariant:** proposal titles, section headings, scope phase titles, scope lists, table body cells, output lines, placeholder descriptions, and readable diagram text stay at `--size-m`. `--size-s` and `--size-xs` are apparatus sizes: metadata, labels, captions, counters, table headers, source notes, nav, and tabs. Do not shrink body-like content to make it subordinate. Do not enlarge headings to make them primary.
 
 ### Line-height and letter-spacing
 
@@ -497,6 +499,8 @@ Before merging any implementation pass, verify:
 - [ ] The only Google Fonts family loaded is `Geist+Mono:wght@400`. No prose serif families.
 - [ ] Prose, titles, and data display use `--font-serif`, which must resolve to the system UI stack despite the legacy token name.
 - [ ] No `font-weight` value other than `400` appears in stylesheet rules except approved inline wayfinding using `strong` / `700`.
+- [ ] No proposal body-like content uses `--size-s` or `--size-xs`: tables, scope lists, output lines, placeholder descriptions, diagram body text, and specimen descriptions stay at `--size-m`.
+- [ ] No proposal uses `--size-l` or `--size-xl` for recurring headings, cards, panels, diagrams, or section titles.
 - [ ] Text color is `#000` (or `var(--color-text)`) everywhere except the single blue accent for active state.
 - [ ] No gray text values (`#666`, `#999`, `rgba(0,0,0,0.5)`, etc.) anywhere.
 - [ ] Navigation pages have zero `<img>` elements (or one small mark, ≤40px).

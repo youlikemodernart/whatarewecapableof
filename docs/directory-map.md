@@ -46,6 +46,7 @@ Production site: `https://whatarewecapableof.com`
   design/
     sitemap.md
     system-constraints.md
+    client-index-pages.md
     rules-and-dividers.md
     taste-profile/profile.md
     reference-analysis/
@@ -95,7 +96,7 @@ The site uses directory-style pages: each route is a folder with an `index.html`
 | `css/proposal-media.css` | Optional proposal media primitives: evidence plates, diptychs, specimen grids, process strips, timelines, diagrams, text graphics, maps, wireframes, excerpts, stat fields, and video plates. |
 | `js/booking.js` | Shared booking UI controller used by `/coach/book` and `/book`. |
 
-Design constraints live in `design/system-constraints.md`. Treat that file as the engineering contract for spacing, type, layout, color, and motion. Horizontal rule and divider guidance lives in `design/rules-and-dividers.md`; read it before creating new page structures, media-heavy pages, proposal pages, or client-facing work indexes.
+Design constraints live in `design/system-constraints.md`. Treat that file as the engineering contract for spacing, type, layout, color, and motion. Client-facing organization index guidance lives in `design/client-index-pages.md`. Horizontal rule and divider guidance lives in `design/rules-and-dividers.md`; read both before creating new page structures, media-heavy pages, proposal pages, or client-facing work indexes.
 
 ## API files
 
@@ -153,6 +154,7 @@ The active mismatches are:
 
 | File | Role |
 |---|---|
+| `design/client-index-pages.md` | Client-facing organization index pattern. Covers `/work/<slug>` routes, open-the-work placement, copy rules, artifact rows, and the FDE precedent. |
 | `design/rules-and-dividers.md` | Central horizontal rule and divider guidance. Covers rule density, no-rule-after-media behavior, proposal media heading suppression, and new page-structure checks. |
 | `design/proposal-composition-system.md` | Strategy for adding visual rhythm to text-heavy proposal pages without turning them into rigid templates. |
 | `docs/proposal-composition-partner.md` | Operating workflow for an AI or human partner reviewing proposal pacing, media jobs, asset opportunities, and implementation plans. |

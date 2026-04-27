@@ -448,6 +448,46 @@ function formatTime(date, timeZone = TIMEZONE) {
   });
 }
 
+function formatDateTimeLabel(date, timeZone = TIMEZONE) {
+  return date.toLocaleString('en-US', {
+    timeZone,
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  });
+}
+
+function formatOffset(offsetMs) {
+  const sign = offsetMs >= 0 ? '+' : '-';
+  const absolute = Math.abs(offsetMs);
+  const hours = Math.floor(absolute / 3600000);
+  const minutes = Math.floor((absolute % 3600000) / 60000);
+  return `${sign}${pad(hours)}:${pad(minutes)}`;
+}
+
+function formatGoogleDateTime(date, timeZone = TIMEZONE) {
+  const parts = partsInTimeZone(date, timeZone);
+  const zonedAsUtc = Date.UTC(
+    parts.year,
+    parts.month - 1,
+    parts.day,
+    parts.hour,
+    parts.minute,
+    parts.second
+  );
+  const offsetMs = zonedAsUtc - date.getTime();
+
+  return [
+    `${parts.year}-${pad(parts.month)}-${pad(parts.day)}`,
+    `T${pad(parts.hour)}:${pad(parts.minute)}:${pad(parts.second)}`,
+    formatOffset(offsetMs),
+  ].join('');
+}
+
 function getServiceAccountCredentials() {
   const encodedKey = env('GOOGLE_SERVICE_ACCOUNT_KEY');
   if (!encodedKey) throw new Error('Missing GOOGLE_SERVICE_ACCOUNT_KEY');
@@ -551,6 +591,8 @@ module.exports = {
   getBookableDatesFromAvailabilityEvents,
   isBookableStart,
   formatTime,
+  formatDateTimeLabel,
+  formatGoogleDateTime,
   getCalendar,
   getAvailabilityEvents,
   getBusyPeriods,

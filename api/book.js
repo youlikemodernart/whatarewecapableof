@@ -8,6 +8,8 @@ const {
   dateStringInTimeZone,
   getDayRange,
   getCandidateSlots,
+  formatDateTimeLabel,
+  formatGoogleDateTime,
   getCalendar,
   getAvailabilityEvents,
   getBusyPeriods,
@@ -118,13 +120,14 @@ module.exports = async function handler(req, res) {
         description: [
           `Booked via ${bookingConfig.sourceLabel}`,
           `Booking type: ${bookingConfig.label}`,
+          `Time: ${formatDateTimeLabel(startTime, TIMEZONE)} Arizona time`,
           `Name: ${name}`,
           `Email: ${email}`,
           `Purpose:\n${purpose}`,
           note ? `Note:\n${note}` : '',
         ].filter(Boolean).join('\n\n'),
-        start: { dateTime: startTime.toISOString(), timeZone: TIMEZONE },
-        end: { dateTime: endTime.toISOString(), timeZone: TIMEZONE },
+        start: { dateTime: formatGoogleDateTime(startTime, TIMEZONE), timeZone: TIMEZONE },
+        end: { dateTime: formatGoogleDateTime(endTime, TIMEZONE), timeZone: TIMEZONE },
         attendees,
         conferenceData: {
           createRequest: {

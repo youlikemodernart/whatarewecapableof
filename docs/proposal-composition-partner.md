@@ -283,6 +283,9 @@ Do not use:
 - Use CSS custom properties already defined in `tokens.css`.
 - Avoid adding new colors.
 - Suppress the section-heading rule when a proposal visual directly precedes the heading; use `.section-heading--ruled` only when the rule carries a new grouping job.
+- Use rules to group, introduce, or compare content. Do not bracket every artifact by default.
+- If a diagram carries substantial readable text, live HTML/CSS may be the final artifact. Do not force a bitmap when live text reads better at proposal width.
+- Use size for role, not emphasis. Body-like diagram and table text should stay at `--size-m`; small mono type is for labels, metadata, captions, counters, and headers.
 - Use `.proposal-process-timeline` for 3 to 5 text steps by default. Use `.proposal-process-strip` only when lateral movement has a job and the overflow affordance is visible.
 - Use `.proposal-output` for bold output lines inside scope phases so the line stays subordinate to the phase title.
 - Avoid shadows, rounded card treatments, gradients, and decorative surfaces.
@@ -304,6 +307,7 @@ Do not use:
 - Lazy-load images below the first viewport when appropriate.
 - Do not lazy-load the first major visual if it becomes the LCP element.
 - Run the asset scanner after path or asset changes.
+- In tabbed proposals, hidden-tab lazy images can false-fail validation. Check visible active-tab images only and scroll each active image into view before testing load state.
 
 ## Slot board preview
 
@@ -341,6 +345,7 @@ Before handing off a composition plan or implementation, answer:
 - Are all assets path-safe with and without a trailing slash?
 - Are video and image accessibility requirements covered?
 - Did we cut enough?
+- If the page is tabbed, did validation account for hidden lazy images rather than checking every image in the DOM?
 
 ## Handoff format
 

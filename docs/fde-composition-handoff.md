@@ -58,7 +58,7 @@ An Are.na channel (FDE Media) was the image curation surface. Noah tagged images
 Four YAML briefs were written for the graphic system at `~/Projects/graphic-system/briefs/fde/`. The graphic system renders HTML+CSS in Chrome and screenshots the result. Templates: `numbers-card`, `quote-card`, `diagram-card`.
 
 **What was generated:**
-1. **FDE-02 (numbers card):** "5 → 10" with Montana peak as background. Dark overlay, serif numbers, mono body text.
+1. **FDE-02 (numbers card):** "5 → 10" with Montana peak as background. Dark overlay, large numeric treatment, mono body text.
 2. **FDE-03 (quote card):** "A ruthless fervor to advance the mission for God's glory, not our own." Birds in formation background, warm sunset tones showing through.
 3. **FDE-04 (leader layers diagram):** Three-column diagram: Content → Opportunity → Coaching. Noah chose the Bible photo instead, so this render exists but wasn't used.
 4. **FDE-05 (yearly rhythm diagram):** Four-column diagram: Weekly gatherings → Bi-weekly coaching → Semester events + cohorts → Annual conference. No background image, clean institutional-craft theme.
@@ -79,7 +79,7 @@ Four YAML briefs were written for the graphic system at `~/Projects/graphic-syst
 
 **3. ? tab standardization.** The ? tab (the CTA page at the end of every proposal) was inconsistent across proposals. FDE had an underlined "we"; Compassion had a bold "we" plus "Let's find out." Noah wanted them to match. FDE was updated to match Compassion: bold "we" (font-weight 700), "Let's find out." on the next line, "Book a call" link below. This should be codified in the template.
 
-**4. Output line sizing.** The bold "Output:" lines in scope phases were rendering at `--size-m` (the serif body size), which read too loud with bold weight. Dropped to `--size-s` to match surrounding scope-phase body text. Bold kept for wayfinding.
+**4. Output line sizing.** The bold "Output:" lines in scope phases were rendering at `--size-m` (the body prose size), which read too loud with bold weight. Dropped to `--size-s` to match surrounding scope-phase body text. Bold kept for wayfinding.
 
 **5. Image-to-heading spacing.** When a `proposal-media` element directly precedes a `section-heading`, the rule is suppressed and spacing is adjusted. This is the CSS-encoded version of a taste judgment: images provide their own visual break, so the rule becomes redundant and tightens the gap awkwardly.
 

@@ -75,19 +75,20 @@ The `--space-0-5` (12px) token exists for one case: grouping a line of mono meta
 ```css
 :root {
   --font-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-  --font-mono: 'Söhne Mono', 'ABC Diatype Mono', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 }
 ```
 
-**Selection constraints:**
-- Primary serif must be transitional or old-style. Avoid Didone (too display, too high-contrast for body prose).
-- Mono must be geometric/technical, not slab. Avoid Courier descendants.
-- Foundry tier required. Acceptable: Lineto, Colophon, Commercial Type, GT, Pangram Pangram, Grilli Type, OH no Type. Not acceptable: Google Fonts defaults (Roboto, Lato, Montserrat, Open Sans, Source Serif).
-- Self-host with woff2 and subsetting. Do not use cross-origin font CDNs for the primary faces.
+**Production type contract:**
+- The site uses a two-font system: system UI for prose, titles, and data display; Geist Mono for UI labels, metadata, navigation, and proposal chrome.
+- `--font-serif` is a legacy token name. It intentionally resolves to the system sans-serif stack. Do not infer a serif face from the token name.
+- The only web font loaded by page HTML is Geist Mono 400 from Google Fonts: `family=Geist+Mono:wght@400`.
+- Do not load a prose serif. Do not add foundry serif licensing, self-hosted serif files, or a second Google Fonts family unless Noah explicitly changes the production type system.
+- Mono fallback should stay close to the current stack: Geist Mono, then platform monospace fallbacks. Avoid Courier descendants.
 
-**Weights to license:** 400 regular + 400 italic, for both serif and mono. That's 4 files total. Nothing else.
+**Weights:** Default to 400. No extra font files are licensed or hosted. Geist Mono is loaded at 400 only; the system UI stack supplies the prose face.
 
-**Bold usage (established 2026-04-22):** Bold (`<strong>` / font-weight 700) is accepted for one purpose: inline wayfinding within quieter text registers. The tab guide on proposal pages uses bold on tab names ("**Summary** is what we noticed. **Research** is the evidence...") so the reader can scan the three names without reading the full sentence. Bold is not used for headings, section labels, or structural emphasis. The flat heading hierarchy (all weight 400) remains the system's primary mode.
+**Bold usage (established 2026-04-22):** Bold (`<strong>` / font-weight 700) is accepted for one purpose: inline wayfinding within quieter text registers. The tab guide on proposal pages uses bold on tab names ("**Summary** is what we noticed. **Research** is the evidence...") so the reader can scan the three names without reading the full sentence. Bold is not used for headings, section labels, or structural emphasis. The flat heading hierarchy remains the system's primary mode.
 
 ### Size scale
 
@@ -107,9 +108,9 @@ The `--space-0-5` (12px) token exists for one case: grouping a line of mono meta
 |-------|------|------|------|
 | `--size-xs` | Image counters, pagination, footnotes | mono | sentence |
 | `--size-s` | Mono metadata, ALL CAPS labels, nav items, project-type tags | mono | ALL CAPS (for labels) or sentence |
-| `--size-m` | Body prose, h1–h3 on most pages, list items | serif | sentence |
-| `--size-l` | Page title (when title is given its own line), heading in a two-column detail page | serif | sentence |
-| `--size-xl` | Landing lockup, single-moment title. Rare. | serif | sentence |
+| `--size-m` | Body prose, h1–h3 on most pages, list items | system UI | sentence |
+| `--size-l` | Page title (when title is given its own line), heading in a two-column detail page | system UI | sentence |
+| `--size-xl` | Landing lockup, single-moment title. Rare. | system UI | sentence |
 
 **Never use `--size-l` or `--size-xl` for every heading.** The gentle hierarchy is the point. A page can run entirely on `--size-m` with no visual heading-vs-body distinction, relying on position and grouping. That is the correct default.
 
@@ -392,7 +393,7 @@ Client Name PROJECT TYPE
 Client Name PROJECT TYPE
 ```
 
-- "Client Name" in serif sentence case at `--size-m`.
+- "Client Name" in system UI sentence case at `--size-m`.
 - "PROJECT TYPE" in mono ALL CAPS at `--size-s`, same line, separated by a single space or a tab.
 - One list item per line. `var(--space-0-5)` (12px) between items — tight grouping.
 - Each item a link (semantic `<a>`, not a JS-driven div).
@@ -400,7 +401,7 @@ Client Name PROJECT TYPE
 ### Forms
 
 If a form is ever needed (contact, subscribe):
-- Serif for labels, mono for input
+- System UI for labels, mono for input
 - `--size-m`
 - No placeholder-as-label
 - Underline below input, no box border
@@ -435,7 +436,7 @@ These are non-negotiable. They override any attribute in the profile if there's 
 
 Navigation/index pages:
 - Total page weight < 250KB
-- Font files ≤ 120KB total (4 woff2 files, subset to Latin basic + punctuation)
+- Only one external font asset: Geist Mono 400
 - CSS < 15KB minified
 - No client-side JS required for content rendering. Progressive enhancement only.
 
@@ -460,14 +461,9 @@ whatarewecapableof/
 ├── css/
 │   ├── tokens.css          # All CSS custom properties (sections 1-3 above)
 │   ├── base.css            # Reset + foundation styles
-│   ├── typography.css      # Font-face, type classes
+│   ├── typography.css      # Type classes
 │   ├── layout.css          # The two primitives
 │   └── components.css      # Nav, footer, lists, links
-├── fonts/
-│   ├── <serif>-regular.woff2
-│   ├── <serif>-italic.woff2
-│   ├── <mono>-regular.woff2
-│   └── <mono>-italic.woff2
 ├── assets/
 │   └── work/
 │       └── <project>/
@@ -481,7 +477,7 @@ whatarewecapableof/
 CSS loading order in HTML:
 1. Reset
 2. `tokens.css` (custom properties)
-3. `typography.css` (including `@font-face`)
+3. `typography.css` (type utilities)
 4. `base.css`
 5. `layout.css`
 6. `components.css`
@@ -498,8 +494,9 @@ Before merging any implementation pass, verify:
 - [ ] All vertical spacing is a multiple of `--baseline` (24px). Inspect with the browser devtools; no ad-hoc values.
 - [ ] Body text is 16px (mobile), 17px (tablet), or 18px (desktop). No values in between, no smaller.
 - [ ] Line-height is set so `font-size × line-height = 24px` on body elements. Inspect the computed value.
-- [ ] Only two font families are loaded (one serif, one mono), each with regular + italic only. No bold, no light.
-- [ ] No `font-weight` value other than `400` appears in any stylesheet.
+- [ ] The only Google Fonts family loaded is `Geist+Mono:wght@400`. No prose serif families.
+- [ ] Prose, titles, and data display use `--font-serif`, which must resolve to the system UI stack despite the legacy token name.
+- [ ] No `font-weight` value other than `400` appears in stylesheet rules except approved inline wayfinding using `strong` / `700`.
 - [ ] Text color is `#000` (or `var(--color-text)`) everywhere except the single blue accent for active state.
 - [ ] No gray text values (`#666`, `#999`, `rgba(0,0,0,0.5)`, etc.) anywhere.
 - [ ] Navigation pages have zero `<img>` elements (or one small mark, ≤40px).
@@ -521,11 +518,11 @@ These are decisions the constraints can't make alone — they require Noah and A
 
 ### Resolved (2026-04-22)
 
+1. ~~**Specific typefaces.**~~ **Resolved in production.** The live site uses system UI for prose, titles, and data display, plus Geist Mono 400 for UI labels, metadata, navigation, and proposal chrome. `--font-serif` remains a legacy token name for the system UI stack.
 2. ~~**Content model.**~~ **Resolved.** See `design/sitemap.md`. Three verticals (`/coach`, `/consult`, `/creative`) with integrated portfolio (scroll-through, not separate pages). About and contact are footer-only. Custom booking tools at `/coach/book` for Austin coaching and `/book` for proposal discovery calls via shared Google Calendar API infrastructure. Revisit portfolio-as-separate-pages when any vertical has 5+ items.
 
 ### Still open
 
-1. **Specific typefaces.** The profile specifies tier and classification; the selection happens during Phase 4 of the create workflow. Candidates to audition: Lyon Text + Söhne Mono; GT Sectra + ABC Diatype Mono; Recoleta + JetBrains Mono. Licensing cost varies from free (JetBrains Mono) to $300–500 per family for the foundry serifs. Budget matters here.
 3. **About page format.** Ellen Ole's voice memo is flagged as a strong direction. Confirm whether Noah + Austin want to record one, write a one-sentence bio, use photography (exception to image-absence — flagged), or something else entirely.
 4. **Motion ambitions.** The profile permits letterspacing expansion and word-level repositioning as signature moments. Are there specific moments to build (landing sequence, work-item entry, etc.), or does the site start motion-free with moves added later?
 5. **CMS vs. static.** Current state is static HTML. As content accrues, does a lightweight CMS (11ty, Astro, Hugo) become worth it? Recommend static until the project list exceeds ~15 items.

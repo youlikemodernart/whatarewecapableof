@@ -2,9 +2,9 @@
   "summary": {
     "generatedAt": "2026-04-26",
     "root": "/Users/noah/Projects/whatarewecapableof",
-    "assetCount": 341,
-    "siteVisibleAssetCount": 49,
-    "referencedAssetCount": 34,
+    "assetCount": 349,
+    "siteVisibleAssetCount": 57,
+    "referencedAssetCount": 42,
     "unreferencedSiteVisibleAssetCount": 15,
     "missingReferenceCount": 0,
     "relativeLocalReferenceCount": 0,
@@ -17,7 +17,7 @@
       "design-reference-gifs": 2,
       "design-reference-images": 5,
       "design-reference-screenshots": 24,
-      "proposal-content": 45
+      "proposal-content": 53
     }
   },
   "assets": [
@@ -4214,6 +4214,134 @@
       ]
     },
     {
+      "path": "proposals/belhaus/img/atmosphere-approach-conversation.jpg",
+      "publicPath": "/proposals/belhaus/img/atmosphere-approach-conversation.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 246904,
+      "size": "241.1 KB",
+      "dimensions": {
+        "width": 1600,
+        "height": 1075
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/belhaus/index.html"
+      ]
+    },
+    {
+      "path": "proposals/belhaus/img/atmosphere-overview-interior.jpg",
+      "publicPath": "/proposals/belhaus/img/atmosphere-overview-interior.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 145937,
+      "size": "142.5 KB",
+      "dimensions": {
+        "width": 1600,
+        "height": 1075
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/belhaus/index.html"
+      ]
+    },
+    {
+      "path": "proposals/belhaus/img/atmosphere-system-crowd.jpg",
+      "publicPath": "/proposals/belhaus/img/atmosphere-system-crowd.jpg",
+      "ext": "jpg",
+      "detectedFormat": "jpg",
+      "bytes": 133283,
+      "size": "130.2 KB",
+      "dimensions": {
+        "width": 1400,
+        "height": 1400
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/belhaus/index.html"
+      ]
+    },
+    {
+      "path": "proposals/belhaus/img/bel-02-borders.webp",
+      "publicPath": "/proposals/belhaus/img/bel-02-borders.webp",
+      "ext": "webp",
+      "detectedFormat": "webp",
+      "bytes": 125190,
+      "size": "122.3 KB",
+      "dimensions": {
+        "width": 687,
+        "height": 900
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/belhaus/index.html"
+      ]
+    },
+    {
+      "path": "proposals/belhaus/img/bel-02-cause-effect-iii.webp",
+      "publicPath": "/proposals/belhaus/img/bel-02-cause-effect-iii.webp",
+      "ext": "webp",
+      "detectedFormat": "webp",
+      "bytes": 40484,
+      "size": "39.5 KB",
+      "dimensions": {
+        "width": 900,
+        "height": 900
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/belhaus/index.html"
+      ]
+    },
+    {
+      "path": "proposals/belhaus/img/bel-02-sound-of-resonance.webp",
+      "publicPath": "/proposals/belhaus/img/bel-02-sound-of-resonance.webp",
+      "ext": "webp",
+      "detectedFormat": "webp",
+      "bytes": 14304,
+      "size": "14.0 KB",
+      "dimensions": {
+        "width": 900,
+        "height": 894
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/belhaus/index.html"
+      ]
+    },
+    {
+      "path": "proposals/belhaus/img/bel-02-tiles.webp",
+      "publicPath": "/proposals/belhaus/img/bel-02-tiles.webp",
+      "ext": "webp",
+      "detectedFormat": "webp",
+      "bytes": 87012,
+      "size": "85.0 KB",
+      "dimensions": {
+        "width": 700,
+        "height": 900
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/belhaus/index.html"
+      ]
+    },
+    {
+      "path": "proposals/belhaus/img/bel-02-trophy-head-iii.webp",
+      "publicPath": "/proposals/belhaus/img/bel-02-trophy-head-iii.webp",
+      "ext": "webp",
+      "detectedFormat": "webp",
+      "bytes": 252822,
+      "size": "246.9 KB",
+      "dimensions": {
+        "width": 1200,
+        "height": 1196
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/belhaus/index.html"
+      ]
+    },
+    {
       "path": "proposals/compassion/img/01_45517378.png",
       "publicPath": "/proposals/compassion/img/01_45517378.png",
       "ext": "png",
@@ -4572,8 +4700,8 @@
       "publicPath": "/proposals/fde/img/fde-02-growth-mobile.jpg",
       "ext": "jpg",
       "detectedFormat": "jpg",
-      "bytes": 57299,
-      "size": "56.0 KB",
+      "bytes": 55850,
+      "size": "54.5 KB",
       "dimensions": {
         "width": 1080,
         "height": 1080
@@ -4588,8 +4716,8 @@
       "publicPath": "/proposals/fde/img/fde-02-growth.jpg",
       "ext": "jpg",
       "detectedFormat": "jpg",
-      "bytes": 78880,
-      "size": "77.0 KB",
+      "bytes": 75824,
+      "size": "74.0 KB",
       "dimensions": {
         "width": 1920,
         "height": 1080
@@ -4620,8 +4748,8 @@
       "publicPath": "/proposals/fde/img/fde-05-yearly-rhythm-mobile.jpg",
       "ext": "jpg",
       "detectedFormat": "jpg",
-      "bytes": 49118,
-      "size": "48.0 KB",
+      "bytes": 49268,
+      "size": "48.1 KB",
       "dimensions": {
         "width": 1080,
         "height": 700
@@ -4636,8 +4764,8 @@
       "publicPath": "/proposals/fde/img/fde-05-yearly-rhythm.jpg",
       "ext": "jpg",
       "detectedFormat": "jpg",
-      "bytes": 59788,
-      "size": "58.4 KB",
+      "bytes": 60185,
+      "size": "58.8 KB",
       "dimensions": {
         "width": 1920,
         "height": 560
@@ -5133,6 +5261,70 @@
       "source": "proposals/belhaus/index.html",
       "raw": "/favicon.png",
       "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/belhaus/index.html",
+      "raw": "/proposals/belhaus/img/atmosphere-overview-interior.jpg",
+      "normalizedPath": "proposals/belhaus/img/atmosphere-overview-interior.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/belhaus/index.html",
+      "raw": "/proposals/belhaus/img/bel-02-trophy-head-iii.webp",
+      "normalizedPath": "proposals/belhaus/img/bel-02-trophy-head-iii.webp",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/belhaus/index.html",
+      "raw": "/proposals/belhaus/img/bel-02-borders.webp",
+      "normalizedPath": "proposals/belhaus/img/bel-02-borders.webp",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/belhaus/index.html",
+      "raw": "/proposals/belhaus/img/bel-02-tiles.webp",
+      "normalizedPath": "proposals/belhaus/img/bel-02-tiles.webp",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/belhaus/index.html",
+      "raw": "/proposals/belhaus/img/bel-02-cause-effect-iii.webp",
+      "normalizedPath": "proposals/belhaus/img/bel-02-cause-effect-iii.webp",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/belhaus/index.html",
+      "raw": "/proposals/belhaus/img/bel-02-sound-of-resonance.webp",
+      "normalizedPath": "proposals/belhaus/img/bel-02-sound-of-resonance.webp",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/belhaus/index.html",
+      "raw": "/proposals/belhaus/img/atmosphere-system-crowd.jpg",
+      "normalizedPath": "proposals/belhaus/img/atmosphere-system-crowd.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/belhaus/index.html",
+      "raw": "/proposals/belhaus/img/atmosphere-approach-conversation.jpg",
+      "normalizedPath": "proposals/belhaus/img/atmosphere-approach-conversation.jpg",
       "exists": true,
       "rootRelative": true,
       "absolute": false

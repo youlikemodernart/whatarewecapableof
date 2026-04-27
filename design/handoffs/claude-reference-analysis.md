@@ -4,13 +4,15 @@ _Synthesis deliverable. Primary output for the main agent to turn into a structu
 
 Status: complete. All references analyzed, all sections populated. See `claude-raw-extraction-notes.md` for raw measurements and `claude-motion-frame-analysis.md` for the GIF frame-by-frame work.
 
+**Post-production correction (2026-04-26):** This is historical source analysis, not the current type contract. The live whatarewecapableof.com site uses system UI for prose, titles, and data display, plus Geist Mono for labels, metadata, navigation, and proposal chrome. Any mono-plus-serif recommendations below are superseded by `design/system-constraints.md` and `design/taste-profile/profile.md`.
+
 ---
 
 ## 1. Executive summary
 
 The ten references converge on a site that treats typography as its sole visual material, deploys it on a locked baseline grid, and uses image absence as a deliberate compositional choice.
 
-**Type system:** Mono + serif pair at one weight (400), one size, roles split by case (ALL CAPS metadata, sentence case content). Faces should be from the Apercu/Unica77/Garamond quality tier. Letterspacing is an animation axis; font weight is not.
+**Production type system:** System UI + Geist Mono at one default weight, one tight scale, roles split by case (ALL CAPS metadata, sentence case content). The original analysis explored a mono-plus-serif pair, but production later resolved the prose role to the system UI stack. Letterspacing is an animation axis; font weight is not.
 
 **Grid:** Spacing = multiples of `fontSize × lineHeight`. Single column for index pages (content anchored top-left, generous void). Two-column midpoint split for detail pages. Every navigation page fits one viewport.
 
@@ -228,15 +230,15 @@ _To be drafted per site._
 
 ### 4.5 img5 — Quality typeface reference
 
-**Source.** Infographic titled "Stop searching for new fonts." Two tiers (Starter Pack / Second Level) across 4 categories (Sans-Serif, Serif, Script, Display). Notable sans: Futura, Apercu, Proxima Nova, Helvetica, Circular, Gotham, Avenir Next. Notable serif: Caslon, Garamond, Didot, Clearface, Recoleta, Noe Display, Times, Baskerville.
+**Source.** Infographic titled "Stop searching for new fonts." Two tiers (Starter Pack / Second Level) across 4 categories (Sans-Serif, Serif, Script, Display). Notable sans: Futura, Apercu, Proxima Nova, Helvetica, Circular, Gotham, Avenir Next. The serif column included classic text and display faces.
 
 **User note.** "Great example of quality typeface options."
 
-**What it contributes.** A signal about type quality standards. The user values deliberate font selection over default choices. The "Starter Pack" leans toward established foundry faces (Apercu from Colophon, Circular from Lineto, Caslon, Garamond, Didot, Baskerville) rather than free-tier Google Fonts. This reference, combined with the user's stated preference for "the typography, kerning, etc of what currently exists on the site" (referring to Loyal Gallery's Unica77), indicates the taste profile should specify a quality typeface with optical refinement, not a system font or a free sans-serif.
+**What it contributes.** A signal about type quality standards. The user values deliberate font selection over default choices. The "Starter Pack" leans toward established foundry and classic faces rather than free-tier Google Fonts. This reference, combined with the user's stated preference for "the typography, kerning, etc of what currently exists on the site" (referring to Loyal Gallery's Unica77), originally pushed the taste profile toward a licensed prose face. Production later resolved the prose role to the system UI stack.
 
 **Pillar.** Typography (primary — typeface selection).
 
-**Weight.** Supporting. It is a meta-reference about font selection principles, not a visual to emulate. But it strongly qualifies the type direction: whatever faces are chosen should be from the Apercu / Circular / Caslon / Garamond tier, not from the Roboto / Lato / Montserrat tier.
+**Weight.** Supporting. It is a meta-reference about font selection principles, not a visual to emulate. It qualifies the type direction as deliberate, but it does not override the production decision to use system UI + Geist Mono.
 
 
 ## 5. Cross-reference synthesis
@@ -283,11 +285,11 @@ Caroline: "It has no images and I kind of like that." Across the reference set, 
 
 ### 7.1 Typographic craft vs. typographic default
 
-The user cites Loyal Gallery's typography/kerning as a standard ("prefer the typography, kerning, etc of what currently exists on the site") and includes a "quality typeface" reference (img5). But two of the three live sites use system or near-system fonts: Lola uses Arial, Ellen Ole uses Inter. There is a tension between admiring the rigor of Unica77 LL and being drawn to sites where the font choice is deliberately un-precious. The resolution: the admired quality lives in how the type is deployed (size, spacing, restraint), not necessarily in the face itself, but the explicit preference for "quality" suggests the final system should use a considered face, not a default.
+The user cites Loyal Gallery's typography/kerning as a standard ("prefer the typography, kerning, etc of what currently exists on the site") and includes a "quality typeface" reference (img5). But two of the three live sites use system or near-system fonts: Lola uses Arial, Ellen Ole uses Inter. There is a tension between admiring the rigor of Unica77 LL and being drawn to sites where the font choice is deliberately un-precious. Production resolved this by treating quality as deployment: baseline, scale, spacing, case, and restraint. The live site uses system UI + Geist Mono.
 
 ### 7.2 Mono + serif love vs. mono-face reality
 
-The user explicitly loves "the mix of monospace and serif readable font" from GIF 1. But all three live site references are single-face systems. No site in the set uses a mono/serif pairing. The motion reference validates the pairing as desirable; the live references demonstrate that single-face systems work. The resolution: the taste profile should specify a mono/serif pairing (honoring the explicit preference) but use it with the same one-weight, same-size discipline as the single-face sites.
+The user explicitly loves "the mix of monospace and serif readable font" from GIF 1. But all three live site references are single-face systems. No site in the set uses a mono/serif pairing. Production keeps the role split and assigns it to the live pair: Geist Mono for metadata and navigation, system UI for prose and titles. The one-weight, same-size discipline remains.
 
 ### 7.3 Image absence as principle vs. image-dense work pages
 
@@ -306,11 +308,11 @@ Lola uses 0.8 line-height (compressed leading). Loyal uses 1.25 (generous, grid-
 
 | Reference | What it governs | Why it leads |
 |-----------|----------------|-------------|
-| GIF 1 (MWRC) | Type pairing decision (mono + serif), letterspacing as motion axis, baseline discipline | Only reference that demonstrates the pairing the user explicitly loves; sets the two-face system |
+| GIF 1 (MWRC) | Role-split type prompt, letterspacing as motion axis, baseline discipline | Original source of the two-role idea; production translates it to system UI + Geist Mono |
 | GIF 2 (How Can We Gather Now?) | Baseline grid as structural law, word-level motion, holdtime > transition time | Strongest single demonstration of the grid principle that Loyal Gallery also uses |
 | loyalgallery.com | Type scale system (`vw`-relative + baseline), single-weight hierarchy, two-column layout, semantic structure | Most architecturally mature site in the set; validates that minimalism can be rigorous, not just stripped |
 
-These three references together define the core system: mono + serif pairing (GIF 1), deployed on a locked baseline grid (GIF 2 + Loyal), with hierarchy carried by position and case rather than weight or size (Loyal).
+These three references together define the core system: role-split typography translated in production as system UI + Geist Mono, deployed on a locked baseline grid (GIF 2 + Loyal), with hierarchy carried by position and case rather than weight or size (Loyal).
 
 
 ## 9. Supporting influences
@@ -320,7 +322,7 @@ These three references together define the core system: mono + serif pairing (GI
 | loladementmyers.com | Chrome-disappears-to-show-work principle, left-anchored layout, one-viewport navigation pages, hidden navigation as aesthetic | Validates the attitude and spatial generosity; does not provide the type system |
 | ellenole.com | Voice-memo-as-about-page format idea, extreme structural flatness, project-list case differentiation | Provides one distinctive format concept and confirms the flat-hierarchy direction; the specific implementation (10px Inter, no semantics) is not the target |
 | img1 (monochrome palette) | Opens the tonal range from binary B/W to a gray scale | Permits the taste profile to include mid-gray tones, not just #000/#fff |
-| img5 (quality typeface) | Sets the quality bar for font selection | Tells the system to pick from the Apercu / Caslon / Garamond tier |
+| img5 (quality typeface) | Sets the quality bar for font selection | Historical input only; production later fixed the system as system UI + Geist Mono |
 
 ## 9.1 Incidental influences
 
@@ -337,7 +339,7 @@ These are things the taste profile should explicitly warn against, because they 
 
 1. **Generic minimal template look.** The sites in this reference set are not "minimal templates" — they are idiosyncratic. The danger is building something that reads like a Squarespace "minimal" theme rather than a site with a specific point of view. Avoid: centered hero section, full-bleed header image, card grids, "Featured Project" carousels.
 
-2. **System-font defaults presented as deliberate.** Lola and Ellen Ole make system/near-system fonts work through extreme surrounding restraint. Copying the font choice without the spatial discipline produces a site that looks unfinished. The user's stated preference for quality typefaces means the final system should not use Arial, Inter, or system-ui as the primary face.
+2. **Unintentional system-font defaults.** Lola and Ellen Ole make system/near-system fonts work through extreme surrounding restraint. The production site uses system UI deliberately, so the danger is copying the font choice without the spatial discipline. Baseline, scale, spacing, and case must carry the typographic quality.
 
 3. **Gray text for hierarchy.** The reference set achieves hierarchy without text color variation — no `color: #666` or `color: #999` for secondary content. Position and case do the work. Using gray text to signify "less important" is the most common betrayal of this direction.
 
@@ -362,10 +364,10 @@ Based on the full reference set, the taste profile schema should capture these d
 
 ### 11.1 Type system
 
-- **Pairing:** Mono + serif (from GIF 1). Mono for metadata, navigation, dates, labels, identifiers. Serif for prose, descriptions, voice, and propositions.
-- **Weights:** One (400 regular). If italic is needed, use it for titles or emphasis only (Loyal's `<em>` pattern).
+- **Pairing:** System UI + Geist Mono in production. Geist Mono handles metadata, navigation, dates, labels, and identifiers. System UI handles prose, descriptions, voice, titles, and propositions.
+- **Weights:** One default weight (400 regular). Bold is reserved for approved inline wayfinding, not hierarchy.
 - **Scale:** One size for body, nav, headings. A second smaller size only for counters/pagination (Loyal's 13.4px counter) or metadata. No large display sizes.
-- **Quality bar:** Foundry-level faces. Sans: Apercu, Suisse Mono, Söhne Mono, or ABC Diatype Mono tier. Serif: Garamond, Lyon, or GT Sectra tier. Not system fonts, not Google Fonts.
+- **Production correction:** The live site uses system UI + Geist Mono. Earlier foundry-face recommendations in this historical analysis are superseded.
 - **Case:** ALL CAPS for metadata/roles/project-types. Sentence case for everything else. No title case, no lowercase-everything.
 - **Letterspacing:** Normal at rest. Expanded letterspacing as a specific choreographed moment (GIF 1 principle), not a default.
 

@@ -1,8 +1,8 @@
 ---
 name: whatarewecapableof
-description: Personal site built with institutional craft. Mono + serif pair on a locked baseline grid, image absence as composition, motion as punctuation.
+description: Personal site built with institutional craft. System UI + Geist Mono pair on a locked baseline grid, image absence as composition, motion as punctuation.
 created: 2026-04-22
-updated: 2026-04-22
+updated: 2026-04-26
 reference-count: 10
 
 layout:
@@ -14,11 +14,11 @@ layout:
   symmetry: asymmetric
 
 typography:
-  primary: serif, transitional
-  secondary: mono, geometric
+  primary: system-ui sans-serif
+  secondary: Geist Mono
   scale-ratio: 1.125
   body-size: 16-18px
-  weight-range: 400 only
+  weight-range: 400 default; 700 inline wayfinding only
   spacing: normal
   alignment: left
   case: all-caps-ui
@@ -76,25 +76,27 @@ The site admits one exception: work or content pages, when they accrue images, c
 
 ## Typographic character
 
-Two faces, one weight, one scale, role-based case.
+Two roles, one weight, one scale, role-based case.
 
-The mono handles metadata, navigation, project codes, dates, and identifiers. The serif handles prose, propositions, descriptions, titles, and voice. This pairing comes from the user's explicit preference ("love the mix of monospace and serif readable font" — GIF 1) and is the profile's defining move.
+The production system uses system UI for prose, titles, and data display, and Geist Mono for metadata, navigation, project codes, dates, identifiers, and proposal chrome. The CSS token for the prose face remains `--font-serif`, but the token intentionally resolves to `-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif`. Treat the name as legacy.
 
-Quality bar: the faces should come from the Apercu / Söhne Mono / Diatype Mono tier for mono and the Lyon / Garamond / GT Sectra / Recoleta tier for serif. Loyal's Unica77 LL sets the standard for typographic care in the reference set — a custom Lineto face with optical refinement. Lola uses Arial and Ellen Ole uses Inter; both sites work because every other decision is extreme, but the user's stated preference (img5, "quality typeface options," and "prefer the typography, kerning, etc of what currently exists on the site") indicates this profile should not lean on system fonts.
+The original reference analysis pointed toward a mono plus readable serif relationship from GIF 1. The live site resolves that relationship by keeping the role split and dropping the serif face. System UI carries the readable prose voice; Geist Mono carries labels and navigation. Do not reintroduce a prose serif to satisfy old mono-plus-serif notes.
 
-Weight is 400 only. No bold, no semibold, no light. Emphasis comes from italic (Loyal's `<em>` for exhibition title mentions) or ALL CAPS, both used sparingly.
+Quality bar lives in deployment: baseline grid, spacing, case, restrained scale, and disciplined font loading. Geist Mono is the only external font family. Prose uses the OS-rendered system UI stack, which is production-canonical for this site.
 
-Scale ratio sits near 1.0 between headings and body. The schema's 1.125 (major second) best captures this — hierarchy is subtle, not structural. In practice, `h1`, `h2`, `h3`, and `p` may all render at the same size and weight, distinguished only by position and content. A smaller secondary size is reserved for counters, pagination, or incidental metadata (Loyal's 13.4px image counter) — not for body copy.
+Weight is 400 by default. Bold 700 is allowed only for inline wayfinding where it has already been accepted in the proposal system. No semibold, light, or display-weight hierarchy.
 
-Body size sits at 16–18px at desktop. The reference sites go smaller (Lola 11px, Ellen Ole 10px, Loyal 21.76px via viewport scaling), but the smaller sites risk illegibility for a partnership that will host proposals and project text. Loyal's larger setting is closer to the right target for content that needs to be read, not just seen.
+Scale ratio sits near 1.0 between headings and body. The schema's 1.125 (major second) best captures this, because hierarchy is subtle and positional. In practice, `h1`, `h2`, `h3`, and `p` may all render at the same size and weight, distinguished only by position and content. A smaller secondary size is reserved for counters, pagination, or incidental metadata.
 
-Letterspacing is normal at rest. Letterspacing-expanded-to-edge-of-column (GIF 1's justify-to-edges move) is a specific choreographed state, not a default — used to mark a moment, not to texture every heading.
+Body size sits at 16–18px at desktop. The reference sites go smaller (Lola 11px, Ellen Ole 10px, Loyal 21.76px via viewport scaling), but the smaller sites risk illegibility for a partnership that will host proposals and project text.
 
-Line-height range 1.25–1.4. Grid-locked. The "consistent line heights" the user loves in GIF 2 come from every row of body text — regardless of column or content — sitting on the same baseline. This is a discipline, not a preference.
+Letterspacing is normal at rest. Letterspacing-expanded-to-edge-of-column (GIF 1's justify-to-edges move) is a specific choreographed state, used to mark a moment rather than texture every heading.
+
+Line-height range 1.25–1.4. Grid-locked. The "consistent line heights" the user loves in GIF 2 come from every row of body text sitting on the same baseline across columns and roles.
 
 Text-transform: sentence case for content, ALL CAPS for labels, metadata, project roles, and footer contact blocks. No title case. No lowercase-everything (that's Lola's voice marker, not a neutral discipline).
 
-Alignment: left. Center alignment is reserved for signature lockup moments — a single title, an intro mark, a landing moment — not for default columns.
+Alignment: left. Center alignment is reserved for signature lockup moments: a single title, an intro mark, a landing moment.
 
 ## Color character
 
@@ -118,7 +120,7 @@ In the reference set, headings do not enlarge. `h1`, `h2`, `h3`, body paragraphs
 
 1. **Position.** Content at the top of a page is the most important; the reading axis descends. The home page leads with identity (name/mark), then work index, then secondary nav, then contact — this order is constant across all three live sites.
 2. **Grouping.** Elements sitting together (with consistent spacing) read as a unit; elements separated by a baseline multiple read as distinct. Loyal's two-column content page is the clearest execution — the metadata column and the prose column are clearly separated groups without any dividing line or heading.
-3. **Case.** ALL CAPS mono for metadata, role, and project-type labels; sentence case serif for content. The case change carries what a designer would usually solve with weight or size. Ellen Ole's project list ("Daniel Caesar PERFORMANCE") is the clearest demonstration: same size, same weight, same face — only the case of the project type differs, and that single mechanism establishes role differentiation.
+3. **Case.** ALL CAPS Geist Mono for metadata, role, and project-type labels; sentence case system UI for content. The case change carries what a designer would usually solve with weight or size. Ellen Ole's project list ("Daniel Caesar PERFORMANCE") is the clearest demonstration: same size, same weight, same face — only the case of the project type differs, and that single mechanism establishes role differentiation.
 
 Image role on the interface layer is **absent.** Home, index, about, archive, and navigation pages carry no imagery (or at most a single small mark, like Lola's peace symbol or Loyal's single exhibition thumbnail). On content pages, images can be dense — but this is an allowed departure, not the default. The taste profile's first instinct at any new page is "no image."
 
@@ -128,8 +130,8 @@ Depth is 3: site index → content index → content detail. The chrome stays fl
 
 The profile would become a different aesthetic if any of these changed. These are the protected attributes.
 
-**1. The mono + serif pairing at one weight.**
-One sans face by itself reads as Ellen Ole (minimal, extreme, type-as-interface-as-default). One serif by itself reads as GIF 2 or Loyal (institutional, poster-like, editorial). A sans+serif pairing (e.g., Helvetica + Garamond) reads as conventional editorial. Mono + serif, both at 400, is the specific combination: a typography system where the metadata sounds different from the prose, and the two voices never blend into one.
+**1. The system UI + Geist Mono role split at one weight.**
+The production pair is intentionally plain: system UI for readable content, Geist Mono for interface labels and metadata. The contrast comes from role, case, and texture rather than a prose serif. This is the protected type system for the live site.
 
 **2. The locked baseline grid as compositional law.**
 The whitespace in this profile is not "generous" — it is specific. Every vertical measurement is `lineHeight × n`. Changing this to ad-hoc spacing ("a little more air here, a little less there") converts the aesthetic from structured-minimalism to formless-minimalism, which looks superficially similar but reads as sloppy under any sustained attention. GIF 2 shows this as a motion principle; Loyal shows it as a live system.
@@ -141,7 +143,7 @@ The chrome must read as text and space only. On the homepage, the about page, an
 
 Explicit rules against the most common drifts.
 
-- **No font-weight variation.** 400 only. Emphasis through italic or ALL CAPS, not bold. No "light" or "thin" weights either — the single weight is the statement.
+- **No font-weight hierarchy.** 400 is the default. Bold 700 is allowed only for approved inline wayfinding, never for headings, section labels, or structural hierarchy. No semibold, light, or thin weights.
 - **No gray text for hierarchy.** No `color: #666` or `#999` for secondary content. Position and grouping do that work. Text is `#000` (or near-`#000`); the accent is blue; there is no third text color.
 - **No hero images, full-bleed photography, or decorative graphics on navigation pages.** The homepage must feel like text until the user chooses to enter work.
 - **No hamburger menus, mobile drawers, or expanding navigation.** Every nav item is visible text at every breakpoint. Loyal collapses the nav onto a single comma-separated line on mobile rather than hiding it behind an icon. This profile follows that.
@@ -155,7 +157,7 @@ Explicit rules against the most common drifts.
 - **No title case.** Sentence case for content, ALL CAPS for metadata. Title Case Of Every Word looks tentative; it belongs to newsletter SaaS.
 - **No "About Us" as conventional long-form prose.** Ellen Ole's voice memo reframes the format: consider whether the introduction to Noah and Austin's practice could be audio, film, image, silence, or a single sentence rather than three paragraphs.
 - **No `text-transform: lowercase` on the whole site.** That is Lola's voice marker. Borrowed, it reads as imitation.
-- **No system-font defaults presented as deliberate.** Arial, Inter, and system-ui fonts are not the target even though two reference sites use them. The user's preference for "quality typefaces" (img5, and stated admiration of Loyal's Unica77) overrides the system-default trick.
+- **No prose serif by inference.** `--font-serif` is a legacy token name that resolves to the system UI stack. Do not load a foundry serif, Google serif, or any other prose serif because older reference notes mention one.
 
 ## Reference log
 
@@ -166,9 +168,9 @@ Each reference is listed with its pillar weighting (which attribute groups it mo
 **GIF 1 — MWRC "An Exploration of Ideas"**
 - Source: cloudfront 21329965, 2.3MB animated GIF
 - User note: "Motion in type that we are inspired by. Love the mix of monospace and serif readable font"
-- Contributes: the two-face pairing decision (mono + serif), letterspacing as a motion axis, baseline discipline during animation, hold-heavy pacing
+- Contributes: the two-role typography prompt, letterspacing as a motion axis, baseline discipline during animation, hold-heavy pacing
 - Pillars: typography (heavy), motion (heavy)
-- Resolution: the pairing is adopted as the type system; the specific cipher-decryption animation is NOT adopted (too strongly associated with agency sites). Letterspacing expansion to column edge is a transferable choreographed moment.
+- Resolution: the role split is adopted, but the production face pair is system UI + Geist Mono. The specific cipher-decryption animation is NOT adopted (too strongly associated with agency sites). Letterspacing expansion to column edge is a transferable choreographed moment.
 
 **GIF 2 — How Can We Gather Now? (Prem Krishnamurthy / WPA poster)**
 - Source: cloudfront 14698805, 1.2MB animated GIF
@@ -182,7 +184,7 @@ Each reference is listed with its pillar weighting (which attribute groups it mo
 - User note: "Minimal imagery, lots of plain type... prefer the typography, kerning, etc of what currently exists on the site"
 - Contributes: the viewport-relative type scale with explicit baseline-grid CSS variables, single-weight semantic HTML hierarchy, two-column detail layout, active-state blue accent as the entire color departure from B/W, Unica77 LL as proof that a quality typeface defines the register
 - Pillars: typography (heavy), layout (heavy), color (heavy), hierarchy (moderate)
-- Resolution: the reference system architecture. Not the specific Unica77 LL face (that belongs to Loyal), but the discipline — quality custom font, baseline-grid math, single weight, semantic HTML, one blue for active state. The mono/serif pairing (from GIF 1) is the addition that makes this profile its own aesthetic rather than a Loyal clone.
+- Resolution: the reference system architecture. Not the specific Unica77 LL face (that belongs to Loyal), but the discipline: baseline-grid math, single weight, semantic HTML, one blue for active state, and type deployed with care. The GIF 1 role split becomes system UI + Geist Mono in production.
 
 ### Supporting influences (moderate weight)
 
@@ -210,9 +212,9 @@ Each reference is listed with its pillar weighting (which attribute groups it mo
 **img5 — "Stop searching for new fonts" infographic**
 - Source: cloudfront 14254329, PNG
 - User note: "Great example of quality typeface options"
-- Contributes: the quality-bar signal — Apercu, Circular, Caslon, Garamond, Didot, Baskerville are in the target tier; Roboto, Lato, Montserrat are below it
+- Contributes: the quality-bar signal around deliberate font selection and typographic care
 - Pillars: typography (supporting — meta, about selection principle)
-- Resolution: governs the `primary` and `secondary` type attributes in the YAML. The selection happens during the create workflow's Phase 4, but this reference sets the threshold.
+- Resolution: historical selection input only. Production now fixes the type system as system UI + Geist Mono; this reference should not reopen serif selection.
 
 ### Incidental influences (light weight)
 
@@ -241,11 +243,11 @@ Each reference is listed with its pillar weighting (which attribute groups it mo
 
 ## Tensions the profile explicitly resolves
 
-**Typographic default (Arial, Inter) vs. typographic craft (Unica77, Garamond).**
-Resolution: choose quality. The user's own stated preference for "quality typefaces" and for Loyal's typography overrides the Lola/Ellen Ole default-font trick, which relies on extreme surrounding discipline that this site cannot guarantee across years of evolving content.
+**Typographic default (Arial, Inter) vs. typographic craft (Unica77 and quality-type references).**
+Resolution: use the production system intentionally. The live site uses system UI for prose and Geist Mono for metadata. Typographic quality comes from baseline, scale, case, spacing, and restraint rather than a licensed prose face.
 
-**Mono + serif love (GIF 1) vs. mono-face reality of the three live sites.**
-Resolution: honor the explicit preference. Adopt the mono + serif pairing. Apply it with the one-weight, baseline-grid discipline shared by all three live sites. The pairing is this profile's specific contribution; it doesn't exist in the live reference set.
+**Mono-plus-readable-serif love (GIF 1) vs. mono-face reality of the three live sites.**
+Resolution: keep the role split, not the serif. Geist Mono handles metadata and navigation; system UI handles prose, titles, and data display. The pairing is this profile's specific production contribution.
 
 **Image absence (Caroline's note) vs. image-density on work pages (Lola's portfolio).**
 Resolution: split by layer. Interface and chrome are image-absent. Content pages may be image-dense when the work is the subject. The rule of thumb: "if the page is about the work, images are allowed; if the page is about getting to the work, images are not."
@@ -263,8 +265,8 @@ Resolution: use intimate scales selectively. Pagination counters, metadata label
 When this profile enters Phase 2 (Strategy) of 11-create-workflow.md, the strongest constraints in order:
 
 1. **Baseline grid first.** Before any content placement, establish `fontSize × lineHeight` as the vertical unit. Every margin, padding, and gap inherits from it.
-2. **Type system second.** The mono and serif faces are selected per Phase 4 guidance (typo-06-selection.md), bounded to the quality tier defined by img5.
-3. **Single weight, near-flat scale.** Do not introduce bold. Do not let headings get bigger than 1.125× body.
+2. **Type system second.** Use the production type contract: system UI for prose, titles, and data display; Geist Mono for metadata, navigation, and proposal chrome. Do not audition a prose serif unless Noah explicitly reopens the type system.
+3. **Single default weight, near-flat scale.** Do not introduce weight-based hierarchy. Bold 700 is limited to approved inline wayfinding. Do not let headings get bigger than 1.125× body.
 4. **Left anchor, asymmetric composition.** Default to content at left with right margin dominant. Center alignment is a signature moment, not a default.
 5. **No images on chrome.** Navigation, about, home, and index pages have no hero images. Only content pages (work, proposals, detailed writing) may carry imagery.
 6. **Motion as punctuation.** If motion is specified, it is hold-heavy, triggered by state change, and positional (not stylistic). Default to no motion; add it only where it earns its place.

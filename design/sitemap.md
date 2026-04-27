@@ -38,7 +38,7 @@ Non-navigation (direct link only):
 **Layout:** Primitive A (single-column, left-anchored). One viewport, no scroll.
 
 **Content:**
-- "What are we capable of?" as the primary typographic element. Clickable (links to `/question/`) but with no visible link styling — no underline, no color change. Cursor change on hover is the only signal. Serif, `--size-m` or `--size-l`. Takes up 60-70% of the viewport. Breathes.
+- "What are we capable of?" as the primary typographic element. Clickable (links to `/question/`) but with no visible link styling — no underline, no color change. Cursor change on hover is the only signal. System UI via `--font-serif`, `--size-m` or `--size-l`. Takes up 60-70% of the viewport. Breathes.
 - Below the question: `COACH  CONSULT  CREATIVE` as three mono ALL CAPS links. No descriptions. The words are self-explanatory.
 - Footer visible at bottom: `ABOUT` link + contact info (email).
 
@@ -77,7 +77,7 @@ Non-navigation (direct link only):
 **Layout:** Primitive A, scrollable. Landing content at the top, portfolio/testimonials below (single page, scroll-through).
 
 **Content structure:**
-1. **Offering section** (above fold): what Austin coaches, who it's for, what someone gets. Mono metadata labels (ALL CAPS), serif prose.
+1. **Offering section** (above fold): what Austin coaches, who it's for, what someone gets. Mono metadata labels (ALL CAPS), system UI prose.
 2. **Work section** (scroll to reach): past engagements, testimonials, outcomes. Grows over time.
 3. **CTA:** link to `/coach/book` ("Book a call" or similar, styled as mono text link, not a button).
 
@@ -92,7 +92,7 @@ Non-navigation (direct link only):
 **Implementation:** Custom Google Calendar API integration (not Calendly). Uses the shared booking UI and API with booking type `coach`.
 
 **Content:**
-1. Brief context line: what happens when you book (serif, one sentence).
+1. Brief context line: what happens when you book (system UI, one sentence).
 2. Date selection in mono.
 3. Time slots for the selected date as clickable mono text.
 4. Booking form: name, email, optional note. Three fields.
@@ -159,7 +159,7 @@ When individual projects have enough depth, they become child pages (`/creative/
 - **Noah Glynn:** Research, design, implementation.
 - **Contact:** `hello@whatarewecapableof.com`
 
-Short paragraph bios. Mono section labels (ALL CAPS) for each person's name, serif prose for the bio. Contact as a third section below the bios.
+Short paragraph bios. Mono section labels (ALL CAPS) for each person's name, system UI prose for the bio. Contact as a third section below the bios.
 
 Footer placement means visitors who want this page will find it; visitors who don't won't be distracted from the three verticals.
 
@@ -247,9 +247,9 @@ Max depth: 2 from the primary nav. 3 counting home as level 0.
 **UI in the taste system:**
 - Date display: mono, `--size-s`, ALL CAPS day names.
 - Time slots: mono, `--size-m`, clickable text (underline on hover per link rules).
-- Form fields: serif labels, mono inputs, underline-below-input (no box border).
+- Form fields: system UI labels, mono inputs, underline-below-input (no box border).
 - Submit: `Book a call` in mono, sentence case, underlined, no box.
-- Confirmation: serif sentence ("Booked. Check your email for the calendar invite.").
+- Confirmation: system UI sentence ("Booked. Check your email for the calendar invite.").
 - Loading states: replace content with "..." or similar; no spinner animation.
 
 **Implemented:** Availability and booking use Vercel serverless functions plus `googleapis`. Booking creates events on Austin's primary calendar, adds the visitor and `austin@kamplove.org` as attendees, and creates a Google Meet link.

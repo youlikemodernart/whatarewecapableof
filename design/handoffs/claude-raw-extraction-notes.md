@@ -2,6 +2,8 @@
 
 Working notes. Continuous append log. URLs visited, measurements, style values, observations that back up the polished synthesis.
 
+**Post-production correction (2026-04-26):** This file is raw historical extraction, not the current type contract. The live site uses system UI for prose, titles, and data display, plus Geist Mono for labels, metadata, navigation, and proposal chrome.
+
 ---
 
 ## Run metadata
@@ -262,7 +264,7 @@ Completed 2026-04-22 (Opus 4.6 continuation).
 - Book/exhibition title set inside a rounded-corner label/tab shape
 - "Glass Tableware in Still Life" curves along the arch of the label; "Glass" rotated 90° on left edge
 - "Yoko Andersson Yamano and 18 Painters" set smaller inside, centered
-- Serif face (transitional, possibly Garamond or similar)
+- Serif face (transitional, possibly an old-style serif or similar)
 - Type follows the physical shape contour — text AS boundary, not text IN boundary
 - Warm paper/card texture background
 - User note: "typography is used to create unconventional shapes and forms"
@@ -289,7 +291,7 @@ Completed 2026-04-22 (Opus 4.6 continuation).
 - Infographic: "Stop searching for new fonts"
 - Two tiers (Starter Pack / Second Level) across 4 categories (Sans-Serif, Serif, Script, Display)
 - Notable sans recommendations: Futura, Apercu, Proxima Nova, Helvetica, Circular, Gotham, Avenir Next
-- Notable serif recommendations: Caslon, Garamond, Didot, Clearface, Recoleta, Noe Display, Times, Baskerville
+- Notable serif recommendations: classic text and display faces including Caslon, Didot, Clearface, Recoleta, Noe Display, Times, and Baskerville
 - Mix of high-quality foundry faces (Apercu, Circular) and accessible alternatives (Poppins, Merriweather)
 - Principle: curate a small stable of reliable fonts rather than chase novelty
 - User note: "Great example of quality typeface options"

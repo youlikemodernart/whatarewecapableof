@@ -226,6 +226,8 @@ Rules:
 - Prefer words and lines to icons.
 - Keep the diagram readable without a legend.
 - If it needs a legend, it may be too complex for the proposal page.
+- If the diagram carries substantial readable text, live HTML/CSS may be the final artifact. Do not force a bitmap when live text is clearer at proposal width.
+- A table-like object can be the right diagram when it clarifies relationships better than nodes and connectors.
 
 ### Document excerpt
 
@@ -385,13 +387,13 @@ Before final images are inserted, create an in-flow placeholder draft when Noah 
 
 Implement final media only after the placeholder draft is approved or the task explicitly asks for implementation. Use reusable classes where possible. Keep page-specific CSS small.
 
-When a proposal visual directly precedes a section heading, suppress the heading rule by default. The visual already resets attention; the rule becomes a second break unless the heading explicitly opts back in with `.section-heading--ruled`.
+When a proposal visual directly precedes a section heading, suppress the heading rule by default. The visual already resets attention; the rule becomes a second break unless the heading explicitly opts back in with `.section-heading--ruled`. More broadly, rules should group, introduce, or compare content. Do not bracket every artifact by default.
 
 For phase output lines, use `.proposal-output` on the paragraph and keep the bold text. The smaller size preserves wayfinding without letting the output line overpower the surrounding phase copy.
 
 ### Phase 8: Review
 
-Review at 375px, 768px, 1280px, and 1600px. For each insertion, ask:
+Review at 375px, 768px, 1280px, and 1600px. For tabbed proposals with lazy images, validate active-tab visible images only and scroll each image into view before checking load state. For each insertion, ask:
 
 - Does it change what the reader understands?
 - Does the full proposal stay within the 3 to 5 visual target, or is the exception documented?

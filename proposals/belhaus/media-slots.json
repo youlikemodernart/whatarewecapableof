@@ -1,0 +1,129 @@
+{
+  "project": "BELHAUS proposal",
+  "route": "/proposals/belhaus",
+  "sourceFile": "proposals/belhaus/index.html",
+  "styleSource": "What are we capable of? taste profile",
+  "status": "implemented locally, not deployed",
+  "activeSlots": [
+    {
+      "id": "BEL-01",
+      "anchor": "Overview after stat row and before What you'd have",
+      "job": ["diagram", "orientation"],
+      "treatment": "live HTML/CSS three-band operating model",
+      "assetNeed": "none for current active proposal",
+      "suggestion": "Source of truth, working surfaces, outputs and integrations",
+      "rationale": "Gives Gino the whole system in one glance before the page moves into detail.",
+      "mobileTreatment": "Single-column band stack.",
+      "status": "implemented locally in proposals/belhaus/index.html",
+      "tag": "slot: BEL-01",
+      "priority": "high",
+      "risk": "Can become generic consulting theater. Keep it text-first, no icons, no shadows, no SaaS boxes."
+    },
+    {
+      "id": "BEL-02",
+      "anchor": "Overview after private catalog paragraph and before Artsy note",
+      "job": ["artifact", "specimen"],
+      "treatment": "live HTML/CSS private catalog artifact using five optimized artwork images",
+      "assets": [
+        "proposals/belhaus/img/bel-02-trophy-head-iii.webp",
+        "proposals/belhaus/img/bel-02-borders.webp",
+        "proposals/belhaus/img/bel-02-tiles.webp",
+        "proposals/belhaus/img/bel-02-cause-effect-iii.webp",
+        "proposals/belhaus/img/bel-02-sound-of-resonance.webp"
+      ],
+      "copy": "Draft: Five works I thought you'd want to see.",
+      "suggestion": "One selected work, four related works, and short explanatory copy.",
+      "rationale": "Makes the collector-facing value concrete.",
+      "mobileTreatment": "Primary work followed by explanatory copy and thumbnail grid.",
+      "status": "implemented locally in proposals/belhaus/index.html",
+      "tag": "slot: BEL-02",
+      "priority": "high",
+      "risk": "If too polished, it may imply the app UI is final. Keep it framed as a draft artifact."
+    },
+    {
+      "id": "BEL-03",
+      "anchor": "System after the five-table data model table and before The fields are yours",
+      "job": ["diagram"],
+      "treatment": "live HTML/CSS relationship-index table",
+      "assetNeed": "none for current active proposal",
+      "suggestion": "Examples of records held in the Relationships table and what each connects.",
+      "rationale": "Clarifies Relationships after the reader has context for the five tables.",
+      "mobileTreatment": "Compact two-column relationship list.",
+      "status": "implemented locally in proposals/belhaus/index.html",
+      "tag": "slot: BEL-03",
+      "priority": "high",
+      "risk": "Can get technical fast. Keep fields out of this object because the adjacent table already carries detail."
+    },
+    {
+      "id": "BEL-04",
+      "anchor": "System after The agent proposes; you decide and before Integrations",
+      "job": ["sequence"],
+      "treatment": "live proposal-process-timeline",
+      "assetNeed": "none for current active proposal",
+      "suggestion": "Source arrives, AI prepares draft, Gino or Chloe approves, database updates, catalog or outreach uses the record.",
+      "rationale": "Answers what the AI automates while preserving human approval.",
+      "mobileTreatment": "Same vertical timeline.",
+      "status": "implemented locally in proposals/belhaus/index.html",
+      "tag": "slot: BEL-04",
+      "priority": "high",
+      "risk": "Avoid overpromising. Use prepares and drafts, not language that implies the AI does everything."
+    }
+  ],
+  "atmosphereSlots": [
+    {
+      "id": "BEL-ATMO-01",
+      "anchor": "Overview after the opening paragraph and before the stat row",
+      "job": ["atmosphere", "pause"],
+      "asset": "proposals/belhaus/img/atmosphere-overview-interior.jpg",
+      "source": "Are.na block 45611715, raw source proposals/belhaus/img/src/atmosphere-overview-interior.jpg",
+      "rationale": "Puts the system proposal back inside the gallery space before the abstract architecture starts.",
+      "status": "implemented locally in proposals/belhaus/index.html",
+      "tag": "FAVE",
+      "risk": "If it competes with the operating system map, cut it or move it lower."
+    },
+    {
+      "id": "BEL-ATMO-02",
+      "anchor": "System after the opening architecture paragraph and before Data model",
+      "job": ["atmosphere", "pause"],
+      "asset": "proposals/belhaus/img/atmosphere-system-crowd.jpg",
+      "source": "Are.na block 45611705, raw source proposals/belhaus/img/src/atmosphere-system-crowd.jpg",
+      "rationale": "Reminds the reader that the database serves live relationships, openings, and artwork in rooms.",
+      "status": "implemented locally in proposals/belhaus/index.html",
+      "tag": "FAVE",
+      "risk": "The square crop may feel too social for the System page; evaluate in the browser."
+    },
+    {
+      "id": "BEL-ATMO-03",
+      "anchor": "Approach after the opening phase paragraph and before Phase 1",
+      "job": ["atmosphere", "pause"],
+      "asset": "proposals/belhaus/img/atmosphere-approach-conversation.jpg",
+      "source": "Are.na block 45611709, raw source proposals/belhaus/img/src/atmosphere-approach-conversation.jpg",
+      "rationale": "Gives the work plan a human scale before the phase structure begins.",
+      "status": "implemented locally in proposals/belhaus/index.html",
+      "tag": "FAVE",
+      "risk": "If it reads as event coverage rather than working relationship, cut it."
+    }
+  ],
+  "parkedSlots": [
+    {
+      "id": "BEL-05",
+      "anchor": "Approach after Phase 3 or before Division of labor",
+      "job": ["sequence", "pause"],
+      "ratio": "vertical timeline",
+      "assetNeed": "generated timeline or live timeline",
+      "suggestion": "Week 1 audit, Weeks 2 to 6 build v1, ongoing extensions",
+      "rationale": "Gives the Approach tab air and makes the engagement feel bounded.",
+      "mobileTreatment": "Vertical timeline.",
+      "status": "parked",
+      "tag": "slot: BEL-05",
+      "priority": "medium",
+      "risk": "Can make the timeline feel like a committed scope before terms are aligned. Add only when Noah is ready to stand behind it."
+    }
+  ],
+  "toneCautions": [
+    "Keep Georgie inside the circle. Her ArtCloud recommendation was reasonable gallery-default advice.",
+    "Keep Artsy sync conditional until Georgie confirms the Partner API route.",
+    "Keep human approval visible. The AI prepares and drafts; Gino or Chloe approves.",
+    "Translate intelligence into practical artifacts: collector history, passed-on works, fair context, relationship notes, outreach timing."
+  ]
+}

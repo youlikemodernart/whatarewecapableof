@@ -94,7 +94,7 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 
 ---
 
-### Belhaus
+### BELHAUS
 
 | | |
 |---|---|
@@ -103,9 +103,9 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 | Status | Sent; waiting for Gino to digest and discuss value |
 | Relationship | Existing (Noah does videography for Gino) |
 | Tabs | Overview / System / Approach / ? |
-| Source | Moved from standalone belhaus-proposal.vercel.app (2026-04-23) |
+| Source | Active WAWCO proposal, moved from standalone belhaus-proposal.vercel.app (2026-04-23) |
 
-**Client:** Gino Belassen, owner of Belhaus (belhaus.co). Contemporary art gallery in Phoenix, 24 represented artists. Also runs Aftermarket (cafe) and BELHAUS 90 (framing atelier).
+**Client:** Gino Belassen, owner of BELHAUS (belhaus.co). Contemporary art gallery in Phoenix, 24 represented artists. Also runs Aftermarket (cafe) and BELHAUS 90 (framing atelier).
 
 **Key people:** Gino (owner, decision-maker), Chloe (gallery staff, daily user), Georgie (Artsy liaison, recommended ArtCloud originally).
 
@@ -120,6 +120,12 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 - 2026-04-17: V2 proposal (Overview/System/Approach) rebuilt and deployed. Overview reworked after Noah flagged first draft as too prescriptive.
 - 2026-04-23: Moved to whatarewecapableof.com/proposals/belhaus/ from standalone site.
 - 2026-04-25: Proposal is done and sent; waiting for Gino to digest it and discuss value.
+- 2026-04-26: Local WAWCO composition pass created. Noah likes the FAVE atmosphere image placements and the BEL-02 private catalog artifact direction.
+- 2026-04-26: Local media pass incorporated into the active proposal source. BEL-01, BEL-03, and BEL-04 are live HTML/CSS objects; BEL-02 is a five-work private catalog artifact using optimized artwork images. No deploy has been run for this pass yet.
+
+**Composition/style note:** Future edits to the live proposal belong in `~/Projects/whatarewecapableof/proposals/belhaus/index.html` and should use the What are we capable of? taste profile and proposal components. Do not use the old standalone BELHAUS proposal visual system for live proposal work. The older `~/Projects/belhaus-proposal/` project is historical source material.
+
+**Media slots:** Slot map: `proposals/belhaus/media-slots.md`; structured manifest: `proposals/belhaus/media-slots.json`; local-only in-flow draft: `proposals/belhaus/slots/index.html`, ignored by git through `proposals/*/slots/`. Graphics handoff: `docs/belhaus-graphics-generation-handoff.md`. Locally implemented slots in the active proposal source: BEL-01 operating model, BEL-02 private catalog artifact, BEL-03 relationship index after the five-table data model table, BEL-04 approval sequence, and one FAVE atmosphere image on Overview, System, and Approach. BEL-05 build timeline is parked until terms are ready.
 
 **Open questions (on Approach tab):**
 1. Keep paused Artlogic or cancel
@@ -130,7 +136,7 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 
 **Next:** Let Gino digest the proposal, then schedule a conversation focused on value, scope, and the right first build.
 
-**Deep docs:** `~/Projects/belhaus-proposal/PROJECT.md`, agent at `~/.pi/agents/belhaus-advisor/`, memory at `project_belhaus.md`
+**Deep docs:** active proposal at `~/Projects/whatarewecapableof/proposals/belhaus/index.html`, slot guide at `~/Projects/whatarewecapableof/proposals/belhaus/media-slots.md`, graphics handoff at `~/Projects/whatarewecapableof/docs/belhaus-graphics-generation-handoff.md`, historical standalone project at `~/Projects/belhaus-proposal/PROJECT.md`, agent at `~/.pi/agents/belhaus-advisor/`, memory at `project_belhaus.md`
 
 ---
 

@@ -1,5 +1,7 @@
 Taste Profile Information
 
+Post-production correction (2026-04-26): these are raw reference-gathering notes, not the current site type contract. The live site uses system UI for prose, titles, and data display, plus Geist Mono for labels, metadata, navigation, and proposal chrome. See `design/system-constraints.md`.
+
 https://d2w9rnfcy7mm78.cloudfront.net/21329965/original_a78a54d9db9e234b60e44be83b355f78.gif?1681164762?bc=0
 Motion in type that we are inspired by. Love the mix of monospace and serif readable font
 

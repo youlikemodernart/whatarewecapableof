@@ -2,6 +2,8 @@
 
 Two motion references from the taste profile. Analysis is frame-by-frame for distinct states (not every tween frame). Sampling 6–8 key frames per GIF.
 
+**Post-production correction (2026-04-26):** This file is historical reference analysis. The live site type contract is system UI for prose, titles, and data display, plus Geist Mono for labels, metadata, navigation, and proposal chrome. Treat any mono-plus-serif transfer notes below as superseded inspiration, not implementation guidance.
+
 Source files:
 - `./design/reference-analysis/gifs/gif1-mono-serif-mix.gif` — note: "Motion in type that we are inspired by. Love the mix of monospace and serif readable font"
 - `./design/reference-analysis/gifs/gif2-line-heights.gif` — note: "Motion in type we are also inspired by - cool that there are these consistent line heights"
@@ -43,7 +45,7 @@ Rough timing inference from frame indices: scrambled hold ~0–20, decrypt ~20�
 
 ### 1.3 Type system observations
 
-- **Two typefaces only.** Monospace (all caps, roughly a geometric / technical mono — appears similar to ABC Diatype Mono, Söhne Mono, or a free GT America Mono cousin) and a serif (high-contrast, mid-width oldstyle; lowercase-dominant body; feels like an STM Garamond or ITC Galliard descendant, possibly Times-like at small sizes).
+- **Two typefaces only.** Monospace (all caps, roughly a geometric / technical mono — appears similar to ABC Diatype Mono, Söhne Mono, or a free GT America Mono cousin) and a serif (high-contrast, mid-width oldstyle; lowercase-dominant body; feels like an old-style or ITC Galliard descendant, possibly Times-like at small sizes).
 - **All caps mono / sentence-case serif.** Roles are segregated. Mono = header / metadata / identifier / code. Serif = proposition / sentence / content.
 - **Strict horizontal center axis.** Every line — including during justification — stays on the same vertical axis of the frame. There is no ragged alignment anywhere.
 - **Consistent line heights throughout.** Even while letters spread horizontally to many times their "natural" width, each line holds its baseline. The letter spacing is the only thing that changes; leading is constant.
@@ -53,7 +55,7 @@ Rough timing inference from frame indices: scrambled hold ~0–20, decrypt ~20�
 
 ### 1.4 Transferable principles for whatarewecapableof.com
 
-- **Mono/serif pairing as role differentiation.** Mono for identifiers, metadata, codes, dates, and navigation labels. Serif for sentences, descriptions, voice. This pairing is already in the user's stated taste ("love the mix of monospace and serif readable font").
+- **Role differentiation through the production pair.** Geist Mono handles identifiers, metadata, codes, dates, and navigation labels. System UI handles sentences, descriptions, and voice. This keeps the user's role-split preference while matching the live type contract.
 - **Baseline discipline.** Lock line height regardless of letter-spacing theatrics. If animation happens, it should affect horizontal character distribution, not vertical rhythm.
 - **Decrypt-in-place as an entry animation.** Optional, but the character-level cipher where the block never reflows (width matched to resolved text) is a strong trick that matches the restraint of the rest of the aesthetic.
 - **Justification as a choreographed state, not a default.** The justified-to-edge state is a specific moment, not the resting layout. Use justification sparingly — it carries weight precisely because most of the time the text sits compact and centered.
@@ -159,7 +161,7 @@ The ground color reads as warm ochre / mustard ≈ `#D3A021` — more saturated 
 **Productive tension between them:**
 
 - GIF 1 centers everything on one axis; GIF 2 uses a 3-column grid. Both are viable structures. The future site must pick its grid; it cannot do both at once without getting muddy. The better choice for a two-person partnership with content that will accrue over time is closer to GIF 2's multi-column grid — it scales. GIF 1's single-axis composition is better for a wordmark moment (a landing or intro lockup) than for browseable content.
-- GIF 1 pairs mono + serif; GIF 2 uses serif only. A hybrid — mono for metadata / navigation / identifiers and serif for body prose — captures GIF 1's pairing while letting the grid discipline come from GIF 2.
+- GIF 1 pairs mono + serif; GIF 2 uses serif only. Production resolves the tension as Geist Mono for metadata / navigation / identifiers and system UI for body prose, while taking grid discipline from GIF 2.
 
 ---
 
@@ -167,7 +169,7 @@ The ground color reads as warm ochre / mustard ≈ `#D3A021` — more saturated 
 
 **Strong, keep:**
 
-- Mono + serif pairing as the type system (from GIF 1).
+- System UI + Geist Mono role split as the type system, translated from GIF 1's two-role prompt.
 - A locked vertical baseline grid for body text, shared across columns and across sections (from GIF 2).
 - A three-column layout pattern where punctuation or metadata lives in its own column (from GIF 2). E.g. a short left column for role/label, a wide center column for content, a narrow right column for date/status/tag.
 - Monochrome or one-color-plus-black palette. Not gray-white-only. A chosen warm or cool ground works if used with GIF 2's discipline.

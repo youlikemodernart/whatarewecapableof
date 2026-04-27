@@ -155,6 +155,10 @@ The active mismatches are:
 | `proposals/teaspressa/media-slots.md` | Teaspressa media-slot curation guide for Are.na collection. |
 | `proposals/teaspressa/media-slots.json` | Structured Teaspressa slot manifest. |
 | `proposals/teaspressa/slots/index.html` | Local-only in-flow placeholder draft, ignored by git through `proposals/*/slots/`. It uses actual proposal copy and grey frames or draft images at the proposed insertion points. Do not deploy unless Noah approves. |
+| `proposals/belhaus/media-slots.md` | BELHAUS media-slot curation guide for FAVE atmosphere, BEL-02 artifact assets, and generated system diagrams. |
+| `proposals/belhaus/media-slots.json` | Structured BELHAUS slot manifest. |
+| `proposals/belhaus/slots/index.html` | Local-only in-flow placeholder draft with accepted FAVE image placements, BEL-02 artifact draft, and diagram placeholders. Do not deploy unless Noah approves. |
+| `docs/belhaus-graphics-generation-handoff.md` | Fresh-session handoff for generating BELHAUS proposal graphics through the graphic system or live HTML. |
 
 ## Path rules
 

@@ -20,6 +20,7 @@ Production site: `https://whatarewecapableof.com`
   book/index.html
   consult/index.html
   creative/index.html
+  work/fde/index.html
   tracker/index.html
   proposals/
     _template/index.html
@@ -71,6 +72,7 @@ Production site: `https://whatarewecapableof.com`
 | `/consult` | `consult/index.html` | Shared advisory vertical. |
 | `/creative` | `creative/index.html` | Noah design and build vertical. |
 | `/about` | `about/index.html` | Bios and contact. Footer-only access. |
+| `/work/fde` | `work/fde/index.html` | Direct-link, noindex FDE client-facing work index. Collects the Campus Initiative proposal, Foundation Course site, working links, and decisions to confirm. Not in public navigation. |
 | `/tracker` | `tracker/index.html` | Password-gated internal proposal tracker. Reads `PROPOSALS.md` through authenticated API data. |
 | `/proposals/teaspressa` | `proposals/teaspressa/index.html` | Direct-link proposal. |
 | `/proposals/compassion` | `proposals/compassion/index.html` | Direct-link proposal with image-heavy content. |

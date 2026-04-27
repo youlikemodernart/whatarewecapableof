@@ -23,7 +23,7 @@
   --color-text: #000000;
   --color-accent: rgb(0, 15, 255);
 
-  --margin-inline: var(--space-2);
+  --margin-inline: var(--space-1);
   --margin-block: var(--space-2);
 
   --content-width-narrow: 40ch;

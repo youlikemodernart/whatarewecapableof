@@ -51,6 +51,7 @@ Exception: when the proposal is creative-led or the offer depends on visual spec
 - Custom video controls unless native controls are visually unacceptable.
 - Relative local asset paths such as `img/file.jpg`.
 - Smooth-scroll tab activation changes.
+- The abbreviation `WAWCO` in any client-facing proposal, work index, send page, or public copy. Use `What are we capable of?` or rewrite around the agency name.
 
 ## Workflow
 

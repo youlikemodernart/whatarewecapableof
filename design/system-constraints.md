@@ -138,6 +138,12 @@ Letterspacing animation (per GIF 1) is the only case where `--tracking-expanded`
 - **Sentence case:** all prose, all body, page titles, project client names, section labels that function as soft headings ("Selected work", "Upcoming"), link text within content.
 - **Never:** title case (capitalize every major word), mixed case as emphasis, lowercase-everything (Lola voice marker, not a neutral system).
 
+### Agency name in client-facing copy
+
+Client-facing material must never refer to the agency as `WAWCO`. The abbreviation is acceptable in internal notes, code comments, filenames, handoffs, memory, and working conversation, but it should not appear in proposal pages, client work indexes, send pages, public pages, decks, emails, or any other material a client may read.
+
+Use the full name `What are we capable of?` when the agency name needs to appear. If the full name feels too heavy in a sentence, rewrite around it with `we`, `the work`, `this page`, or the relevant artifact name.
+
 ---
 
 ## 3. Color
@@ -190,7 +196,7 @@ Test content at 375px, 768px, 1280px, and 1600px. Do not design for viewport wid
 
 ```css
 :root {
-  --margin-inline: var(--space-2);        /* 48px at the sides */
+  --margin-inline: var(--space-1);        /* 24px at the sides on mobile */
   --margin-block: var(--space-2);         /* 48px top/bottom */
 }
 
@@ -208,6 +214,8 @@ Test content at 375px, 768px, 1280px, and 1600px. Do not design for viewport wid
   }
 }
 ```
+
+The mobile inline margin is `--space-1`, not `--space-2`. The proposal pages already resolved this narrow-screen issue: 48px side margins leave too little text measure on phones. Keep the global token aligned with that proposal behavior so non-proposal pages and future client-facing indexes inherit the same mobile width.
 
 Content is **always left-anchored.** No `margin-inline: auto` on the main container. The page is a left-weighted composition, not a centered one.
 

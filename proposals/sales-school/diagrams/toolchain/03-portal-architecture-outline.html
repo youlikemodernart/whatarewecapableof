@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Proposed Sales School portal architecture</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #1e1f22;
+      background: #f7f4ee;
+      line-height: 1.5;
+    }
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 40px 24px 72px;
+    }
+    header, section {
+      background: #fffdfa;
+      border: 1px solid #ded8cc;
+      border-radius: 18px;
+      padding: 24px;
+      margin: 0 0 20px;
+    }
+    h1, h2, h3 {
+      line-height: 1.15;
+      margin: 0 0 12px;
+    }
+    h1 {
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      letter-spacing: -0.04em;
+    }
+    h2 {
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #5f5143;
+    }
+    h3 {
+      margin-top: 24px;
+      font-size: 1rem;
+      color: #382f27;
+    }
+    p {
+      margin: 0 0 12px;
+    }
+    .claim {
+      max-width: 72ch;
+      font-size: 1.18rem;
+    }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+    }
+    .meta-card {
+      border: 1px solid #e7e0d4;
+      border-radius: 12px;
+      padding: 12px;
+      background: #fbf8f1;
+    }
+    .meta-card b {
+      display: block;
+      margin-bottom: 4px;
+      color: #5f5143;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    ul, ol {
+      margin-top: 8px;
+      padding-left: 1.25rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 0.95rem;
+    }
+    th, td {
+      border-top: 1px solid #e7e0d4;
+      padding: 10px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      color: #5f5143;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: #fbf8f1;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.9em;
+      background: #f0ebe1;
+      border-radius: 5px;
+      padding: 0.08rem 0.25rem;
+    }
+    .tag-list {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 8px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    .tag-list li {
+      border: 1px solid #d9cfbf;
+      border-radius: 999px;
+      padding: 4px 10px;
+      background: #fbf8f1;
+    }
+    .note {
+      color: #5f5143;
+      font-size: 0.95rem;
+    }
+    @media print {
+      body { background: white; }
+      main { max-width: none; padding: 0; }
+      header, section { break-inside: avoid; border-color: #999; }
+    }
+  </style>
+</head>
+<body>
+<main aria-labelledby="sales-school-portal-architecture-title">
+  <header>
+    <h1 id="sales-school-portal-architecture-title">Proposed Sales School portal architecture</h1>
+    <p id="sales-school-portal-architecture-description" class="claim">The MVP portal turns the existing Sales School material into a course place with a live Today surface, two day sections, six breakout pages, Resources, Facilitator, and Wistia kept as the media layer.</p>
+    <p class="note">Source model: <code>/Users/noah/Projects/whatarewecapableof/proposals/sales-school/diagrams/models/03-portal-architecture.yaml</code></p>
+    <div class="meta-grid" aria-label="Diagram metadata">
+      <div class="meta-card"><b>ID</b>sales-school-portal-architecture</div>
+      <div class="meta-card"><b>Audience</b>Austin and proposal reviewers</div>
+      <div class="meta-card"><b>State</b>proposed MVP</div>
+      <div class="meta-card"><b>Perspective</b>survey</div>
+      <div class="meta-card"><b>Scale</b>structure</div>
+      <div class="meta-card"><b>Timescale</b>proposed first build</div>
+      <div class="meta-card"><b>Delivery</b>browser review and WAWCO SVG generator comparison</div>
+      <div class="meta-card"><b>Scope</b>Proposed first-build portal architecture and adjacent later-scope features.</div>
+    </div>
+  </header>
+
+  <section aria-labelledby="accessibility-heading">
+    <h2 id="accessibility-heading">Accessible reading path</h2>
+    <p><strong>Summary:</strong> The proposed Sales School portal architecture starts with Course home at /sales-school. It contains Today, Day One, Day Two, Resources, and Facilitator. Day One contains Breakouts 1 through 3, Day Two contains Breakouts 4 through 6, Wistia remains the media layer, and search, progress, admin editing, cohorts, and login are optional later scope.</p>
+    <h3>Reading path</h3>
+    <ol><li>Start at Course home as the root page.</li><li>Read Today, Day One, Day Two, Resources, and Facilitator as first-build peer sections.</li><li>Read Breakouts 1 through 3 under Day One and Breakouts 4 through 6 under Day Two.</li><li>Read the kept media layer band as Wistia remaining outside the page hierarchy.</li><li>Read the optional later band as platform features outside MVP scope.</li><li>Use the relation table to check the source and confidence of each relation.</li></ol>
+    <h3>Text equivalent</h3>
+    <p>The MVP portal has Course home at /sales-school. Course home contains Today, Day One, Day Two, Resources, and Facilitator. Today is the live-session surface. Day One contains Breakouts 1, 2, and 3. Day Two contains Breakouts 4, 5, and 6. Each breakout page uses media from Wistia. Search, progress, admin editing, cohorts, and login are optional later features rather than MVP pages.</p>
+  </section>
+
+  <section aria-labelledby="queries-heading">
+    <h2 id="queries-heading">Visual queries and omissions</h2>
+    <h3>Viewer should be able to</h3>
+    <ul><li>Find Course home as the root of the proposed portal.</li><li>See Today as the live-session surface, not a generic dashboard.</li><li>See Day One and Day Two as peer course sections.</li><li>Confirm that six breakout pages sit under the two day sections.</li><li>See Resources and Facilitator as first-build peer support pages.</li><li>Confirm that Wistia remains the media layer.</li><li>Keep optional later features separate from MVP scope.</li></ul>
+    <h3>Omissions</h3>
+    <ul><li>payment</li><li>CRM administration</li><li>lesson-level page expansion</li><li>transcript indexing in the visible diagram</li><li>support triage detail</li><li>exact login policy</li></ul>
+  </section>
+
+  <section aria-labelledby="entities-heading">
+    <h2 id="entities-heading">Entities</h2>
+
+    <h3>root-page</h3>
+    <table>
+      <thead><tr><th>ID</th><th>Label</th><th>State</th><th>Confidence</th><th>Evidence</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr>
+            <td><code>page-course-home</code></td>
+            <td>Course home</td>
+            <td>Proposed MVP</td>
+            <td>proposed</td>
+            <td><code>evidence-current-wawco-svg</code><br><code>evidence-proposed-ia</code><br><code>evidence-live-proposal</code></td>
+            <td>Rendered as /sales-school in the current WAWCO SVG.</td>
+          </tr>
+      </tbody>
+    </table>
+    <h3>live-surface-page</h3>
+    <table>
+      <thead><tr><th>ID</th><th>Label</th><th>State</th><th>Confidence</th><th>Evidence</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr>
+            <td><code>page-today</code></td>
+            <td>Today</td>
+            <td>Live surface</td>
+            <td>proposed</td>
+            <td><code>evidence-current-wawco-svg</code><br><code>evidence-proposed-ia</code><br><code>evidence-proposed-sitemap</code></td>
+            <td>Supports active breakout, watch order, and return prompt.</td>
+          </tr>
+      </tbody>
+    </table>
+    <h3>day-page</h3>
+    <table>
+      <thead><tr><th>ID</th><th>Label</th><th>State</th><th>Confidence</th><th>Evidence</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr>
+            <td><code>page-day-one</code></td>
+            <td>Day One</td>
+            <td>Proposed MVP</td>
+            <td>proposed</td>
+            <td><code>evidence-current-wawco-svg</code><br><code>evidence-proposed-ia</code><br><code>evidence-inventory</code></td>
+            <td></td>
+          </tr><tr>
+            <td><code>page-day-two</code></td>
+            <td>Day Two</td>
+            <td>Proposed MVP</td>
+            <td>proposed</td>
+            <td><code>evidence-current-wawco-svg</code><br><code>evidence-proposed-ia</code><br><code>evidence-inventory</code></td>
+            <td></td>
+          </tr>
+      </tbody>
+    </table>
+    <h3>breakout-page</h3>
+    <table>
+      <thead><tr><th>ID</th><th>Label</th><th>State</th><th>Confidence</th><th>Evidence</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr>
+            <td><code>page-breakout-1</code></td>
+            <td>Breakout 1</td>
+            <td>Proposed MVP</td>
+            <td>proposed</td>
+            <td><code>evidence-current-wawco-svg</code><br><code>evidence-proposed-ia</code><br><code>evidence-inventory</code></td>
+            <td></td>
+          </tr><tr>
+            <td><code>page-breakout-2</code></td>
+            <td>Breakout 2</td>
+            <td>Proposed MVP</td>
+            <td>proposed</td>
+            <td><code>evidence-current-wawco-svg</code><br><code>evidence-proposed-ia</code><br><code>evidence-inventory</code></td>
+            <td></td>
+          </tr><tr>
+            <td><code>page-breakout-3</code></td>
+            <td>Breakout 3</td>
+            <td>Proposed MVP</td>
+            <td>proposed</td>
+            <td><code>evidence-current-wawco-svg</code><br><code>evidence-proposed-ia</code><br><code>evidence-inventory</code></td>
+            <td></td>
+          </tr><tr>
+            <td><code>page-breakout-4</code></td>
+            <td>Breakout 4</td>
+            <td>Proposed MVP</td>
+            <td>proposed</td>
+            <td><code>evidence-current-wawco-svg</code><br><code>evidence-proposed-ia</code><br><code>evidence-inventory</code></td>
+            <td></td>
+          </tr><tr>
+            <td><code>page-breakout-5</code></td>
+            <td>Breakout 5</td>
+            <td>Proposed MVP</td>
+            <td>proposed</td>
+            <td><code>evidence-current-wawco-svg</code><br><code>evidence-proposed-ia</code><br><code>evidence-inventory</code></td>
+            <td></td>
+          </tr><tr>
+            <td><code>page-breakout-6</code></td>
+            <td>Breakout 6</td>
+            <td>Proposed MVP</td>
+            <td>proposed</td>
+            <td><code>evidence-current-wawco-svg</code><br><code>evidence-proposed-ia</code><br><code>evidence-inventory</code></td>
+            <td></td>
+          </tr>
+      </tbody>
+    </table>
+    <h3>support-page</h3>
+    <table>
+      <thead><tr><th>ID</th><th>Label</th><th>State</th><th>Confidence</th><th>Evidence</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr>
+            <td><code>page-resources</code></td>
+            <td>Resources</td>
+            <td>Proposed MVP</td>
+            <td>proposed</td>
+            <td><code>evidence-current-wawco-svg</code><br><code>evidence-proposed-ia</code><br><code>evidence-proposed-sitemap</code></td>
+            <td></td>
+          </tr>
+      </tbody>
+    </table>
+    <h3>operator-page</h3>
+    <table>
+      <thead><tr><th>ID</th><th>Label</th><th>State</th><th>Confidence</th><th>Evidence</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr>
+            <td><code>page-facilitator</code></td>
+            <td>Facilitator</td>
+            <td>Proposed MVP</td>
+            <td>proposed</td>
+            <td><code>evidence-current-wawco-svg</code><br><code>evidence-proposed-ia</code><br><code>evidence-proposed-sitemap</code></td>
+            <td>Operational ownership still needs stakeholder confirmation.</td>
+          </tr>
+      </tbody>
+    </table>
+    <h3>media-layer</h3>
+    <table>
+      <thead><tr><th>ID</th><th>Label</th><th>State</th><th>Confidence</th><th>Evidence</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr>
+            <td><code>system-wistia</code></td>
+            <td>Wistia media layer</td>
+            <td>Kept media layer</td>
+            <td>observed</td>
+            <td><code>evidence-current-wawco-svg</code><br><code>evidence-inventory</code><br><code>evidence-live-proposal</code></td>
+            <td>Current inventory records thirty five Wistia videos.</td>
+          </tr>
+      </tbody>
+    </table>
+    <h3>optional-later-feature</h3>
+    <table>
+      <thead><tr><th>ID</th><th>Label</th><th>State</th><th>Confidence</th><th>Evidence</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr>
+            <td><code>feature-search</code></td>
+            <td>Search</td>
+            <td>Optional later</td>
+            <td>proposed</td>
+            <td><code>evidence-current-wawco-svg</code><br><code>evidence-proposed-ia</code></td>
+            <td></td>
+          </tr><tr>
+            <td><code>feature-progress</code></td>
+            <td>Progress</td>
+            <td>Optional later</td>
+            <td>proposed</td>
+            <td><code>evidence-current-wawco-svg</code><br><code>evidence-proposed-ia</code></td>
+            <td></td>
+          </tr><tr>
+            <td><code>feature-admin-editing</code></td>
+            <td>Admin editing</td>
+            <td>Optional later</td>
+            <td>proposed</td>
+            <td><code>evidence-current-wawco-svg</code><br><code>evidence-proposed-ia</code></td>
+            <td></td>
+          </tr><tr>
+            <td><code>feature-cohorts</code></td>
+            <td>Cohorts</td>
+            <td>Optional later</td>
+            <td>proposed</td>
+            <td><code>evidence-current-wawco-svg</code><br><code>evidence-proposed-ia</code></td>
+            <td></td>
+          </tr><tr>
+            <td><code>feature-login</code></td>
+            <td>Login</td>
+            <td>Optional later</td>
+            <td>proposed</td>
+            <td><code>evidence-current-wawco-svg</code><br><code>evidence-proposed-ia</code></td>
+            <td></td>
+          </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section aria-labelledby="relations-heading">
+    <h2 id="relations-heading">Relations</h2>
+    <table>
+    <thead><tr><th>ID</th><th>From</th><th>Verb</th><th>To</th><th>Type</th><th>Direction</th><th>Confidence</th><th>Evidence</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>relation-home-contains-today</code></td>
+        <td>Course home<br><code>page-course-home</code></td>
+        <td>contains</td>
+        <td>Today<br><code>page-today</code></td>
+        <td>containment</td>
+        <td>none</td>
+        <td>proposed</td>
+        <td><code>evidence-current-wawco-svg</code><br><span class="note">Current WAWCO portal architecture SVG</span><br><code>evidence-proposed-ia</code><br><span class="note">Sales School proposal IA and UI directions</span></td>
+      </tr><tr>
+        <td><code>relation-home-contains-day-one</code></td>
+        <td>Course home<br><code>page-course-home</code></td>
+        <td>contains</td>
+        <td>Day One<br><code>page-day-one</code></td>
+        <td>containment</td>
+        <td>none</td>
+        <td>proposed</td>
+        <td><code>evidence-current-wawco-svg</code><br><span class="note">Current WAWCO portal architecture SVG</span><br><code>evidence-proposed-ia</code><br><span class="note">Sales School proposal IA and UI directions</span></td>
+      </tr><tr>
+        <td><code>relation-home-contains-day-two</code></td>
+        <td>Course home<br><code>page-course-home</code></td>
+        <td>contains</td>
+        <td>Day Two<br><code>page-day-two</code></td>
+        <td>containment</td>
+        <td>none</td>
+        <td>proposed</td>
+        <td><code>evidence-current-wawco-svg</code><br><span class="note">Current WAWCO portal architecture SVG</span><br><code>evidence-proposed-ia</code><br><span class="note">Sales School proposal IA and UI directions</span></td>
+      </tr><tr>
+        <td><code>relation-home-contains-resources</code></td>
+        <td>Course home<br><code>page-course-home</code></td>
+        <td>contains</td>
+        <td>Resources<br><code>page-resources</code></td>
+        <td>containment</td>
+        <td>none</td>
+        <td>proposed</td>
+        <td><code>evidence-current-wawco-svg</code><br><span class="note">Current WAWCO portal architecture SVG</span><br><code>evidence-proposed-ia</code><br><span class="note">Sales School proposal IA and UI directions</span></td>
+      </tr><tr>
+        <td><code>relation-home-contains-facilitator</code></td>
+        <td>Course home<br><code>page-course-home</code></td>
+        <td>contains</td>
+        <td>Facilitator<br><code>page-facilitator</code></td>
+        <td>containment</td>
+        <td>none</td>
+        <td>proposed</td>
+        <td><code>evidence-current-wawco-svg</code><br><span class="note">Current WAWCO portal architecture SVG</span><br><code>evidence-proposed-ia</code><br><span class="note">Sales School proposal IA and UI directions</span></td>
+      </tr><tr>
+        <td><code>relation-day-one-contains-breakout-1</code></td>
+        <td>Day One<br><code>page-day-one</code></td>
+        <td>contains</td>
+        <td>Breakout 1<br><code>page-breakout-1</code></td>
+        <td>containment</td>
+        <td>none</td>
+        <td>proposed</td>
+        <td><code>evidence-current-wawco-svg</code><br><span class="note">Current WAWCO portal architecture SVG</span><br><code>evidence-proposed-ia</code><br><span class="note">Sales School proposal IA and UI directions</span><br><code>evidence-inventory</code><br><span class="note">Sales School link-flow inventory</span></td>
+      </tr><tr>
+        <td><code>relation-day-one-contains-breakout-2</code></td>
+        <td>Day One<br><code>page-day-one</code></td>
+        <td>contains</td>
+        <td>Breakout 2<br><code>page-breakout-2</code></td>
+        <td>containment</td>
+        <td>none</td>
+        <td>proposed</td>
+        <td><code>evidence-current-wawco-svg</code><br><span class="note">Current WAWCO portal architecture SVG</span><br><code>evidence-proposed-ia</code><br><span class="note">Sales School proposal IA and UI directions</span><br><code>evidence-inventory</code><br><span class="note">Sales School link-flow inventory</span></td>
+      </tr><tr>
+        <td><code>relation-day-one-contains-breakout-3</code></td>
+        <td>Day One<br><code>page-day-one</code></td>
+        <td>contains</td>
+        <td>Breakout 3<br><code>page-breakout-3</code></td>
+        <td>containment</td>
+        <td>none</td>
+        <td>proposed</td>
+        <td><code>evidence-current-wawco-svg</code><br><span class="note">Current WAWCO portal architecture SVG</span><br><code>evidence-proposed-ia</code><br><span class="note">Sales School proposal IA and UI directions</span><br><code>evidence-inventory</code><br><span class="note">Sales School link-flow inventory</span></td>
+      </tr><tr>
+        <td><code>relation-day-two-contains-breakout-4</code></td>
+        <td>Day Two<br><code>page-day-two</code></td>
+        <td>contains</td>
+        <td>Breakout 4<br><code>page-breakout-4</code></td>
+        <td>containment</td>
+        <td>none</td>
+        <td>proposed</td>
+        <td><code>evidence-current-wawco-svg</code><br><span class="note">Current WAWCO portal architecture SVG</span><br><code>evidence-proposed-ia</code><br><span class="note">Sales School proposal IA and UI directions</span><br><code>evidence-inventory</code><br><span class="note">Sales School link-flow inventory</span></td>
+      </tr><tr>
+        <td><code>relation-day-two-contains-breakout-5</code></td>
+        <td>Day Two<br><code>page-day-two</code></td>
+        <td>contains</td>
+        <td>Breakout 5<br><code>page-breakout-5</code></td>
+        <td>containment</td>
+        <td>none</td>
+        <td>proposed</td>
+        <td><code>evidence-current-wawco-svg</code><br><span class="note">Current WAWCO portal architecture SVG</span><br><code>evidence-proposed-ia</code><br><span class="note">Sales School proposal IA and UI directions</span><br><code>evidence-inventory</code><br><span class="note">Sales School link-flow inventory</span></td>
+      </tr><tr>
+        <td><code>relation-day-two-contains-breakout-6</code></td>
+        <td>Day Two<br><code>page-day-two</code></td>
+        <td>contains</td>
+        <td>Breakout 6<br><code>page-breakout-6</code></td>
+        <td>containment</td>
+        <td>none</td>
+        <td>proposed</td>
+        <td><code>evidence-current-wawco-svg</code><br><span class="note">Current WAWCO portal architecture SVG</span><br><code>evidence-proposed-ia</code><br><span class="note">Sales School proposal IA and UI directions</span><br><code>evidence-inventory</code><br><span class="note">Sales School link-flow inventory</span></td>
+      </tr><tr>
+        <td><code>relation-breakout-1-uses-wistia</code></td>
+        <td>Breakout 1<br><code>page-breakout-1</code></td>
+        <td>uses media from</td>
+        <td>Wistia media layer<br><code>system-wistia</code></td>
+        <td>media-dependency</td>
+        <td>forward</td>
+        <td>proposed</td>
+        <td><code>evidence-current-wawco-svg</code><br><span class="note">Current WAWCO portal architecture SVG</span><br><code>evidence-inventory</code><br><span class="note">Sales School link-flow inventory</span></td>
+      </tr><tr>
+        <td><code>relation-breakout-2-uses-wistia</code></td>
+        <td>Breakout 2<br><code>page-breakout-2</code></td>
+        <td>uses media from</td>
+        <td>Wistia media layer<br><code>system-wistia</code></td>
+        <td>media-dependency</td>
+        <td>forward</td>
+        <td>proposed</td>
+        <td><code>evidence-current-wawco-svg</code><br><span class="note">Current WAWCO portal architecture SVG</span><br><code>evidence-inventory</code><br><span class="note">Sales School link-flow inventory</span></td>
+      </tr><tr>
+        <td><code>relation-breakout-3-uses-wistia</code></td>
+        <td>Breakout 3<br><code>page-breakout-3</code></td>
+        <td>uses media from</td>
+        <td>Wistia media layer<br><code>system-wistia</code></td>
+        <td>media-dependency</td>
+        <td>forward</td>
+        <td>proposed</td>
+        <td><code>evidence-current-wawco-svg</code><br><span class="note">Current WAWCO portal architecture SVG</span><br><code>evidence-inventory</code><br><span class="note">Sales School link-flow inventory</span></td>
+      </tr><tr>
+        <td><code>relation-breakout-4-uses-wistia</code></td>
+        <td>Breakout 4<br><code>page-breakout-4</code></td>
+        <td>uses media from</td>
+        <td>Wistia media layer<br><code>system-wistia</code></td>
+        <td>media-dependency</td>
+        <td>forward</td>
+        <td>proposed</td>
+        <td><code>evidence-current-wawco-svg</code><br><span class="note">Current WAWCO portal architecture SVG</span><br><code>evidence-inventory</code><br><span class="note">Sales School link-flow inventory</span></td>
+      </tr><tr>
+        <td><code>relation-breakout-5-uses-wistia</code></td>
+        <td>Breakout 5<br><code>page-breakout-5</code></td>
+        <td>uses media from</td>
+        <td>Wistia media layer<br><code>system-wistia</code></td>
+        <td>media-dependency</td>
+        <td>forward</td>
+        <td>proposed</td>
+        <td><code>evidence-current-wawco-svg</code><br><span class="note">Current WAWCO portal architecture SVG</span><br><code>evidence-inventory</code><br><span class="note">Sales School link-flow inventory</span></td>
+      </tr><tr>
+        <td><code>relation-breakout-6-uses-wistia</code></td>
+        <td>Breakout 6<br><code>page-breakout-6</code></td>
+        <td>uses media from</td>
+        <td>Wistia media layer<br><code>system-wistia</code></td>
+        <td>media-dependency</td>
+        <td>forward</td>
+        <td>proposed</td>
+        <td><code>evidence-current-wawco-svg</code><br><span class="note">Current WAWCO portal architecture SVG</span><br><code>evidence-inventory</code><br><span class="note">Sales School link-flow inventory</span></td>
+      </tr><tr>
+        <td><code>relation-home-defers-search</code></td>
+        <td>Course home<br><code>page-course-home</code></td>
+        <td>defers</td>
+        <td>Search<br><code>feature-search</code></td>
+        <td>future-scope</td>
+        <td>none</td>
+        <td>proposed</td>
+        <td><code>evidence-current-wawco-svg</code><br><span class="note">Current WAWCO portal architecture SVG</span><br><code>evidence-proposed-ia</code><br><span class="note">Sales School proposal IA and UI directions</span></td>
+      </tr><tr>
+        <td><code>relation-home-defers-progress</code></td>
+        <td>Course home<br><code>page-course-home</code></td>
+        <td>defers</td>
+        <td>Progress<br><code>feature-progress</code></td>
+        <td>future-scope</td>
+        <td>none</td>
+        <td>proposed</td>
+        <td><code>evidence-current-wawco-svg</code><br><span class="note">Current WAWCO portal architecture SVG</span><br><code>evidence-proposed-ia</code><br><span class="note">Sales School proposal IA and UI directions</span></td>
+      </tr><tr>
+        <td><code>relation-home-defers-admin-editing</code></td>
+        <td>Course home<br><code>page-course-home</code></td>
+        <td>defers</td>
+        <td>Admin editing<br><code>feature-admin-editing</code></td>
+        <td>future-scope</td>
+        <td>none</td>
+        <td>proposed</td>
+        <td><code>evidence-current-wawco-svg</code><br><span class="note">Current WAWCO portal architecture SVG</span><br><code>evidence-proposed-ia</code><br><span class="note">Sales School proposal IA and UI directions</span></td>
+      </tr><tr>
+        <td><code>relation-home-defers-cohorts</code></td>
+        <td>Course home<br><code>page-course-home</code></td>
+        <td>defers</td>
+        <td>Cohorts<br><code>feature-cohorts</code></td>
+        <td>future-scope</td>
+        <td>none</td>
+        <td>proposed</td>
+        <td><code>evidence-current-wawco-svg</code><br><span class="note">Current WAWCO portal architecture SVG</span><br><code>evidence-proposed-ia</code><br><span class="note">Sales School proposal IA and UI directions</span></td>
+      </tr><tr>
+        <td><code>relation-home-defers-login</code></td>
+        <td>Course home<br><code>page-course-home</code></td>
+        <td>defers</td>
+        <td>Login<br><code>feature-login</code></td>
+        <td>future-scope</td>
+        <td>none</td>
+        <td>proposed</td>
+        <td><code>evidence-current-wawco-svg</code><br><span class="note">Current WAWCO portal architecture SVG</span><br><code>evidence-proposed-ia</code><br><span class="note">Sales School proposal IA and UI directions</span></td>
+      </tr>
+    </tbody>
+  </table>
+  </section>
+
+  <section aria-labelledby="states-heading">
+    <h2 id="states-heading">States and legend</h2>
+    <h3>States</h3>
+    <table>
+    <thead><tr><th>ID</th><th>Label</th><th>Definition</th><th>Visual cue</th><th>Text cue</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>proposed-mvp</code></td>
+        <td>Proposed MVP</td>
+        <td>Included in the proposed first build of the course portal.</td>
+        <td>black rule with plain page node</td>
+        <td>Proposed MVP label or first-build section placement</td>
+      </tr><tr>
+        <td><code>live-surface</code></td>
+        <td>Live surface</td>
+        <td>First-build page whose job is current-session access during Zoom breaks.</td>
+        <td>WAWCO blue accent on the Today node</td>
+        <td>Live surface label</td>
+      </tr><tr>
+        <td><code>kept-media-layer</code></td>
+        <td>Kept media layer</td>
+        <td>Existing Wistia-hosted media remains outside the page hierarchy but is organized by the portal.</td>
+        <td>kept media layer band</td>
+        <td>Kept media layer label</td>
+      </tr><tr>
+        <td><code>optional-later</code></td>
+        <td>Optional later</td>
+        <td>Platform features outside the first-build portal scope.</td>
+        <td>dashed optional later band</td>
+        <td>Optional later label</td>
+      </tr>
+    </tbody>
+  </table>
+    <h3>Legend</h3>
+    <table>
+    <thead><tr><th>Mark</th><th>Meaning</th><th>Redundant cue</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>plain hierarchy connector</td>
+        <td>parent child page structure in the proposed MVP portal</td>
+        <td>contains relation in the text equivalent and relation table</td>
+      </tr><tr>
+        <td>WAWCO blue accent</td>
+        <td>the live Today surface is the selected state surface in this architecture view</td>
+        <td>Live surface label</td>
+      </tr><tr>
+        <td>kept media layer band</td>
+        <td>Wistia remains the media layer outside the page hierarchy</td>
+        <td>Kept media layer label</td>
+      </tr><tr>
+        <td>dashed optional later band</td>
+        <td>feature is outside MVP and belongs to later platform scope</td>
+        <td>Optional later label</td>
+      </tr>
+    </tbody>
+  </table>
+  </section>
+
+  <section aria-labelledby="evidence-heading">
+    <h2 id="evidence-heading">Evidence</h2>
+    <table>
+    <thead><tr><th>ID</th><th>Title</th><th>Type</th><th>Date</th><th>Confidence</th><th>Path</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>evidence-current-wawco-svg</code></td>
+        <td>Current WAWCO portal architecture SVG</td>
+        <td>generated SVG</td>
+        <td>2026-04-27</td>
+        <td>observed</td>
+        <td><code>~/Projects/whatarewecapableof/proposals/sales-school/diagrams/svg/03-portal-architecture.svg</code></td>
+        <td>Current generated image diagram used as the visual comparison target for this toolchain retry.</td>
+      </tr><tr>
+        <td><code>evidence-generator</code></td>
+        <td>WAWCO SVG generator</td>
+        <td>local generator source</td>
+        <td>2026-04-27</td>
+        <td>observed</td>
+        <td><code>~/Projects/whatarewecapableof/proposals/sales-school/diagrams/src/generate-diagrams.py</code></td>
+        <td>Defines the current custom WAWCO rendering of the portal architecture.</td>
+      </tr><tr>
+        <td><code>evidence-live-proposal</code></td>
+        <td>Sales School proposal source</td>
+        <td>local HTML source</td>
+        <td>2026-04-27</td>
+        <td>observed</td>
+        <td><code>~/Projects/whatarewecapableof/proposals/sales-school/index.html</code></td>
+        <td>Contains the current live HTML and CSS sitemap diagram and text equivalent.</td>
+      </tr><tr>
+        <td><code>evidence-proposed-ia</code></td>
+        <td>Sales School proposal IA and UI directions</td>
+        <td>local IA document</td>
+        <td>2026-04-27</td>
+        <td>observed</td>
+        <td><code>~/Projects/austin-sales-school/docs/proposal-ia-and-ui-directions.md</code></td>
+        <td>Defines the MVP sitemap, expanded sitemap, page roles, and proposal posture.</td>
+      </tr><tr>
+        <td><code>evidence-proposed-sitemap</code></td>
+        <td>Proposed site flow and sitemap</td>
+        <td>local IA document</td>
+        <td>2026-04-27</td>
+        <td>observed</td>
+        <td><code>~/Projects/austin-sales-school/docs/proposed-site-flow-and-sitemap.md</code></td>
+        <td>Gives the proposed top-level sitemap, live Zoom flow, facilitator flow, and content model.</td>
+      </tr><tr>
+        <td><code>evidence-inventory</code></td>
+        <td>Sales School link-flow inventory</td>
+        <td>local IA inventory</td>
+        <td>2026-04-27</td>
+        <td>observed</td>
+        <td><code>~/Projects/austin-sales-school/content/inventory.md</code></td>
+        <td>Records the current counts and the recommendation to replace the link chain with a student-facing learning portal.</td>
+      </tr>
+    </tbody>
+  </table>
+  </section>
+
+  <section aria-labelledby="notes-heading"><h2 id="notes-heading">Notes</h2><ul><li>This is a survey view, not the live-break flow.</li><li>Graphviz output is a structure draft. The current WAWCO SVG generator remains the visual rendering layer for proposal images.</li><li>The model intentionally keeps transcript indexing out of the visible optional-later list for this diagram retry.</li></ul></section>
+</main>
+</body>
+</html>

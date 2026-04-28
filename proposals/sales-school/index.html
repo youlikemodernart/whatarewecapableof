@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="/css/typography.css">
 <link rel="stylesheet" href="/css/layout.css">
 <link rel="stylesheet" href="/css/components.css">
-<link rel="stylesheet" href="/css/proposal-media.css?v=rules-20260427">
+<link rel="stylesheet" href="/css/proposal-media.css?v=diagrams-20260427">
 <style>
   html, body {
     overflow-x: clip;
@@ -66,7 +66,7 @@
     text-transform: uppercase;
     letter-spacing: var(--tracking-caps);
     color: var(--color-text);
-    opacity: 0.4;
+    opacity: 0.62;
   }
 
   .proposal-title {
@@ -124,7 +124,7 @@
     text-decoration: none;
     cursor: pointer;
     color: var(--color-text);
-    opacity: 0.35;
+    opacity: 0.62;
     border: none;
     background: none;
     padding: 0;
@@ -132,7 +132,7 @@
     transition: opacity var(--transition-default);
   }
 
-  .tab:hover { text-decoration: none; opacity: 0.7; }
+  .tab:hover { text-decoration: none; opacity: 0.8; }
   .tab.active { opacity: 1; }
 
   .tab-content {
@@ -191,7 +191,7 @@
     font-size: var(--size-xs);
     text-transform: uppercase;
     letter-spacing: var(--tracking-caps);
-    opacity: 0.45;
+    opacity: 0.62;
     margin-bottom: var(--space-0-5);
   }
 
@@ -239,7 +239,7 @@
     text-transform: uppercase;
     letter-spacing: var(--tracking-caps);
     font-weight: 400;
-    opacity: 0.4;
+    opacity: 0.62;
     padding: var(--space-0-5) 0;
     border-bottom: 1px solid var(--color-text);
   }
@@ -316,6 +316,29 @@
     margin-top: var(--space-4);
     padding-top: var(--space-1);
     border-top: 1px solid rgba(0,0,0,0.08);
+  }
+
+  .page-proposal .proposal-process-step-label,
+  .page-proposal .proposal-media-source,
+  .page-proposal .proposal-specimen-number,
+  .page-proposal .proposal-specimen-meta,
+  .page-proposal .proposal-excerpt cite,
+  .page-proposal .proposal-sitemap-note,
+  .page-proposal .proposal-live-note,
+  .page-proposal .proposal-wireframe-note,
+  .page-proposal .proposal-wireframe-label {
+    opacity: 0.62;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0s !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0s !important;
+    }
   }
 
   @media (max-width: 767px) {
@@ -418,38 +441,18 @@
 
 <div class="finding">
   <div class="finding-label">01</div>
-  <p>The current path has three layers before a student reaches the actual learning object: email preview, PDF index, Wistia page. That works as distribution. During a timed Zoom break, three layers is a lot of navigation.</p>
+  <p>The current path crosses seven surfaces before a student reaches playback: preview, email HTML, email index, day section, breakout button, PDF index, Wistia page. That works as distribution. During a timed Zoom break, seven surfaces is a lot of navigation.</p>
 </div>
 
-<figure class="proposal-text-graphic" aria-label="Current flow from email preview to PDF index to Wistia pages">
-  <div class="proposal-flow proposal-flow--six">
-    <div class="proposal-flow-step">
-      <div class="proposal-flow-step-label">GoHighLevel preview</div>
-      <div class="proposal-flow-step-note">Entry URL</div>
-    </div>
-    <div class="proposal-flow-step">
-      <div class="proposal-flow-step-label">Firebase email HTML</div>
-      <div class="proposal-flow-step-note">Iframe layer</div>
-    </div>
-    <div class="proposal-flow-step">
-      <div class="proposal-flow-step-label">Email index</div>
-      <div class="proposal-flow-step-note">Day One / Day Two</div>
-    </div>
-    <div class="proposal-flow-step">
-      <div class="proposal-flow-step-label">Breakout buttons</div>
-      <div class="proposal-flow-step-note">Six buttons</div>
-    </div>
-    <div class="proposal-flow-step">
-      <div class="proposal-flow-step-label">PDF indexes</div>
-      <div class="proposal-flow-step-note">Six Canva PDFs</div>
-    </div>
-    <div class="proposal-flow-step">
-      <div class="proposal-flow-step-label">Wistia pages</div>
-      <div class="proposal-flow-step-note">35 videos</div>
-    </div>
-  </div>
-  <figcaption class="proposal-media-caption">Architecture issue: the learning content exists, but students reach it through intermediate documents.</figcaption>
+<figure class="proposal-media proposal-media-wide proposal-image-diagram" tabindex="0">
+  <img src="/proposals/sales-school/diagrams/png/01-current-access-terrain.png" alt="Current Sales School access route showing Preview, Email HTML, Email index, Day section, Breakout, PDF index, and Wistia page, with evidence counts for days, PDFs, videos, resource PDF, and missing support features." width="1800" height="780" decoding="async">
+  <figcaption class="proposal-media-caption">Current-state route. The diagram shows the seven surfaces a student crosses before reaching video playback. Source basis: Sales School IA packet, proposal memory, current email preview, PDF contact sheet, and Wistia contact sheet.</figcaption>
 </figure>
+
+<details class="proposal-text-version" data-diagram-text-equivalent>
+  <summary>Text version</summary>
+  <p>The student opens the GoHighLevel preview. The preview loads Firebase email HTML. The email index presents Day One and Day Two. The student chooses a day section, clicks one of six breakout buttons, opens a PDF index, and reaches a Wistia video page or one known resource PDF. Current support gaps: global nav, search, progress, current-session state, and facilitator control surface are not visible.</p>
+</details>
 
 <div class="finding">
   <div class="finding-label">02</div>
@@ -482,44 +485,15 @@
 
 <p>The proposed architecture starts with the course as a place, then branches into the live session, the two days, the breakout sections, and the supporting resources.</p>
 
-<figure class="proposal-text-graphic proposal-media-wide" aria-label="Proposed course portal sitemap">
-  <div class="proposal-map">
-    <div class="proposal-map-row">
-      <div class="proposal-map-item">
-        <div class="proposal-map-item-label">Sales School home</div>
-        <div class="proposal-map-item-note">Overview + resume</div>
-      </div>
-      <div class="proposal-map-children">
-        <div class="proposal-map-item"><div class="proposal-map-item-label">Today</div><div class="proposal-map-item-note">Live session</div></div>
-        <div class="proposal-map-item"><div class="proposal-map-item-label">Day One</div><div class="proposal-map-item-note">Three breakouts</div></div>
-        <div class="proposal-map-item"><div class="proposal-map-item-label">Day Two</div><div class="proposal-map-item-note">Three breakouts</div></div>
-      </div>
-    </div>
-    <div class="proposal-map-row">
-      <div class="proposal-map-item">
-        <div class="proposal-map-item-label">Support pages</div>
-        <div class="proposal-map-item-note">MVP layer</div>
-      </div>
-      <div class="proposal-map-children">
-        <div class="proposal-map-item"><div class="proposal-map-item-label">Resources</div><div class="proposal-map-item-note">PDFs + worksheets</div></div>
-        <div class="proposal-map-item"><div class="proposal-map-item-label">Facilitator</div><div class="proposal-map-item-note">Launch active break</div></div>
-        <div class="proposal-map-item"><div class="proposal-map-item-label">Breakout pages</div><div class="proposal-map-item-note">Video queue + context</div></div>
-      </div>
-    </div>
-    <div class="proposal-map-row">
-      <div class="proposal-map-item">
-        <div class="proposal-map-item-label">Phase 2 options</div>
-        <div class="proposal-map-item-note">Only if repeated cohorts need them</div>
-      </div>
-      <div class="proposal-map-children">
-        <div class="proposal-map-item"><div class="proposal-map-item-label">Search</div><div class="proposal-map-item-note">Indexed lessons</div></div>
-        <div class="proposal-map-item"><div class="proposal-map-item-label">Progress</div><div class="proposal-map-item-note">Watched state</div></div>
-        <div class="proposal-map-item"><div class="proposal-map-item-label">Admin</div><div class="proposal-map-item-note">Curriculum + cohorts</div></div>
-      </div>
-    </div>
-  </div>
-  <figcaption class="proposal-media-caption">MVP keeps Wistia and replaces PDF indexes with navigable course pages. Optional layers add search, progress, and admin.</figcaption>
+<figure class="proposal-media proposal-media-wide proposal-image-diagram" tabindex="0">
+  <img src="/proposals/sales-school/diagrams/png/03-portal-architecture.png" alt="Proposed Sales School portal architecture with Course home, Today, Day One, Day Two, Resources, Facilitator, Wistia media layer, and optional later features." width="1800" height="960" decoding="async">
+  <figcaption class="proposal-media-caption">Proposed portal architecture. The first build is Course home, Today, Day One, Day Two, six Breakout pages, Resources, and Facilitator. Wistia remains the media layer. Search, progress, admin editing, cohorts, and login remain later platform scope.</figcaption>
 </figure>
+
+<details class="proposal-text-version" data-diagram-text-equivalent>
+  <summary>Text version</summary>
+  <p>The proposed root is /sales-school. First-level MVP pages are /today, /day-one, /day-two, /resources, and /facilitator. Day One contains Breakout 1, Breakout 2, and Breakout 3. Day Two contains Breakout 4, Breakout 5, and Breakout 6. Wistia remains the media layer. Optional later platform features include search, progress, admin editing, cohorts, and login.</p>
+</details>
 
 <h2 class="section-heading section-heading--plain">MVP sitemap</h2>
 
@@ -543,8 +517,16 @@
   /day-one
     /breakout-1
       /lessons/[lesson]
+    /breakout-2
+      /lessons/[lesson]
+    /breakout-3
+      /lessons/[lesson]
   /day-two
     /breakout-4
+      /lessons/[lesson]
+    /breakout-5
+      /lessons/[lesson]
+    /breakout-6
       /lessons/[lesson]
   /resources
   /search
@@ -611,31 +593,15 @@
 
 <p>The strongest interface idea is a live-break console. The course is partly synchronous, so the site should have a current-state screen instead of only a library.</p>
 
-<figure class="proposal-text-graphic proposal-media-wide" aria-label="Live break flow during Zoom">
-  <div class="proposal-flow proposal-flow--five">
-    <div class="proposal-flow-step">
-      <div class="proposal-flow-step-label">Live Zoom</div>
-      <div class="proposal-flow-step-note">Cohort session</div>
-    </div>
-    <div class="proposal-flow-step">
-      <div class="proposal-flow-step-label">Instructor cue</div>
-      <div class="proposal-flow-step-note">Announce break</div>
-    </div>
-    <div class="proposal-flow-step">
-      <div class="proposal-flow-step-label">Today page</div>
-      <div class="proposal-flow-step-note">Active breakout</div>
-    </div>
-    <div class="proposal-flow-step">
-      <div class="proposal-flow-step-label">Watch sequence</div>
-      <div class="proposal-flow-step-note">Assigned videos</div>
-    </div>
-    <div class="proposal-flow-step">
-      <div class="proposal-flow-step-label">Return prompt</div>
-      <div class="proposal-flow-step-note">Back to Zoom</div>
-    </div>
-  </div>
-  <figcaption class="proposal-media-caption">The Today page gives the live course one stable student URL.</figcaption>
+<figure class="proposal-media proposal-media-wide proposal-image-diagram" tabindex="0">
+  <img src="/proposals/sales-school/diagrams/png/04-live-break-operating-flow.png" alt="Proposed live break operating flow with five numbered steps from Zoom cue to debrief and three exception checks for Today access, wrong breakout, and stuck students." width="1800" height="800" decoding="async">
+  <figcaption class="proposal-media-caption">Proposed live-break operating flow. The diagram keeps facilitator cue, student action, portal state, return prompt, and debrief in one sequence. Exception checks remain assumptions until Austin confirms active-breakout control and support ownership.</figcaption>
 </figure>
+
+<details class="proposal-text-version" data-diagram-text-equivalent>
+  <summary>Text version</summary>
+  <p>In Zoom, the facilitator selects or announces the active breakout and cues students. Students open the Today page. The portal shows the active breakout, watch sequence, and return prompt. Students watch the assigned sequence, then return to Zoom for debrief. Exception notes cover Today access failure, wrong breakout, and stuck student states. These remain proposed until operational ownership is confirmed.</p>
+</details>
 
 <h2 class="section-heading section-heading--plain">Direction 1: Live Break Console</h2>
 
@@ -645,43 +611,15 @@
   <p>A live dashboard shows the active breakout, the watch sequence, and the return instruction. The instructor can share one link during Zoom. Students land on the right thing immediately.</p>
 </div>
 
-<figure class="proposal-text-graphic proposal-media-wide" aria-label="Low fidelity Today page wireframe">
-  <div class="proposal-wireframe">
-    <div class="proposal-wireframe-header">
-      <div class="proposal-wireframe-region">
-        <div class="proposal-wireframe-label">Course state</div>
-        <div class="proposal-wireframe-title">Day One / live now</div>
-        <div class="proposal-wireframe-note">Video Breakout 2</div>
-      </div>
-      <div class="proposal-wireframe-region">
-        <div class="proposal-wireframe-label">Status</div>
-        <div class="proposal-wireframe-title">Active breakout</div>
-        <div class="proposal-wireframe-note">Set by facilitator</div>
-      </div>
-    </div>
-    <div class="proposal-wireframe-grid">
-      <div class="proposal-wireframe-region">
-        <div class="proposal-wireframe-label">Student task</div>
-        <div class="proposal-wireframe-title">Watch this breakout now</div>
-        <ul class="proposal-wireframe-list">
-          <li>Leadership in Sales</li>
-          <li>Metrics that Matter</li>
-        </ul>
-      </div>
-      <div class="proposal-wireframe-region">
-        <div class="proposal-wireframe-label">Return instruction</div>
-        <div class="proposal-wireframe-title">Return to Zoom</div>
-        <div class="proposal-wireframe-note">Time, link, or next cue</div>
-      </div>
-    </div>
-    <div class="proposal-wireframe-queue">
-      <div class="proposal-wireframe-item"><div class="proposal-wireframe-title">Lesson queue</div><div class="proposal-wireframe-note">Two assigned videos</div></div>
-      <div class="proposal-wireframe-item"><div class="proposal-wireframe-title">Resource slot</div><div class="proposal-wireframe-note">Worksheet, script, or reading</div></div>
-      <div class="proposal-wireframe-item"><div class="proposal-wireframe-title">Next action</div><div class="proposal-wireframe-note">Resume or return</div></div>
-    </div>
-  </div>
-  <figcaption class="proposal-media-caption">Placeholder wireframe. Final visual direction should follow the design references we collect later.</figcaption>
+<figure class="proposal-media proposal-media-wide proposal-image-diagram" tabindex="0">
+  <img src="/proposals/sales-school/diagrams/png/05-today-state-surface.png" alt="Annotated Today live surface showing live state, active breakout, watch queue, return prompt, help path, and Wistia layer." width="1800" height="1020" decoding="async">
+  <figcaption class="proposal-media-caption">Today state surface. The diagram shows the page as a live-session surface: active state, current breakout, watch queue, return prompt, help path, and Wistia media layer. Final UI design still waits for references and brand assets.</figcaption>
 </figure>
+
+<details class="proposal-text-version" data-diagram-text-equivalent>
+  <summary>Text version</summary>
+  <p>The Today page shows course state, active breakout, facilitator-set status, student task, watch queue, resource slot, and return instruction. It should answer what to watch now, in what order, and how to return to Zoom.</p>
+</details>
 
 <h2 class="section-heading section-heading--plain">Direction 2: Two-Day Course Map</h2>
 
@@ -726,6 +664,16 @@
 <div id="scope" class="tab-content" role="tabpanel" aria-labelledby="tab-scope">
 
 <p>This can be scoped in two layers. The first layer makes the current training feel coherent. The second layer turns it into a fuller learning product.</p>
+
+<figure class="proposal-media proposal-media-wide proposal-image-diagram" tabindex="0">
+  <img src="/proposals/sales-school/diagrams/png/06-scope-frontier.png" alt="Scope boundary showing Phase 1 course portal, kept Wistia media layer, and optional Phase 2 platform features." width="1800" height="840" decoding="async">
+  <figcaption class="proposal-media-caption">Scope boundary. Phase 1 is the course portal around existing media. Wistia remains the kept media layer. Phase 2 features stay in optional later product scope.</figcaption>
+</figure>
+
+<details class="proposal-text-version" data-diagram-text-equivalent>
+  <summary>Text version</summary>
+  <p>Phase 1 includes Course home, Today, Day pages, Breakout pages, Resources, Facilitator, and Wistia embeds or links. The kept media layer is Wistia: existing hosting, embeds, and linked video pages. Phase 2 is optional platform work: search, progress, admin editing, cohorts, and login.</p>
+</details>
 
 <h2 class="section-heading section-heading--plain">Phase 1: Course portal</h2>
 
@@ -835,7 +783,12 @@
     root.style.scrollBehavior = previousScrollBehavior;
   }
 
-  function activateTab(tab) {
+  function tabForHash() {
+    if (!window.location.hash) return null;
+    return document.querySelector('.tab[href="' + window.location.hash + '"]');
+  }
+
+  function activateTab(tab, updateHash) {
     var id = tab.getAttribute('href').slice(1);
     var panel = document.getElementById(id);
     if (!panel) return;
@@ -848,14 +801,25 @@
     panel.classList.add('active');
     tab.classList.add('active');
     tab.setAttribute('aria-selected', 'true');
+    if (updateHash && window.history && window.history.pushState) {
+      window.history.pushState(null, '', tab.getAttribute('href'));
+    }
     scrollPanelToTop(panel);
   }
 
   tabs.forEach(function(tab) {
     tab.addEventListener('click', function(e) {
       e.preventDefault();
-      activateTab(this);
+      activateTab(this, true);
     });
+  });
+
+  var initialTab = tabForHash();
+  if (initialTab) activateTab(initialTab, false);
+
+  window.addEventListener('hashchange', function() {
+    var tab = tabForHash();
+    if (tab) activateTab(tab, false);
   });
 })();
 </script>

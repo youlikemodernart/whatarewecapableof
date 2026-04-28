@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="840" viewBox="0 0 1800 840">
+<defs>
+  <marker id="arrowBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#000fff" /></marker>
+  <marker id="arrowBlack" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#000000" /></marker>
+</defs>
+<g id="background">
+<rect x="0" y="0" width="1800" height="840" fill="#ffffff" stroke="none" />
+</g>
+<g id="connectors">
+<line x1="90" y1="164" x2="1710" y2="164" stroke="#000000" stroke-width="1" opacity="1" />
+<line x1="90" y1="786" x2="1710" y2="786" stroke="#d9d9d9" stroke-width="1" opacity="1" />
+</g>
+<g id="containers">
+<rect x="90" y="245" width="1620" height="144" fill="#ffffff" stroke="#000000" stroke-width="1.2" />
+<rect x="90" y="419" width="1620" height="144" fill="#ffffff" stroke="#000fff" stroke-width="1.2" />
+<rect x="90" y="593" width="1620" height="144" fill="#ffffff" stroke="#d9d9d9" stroke-width="1.2" stroke-dasharray="8 8" />
+</g>
+<g id="nodes">
+<rect x="650" y="301" width="144.64999999999998" height="38" fill="#ffffff" stroke="#d9d9d9" stroke-width="1" rx="19" />
+<rect x="812.65" y="301" width="116" height="38" fill="#ffffff" stroke="#d9d9d9" stroke-width="1" rx="19" />
+<rect x="946.65" y="301" width="124.35" height="38" fill="#ffffff" stroke="#d9d9d9" stroke-width="1" rx="19" />
+<rect x="1089.0" y="301" width="175.1" height="38" fill="#ffffff" stroke="#d9d9d9" stroke-width="1" rx="19" />
+<rect x="1282.1" y="301" width="124.35" height="38" fill="#ffffff" stroke="#d9d9d9" stroke-width="1" rx="19" />
+<rect x="1424.4499999999998" y="301" width="144.64999999999998" height="38" fill="#ffffff" stroke="#d9d9d9" stroke-width="1" rx="19" />
+<rect x="650" y="475" width="116" height="38" fill="#ffffff" stroke="#d9d9d9" stroke-width="1" rx="19" />
+<rect x="784" y="475" width="215.7" height="38" fill="#ffffff" stroke="#d9d9d9" stroke-width="1" rx="19" />
+<rect x="1017.7" y="475" width="195.4" height="38" fill="#ffffff" stroke="#d9d9d9" stroke-width="1" rx="19" />
+<rect x="650" y="649" width="116" height="38" fill="#ffffff" stroke="#d9d9d9" stroke-width="1" rx="19" />
+<rect x="784" y="649" width="116" height="38" fill="#ffffff" stroke="#d9d9d9" stroke-width="1" rx="19" />
+<rect x="918" y="649" width="164.95" height="38" fill="#ffffff" stroke="#d9d9d9" stroke-width="1" rx="19" />
+<rect x="1100.95" y="649" width="116" height="38" fill="#ffffff" stroke="#d9d9d9" stroke-width="1" rx="19" />
+<rect x="1234.95" y="649" width="116" height="38" fill="#ffffff" stroke="#d9d9d9" stroke-width="1" rx="19" />
+</g>
+<g id="text">
+<text x="90" y="78" text-anchor="start" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:19px; font-weight:400; fill:#666666; letter-spacing:1.8px; opacity:1;">Sales School diagram 06</text>
+<text x="90" y="128" text-anchor="start" style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size:44px; font-weight:400; fill:#000000; letter-spacing:0px; opacity:1;">Scope boundary</text>
+<text x="136" y="290" text-anchor="start" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:17px; font-weight:400; fill:#666666; letter-spacing:1.4px; opacity:1;">PHASE 1</text>
+<text x="136" y="339" text-anchor="start" style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size:31px; font-weight:400; fill:#000000; letter-spacing:0px; opacity:1;">Course portal</text>
+<text x="722.325" y="321" text-anchor="middle" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:15px; font-weight:400; fill:#000000; letter-spacing:1.0px; opacity:1;" dominant-baseline="middle">Course home</text>
+<text x="870.65" y="321" text-anchor="middle" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:15px; font-weight:400; fill:#000000; letter-spacing:1.0px; opacity:1;" dominant-baseline="middle">Today</text>
+<text x="1008.8249999999999" y="321" text-anchor="middle" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:15px; font-weight:400; fill:#000000; letter-spacing:1.0px; opacity:1;" dominant-baseline="middle">Day pages</text>
+<text x="1176.55" y="321" text-anchor="middle" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:15px; font-weight:400; fill:#000000; letter-spacing:1.0px; opacity:1;" dominant-baseline="middle">Breakout pages</text>
+<text x="1344.2749999999999" y="321" text-anchor="middle" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:15px; font-weight:400; fill:#000000; letter-spacing:1.0px; opacity:1;" dominant-baseline="middle">Resources</text>
+<text x="1496.7749999999999" y="321" text-anchor="middle" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:15px; font-weight:400; fill:#000000; letter-spacing:1.0px; opacity:1;" dominant-baseline="middle">Facilitator</text>
+<text x="136" y="464" text-anchor="start" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:17px; font-weight:400; fill:#666666; letter-spacing:1.4px; opacity:1;">KEPT LAYER</text>
+<text x="136" y="513" text-anchor="start" style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size:31px; font-weight:400; fill:#000000; letter-spacing:0px; opacity:1;">Wistia media</text>
+<text x="708.0" y="495" text-anchor="middle" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:15px; font-weight:400; fill:#000000; letter-spacing:1.0px; opacity:1;" dominant-baseline="middle">embeds</text>
+<text x="891.85" y="495" text-anchor="middle" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:15px; font-weight:400; fill:#000000; letter-spacing:1.0px; opacity:1;" dominant-baseline="middle">linked video pages</text>
+<text x="1115.4" y="495" text-anchor="middle" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:15px; font-weight:400; fill:#000000; letter-spacing:1.0px; opacity:1;" dominant-baseline="middle">existing hosting</text>
+<text x="136" y="638" text-anchor="start" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:17px; font-weight:400; fill:#666666; letter-spacing:1.4px; opacity:1;">PHASE 2</text>
+<text x="136" y="687" text-anchor="start" style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size:31px; font-weight:400; fill:#000000; letter-spacing:0px; opacity:1;">Optional platform features</text>
+<text x="708.0" y="669" text-anchor="middle" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:15px; font-weight:400; fill:#666666; letter-spacing:1.0px; opacity:1;" dominant-baseline="middle">search</text>
+<text x="842.0" y="669" text-anchor="middle" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:15px; font-weight:400; fill:#666666; letter-spacing:1.0px; opacity:1;" dominant-baseline="middle">progress</text>
+<text x="1000.475" y="669" text-anchor="middle" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:15px; font-weight:400; fill:#666666; letter-spacing:1.0px; opacity:1;" dominant-baseline="middle">admin editing</text>
+<text x="1158.95" y="669" text-anchor="middle" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:15px; font-weight:400; fill:#666666; letter-spacing:1.0px; opacity:1;" dominant-baseline="middle">cohorts</text>
+<text x="1292.95" y="669" text-anchor="middle" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:15px; font-weight:400; fill:#666666; letter-spacing:1.0px; opacity:1;" dominant-baseline="middle">login</text>
+<text x="90" y="804" text-anchor="start" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:17px; font-weight:400; fill:#666666; letter-spacing:0.8px; opacity:1;">MVP scope is the portal around existing media. Platform features remain optional later work.</text>
+</g>
+</svg>

@@ -1,0 +1,74 @@
+digraph sales_school_portal_architecture {
+  graph [
+    rankdir="TB",
+    bgcolor="transparent",
+    pad="0.25",
+    nodesep="0.55",
+    ranksep="0.75",
+    splines="ortho",
+    overlap="false",
+    fontname="Arial",
+    label="Proposed Sales School portal architecture",
+    labelloc="t",
+    fontsize="18"
+  ];
+  node [
+    shape="box",
+    style="rounded,filled",
+    fontname="Arial",
+    fontsize="11",
+    margin="0.13,0.09",
+    color="#817363",
+    fillcolor="#fffdfa",
+    penwidth="1.2"
+  ];
+  edge [
+    fontname="Arial",
+    fontsize="9",
+    color="#817363",
+    fontcolor="#5f5143",
+    arrowsize="0.65"
+  ];
+
+  "page-course-home" [label="Course home\n[root-page]\nProposed MVP", tooltip="page-course-home: Course home", id="page-course-home", fillcolor="#edf5ff", color="#376392"];
+  "page-today" [label="Today\n[live-surface-page]\nLive surface", tooltip="page-today: Today", id="page-today"];
+  "page-day-one" [label="Day One\n[day-page]\nProposed MVP", tooltip="page-day-one: Day One", id="page-day-one", fillcolor="#edf5ff", color="#376392"];
+  "page-day-two" [label="Day Two\n[day-page]\nProposed MVP", tooltip="page-day-two: Day Two", id="page-day-two", fillcolor="#edf5ff", color="#376392"];
+  "page-breakout-1" [label="Breakout 1\n[breakout-page]\nProposed MVP", tooltip="page-breakout-1: Breakout 1", id="page-breakout-1", fillcolor="#edf5ff", color="#376392"];
+  "page-breakout-2" [label="Breakout 2\n[breakout-page]\nProposed MVP", tooltip="page-breakout-2: Breakout 2", id="page-breakout-2", fillcolor="#edf5ff", color="#376392"];
+  "page-breakout-3" [label="Breakout 3\n[breakout-page]\nProposed MVP", tooltip="page-breakout-3: Breakout 3", id="page-breakout-3", fillcolor="#edf5ff", color="#376392"];
+  "page-breakout-4" [label="Breakout 4\n[breakout-page]\nProposed MVP", tooltip="page-breakout-4: Breakout 4", id="page-breakout-4", fillcolor="#edf5ff", color="#376392"];
+  "page-breakout-5" [label="Breakout 5\n[breakout-page]\nProposed MVP", tooltip="page-breakout-5: Breakout 5", id="page-breakout-5", fillcolor="#edf5ff", color="#376392"];
+  "page-breakout-6" [label="Breakout 6\n[breakout-page]\nProposed MVP", tooltip="page-breakout-6: Breakout 6", id="page-breakout-6", fillcolor="#edf5ff", color="#376392"];
+  "page-resources" [label="Resources\n[support-page]\nProposed MVP", tooltip="page-resources: Resources", id="page-resources", fillcolor="#edf5ff", color="#376392"];
+  "page-facilitator" [label="Facilitator\n[operator-page]\nProposed MVP", tooltip="page-facilitator: Facilitator", id="page-facilitator", fillcolor="#edf5ff", color="#376392"];
+  "system-wistia" [label="Wistia media layer\n[media-layer]\nKept media layer", tooltip="system-wistia: Wistia media layer", id="system-wistia"];
+  "feature-search" [label="Search\n[optional-later-feature]\nOptional later", tooltip="feature-search: Search", id="feature-search"];
+  "feature-progress" [label="Progress\n[optional-later-feature]\nOptional later", tooltip="feature-progress: Progress", id="feature-progress"];
+  "feature-admin-editing" [label="Admin editing\n[optional-later-feature]\nOptional later", tooltip="feature-admin-editing: Admin editing", id="feature-admin-editing"];
+  "feature-cohorts" [label="Cohorts\n[optional-later-feature]\nOptional later", tooltip="feature-cohorts: Cohorts", id="feature-cohorts"];
+  "feature-login" [label="Login\n[optional-later-feature]\nOptional later", tooltip="feature-login: Login", id="feature-login"];
+
+  "page-course-home" -> "page-today" [tooltip="relation-home-contains-today: page-course-home contains page-today", id="relation-home-contains-today", dir="none", color="#b6aa9b", penwidth="1.1"];
+  "page-course-home" -> "page-day-one" [tooltip="relation-home-contains-day-one: page-course-home contains page-day-one", id="relation-home-contains-day-one", dir="none", color="#b6aa9b", penwidth="1.1"];
+  "page-course-home" -> "page-day-two" [tooltip="relation-home-contains-day-two: page-course-home contains page-day-two", id="relation-home-contains-day-two", dir="none", color="#b6aa9b", penwidth="1.1"];
+  "page-course-home" -> "page-resources" [tooltip="relation-home-contains-resources: page-course-home contains page-resources", id="relation-home-contains-resources", dir="none", color="#b6aa9b", penwidth="1.1"];
+  "page-course-home" -> "page-facilitator" [tooltip="relation-home-contains-facilitator: page-course-home contains page-facilitator", id="relation-home-contains-facilitator", dir="none", color="#b6aa9b", penwidth="1.1"];
+  "page-day-one" -> "page-breakout-1" [tooltip="relation-day-one-contains-breakout-1: page-day-one contains page-breakout-1", id="relation-day-one-contains-breakout-1", dir="none", color="#b6aa9b", penwidth="1.1"];
+  "page-day-one" -> "page-breakout-2" [tooltip="relation-day-one-contains-breakout-2: page-day-one contains page-breakout-2", id="relation-day-one-contains-breakout-2", dir="none", color="#b6aa9b", penwidth="1.1"];
+  "page-day-one" -> "page-breakout-3" [tooltip="relation-day-one-contains-breakout-3: page-day-one contains page-breakout-3", id="relation-day-one-contains-breakout-3", dir="none", color="#b6aa9b", penwidth="1.1"];
+  "page-day-two" -> "page-breakout-4" [tooltip="relation-day-two-contains-breakout-4: page-day-two contains page-breakout-4", id="relation-day-two-contains-breakout-4", dir="none", color="#b6aa9b", penwidth="1.1"];
+  "page-day-two" -> "page-breakout-5" [tooltip="relation-day-two-contains-breakout-5: page-day-two contains page-breakout-5", id="relation-day-two-contains-breakout-5", dir="none", color="#b6aa9b", penwidth="1.1"];
+  "page-day-two" -> "page-breakout-6" [tooltip="relation-day-two-contains-breakout-6: page-day-two contains page-breakout-6", id="relation-day-two-contains-breakout-6", dir="none", color="#b6aa9b", penwidth="1.1"];
+  "page-breakout-1" -> "system-wistia" [tooltip="relation-breakout-1-uses-wistia: page-breakout-1 uses media from system-wistia", id="relation-breakout-1-uses-wistia", label="uses media from", style="dotted", color="#6c727f"];
+  "page-breakout-2" -> "system-wistia" [tooltip="relation-breakout-2-uses-wistia: page-breakout-2 uses media from system-wistia", id="relation-breakout-2-uses-wistia", label="uses media from", style="dotted", color="#6c727f"];
+  "page-breakout-3" -> "system-wistia" [tooltip="relation-breakout-3-uses-wistia: page-breakout-3 uses media from system-wistia", id="relation-breakout-3-uses-wistia", label="uses media from", style="dotted", color="#6c727f"];
+  "page-breakout-4" -> "system-wistia" [tooltip="relation-breakout-4-uses-wistia: page-breakout-4 uses media from system-wistia", id="relation-breakout-4-uses-wistia", label="uses media from", style="dotted", color="#6c727f"];
+  "page-breakout-5" -> "system-wistia" [tooltip="relation-breakout-5-uses-wistia: page-breakout-5 uses media from system-wistia", id="relation-breakout-5-uses-wistia", label="uses media from", style="dotted", color="#6c727f"];
+  "page-breakout-6" -> "system-wistia" [tooltip="relation-breakout-6-uses-wistia: page-breakout-6 uses media from system-wistia", id="relation-breakout-6-uses-wistia", label="uses media from", style="dotted", color="#6c727f"];
+  "page-course-home" -> "feature-search" [tooltip="relation-home-defers-search: page-course-home defers feature-search", id="relation-home-defers-search", label="defers", dir="none", style="dashed", color="#9b8c78"];
+  "page-course-home" -> "feature-progress" [tooltip="relation-home-defers-progress: page-course-home defers feature-progress", id="relation-home-defers-progress", label="defers", dir="none", style="dashed", color="#9b8c78"];
+  "page-course-home" -> "feature-admin-editing" [tooltip="relation-home-defers-admin-editing: page-course-home defers feature-admin-editing", id="relation-home-defers-admin-editing", label="defers", dir="none", style="dashed", color="#9b8c78"];
+  "page-course-home" -> "feature-cohorts" [tooltip="relation-home-defers-cohorts: page-course-home defers feature-cohorts", id="relation-home-defers-cohorts", label="defers", dir="none", style="dashed", color="#9b8c78"];
+  "page-course-home" -> "feature-login" [tooltip="relation-home-defers-login: page-course-home defers feature-login", id="relation-home-defers-login", label="defers", dir="none", style="dashed", color="#9b8c78"];
+}

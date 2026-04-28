@@ -1,0 +1,546 @@
+id: sales-school-portal-architecture
+title: Proposed Sales School portal architecture
+claim: The MVP portal turns the existing Sales School material into a course place with a live Today surface, two day sections, six breakout pages, Resources, Facilitator, and Wistia kept as the media layer.
+audience: Austin and proposal reviewers
+state: proposed MVP
+perspective: survey
+scale: structure
+timescale: proposed first build
+delivery: browser review and WAWCO SVG generator comparison
+scope: Proposed first-build portal architecture and adjacent later-scope features.
+omissions:
+  - payment
+  - CRM administration
+  - lesson-level page expansion
+  - transcript indexing in the visible diagram
+  - support triage detail
+  - exact login policy
+visualQueries:
+  - Find Course home as the root of the proposed portal.
+  - See Today as the live-session surface, not a generic dashboard.
+  - See Day One and Day Two as peer course sections.
+  - Confirm that six breakout pages sit under the two day sections.
+  - See Resources and Facilitator as first-build peer support pages.
+  - Confirm that Wistia remains the media layer.
+  - Keep optional later features separate from MVP scope.
+states:
+  - id: proposed-mvp
+    label: Proposed MVP
+    definition: Included in the proposed first build of the course portal.
+    visualCue: black rule with plain page node
+    textCue: Proposed MVP label or first-build section placement
+  - id: live-surface
+    label: Live surface
+    definition: First-build page whose job is current-session access during Zoom breaks.
+    visualCue: WAWCO blue accent on the Today node
+    textCue: Live surface label
+  - id: kept-media-layer
+    label: Kept media layer
+    definition: Existing Wistia-hosted media remains outside the page hierarchy but is organized by the portal.
+    visualCue: kept media layer band
+    textCue: Kept media layer label
+  - id: optional-later
+    label: Optional later
+    definition: Platform features outside the first-build portal scope.
+    visualCue: dashed optional later band
+    textCue: Optional later label
+evidence:
+  - id: evidence-current-wawco-svg
+    title: Current WAWCO portal architecture SVG
+    sourceType: generated SVG
+    date: 2026-04-27
+    path: ~/Projects/whatarewecapableof/proposals/sales-school/diagrams/svg/03-portal-architecture.svg
+    confidence: observed
+    notes: Current generated image diagram used as the visual comparison target for this toolchain retry.
+  - id: evidence-generator
+    title: WAWCO SVG generator
+    sourceType: local generator source
+    date: 2026-04-27
+    path: ~/Projects/whatarewecapableof/proposals/sales-school/diagrams/src/generate-diagrams.py
+    confidence: observed
+    notes: Defines the current custom WAWCO rendering of the portal architecture.
+  - id: evidence-live-proposal
+    title: Sales School proposal source
+    sourceType: local HTML source
+    date: 2026-04-27
+    path: ~/Projects/whatarewecapableof/proposals/sales-school/index.html
+    confidence: observed
+    notes: Contains the current live HTML and CSS sitemap diagram and text equivalent.
+  - id: evidence-proposed-ia
+    title: Sales School proposal IA and UI directions
+    sourceType: local IA document
+    date: 2026-04-27
+    path: ~/Projects/austin-sales-school/docs/proposal-ia-and-ui-directions.md
+    confidence: observed
+    notes: Defines the MVP sitemap, expanded sitemap, page roles, and proposal posture.
+  - id: evidence-proposed-sitemap
+    title: Proposed site flow and sitemap
+    sourceType: local IA document
+    date: 2026-04-27
+    path: ~/Projects/austin-sales-school/docs/proposed-site-flow-and-sitemap.md
+    confidence: observed
+    notes: Gives the proposed top-level sitemap, live Zoom flow, facilitator flow, and content model.
+  - id: evidence-inventory
+    title: Sales School link-flow inventory
+    sourceType: local IA inventory
+    date: 2026-04-27
+    path: ~/Projects/austin-sales-school/content/inventory.md
+    confidence: observed
+    notes: Records the current counts and the recommendation to replace the link chain with a student-facing learning portal.
+entities:
+  - id: page-course-home
+    label: Course home
+    type: root-page
+    role: course orientation
+    state: proposed-mvp
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+      - evidence-live-proposal
+    notes: Rendered as /sales-school in the current WAWCO SVG.
+  - id: page-today
+    label: Today
+    type: live-surface-page
+    role: current-session access
+    state: live-surface
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+      - evidence-proposed-sitemap
+    notes: Supports active breakout, watch order, and return prompt.
+  - id: page-day-one
+    label: Day One
+    type: day-page
+    role: curriculum section
+    state: proposed-mvp
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+      - evidence-inventory
+  - id: page-day-two
+    label: Day Two
+    type: day-page
+    role: curriculum section
+    state: proposed-mvp
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+      - evidence-inventory
+  - id: page-breakout-1
+    label: Breakout 1
+    type: breakout-page
+    role: first-class replacement for one PDF index
+    state: proposed-mvp
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+      - evidence-inventory
+  - id: page-breakout-2
+    label: Breakout 2
+    type: breakout-page
+    role: first-class replacement for one PDF index
+    state: proposed-mvp
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+      - evidence-inventory
+  - id: page-breakout-3
+    label: Breakout 3
+    type: breakout-page
+    role: first-class replacement for one PDF index
+    state: proposed-mvp
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+      - evidence-inventory
+  - id: page-breakout-4
+    label: Breakout 4
+    type: breakout-page
+    role: first-class replacement for one PDF index
+    state: proposed-mvp
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+      - evidence-inventory
+  - id: page-breakout-5
+    label: Breakout 5
+    type: breakout-page
+    role: first-class replacement for one PDF index
+    state: proposed-mvp
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+      - evidence-inventory
+  - id: page-breakout-6
+    label: Breakout 6
+    type: breakout-page
+    role: first-class replacement for one PDF index
+    state: proposed-mvp
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+      - evidence-inventory
+  - id: page-resources
+    label: Resources
+    type: support-page
+    role: worksheets scripts and readings
+    state: proposed-mvp
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+      - evidence-proposed-sitemap
+  - id: page-facilitator
+    label: Facilitator
+    type: operator-page
+    role: active breakout control and share flow
+    state: proposed-mvp
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+      - evidence-proposed-sitemap
+    notes: Operational ownership still needs stakeholder confirmation.
+  - id: system-wistia
+    label: Wistia media layer
+    type: media-layer
+    role: existing video hosting and playback
+    state: kept-media-layer
+    confidence: observed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-inventory
+      - evidence-live-proposal
+    notes: Current inventory records thirty five Wistia videos.
+  - id: feature-search
+    label: Search
+    type: optional-later-feature
+    role: cross-content retrieval
+    state: optional-later
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+  - id: feature-progress
+    label: Progress
+    type: optional-later-feature
+    role: learner status tracking
+    state: optional-later
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+  - id: feature-admin-editing
+    label: Admin editing
+    type: optional-later-feature
+    role: curriculum maintenance
+    state: optional-later
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+  - id: feature-cohorts
+    label: Cohorts
+    type: optional-later-feature
+    role: repeated cohort management
+    state: optional-later
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+  - id: feature-login
+    label: Login
+    type: optional-later-feature
+    role: account access control
+    state: optional-later
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+relations:
+  - id: relation-home-contains-today
+    from: page-course-home
+    verb: contains
+    to: page-today
+    type: containment
+    direction: none
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+  - id: relation-home-contains-day-one
+    from: page-course-home
+    verb: contains
+    to: page-day-one
+    type: containment
+    direction: none
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+  - id: relation-home-contains-day-two
+    from: page-course-home
+    verb: contains
+    to: page-day-two
+    type: containment
+    direction: none
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+  - id: relation-home-contains-resources
+    from: page-course-home
+    verb: contains
+    to: page-resources
+    type: containment
+    direction: none
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+  - id: relation-home-contains-facilitator
+    from: page-course-home
+    verb: contains
+    to: page-facilitator
+    type: containment
+    direction: none
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+  - id: relation-day-one-contains-breakout-1
+    from: page-day-one
+    verb: contains
+    to: page-breakout-1
+    type: containment
+    direction: none
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+      - evidence-inventory
+  - id: relation-day-one-contains-breakout-2
+    from: page-day-one
+    verb: contains
+    to: page-breakout-2
+    type: containment
+    direction: none
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+      - evidence-inventory
+  - id: relation-day-one-contains-breakout-3
+    from: page-day-one
+    verb: contains
+    to: page-breakout-3
+    type: containment
+    direction: none
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+      - evidence-inventory
+  - id: relation-day-two-contains-breakout-4
+    from: page-day-two
+    verb: contains
+    to: page-breakout-4
+    type: containment
+    direction: none
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+      - evidence-inventory
+  - id: relation-day-two-contains-breakout-5
+    from: page-day-two
+    verb: contains
+    to: page-breakout-5
+    type: containment
+    direction: none
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+      - evidence-inventory
+  - id: relation-day-two-contains-breakout-6
+    from: page-day-two
+    verb: contains
+    to: page-breakout-6
+    type: containment
+    direction: none
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+      - evidence-inventory
+  - id: relation-breakout-1-uses-wistia
+    from: page-breakout-1
+    verb: uses media from
+    to: system-wistia
+    type: media-dependency
+    direction: forward
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-inventory
+  - id: relation-breakout-2-uses-wistia
+    from: page-breakout-2
+    verb: uses media from
+    to: system-wistia
+    type: media-dependency
+    direction: forward
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-inventory
+  - id: relation-breakout-3-uses-wistia
+    from: page-breakout-3
+    verb: uses media from
+    to: system-wistia
+    type: media-dependency
+    direction: forward
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-inventory
+  - id: relation-breakout-4-uses-wistia
+    from: page-breakout-4
+    verb: uses media from
+    to: system-wistia
+    type: media-dependency
+    direction: forward
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-inventory
+  - id: relation-breakout-5-uses-wistia
+    from: page-breakout-5
+    verb: uses media from
+    to: system-wistia
+    type: media-dependency
+    direction: forward
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-inventory
+  - id: relation-breakout-6-uses-wistia
+    from: page-breakout-6
+    verb: uses media from
+    to: system-wistia
+    type: media-dependency
+    direction: forward
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-inventory
+  - id: relation-home-defers-search
+    from: page-course-home
+    verb: defers
+    to: feature-search
+    type: future-scope
+    direction: none
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+  - id: relation-home-defers-progress
+    from: page-course-home
+    verb: defers
+    to: feature-progress
+    type: future-scope
+    direction: none
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+  - id: relation-home-defers-admin-editing
+    from: page-course-home
+    verb: defers
+    to: feature-admin-editing
+    type: future-scope
+    direction: none
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+  - id: relation-home-defers-cohorts
+    from: page-course-home
+    verb: defers
+    to: feature-cohorts
+    type: future-scope
+    direction: none
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+  - id: relation-home-defers-login
+    from: page-course-home
+    verb: defers
+    to: feature-login
+    type: future-scope
+    direction: none
+    confidence: proposed
+    evidence:
+      - evidence-current-wawco-svg
+      - evidence-proposed-ia
+legend:
+  - mark: plain hierarchy connector
+    meaning: parent child page structure in the proposed MVP portal
+    redundantCue: contains relation in the text equivalent and relation table
+  - mark: WAWCO blue accent
+    meaning: the live Today surface is the selected state surface in this architecture view
+    redundantCue: Live surface label
+  - mark: kept media layer band
+    meaning: Wistia remains the media layer outside the page hierarchy
+    redundantCue: Kept media layer label
+  - mark: dashed optional later band
+    meaning: feature is outside MVP and belongs to later platform scope
+    redundantCue: Optional later label
+accessibility:
+  summary: The proposed Sales School portal architecture starts with Course home at /sales-school. It contains Today, Day One, Day Two, Resources, and Facilitator. Day One contains Breakouts 1 through 3, Day Two contains Breakouts 4 through 6, Wistia remains the media layer, and search, progress, admin editing, cohorts, and login are optional later scope.
+  readingPath:
+    - Start at Course home as the root page.
+    - Read Today, Day One, Day Two, Resources, and Facilitator as first-build peer sections.
+    - Read Breakouts 1 through 3 under Day One and Breakouts 4 through 6 under Day Two.
+    - Read the kept media layer band as Wistia remaining outside the page hierarchy.
+    - Read the optional later band as platform features outside MVP scope.
+    - Use the relation table to check the source and confidence of each relation.
+  textEquivalent: The MVP portal has Course home at /sales-school. Course home contains Today, Day One, Day Two, Resources, and Facilitator. Today is the live-session surface. Day One contains Breakouts 1, 2, and 3. Day Two contains Breakouts 4, 5, and 6. Each breakout page uses media from Wistia. Search, progress, admin editing, cohorts, and login are optional later features rather than MVP pages.
+  relationTable:
+    - relation-home-contains-today
+    - relation-home-contains-day-one
+    - relation-home-contains-day-two
+    - relation-home-contains-resources
+    - relation-home-contains-facilitator
+    - relation-day-one-contains-breakout-1
+    - relation-day-one-contains-breakout-2
+    - relation-day-one-contains-breakout-3
+    - relation-day-two-contains-breakout-4
+    - relation-day-two-contains-breakout-5
+    - relation-day-two-contains-breakout-6
+    - relation-breakout-1-uses-wistia
+    - relation-breakout-2-uses-wistia
+    - relation-breakout-3-uses-wistia
+    - relation-breakout-4-uses-wistia
+    - relation-breakout-5-uses-wistia
+    - relation-breakout-6-uses-wistia
+    - relation-home-defers-search
+    - relation-home-defers-progress
+    - relation-home-defers-admin-editing
+    - relation-home-defers-cohorts
+    - relation-home-defers-login
+notes:
+  - This is a survey view, not the live-break flow.
+  - Graphviz output is a structure draft. The current WAWCO SVG generator remains the visual rendering layer for proposal images.
+  - The model intentionally keeps transcript indexing out of the visible optional-later list for this diagram retry.

@@ -9,5 +9,8 @@ design/reference-analysis/_quarantine/
 # Local-only proposal planning boards
 proposals/*/slots/
 
+# Local-only proposal diagram QA artifacts
+proposals/*/diagrams/toolchain/checks/
+
 # Local source assets pulled for proposal image selection/cropping
 proposals/*/img/src/

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="960" viewBox="0 0 1800 960">
+<defs>
+  <marker id="arrowBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#000fff" /></marker>
+  <marker id="arrowBlack" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#000000" /></marker>
+</defs>
+<g id="background">
+<rect x="0" y="0" width="1800" height="960" fill="#ffffff" stroke="none" />
+</g>
+<g id="connectors">
+<line x1="90" y1="164" x2="1710" y2="164" stroke="#000000" stroke-width="1" opacity="1" />
+<line x1="900.0" y1="337" x2="900.0" y2="405" stroke="#d9d9d9" stroke-width="1" opacity="1" />
+<line x1="230.0" y1="405" x2="1470.0" y2="405" stroke="#d9d9d9" stroke-width="1" opacity="1" />
+<line x1="230.0" y1="405" x2="230.0" y2="455" stroke="#d9d9d9" stroke-width="1" opacity="1" />
+<line x1="540.0" y1="405" x2="540.0" y2="455" stroke="#d9d9d9" stroke-width="1" opacity="1" />
+<line x1="850.0" y1="405" x2="850.0" y2="455" stroke="#d9d9d9" stroke-width="1" opacity="1" />
+<line x1="1160.0" y1="405" x2="1160.0" y2="455" stroke="#d9d9d9" stroke-width="1" opacity="1" />
+<line x1="1470.0" y1="405" x2="1470.0" y2="455" stroke="#d9d9d9" stroke-width="1" opacity="1" />
+<line x1="540.0" y1="547" x2="540.0" y2="727" stroke="#d9d9d9" stroke-width="1" opacity="1" />
+<line x1="850.0" y1="547" x2="850.0" y2="727" stroke="#d9d9d9" stroke-width="1" opacity="1" />
+</g>
+<g id="containers">
+<rect x="120" y="812" width="1480" height="54" fill="#ffffff" stroke="#000000" stroke-width="1" />
+<rect x="120" y="890" width="1480" height="46" fill="#ffffff" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="8 8" />
+</g>
+<g id="nodes">
+<rect x="735" y="245" width="330" height="92" fill="#ffffff" stroke="#000000" stroke-width="1" />
+<rect x="120" y="455" width="220" height="92" fill="#ffffff" stroke="#000000" stroke-width="1" />
+<line x1="120" y1="455" x2="340" y2="455" stroke="#000fff" stroke-width="3" opacity="1" />
+<rect x="430" y="455" width="220" height="92" fill="#ffffff" stroke="#d9d9d9" stroke-width="1" />
+<rect x="740" y="455" width="220" height="92" fill="#ffffff" stroke="#d9d9d9" stroke-width="1" />
+<rect x="1050" y="455" width="220" height="92" fill="#ffffff" stroke="#d9d9d9" stroke-width="1" />
+<rect x="1360" y="455" width="220" height="92" fill="#ffffff" stroke="#d9d9d9" stroke-width="1" />
+<rect x="450" y="615" width="180" height="42" fill="#ffffff" stroke="#d9d9d9" stroke-width="1" />
+<rect x="450" y="671" width="180" height="42" fill="#ffffff" stroke="#d9d9d9" stroke-width="1" />
+<rect x="450" y="727" width="180" height="42" fill="#ffffff" stroke="#d9d9d9" stroke-width="1" />
+<rect x="760" y="615" width="180" height="42" fill="#ffffff" stroke="#d9d9d9" stroke-width="1" />
+<rect x="760" y="671" width="180" height="42" fill="#ffffff" stroke="#d9d9d9" stroke-width="1" />
+<rect x="760" y="727" width="180" height="42" fill="#ffffff" stroke="#d9d9d9" stroke-width="1" />
+</g>
+<g id="text">
+<text x="90" y="78" text-anchor="start" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:19px; font-weight:400; fill:#666666; letter-spacing:1.8px; opacity:1;">Sales School diagram 03</text>
+<text x="90" y="128" text-anchor="start" style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size:44px; font-weight:400; fill:#000000; letter-spacing:0px; opacity:1;">Proposed portal architecture</text>
+<text x="753" y="283" text-anchor="start" style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size:28px; font-weight:400; fill:#000000; letter-spacing:0px; opacity:1;">Course home</text>
+<text x="753" y="315.0" text-anchor="start" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:16px; font-weight:400; fill:#666666; letter-spacing:0.6px; opacity:1;">/sales-school</text>
+<text x="138" y="493" text-anchor="start" style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size:25px; font-weight:400; fill:#000000; letter-spacing:0px; opacity:1;">Today</text>
+<text x="138" y="525.0" text-anchor="start" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:16px; font-weight:400; fill:#666666; letter-spacing:0.6px; opacity:1;">live surface</text>
+<text x="448" y="493" text-anchor="start" style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size:25px; font-weight:400; fill:#000000; letter-spacing:0px; opacity:1;">Day One</text>
+<text x="448" y="525.0" text-anchor="start" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:16px; font-weight:400; fill:#666666; letter-spacing:0.6px; opacity:1;">breakouts 1 to 3</text>
+<text x="758" y="493" text-anchor="start" style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size:25px; font-weight:400; fill:#000000; letter-spacing:0px; opacity:1;">Day Two</text>
+<text x="758" y="525.0" text-anchor="start" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:16px; font-weight:400; fill:#666666; letter-spacing:0.6px; opacity:1;">breakouts 4 to 6</text>
+<text x="1068" y="493" text-anchor="start" style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size:25px; font-weight:400; fill:#000000; letter-spacing:0px; opacity:1;">Resources</text>
+<text x="1068" y="525.0" text-anchor="start" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:16px; font-weight:400; fill:#666666; letter-spacing:0.6px; opacity:1;">support files</text>
+<text x="1378" y="493" text-anchor="start" style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size:25px; font-weight:400; fill:#000000; letter-spacing:0px; opacity:1;">Facilitator</text>
+<text x="1378" y="525.0" text-anchor="start" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:16px; font-weight:400; fill:#666666; letter-spacing:0.6px; opacity:1;">operator view</text>
+<text x="468" y="636.0" text-anchor="start" style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size:18px; font-weight:400; fill:#000000; letter-spacing:0px; opacity:1;" dominant-baseline="middle">Breakout 1</text>
+<text x="468" y="692.0" text-anchor="start" style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size:18px; font-weight:400; fill:#000000; letter-spacing:0px; opacity:1;" dominant-baseline="middle">Breakout 2</text>
+<text x="468" y="748.0" text-anchor="start" style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size:18px; font-weight:400; fill:#000000; letter-spacing:0px; opacity:1;" dominant-baseline="middle">Breakout 3</text>
+<text x="778" y="636.0" text-anchor="start" style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size:18px; font-weight:400; fill:#000000; letter-spacing:0px; opacity:1;" dominant-baseline="middle">Breakout 4</text>
+<text x="778" y="692.0" text-anchor="start" style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size:18px; font-weight:400; fill:#000000; letter-spacing:0px; opacity:1;" dominant-baseline="middle">Breakout 5</text>
+<text x="778" y="748.0" text-anchor="start" style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size:18px; font-weight:400; fill:#000000; letter-spacing:0px; opacity:1;" dominant-baseline="middle">Breakout 6</text>
+<text x="150" y="839.0" text-anchor="start" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:17px; font-weight:400; fill:#666666; letter-spacing:1.4px; opacity:1;" dominant-baseline="middle">KEPT MEDIA LAYER</text>
+<text x="470" y="839.0" text-anchor="start" style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size:22px; font-weight:400; fill:#000000; letter-spacing:0px; opacity:1;" dominant-baseline="middle">Wistia embeds or linked media pages</text>
+<text x="150" y="913.0" text-anchor="start" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:17px; font-weight:400; fill:#666666; letter-spacing:1.4px; opacity:1;" dominant-baseline="middle">OPTIONAL LATER</text>
+<text x="470" y="913.0" text-anchor="start" style="font-family:'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; font-size:18px; font-weight:400; fill:#666666; letter-spacing:0.5px; opacity:1;" dominant-baseline="middle">search, progress, admin editing, cohorts, login</text>
+</g>
+</svg>

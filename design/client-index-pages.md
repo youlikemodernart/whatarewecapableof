@@ -128,8 +128,9 @@ The Faith Driven Entrepreneur page uses this structure:
 - Course paths
 - Next conversation
 
-It uses two image placements from the FDE proposal media set:
+It uses three image placements from the FDE proposal media set:
 
+- `fde-01-atmosphere.jpg` between the intro and `Open the work`
 - `fde-14-classroom.jpg` after `What we see`
 - `fde-10-community.jpg` after `What we are suggesting`
 

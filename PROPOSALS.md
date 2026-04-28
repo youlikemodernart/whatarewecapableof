@@ -209,6 +209,40 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 
 ---
 
+### Opulist
+
+| | |
+|---|---|
+| URL | [whatarewecapableof.com/proposals/opulist/](https://whatarewecapableof.com/proposals/opulist/) |
+| Prepared | April 2026 |
+| Status | Images placed; sending to Austin for feedback |
+| Relationship | Cold outreach (predates pipeline system); Sara responded initially, pivoted to deliverable |
+| Tabs | Summary / Research / Scope / ? |
+
+**Client:** Opulist (opulist.co), a venue curation platform. Sara is the founder and sole operator. 107K Instagram followers, ~2,000 curated listings across 30+ US cities, Squarespace-based database and blog.
+
+**Key people:** Sara (founder, "Head Aesthetics Curator"). No warm relationship; original cold DM got a response ("already has a firm"), pivoted to a standalone deliverable.
+
+**What we observed:** Four findings: (1) archive is larger than the site surface shows (1,708 blog tags, 5,613 sitemap URLs vs. ~20 visible posts), (2) editorial scope exceeds database scope (13 categories in blog vs. 4 in database; international destinations in editorial, US-only database), (3) revenue infrastructure exists but connects to one content type (ShopMy affiliate in gift guide only; no hotel booking links; brand features without FTC disclosures; newsletter on Squarespace Campaigns), (4) behavioral data collection (Microsoft Clarity, Member Areas) may not be utilized. Four scope areas: compliance/structured data, revenue infrastructure across content types, B2B dataset licensing, and scaling the operation.
+
+**History:**
+- 2026-04-05: Initial research phases 1-4 completed (web investigation, source code audit, synthesis, discovery prep).
+- 2026-04-05: Cold DM sent. Sara responded: already has a firm. Pivoted to deliverable.
+- 2026-04-06: Deliverable v1 built as standalone page at `opulist-deliverable-v2.vercel.app`.
+- 2026-04-12: Deliverable v2 after two editorial review rounds (Ashley on copy, Austin on structure, Noah on concept). Writing-style skill born from this process.
+- 2026-04-27: Migrated from standalone deliverable into the WAWCO proposal system. Restructured from linear scroll to tabbed layout (Summary / Research / Scope / ?). Warm blush palette and Playfair Display replaced with WAWCO tokens. Register shifted from personal ("Sara,") to observational third-person. Tufte bar charts became stat-rows and tables.
+- 2026-04-27: Composition pass: 4 slots identified, Are.na channel `opulist-media` sourced (16 images from Opulist database venues), 4 images placed. OP-01 Gran Blanco (Venice Beach), OP-02 Jeune et Jolie (Carlsbad), OP-03 Bar Cecil (Palm Springs), OP-04 Hermitage Hotel (Nashville).
+
+**Migration note:** The original deliverable at `~/opulist-deliverable-v2/index.html` and `opulist-deliverable-v2.vercel.app` is historical. The active proposal is now at `~/Projects/whatarewecapableof/proposals/opulist/index.html`. Research files remain in their pre-pipeline locations (see `~/Projects/consulting/clients/opulist/status.md` for the file map).
+
+**Media slots:** Are.na channel: `opulist-media` (private, 16 blocks). Live placements: OP-01 after agreement paragraph in Summary, OP-02 after Finding 02 in Summary, OP-03 after What's working in Summary, OP-04 after The dataset as an asset in Research. Local-only slot board: `proposals/opulist/slots/index.html`. Raw source assets: `proposals/opulist/img/src/arena/`. 11 unslotted images remain available for swaps.
+
+**Next:** Austin reviews the proposal with images. After feedback, decide whether to deploy to production and re-engage Sara or use as a portfolio piece.
+
+**Deep docs:** `~/Projects/consulting/clients/opulist/status.md`, original deliverable at `~/opulist-deliverable-v2/index.html`, memory at `project_opulist.md`
+
+---
+
 ## Pipeline context
 
 **Template:** `proposals/_template/index.html` defines the structural pattern: sticky header, meta line, title, tab guide, four tabs (customizable names), findings/stat-row/table/scope-phase components, ? tab CTA. As of 2026-04-24, the template and all active proposal pages use the stable tab scroll handler: on tab click, scroll the selected panel to the top under the sticky header and tab bar. Do not restore the old `.tabs.offsetTop - 10` smooth-scroll pattern; it caused viewport drift on repeated mobile tab switching.
@@ -217,6 +251,6 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 
 **Tim referral channel:** Austin's brother Tim served 4 clients in the past year. Plan is to run all 4 through the pipeline, show Tim the output, get buy-in, then Tim refers or sells on behalf. Clients identified so far: Teaspressa, Five Points Strategies.
 
-**Other pipeline clients (no proposal yet):** Ateam Unlimited, LParacine, North Valley Precision, Opulist (earlier engagement, predates this system).
+**Other pipeline clients (no proposal yet):** Ateam Unlimited, LParacine, North Valley Precision.
 
 **Robots:** `/proposals/` is disallowed in robots.txt. All proposal pages are `noindex, nofollow`.

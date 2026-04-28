@@ -680,6 +680,45 @@
   <img src="/proposals/belhaus/img/atmosphere-system-crowd.jpg" width="1400" height="1400" loading="lazy" alt="Crowd gathered in front of paintings at BELHAUS.">
 </figure>
 
+<figure class="bel-diagram" id="bel-system-arch" aria-labelledby="bel-arch-label">
+  <div class="bel-diagram-label" id="bel-arch-label">System architecture</div>
+  <p class="bel-band-text">Airtable holds the data. The web app and the AI agent both read and write through its API. Sources flow in; catalog pages, outreach, and syncs flow out.</p>
+  <svg viewBox="0 0 560 260" role="img" aria-labelledby="bel-arch-t bel-arch-d" style="width:100%;height:auto;display:block;margin-top:var(--space-1)">
+    <title id="bel-arch-t">BELHAUS system architecture</title>
+    <desc id="bel-arch-d">Three-layer architecture: sources flow into AI Agent and Web App, both connecting to Airtable, which powers catalog links, email drafts, and Artsy sync.</desc>
+    <defs>
+      <marker id="bel-aa" viewBox="0 0 8 6" refX="7" refY="3" markerWidth="7" markerHeight="5" orient="auto-start-reverse">
+        <path d="M0,0.5 L7,3 L0,5.5" fill="none" stroke="rgba(0,0,0,0.45)" stroke-width="0.8"/>
+      </marker>
+    </defs>
+    <text x="280" y="18" text-anchor="middle" font-family="'Geist Mono',ui-monospace,monospace" font-size="9" letter-spacing="0.06em" fill="#000" opacity="0.45">SOURCES</text>
+    <text x="280" y="36" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="11.5" fill="#000" opacity="0.5">invoices · photos · emails · voice memos · sign-up sheets</text>
+    <line x1="178" y1="46" x2="82" y2="82" stroke="rgba(0,0,0,0.18)" stroke-width="0.75" marker-end="url(#bel-aa)"/>
+    <line x1="382" y1="46" x2="478" y2="82" stroke="rgba(0,0,0,0.18)" stroke-width="0.75" marker-end="url(#bel-aa)"/>
+    <rect x="20" y="84" width="124" height="50" fill="#fff" stroke="#000" stroke-width="1"/>
+    <text x="82" y="105" text-anchor="middle" font-family="'Geist Mono',ui-monospace,monospace" font-size="9" letter-spacing="0.04em" fill="#000" opacity="0.45">AI AGENT</text>
+    <text x="82" y="122" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="12.5" fill="#000">Prepares and drafts</text>
+    <rect x="200" y="78" width="160" height="60" fill="#fff" stroke="#000" stroke-width="1.5"/>
+    <text x="280" y="102" text-anchor="middle" font-family="'Geist Mono',ui-monospace,monospace" font-size="9" letter-spacing="0.04em" fill="#000" opacity="0.45">AIRTABLE</text>
+    <text x="280" y="124" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="14" fill="#000">Source of truth</text>
+    <rect x="416" y="84" width="124" height="50" fill="#fff" stroke="#000" stroke-width="1"/>
+    <text x="478" y="105" text-anchor="middle" font-family="'Geist Mono',ui-monospace,monospace" font-size="9" letter-spacing="0.04em" fill="#000" opacity="0.45">WEB APP</text>
+    <text x="478" y="122" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="12.5" fill="#000">Daily interface</text>
+    <line x1="148" y1="109" x2="196" y2="108" stroke="rgba(0,0,0,0.18)" stroke-width="0.75" marker-start="url(#bel-aa)" marker-end="url(#bel-aa)"/>
+    <line x1="364" y1="108" x2="412" y2="109" stroke="rgba(0,0,0,0.18)" stroke-width="0.75" marker-start="url(#bel-aa)" marker-end="url(#bel-aa)"/>
+    <line x1="240" y1="142" x2="92" y2="198" stroke="rgba(0,0,0,0.18)" stroke-width="0.75" marker-end="url(#bel-aa)"/>
+    <line x1="280" y1="142" x2="280" y2="198" stroke="rgba(0,0,0,0.18)" stroke-width="0.75" marker-end="url(#bel-aa)"/>
+    <line x1="320" y1="142" x2="468" y2="198" stroke="rgba(0,0,0,0.18)" stroke-width="0.75" marker-end="url(#bel-aa)"/>
+    <rect x="22" y="202" width="140" height="42" fill="#fff" stroke="#000" stroke-width="1"/>
+    <text x="92" y="228" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="13" fill="#000">Catalog links</text>
+    <rect x="210" y="202" width="140" height="42" fill="#fff" stroke="#000" stroke-width="1"/>
+    <text x="280" y="228" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="13" fill="#000">Email drafts</text>
+    <rect x="398" y="202" width="140" height="42" fill="#fff" stroke="#000" stroke-width="1" stroke-dasharray="4 3"/>
+    <text x="468" y="228" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="13" fill="#000" opacity="0.5">Artsy sync</text>
+  </svg>
+  <p class="bel-relation-note">Dashed border: pending Georgie's confirmation of the Partner API route.</p>
+</figure>
+
 <h2 class="section-heading">Data model</h2>
 
 <p>Five connected tables in Airtable.</p>
@@ -696,6 +735,29 @@
   <tr><td>Relationships</td><td>Links between people (spouses, families, advisors), between collectors and artists, between artworks and collections</td></tr>
   </tbody>
 </table>
+
+<figure class="bel-diagram" id="bel-er-model" aria-labelledby="bel-er-label">
+  <div class="bel-diagram-label" id="bel-er-label">Table connections</div>
+  <p class="bel-band-text">The Relationships table sits at the center. Every link between a collector and an artwork, an artwork and an exhibition, a consignment and a piece, or one person and another is a record in this table.</p>
+  <svg viewBox="0 0 560 300" role="img" aria-labelledby="bel-er-t bel-er-d" style="width:100%;height:auto;display:block;margin-top:var(--space-1)">
+    <title id="bel-er-t">Five connected Airtable tables</title>
+    <desc id="bel-er-d">Hub-and-spoke diagram: Artworks, Collectors, Consignments, and Exhibitions each connect through a central Relationships table.</desc>
+    <line x1="120" y1="66" x2="240" y2="124" stroke="#000" stroke-width="0.75" opacity="0.18"/>
+    <line x1="440" y1="66" x2="320" y2="124" stroke="#000" stroke-width="0.75" opacity="0.18"/>
+    <line x1="120" y1="234" x2="240" y2="176" stroke="#000" stroke-width="0.75" opacity="0.18"/>
+    <line x1="440" y1="234" x2="320" y2="176" stroke="#000" stroke-width="0.75" opacity="0.18"/>
+    <rect x="50" y="24" width="140" height="42" fill="#fff" stroke="#000" stroke-width="1"/>
+    <text x="120" y="51" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="14" fill="#000">Artworks</text>
+    <rect x="370" y="24" width="140" height="42" fill="#fff" stroke="#000" stroke-width="1"/>
+    <text x="440" y="51" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="14" fill="#000">Collectors</text>
+    <rect x="200" y="124" width="160" height="52" fill="#fff" stroke="#000" stroke-width="1.5"/>
+    <text x="280" y="156" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="15" fill="#000">Relationships</text>
+    <rect x="35" y="234" width="170" height="42" fill="#fff" stroke="#000" stroke-width="1"/>
+    <text x="120" y="261" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="14" fill="#000">Consignments</text>
+    <rect x="370" y="234" width="140" height="42" fill="#fff" stroke="#000" stroke-width="1"/>
+    <text x="440" y="261" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="14" fill="#000">Exhibitions</text>
+  </svg>
+</figure>
 
 <figure class="bel-diagram" id="bel-data-model" aria-labelledby="bel-data-model-title">
   <div class="bel-relation-intro">
@@ -756,6 +818,37 @@
 <h2 class="section-heading">The AI agent</h2>
 
 <p>The agent reads from Airtable, drafts into the web app, and sends nothing without you. It has three jobs.</p>
+
+<figure class="bel-diagram" id="bel-agent-cycle" aria-labelledby="bel-cycle-label">
+  <div class="bel-diagram-label" id="bel-cycle-label">Operating cycle</div>
+  <p class="bel-band-text">Every piece of new information follows the same loop. The AI prepares; you approve; the record updates; the outputs use it. The cycle repeats as new interactions generate new sources.</p>
+  <svg viewBox="0 0 460 320" role="img" aria-labelledby="bel-cyc-t bel-cyc-d" style="width:100%;height:auto;display:block;margin-top:var(--space-1)">
+    <title id="bel-cyc-t">AI agent operating cycle</title>
+    <desc id="bel-cyc-d">Recurring cycle: source arrives, AI agent prepares a draft, Gino or Chloe approves, database updates and outputs deploy, new interactions generate new sources.</desc>
+    <defs>
+      <marker id="bel-ac" viewBox="0 0 8 6" refX="7" refY="3" markerWidth="7" markerHeight="5" orient="auto-start-reverse">
+        <path d="M0,0.5 L7,3 L0,5.5" fill="none" stroke="rgba(0,0,0,0.45)" stroke-width="0.8"/>
+      </marker>
+    </defs>
+    <rect x="70" y="14" width="200" height="40" fill="#fff" stroke="#000" stroke-width="1"/>
+    <text x="170" y="30" text-anchor="middle" font-family="'Geist Mono',ui-monospace,monospace" font-size="9" letter-spacing="0.04em" fill="#000" opacity="0.45">SOURCE ARRIVES</text>
+    <text x="170" y="46" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="11" fill="#000" opacity="0.5">invoice, photo, email, voice memo</text>
+    <line x1="170" y1="54" x2="170" y2="78" stroke="rgba(0,0,0,0.18)" stroke-width="0.75" marker-end="url(#bel-ac)"/>
+    <rect x="70" y="82" width="200" height="56" fill="#fff" stroke="#000" stroke-width="1"/>
+    <text x="170" y="104" text-anchor="middle" font-family="'Geist Mono',ui-monospace,monospace" font-size="9" letter-spacing="0.04em" fill="#000" opacity="0.45">AI AGENT</text>
+    <text x="170" y="126" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="12.5" fill="#000">prepare · surface · draft</text>
+    <line x1="170" y1="138" x2="170" y2="164" stroke="rgba(0,0,0,0.18)" stroke-width="0.75" marker-end="url(#bel-ac)"/>
+    <rect x="70" y="168" width="200" height="46" fill="#fff" stroke="#000" stroke-width="1.5"/>
+    <text x="170" y="188" text-anchor="middle" font-family="'Geist Mono',ui-monospace,monospace" font-size="9" letter-spacing="0.04em" fill="#000" opacity="0.45">APPROVAL</text>
+    <text x="170" y="206" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="13" fill="#000">Gino or Chloe</text>
+    <line x1="170" y1="214" x2="170" y2="242" stroke="rgba(0,0,0,0.18)" stroke-width="0.75" marker-end="url(#bel-ac)"/>
+    <rect x="70" y="246" width="200" height="56" fill="#fff" stroke="#000" stroke-width="1"/>
+    <text x="170" y="268" text-anchor="middle" font-family="'Geist Mono',ui-monospace,monospace" font-size="9" letter-spacing="0.04em" fill="#000" opacity="0.45">RECORD UPDATES</text>
+    <text x="170" y="290" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="12.5" fill="#000">catalogs · email · Artsy</text>
+    <path d="M274,274 L348,274 Q370,274 370,252 L370,56 Q370,34 348,34 L274,34" fill="none" stroke="rgba(0,0,0,0.14)" stroke-width="0.75" marker-end="url(#bel-ac)"/>
+    <text x="388" y="158" text-anchor="middle" transform="rotate(-90,388,158)" font-family="'Geist Mono',ui-monospace,monospace" font-size="8.5" letter-spacing="0.04em" fill="#000" opacity="0.25">NEW INTERACTIONS</text>
+  </svg>
+</figure>
 
 <div class="finding">
   <div class="finding-label">Prepare</div>

@@ -10,9 +10,9 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 |---|---|
 | URL | [whatarewecapableof.com/proposals/sales-school](https://whatarewecapableof.com/proposals/sales-school) |
 | Prepared | April 2026 |
-| Status | Draft built with placeholders; local rule-density cleanup validated by Noah; ready for Austin review and later visual direction pass |
+| Status | Diagram revision deployed; ready for Austin review; visual direction still deferred until references collected |
 | Relationship | Austin pitching a sales company with a partially live, partially video-based sales school |
-| Tabs | Overview / Architecture / Experience / Scope / ? |
+| Tabs | Overview / Map / Experience / Scope / ? |
 | Source | Built from GoHighLevel preview link, six PDF indexes, Wistia pages, and IA notes at `~/Projects/austin-sales-school` |
 
 **Client:** Sales company name still pending. The visible training material uses HIRE branding on Wistia.
@@ -24,11 +24,12 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 - 2026-04-25: IA packet created at `~/Projects/austin-sales-school` with current flow, proposed sitemap, and live-break diagrams.
 - 2026-04-25: Proposal draft created at `/proposals/sales-school` with current-state evidence, architecture diagrams, low-fidelity Today-page wireframe, and placeholder cards for missing material.
 - 2026-04-26: Type hierarchy audit replaced generated diagram images with live WAWCO-native text graphics.
-- 2026-04-27: Horizontal-rule density cleanup tested locally after Noah said the Sales School proposal felt too rule-heavy. Text graphics now render open by default, minor sitemap/direction/phase labels use plain section headings, and Noah likes the direction. Watch this system on future proposals before making ruled headings fully opt-in.
+- 2026-04-27: Horizontal-rule density cleanup deployed. Committed as `5084931 Tune proposal rule density`.
+- 2026-04-27: Diagram revision using the diagram-maker skill. Four new SVG-to-PNG diagrams replace six old generated PNGs: current access chain, proposed portal architecture, live-break flow, and scope frontier. Today state surface and structure-shift diagrams cut. Diagrams sized to match the prose/photo content column width. CTA removed from Scope tab (lives in ? tab only). "Austin confirms" changed to "we confirm."
 
 **Open questions:** Final client name, brand assets, design references, exact course location, login/progress requirements, facilitator control needs, maintenance model, budget, and timeline.
 
-**Next:** Austin reviews the architecture and proposal language. Noah collects design references later, then the proposal gets a visual direction pass before send.
+**Next:** Austin reviews the proposal. Visual direction pass deferred until design references are collected.
 
 **Deep docs:** IA project at `~/Projects/austin-sales-school`; proposal page at `~/Projects/whatarewecapableof/proposals/sales-school/index.html`
 
@@ -148,7 +149,7 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 |---|---|
 | URL | [whatarewecapableof.com/proposals/compassion/](https://whatarewecapableof.com/proposals/compassion/) |
 | Prepared | April 2026 |
-| Status | Sent; awaiting Causes team response |
+| Status | Sent; awaiting Causes team response; contextual follow-up active |
 | Relationship | Warm via Austin (in their orbit since Jul 2025) |
 | Tabs | Research / Content / Proposal / ? |
 
@@ -165,12 +166,15 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 - 2026-04-23: Specimen grid images filled from Are.na. Numbers card composites produced. Feed comparison added. OG image set. Image path bug fixed (relative paths broke without trailing slash).
 - 2026-04-24: Proposal page updated with final images and layout refinements.
 - 2026-04-25: Proposal sent to the Causes team; waiting to hear back.
+- 2026-04-27: Heidi Glynn call transcribed and processed. Added Food for the Hungry nonprofit execution context and DR trip proof-of-concept path.
 
 **Access challenge (from Caroline Ridings):** Contact is the director, not the president. Options: pitch "you win, I win" to bring proposal to boss together; go directly to the president; or work within the director's budget ceiling.
 
-**Next:** Wait to hear back from the Causes team. Content deep-dives remain deferred until the team shows interest.
+**Heidi context:** Heidi Glynn brought Food for the Hungry experience. Main addition: nonprofit teams can agree with consultant strategy and still fail to execute because they lack capacity, confidence, internal authority, or production muscle. Follow-up should emphasize proof of execution. Key strategic question: is Compassion Causes primarily a partner-church fundraising tool or a Gen Z donor acquisition engine?
 
-**Deep docs:** `~/Projects/consulting/clients/compassion/`, memory at `project_compassion.md`
+**Next:** Work through the DR trip proof-of-concept path with Austin. Questions: can Noah attend if self-funded, would Compassion permit content capture, what are the restrictions and ownership terms, who is the target decision-maker, and does the June budget cycle still create urgency? Content deep-dives remain deferred until the team shows interest.
+
+**Deep docs:** `~/Projects/consulting/clients/compassion/`, memory at `project_compassion.md`, handoff at `~/Projects/consulting/clients/compassion/next-move-handoff-2026-04-27.md`
 
 ---
 

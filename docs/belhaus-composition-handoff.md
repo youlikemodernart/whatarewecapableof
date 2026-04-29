@@ -72,6 +72,10 @@ Typography trial: the BELHAUS proposal and proposal template now keep scope-phas
 
 Fresh-session graphics handoff: `docs/belhaus-graphics-generation-handoff.md`. Context-update audit: `docs/belhaus-context-update-audit-2026-04-26.md`.
 
+### 2026-04-29 diagram rebuild
+
+Three inline SVG diagrams from commit `22f14d6` were stripped and rebuilt from scratch using the audited diagram-maker skill. Each built by an independent subagent with no knowledge of the old implementations. New IDs: `#bel-system-architecture`, `#bel-table-connections`, `#bel-agent-cycle`. The new diagrams use text-and-rule vocabulary (no boxes-and-connectors). Verified at 1280px and 375px, no overflow. Not yet committed or deployed. The live HTML/CSS objects (BEL-01 operating model, BEL-03 relationship index, BEL-04 approval sequence) and all media remain in place. Old implementations in git history at `22f14d6`.
+
 ### 2026-04-26 live insertion update
 
 The approved local slot-board direction has been incorporated into the active proposal source locally:

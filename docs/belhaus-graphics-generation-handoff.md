@@ -2,9 +2,9 @@
 
 Created 2026-04-26 for a fresh session focused on final graphics for the BELHAUS proposal.
 
-## 2026-04-26 status update
+## 2026-04-29 status update
 
-This file is now a graphic-system calibration and future-exploration handoff, not an instruction to finish the active proposal. The active BELHAUS proposal already uses live HTML/CSS for BEL-01 and BEL-03, plus a live HTML approval sequence for BEL-04. Do not replace those live objects with bitmap outputs unless Noah explicitly asks for a new graphic-system exploration.
+The three inline SVG diagrams from commit `22f14d6` were stripped and rebuilt from scratch (2026-04-29) using the audited diagram-maker skill. Three independent subagents each ran the full pipeline (intake, semantic model, renderer choice, render) with no knowledge of the old implementations. The new diagrams use text-and-rule vocabulary instead of boxes-and-connectors. Verified at 1280px and 375px, no overflow. Not yet committed or deployed. The draft YAML briefs below are stale. The rejection notes from the bitmap pass remain useful as calibration.
 
 ## Goal
 

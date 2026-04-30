@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#ffffff">
+<title>Substrate Catalog Launch | What are we capable of?</title>
+<meta property="og:title" content="Substrate Catalog Launch">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/typography.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/proposal-media.css?v=kw-20260428">
+<style>
+  html, body {
+    overflow-x: clip;
+  }
+
+  .page-proposal {
+    --proposal-header-height: var(--space-2);
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    padding: 0 var(--margin-inline) var(--margin-block);
+  }
+
+  .page-proposal main {
+    flex: 1;
+    max-width: var(--content-width-prose);
+    padding-top: var(--space-1);
+  }
+
+  .proposal-header {
+    min-height: var(--proposal-header-height);
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--color-bg);
+    margin-inline: calc(-1 * var(--margin-inline));
+    padding-inline: var(--margin-inline);
+  }
+
+  .proposal-home {
+    text-decoration: none;
+    color: inherit;
+    transition: opacity var(--transition-default);
+  }
+
+  .proposal-home:hover {
+    opacity: 0.6;
+  }
+
+  .proposal-meta {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--color-text);
+    opacity: 0.62;
+  }
+
+  .proposal-title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: var(--size-m);
+    margin-top: var(--space-1);
+    max-width: 52ch;
+  }
+
+  .proposal-guide {
+    margin-top: var(--space-1);
+    font-size: var(--size-m);
+    max-width: 52ch;
+  }
+
+  .proposal-guide strong {
+    font-weight: 700;
+  }
+
+  .tab-content > p,
+  .finding p,
+  .scope-phase p,
+  .note-box p {
+    max-width: 52ch;
+  }
+
+  .tabs {
+    display: flex;
+    gap: var(--space-2);
+    min-height: var(--space-2);
+    align-items: center;
+    position: sticky;
+    top: var(--proposal-header-height);
+    background: var(--color-bg);
+    z-index: 15;
+    margin-inline: calc(-1 * var(--margin-inline));
+    padding-inline: var(--margin-inline);
+    width: 100vw;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--color-text);
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tab {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    text-decoration: none;
+    cursor: pointer;
+    color: var(--color-text);
+    opacity: 0.62;
+    border: none;
+    background: none;
+    padding: 0;
+    flex-shrink: 0;
+    transition: opacity var(--transition-default);
+  }
+
+  .tab:hover { text-decoration: none; opacity: 0.8; }
+  .tab.active { opacity: 1; }
+
+  .tab-content {
+    padding-top: var(--space-2);
+  }
+
+  .tab-content-full {
+    padding-top: var(--space-2);
+  }
+
+  .tabbed .tab-content {
+    display: none;
+    padding-top: var(--space-2);
+  }
+  .tabbed .tab-content.active { display: block; }
+
+  .tabbed .tab-content-full {
+    display: none;
+    min-height: calc(100svh - var(--proposal-header-height) - var(--space-2));
+    flex-direction: column;
+    justify-content: center;
+  }
+  .tabbed .tab-content-full.active { display: flex; }
+
+  .section-heading {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    margin-top: var(--space-3);
+    margin-bottom: var(--space-1);
+    padding-top: 0;
+    border-top: none;
+    font-weight: 400;
+  }
+
+  .section-heading:first-child {
+    margin-top: 0;
+  }
+
+  .section-heading.section-heading--ruled {
+    margin-top: var(--space-4);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-text);
+  }
+
+  .finding,
+  .scope-phase {
+    margin-bottom: var(--space-2);
+  }
+
+  .finding-label,
+  .phase-label {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.62;
+    margin-bottom: var(--space-0-5);
+  }
+
+  .finding p:last-child,
+  .scope-phase p:last-child {
+    margin-bottom: 0;
+  }
+
+  .stat-row {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin: var(--space-1) 0 var(--space-2);
+  }
+
+  .stat-item {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+  }
+
+  .stat-item strong {
+    font-weight: 400;
+    font-family: var(--font-serif);
+    font-size: var(--size-m);
+    text-transform: none;
+    letter-spacing: 0;
+    display: block;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--space-1) 0 var(--space-2);
+    font-size: var(--size-m);
+    table-layout: fixed;
+    word-wrap: break-word;
+  }
+
+  th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    font-weight: 400;
+    opacity: 0.62;
+    padding: var(--space-0-5) 0;
+    border-bottom: 1px solid var(--color-text);
+  }
+
+  td {
+    padding: var(--space-0-5) 0;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    vertical-align: top;
+    font-family: var(--font-serif);
+  }
+
+  th + th,
+  td + td {
+    padding-left: var(--space-1);
+  }
+
+  .scope-phase h3 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: var(--size-m);
+    margin-bottom: var(--space-0-5);
+  }
+
+  .scope-phase ul,
+  .packet-list {
+    margin: var(--space-0-5) 0 0;
+    padding-left: 1.25rem;
+    list-style: none;
+  }
+
+  .scope-phase li,
+  .packet-list li {
+    font-size: var(--size-m);
+    margin-bottom: var(--space-0-5);
+    position: relative;
+  }
+
+  .scope-phase li::before,
+  .packet-list li::before {
+    content: "";
+    position: absolute;
+    left: -1rem;
+    top: 0.55em;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--color-text);
+    opacity: 0.25;
+  }
+
+  .note-box {
+    border-top: 1px solid var(--color-text);
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    padding: var(--space-1) 0;
+    margin: var(--space-2) 0;
+  }
+
+  .note-box p:last-child {
+    margin-bottom: 0;
+  }
+
+  .page-proposal footer {
+    margin-top: var(--space-4);
+    padding-top: var(--space-1);
+    border-top: 1px solid rgba(0,0,0,0.08);
+  }
+
+  @media (max-width: 767px) {
+    :root {
+      --margin-inline: var(--space-1);
+    }
+
+    .stat-row {
+      flex-direction: column;
+      gap: var(--space-0-5);
+    }
+
+    .tabs {
+      gap: var(--space-1);
+    }
+
+    table {
+      table-layout: auto;
+    }
+  }
+</style>
+</head>
+<body class="page-proposal">
+
+<header class="proposal-header">
+  <a href="/" class="proposal-home">What are we capable of?</a>
+</header>
+
+<main>
+
+<div class="proposal-meta">Prepared for Kaitlyn Wolfe / April 2026</div>
+
+<p class="proposal-title">This page turns the Substrate conversation into a first build plan: a controlled path from Kaitlyn's master sheet to Shopify draft products, pricing review, image prep, QA, and launch. It also gives the team a source-packet checklist so the work can start with the right files.</p>
+
+<p class="proposal-guide"><strong>Summary</strong> is the shape of the opportunity. <strong>Process</strong> is the catalog system. <strong>Scope</strong> is the first build and optional support after launch. <strong>Packet</strong> is what I need from the team.</p>
+
+<nav class="tabs" aria-label="Sections">
+  <a class="tab active" href="#summary">Summary</a>
+  <a class="tab" href="#process">Process</a>
+  <a class="tab" href="#scope">Scope</a>
+  <a class="tab" href="#packet">Packet</a>
+  <a class="tab" href="#question">?</a>
+</nav>
+
+<div id="summary" class="tab-content active">
+
+<p>Substrate has a concrete catalog launch in front of it. Summit and Ember each have 24 colors, many sizes, updated supplier pricing to review, images to gather, and a Shopify store that needs approved product records before the collection can sell cleanly.</p>
+
+<p>The first project should stay focused on that launch. The output is a repeatable catalog operation: source sheet to reviewed prices, prepared images, Shopify draft products, staging QA, and team handoff.</p>
+
+<div class="stat-row">
+  <div class="stat-item"><strong>48</strong> Summit and Ember colors</div>
+  <div class="stat-item"><strong>20ish</strong> Sizes to validate</div>
+  <div class="stat-item"><strong>53</strong> Public Substrate products now</div>
+  <div class="stat-item"><strong>161</strong> Public variants now</div>
+  <div class="stat-item"><strong>15-20</strong> Initial build hours</div>
+</div>
+
+<h2 class="section-heading">What the first project handles</h2>
+
+<div class="finding">
+  <div class="finding-label">01</div>
+  <p>Summit and Ember need a product model that can hold many colors without turning the product page into a giant variant chooser. The working recommendation is one product per color or texture, with size as the main variant.</p>
+</div>
+
+<div class="finding">
+  <div class="finding-label">02</div>
+  <p>The master sheet should own product data. Shopify should publish approved records. That keeps pricing, sizes, MOQs, descriptions, and image choices tied to a known source.</p>
+</div>
+
+<div class="finding">
+  <div class="finding-label">03</div>
+  <p>Updated supplier pricing creates a margin review step before anything goes live. Kaitlyn and Chelsea should see proposed sell prices, margin, exceptions, and products that need judgment.</p>
+</div>
+
+<div class="finding">
+  <div class="finding-label">04</div>
+  <p>The image work matters because tile is a visual product and the current Substrate presentation is controlled. Manufacturer images can be useful, but they need selection, formatting, naming, and approval before upload.</p>
+</div>
+
+<div class="finding">
+  <div class="finding-label">05</div>
+  <p>The buyer path needs a decision before the build finishes. Some products may remain direct checkout. High-end or semi-custom tile may work better with a quote-first flow, especially where MOQ, lead time, or square-foot calculation affects the order.</p>
+</div>
+
+<h2 class="section-heading">What's already in place</h2>
+
+<p>The team has the important inputs: product knowledge, supplier references, a master sheet, physical samples, installed imagery, Shopify infrastructure, and defined internal roles around product processing and margin approval. The project turns those pieces into one controlled path.</p>
+
+</div>
+
+<div id="process" class="tab-content">
+
+<h2 class="section-heading">Source of truth</h2>
+
+<p>The master sheet owns the product data. Shopify becomes the publishing layer. Existing Shopify records still matter, but they should be pulled and compared against the sheet before updates are written.</p>
+
+<div class="note-box">
+  <p>Default posture: dry run first, draft products before publish, approved pricing before price writes, and theme changes kept separate from product data changes.</p>
+</div>
+
+<h2 class="section-heading">Catalog flow</h2>
+
+<div class="scope-phase">
+  <div class="phase-label">Step 1</div>
+  <h3>Source packet intake</h3>
+  <p>Collect the master sheet, updated costs, image links, Shopify access, margin rules, launch timing, and the team contact who can route questions.</p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Step 2</div>
+  <h3>Normalization</h3>
+  <p>Map sheet columns into a stable product dataset: titles, handles, SKUs, sizes, box square footage, cost, sell price, MOQ, lead time, collection, image URLs, and approval status.</p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Step 3</div>
+  <h3>Pricing review</h3>
+  <p>Calculate proposed prices and margins, flag exceptions, compare against existing Shopify records where relevant, and prepare a review file for Kaitlyn and Chelsea.</p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Step 4</div>
+  <h3>Image preparation</h3>
+  <p>Pull approved manufacturer images and internal images, match them to product colors, prepare consistent crops, and create contact sheets when image choice needs review.</p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Step 5</div>
+  <h3>Shopify draft build</h3>
+  <p>Generate dry-run payloads first. After approval, create draft products or approved updates with variants, images, collections, tags, and product copy.</p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Step 6</div>
+  <h3>QA and launch handoff</h3>
+  <p>Compare Shopify output against the master sheet, review desktop and mobile product pages, confirm quote or checkout behavior, and leave the team with a launch checklist and decision log.</p>
+</div>
+
+<h2 class="section-heading">Product model to validate</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Layer</th>
+      <th scope="col">Working model</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Collection</td>
+      <td>Summit or Ember.</td>
+    </tr>
+    <tr>
+      <td>Product</td>
+      <td>One color or texture.</td>
+    </tr>
+    <tr>
+      <td>Variant</td>
+      <td>Size.</td>
+    </tr>
+    <tr>
+      <td>Media</td>
+      <td>Multiple images for the product color or texture, rather than every size in every color.</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
+<div id="scope" class="tab-content">
+
+<h2 class="section-heading">Initial build</h2>
+
+<p>I would handle this as one initial Substrate build. If the source packet matches what we saw in the walkthrough, the work can move from intake into product normalization, pricing review, image prep, Shopify draft products, QA, and launch handoff.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Item</th>
+      <th scope="col">Structure</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Initial build</td>
+      <td>15 to 20 hours at $110/hour.</td>
+    </tr>
+    <tr>
+      <td>Range</td>
+      <td>$1,650 to $2,200.</td>
+    </tr>
+    <tr>
+      <td>Assumption</td>
+      <td>The master sheet, costs, image sources, and Shopify access are complete enough to move without a separate discovery phase.</td>
+    </tr>
+    <tr>
+      <td>Contingency</td>
+      <td>If the data, theme, calculator, quote flow, or image work is materially different than expected, pause before extra work and agree on the next step.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 class="section-heading">Initial build outputs</h2>
+
+<div class="scope-phase">
+  <div class="phase-label">Output 1</div>
+  <h3>Source data inventory</h3>
+  <p>What the master sheet contains, which tabs are canonical, which fields need cleanup, and which values block product creation.</p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Output 2</div>
+  <h3>Product model confirmation</h3>
+  <p>Confirmation of whether Summit and Ember should use one product per color with size variants, or whether the sheet and theme point to a different model.</p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Output 3</div>
+  <h3>Pricing and margin review</h3>
+  <p>The file Kaitlyn and Chelsea can use to approve proposed prices, margin exceptions, and products that need judgment before Shopify updates.</p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Output 4</div>
+  <h3>Image preparation</h3>
+  <p>Source images matched to products, prepared for consistent Shopify presentation, and held for review where image choice needs judgment.</p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Output 5</div>
+  <h3>Shopify draft build and QA</h3>
+  <p>Draft products, variants, collections, images, dry-run or write reports, product-page QA, and a launch handoff tied back to the master sheet.</p>
+</div>
+
+<h2 class="section-heading">After-launch support</h2>
+
+<p>After the first build, light month-to-month support can keep the catalog stable as the team starts quoting, selling, and adjusting the new line. That support can cover pricing corrections, product-data changes, Shopify questions, small product-page updates, and diagnosis when the team sees how buyers use the catalog.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Item</th>
+      <th scope="col">Structure</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Support model</td>
+      <td>Optional month to month, with no long-term commitment.</td>
+    </tr>
+    <tr>
+      <td>Suggested range</td>
+      <td>$350 to $500/month, depending on the support volume the team wants covered.</td>
+    </tr>
+    <tr>
+      <td>Larger requests</td>
+      <td>Pre-approved separately at $110/hour or quoted as a fixed add-on.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 class="section-heading">Timing</h2>
+
+<p>If the source packet is complete, the Shopify build may be able to move in a 1 to 2 week window. Public launch timing can still follow the sample box, packaging, marketing, and approval timeline.</p>
+
+<h2 class="section-heading">Outside the first build unless added</h2>
+
+<ul class="packet-list">
+  <li>Full Substrate redesign.</li>
+  <li>Full custom calculator rebuild.</li>
+  <li>Automated quote generator.</li>
+  <li>Folio label automation.</li>
+  <li>Ground Floor or Shop My Warehouse automation.</li>
+  <li>Ongoing social launch execution.</li>
+</ul>
+
+</div>
+
+<div id="packet" class="tab-content">
+
+<h2 class="section-heading">Source packet request</h2>
+
+<p>The fastest way to start is to send the source packet in one shared folder and name the person on the team who should route questions. Raw source files should stay unchanged. Working copies can be created after intake.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Needed</th>
+      <th scope="col">What to send or confirm</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Shopify access</td>
+      <td>Collaborator access for products, variants, collections, files or images, and theme read access. Theme write access only if quote-flow or calculator changes are approved.</td>
+    </tr>
+    <tr>
+      <td>Master sheet</td>
+      <td>The current Substrate master sheet, with the canonical tabs or columns identified.</td>
+    </tr>
+    <tr>
+      <td>Updated costs</td>
+      <td>Supplier cost list if separate from the master sheet, including any freight, handling, landed-cost, or MSRP notes that affect pricing.</td>
+    </tr>
+    <tr>
+      <td>Margin rules</td>
+      <td>Target margin, minimum margin, exception rules, and who approves exceptions.</td>
+    </tr>
+    <tr>
+      <td>Image rule</td>
+      <td>Manufacturer image-use permission or the team's rule for which source images are approved.</td>
+    </tr>
+    <tr>
+      <td>Launch timing</td>
+      <td>Target date, sample box timing, packaging status, and marketing dependencies.</td>
+    </tr>
+    <tr>
+      <td>Buyer path</td>
+      <td>Whether new tile should support direct checkout, quote-first behavior, or a mixed path. Also confirm what should happen to the calculator.</td>
+    </tr>
+    <tr>
+      <td>Team contact</td>
+      <td>The person Noah should work with day to day for Shopify access, sheet questions, image review, and QA feedback.</td>
+    </tr>
+    <tr>
+      <td>Known discrepancies</td>
+      <td>Any products where the team already knows the current site, Shopify backend, or visible copy has wrong pricing or product data.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 class="section-heading">Working rules</h2>
+
+<ul class="packet-list">
+  <li>The master sheet owns product data.</li>
+  <li>Shopify publishes approved records.</li>
+  <li>Dry runs happen before writes.</li>
+  <li>New products stay draft until approved.</li>
+  <li>Existing-product updates are batched and approved before writing.</li>
+  <li>Theme changes are separated from product data changes.</li>
+  <li>Manual changes need to be captured in a decision log so future updates do not erase the reason for the change.</li>
+</ul>
+
+</div>
+
+<div id="question" class="tab-content-full">
+
+<div>
+  <p class="proposal-title">What are <strong style="font-weight: 700;">we</strong> capable of?</p>
+  <p class="proposal-title" style="margin-top: var(--space-1);">Let's find out.</p>
+</div>
+
+</div>
+
+</main>
+
+<footer>
+  <span class="proposal-meta">Prepared from the April 2026 Substrate conversation, public Shopify review, and Noah's follow-up notes.</span>
+</footer>
+
+<script>
+(function() {
+  var container = document.querySelector('main');
+  var tabsNav = document.querySelector('.tabs');
+  var header = document.querySelector('.proposal-header');
+  var tabs = document.querySelectorAll('.tab');
+  var panels = document.querySelectorAll('.tab-content, .tab-content-full');
+
+  container.classList.add('tabbed');
+
+  function stickyOffset() {
+    var headerHeight = header ? header.getBoundingClientRect().height : 0;
+    var tabsHeight = tabsNav ? tabsNav.getBoundingClientRect().height : 0;
+    return headerHeight + tabsHeight;
+  }
+
+  function scrollPanelToTop(panel) {
+    var top = panel.getBoundingClientRect().top + window.scrollY - stickyOffset();
+    var scrollTarget = Math.max(0, Math.round(top));
+    var root = document.documentElement;
+    var previousScrollBehavior = root.style.scrollBehavior;
+
+    root.style.scrollBehavior = 'auto';
+    window.scrollTo(0, scrollTarget);
+    root.style.scrollBehavior = previousScrollBehavior;
+  }
+
+  function activateTab(tab) {
+    var id = tab.getAttribute('href').slice(1);
+    var panel = document.getElementById(id);
+    if (!panel) return;
+
+    panels.forEach(function(el) { el.classList.remove('active'); });
+    tabs.forEach(function(t) { t.classList.remove('active'); });
+    panel.classList.add('active');
+    tab.classList.add('active');
+    scrollPanelToTop(panel);
+  }
+
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function(e) {
+      e.preventDefault();
+      activateTab(this);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

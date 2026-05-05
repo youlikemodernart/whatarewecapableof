@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#ffffff">
-<title>Sales School Portal Proposal</title>
-<meta property="og:title" content="Sales School Portal Proposal">
+<title>Sales School Proposal</title>
+<meta property="og:title" content="Sales School Proposal">
 <meta property="og:type" content="website">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" href="/favicon.png">
@@ -66,7 +66,7 @@
     text-transform: uppercase;
     letter-spacing: var(--tracking-caps);
     color: var(--color-text);
-    opacity: 0.62;
+    opacity: 0.4;
   }
 
   .proposal-title {
@@ -84,7 +84,7 @@
   }
 
   .proposal-guide strong {
-    font-weight: 400;
+    font-weight: 700;
   }
 
   .tabs {
@@ -124,7 +124,7 @@
     text-decoration: none;
     cursor: pointer;
     color: var(--color-text);
-    opacity: 0.62;
+    opacity: 0.4;
     border: none;
     background: none;
     padding: 0;
@@ -132,7 +132,7 @@
     transition: opacity var(--transition-default);
   }
 
-  .tab:hover { text-decoration: none; opacity: 0.8; }
+  .tab:hover { text-decoration: none; opacity: 0.7; }
   .tab.active { opacity: 1; }
 
   .tab-content {
@@ -164,8 +164,8 @@
     letter-spacing: var(--tracking-caps);
     margin-top: var(--space-4);
     margin-bottom: var(--space-1);
-    padding-top: var(--space-2);
-    border-top: 1px solid var(--color-text);
+    padding-top: var(--space-1);
+    border-top: 1px solid rgba(0,0,0,0.15);
   }
 
   .section-heading:first-child {
@@ -181,7 +181,7 @@
   }
 
   .finding {
-    margin-bottom: var(--space-2);
+    margin-bottom: var(--space-3);
   }
 
   .finding-label,
@@ -191,8 +191,8 @@
     font-size: var(--size-xs);
     text-transform: uppercase;
     letter-spacing: var(--tracking-caps);
-    opacity: 0.62;
-    margin-bottom: var(--space-0-5);
+    opacity: 0.4;
+    margin-bottom: calc(var(--space-0-5) * 0.5);
   }
 
   .finding p:last-child,
@@ -262,7 +262,7 @@
   .scope-phase h3,
   .placeholder-item h3 {
     font-family: var(--font-serif);
-    font-weight: 400;
+    font-weight: 600;
     font-size: var(--size-m);
     margin-bottom: var(--space-0-5);
   }
@@ -404,98 +404,182 @@
 
 <main>
 
-<div class="proposal-meta">Prepared for Jake / April 2026</div>
+<div class="proposal-meta">Prepared for Jake / May 2026</div>
 
-<h1 class="proposal-title">A course portal for a live sales school: current-session access for Zoom breaks, day and breakout pages, Wistia video embeds, resource organization, and a facilitator view for running the room.</h1>
+<h1 class="proposal-title">A plan for Austin to run Sales School: facilitator preparation, a course portal for the video breakouts, and a tracking surface for the 90 days after training.</h1>
 
-<p class="proposal-guide"><strong>Overview</strong> is the current state and opportunity. <strong>Map</strong> is the proposed sitemap and page model. <strong>Experience</strong> is how the student and facilitator flows could work. <strong>Scope</strong> is the build path and the material still needed.</p>
+<p class="proposal-guide"><strong>Program</strong> is what eight session transcripts revealed about how Sales School works. <strong>Transfer</strong> is what Austin's preparation looks like. <strong>Portal</strong> is the course delivery system for video breakouts and live breaks. <strong>Path</strong> is the three-phase plan.</p>
 
 <nav class="tabs" aria-label="Sections" role="tablist">
-  <a class="tab active" href="#overview" role="tab" id="tab-overview" aria-selected="true" aria-controls="overview">Overview</a>
-  <a class="tab" href="#architecture" role="tab" id="tab-architecture" aria-selected="false" aria-controls="architecture">Map</a>
-  <a class="tab" href="#experience" role="tab" id="tab-experience" aria-selected="false" aria-controls="experience">Experience</a>
-  <a class="tab" href="#scope" role="tab" id="tab-scope" aria-selected="false" aria-controls="scope">Scope</a>
+  <a class="tab active" href="#program" role="tab" id="tab-program" aria-selected="true" aria-controls="program">Program</a>
+  <a class="tab" href="#transfer" role="tab" id="tab-transfer" aria-selected="false" aria-controls="transfer">Transfer</a>
+  <a class="tab" href="#portal" role="tab" id="tab-portal" aria-selected="false" aria-controls="portal">Portal</a>
+  <a class="tab" href="#path" role="tab" id="tab-path" aria-selected="false" aria-controls="path">Path</a>
   <a class="tab" href="#question" role="tab" id="tab-question" aria-selected="false" aria-controls="question">?</a>
 </nav>
 
-<div id="overview" class="tab-content active" role="tabpanel" aria-labelledby="tab-overview">
+<!-- ═══════════════════════════════════════════════════════════════
+     PROGRAM
+     ═══════════════════════════════════════════════════════════════ -->
 
-<p>The sales school already has the hard part: recorded training, a live delivery rhythm, and Wistia-hosted video content. The current experience wraps that content in an email preview and six PDF indexes. Students can get to the videos. The route feels like a temporary link system.</p>
+<div id="program" class="tab-content active" role="tabpanel" aria-labelledby="tab-program">
 
-<figure class="proposal-media proposal-media-surface">
-  <img src="/proposals/sales-school/img/current-email-preview.png" alt="Current Sales School Training Videos email preview showing Day One and Day Two breakout buttons" width="2560" height="1568" fetchpriority="high">
-  <figcaption class="proposal-media-caption">Current entry point: a GoHighLevel email preview with Day One and Day Two sections.</figcaption>
-</figure>
+<p>We spent two weeks with eight full session transcripts from the April 2026 cohort. Sales School is more structured and more deliberate than the email-and-PDF delivery surface suggests. The program alternates between live Zoom sessions and self-paced video breakouts across two days. Jake facilitates the live sessions. Students watch Wistia videos during breaks. The live debriefs after each breakout are where the teaching happens: Jake calls on students by name, listens to their video takeaways, and layers stories and frameworks on top of their responses.</p>
 
 <div class="stat-row">
-  <div class="stat-item"><strong>2</strong> Day sections</div>
-  <div class="stat-item"><strong>6</strong> Breakout PDFs</div>
-  <div class="stat-item"><strong>35</strong> Wistia videos</div>
-  <div class="stat-item"><strong>1</strong> Known resource PDF</div>
-  <div class="stat-item"><strong>0</strong> Visible progress state</div>
+  <div class="stat-item"><strong>8</strong> Live sessions</div>
+  <div class="stat-item"><strong>7.5</strong> Hours facilitated</div>
+  <div class="stat-item"><strong>6</strong> Video breakouts</div>
+  <div class="stat-item"><strong>~7</strong> Hours of content</div>
+  <div class="stat-item"><strong>19</strong> Named frameworks</div>
+  <div class="stat-item"><strong>80-90</strong> Per cohort</div>
 </div>
 
-<p>Build a restrained course portal around the existing content. The first version can stay short of a full LMS. It needs to remove the PDF index layer, give the live session one stable home, and make the videos and resources navigable.</p>
-
-<h2 class="section-heading">What we found</h2>
+<h2 class="section-heading">What the transcripts show</h2>
 
 <div class="finding">
   <div class="finding-label">01</div>
-  <p>The current path crosses seven surfaces before a student reaches playback: preview, email HTML, email index, day section, breakout button, PDF index, Wistia page. That works as distribution. During a timed Zoom break, seven surfaces is a lot of navigation.</p>
+  <p>The emotional architecture is deliberate. Day 1 is mental and emotional: build students up (Session 1: you chose this, the industry is real, curiosity is key), deliver hard truths (the 12 Things You Need to Know About Sales: harder than you think, less money before more, lost sleep, stigma), then rebuild with the Cycle of Achievement, Jake's centerpiece 10-step framework that closes Day 1. Day 2 pivots to technical skills: communication, the approach, objection handling. Session 8 brings both threads together: 30 minutes of tactical Q&A, then the FIRST commitment talk (Future, Initiative, Resilience, Standards, Tenacity), ending with Jake's own origin story told in third person and revealed. The 30-60 day commitment is the throughline from Session 1, minute one.</p>
 </div>
-
-<figure class="proposal-media" tabindex="0">
-  <img src="/proposals/sales-school/diagrams/png/01-current-access-chain.png" alt="Current Sales School access route: GoHighLevel preview, Firebase email HTML, Email index, Day section, Breakout button, PDF index, and Wistia page, with platform crossings, evidence counts, and five missing support features." width="1400" height="520" decoding="async">
-  <figcaption class="proposal-media-caption">Current-state route from entry to video playback. Seven surfaces across four platforms. Source: Sales School IA packet, email preview, PDF contact sheet, Wistia thumbnails. April 2026.</figcaption>
-</figure>
-
-<details class="proposal-text-version" data-diagram-text-equivalent>
-  <summary>Text version</summary>
-  <p>The student opens the GoHighLevel preview. The preview loads Firebase email HTML. The email index presents Day One and Day Two. The student chooses a day section, clicks one of six breakout buttons, opens a PDF index, and reaches a Wistia video page or one known resource PDF. Current support gaps: global nav, search, progress, current-session state, and facilitator control surface are not visible.</p>
-</details>
 
 <div class="finding">
   <div class="finding-label">02</div>
-  <p>The curriculum has a natural structure: Day, Breakout, Lesson, Resource. The current interface presents those relationships as buttons and PDF links. A portal can turn the same structure into navigation.</p>
+  <p>Jake's live teaching is reactive. He has 19 named frameworks and a library of 45+ stories and analogies, each attached to a specific curriculum moment. He deploys them in response to what students say. He calls on raised hands, listens, validates, then adds a teaching layer. In one exchange, he drills a student from "I want savings" down to a specific $499.99 MIDI keyboard, demonstrating goal specificity in real time. In another, he coaches a student through the purpose framework for ten minutes. He never reads from slides.</p>
 </div>
 
 <div class="finding">
   <div class="finding-label">03</div>
-  <p>The live Zoom context changes the job of the site. Students need to know what to watch now, what order to watch it in, and how to return to the room. A normal video library leaves that live-session question unanswered.</p>
+  <p>Post-training tracking is manual. Jake contacts partner companies for approximately 90 days after each cohort, asking how students are performing. If a student fails, he considers it his fault. No app-based tracking exists. A prototype called Manus, built by Peter in roughly 5 hours, includes video hosting, a script tester, a Peak Performance Planner, and a 30-day post-field content shell. It was never launched.</p>
 </div>
 
 <div class="finding">
   <div class="finding-label">04</div>
-  <p>Wistia can remain the media layer. The upgrade is the architecture around the videos: current-session access, breakout pages, resource separation, and clearer wayfinding.</p>
+  <p>The content delivery surface adds friction during live breaks. The path from entry to playback crosses seven surfaces: GoHighLevel preview, Firebase email HTML, email index, day section, breakout button, PDF index, Wistia page. For post-session review, the extra steps are minor. During a timed Zoom break with 80 students, they compound.</p>
 </div>
-
-<figure class="proposal-diptych">
-  <div class="proposal-media proposal-media-surface">
-    <img src="/proposals/sales-school/img/pdf-index-contact-sheet.png" alt="Contact sheet of current PDF index pages for six video breakouts" width="1056" height="968">
-  </div>
-  <div class="proposal-media proposal-media-surface">
-    <img src="/proposals/sales-school/img/wistia-thumbnails-contact-sheet.jpg" alt="Contact sheet of Wistia video thumbnails from the training library" width="1077" height="896">
-  </div>
-  <figcaption class="proposal-diptych-caption proposal-media-caption">The visible material suggests a link index on one side and a real video library on the other.</figcaption>
-</figure>
-
-</div>
-
-<div id="architecture" class="tab-content" role="tabpanel" aria-labelledby="tab-architecture">
-
-<p>The proposed architecture starts with the course as a place, then branches into the live session, the two days, the breakout sections, and the supporting resources.</p>
 
 <figure class="proposal-media" tabindex="0">
-  <img src="/proposals/sales-school/diagrams/png/02-portal-architecture.png" alt="Proposed Sales School portal architecture: Course home at root, Today as live hub, Day One and Day Two with six Breakout pages, Resources, Facilitator, Wistia media layer retained, Phase 2 features deferred." width="1400" height="560" decoding="async">
-  <figcaption class="proposal-media-caption">Proposed MVP portal structure. Wistia retained as media layer. Phase 2 features conditional on school reuse. Source: proposal scope and curriculum audit.</figcaption>
+  <img src="/proposals/sales-school/diagrams/png/01-current-access-chain.png" alt="Current Sales School access route: GoHighLevel preview, Firebase email HTML, Email index, Day section, Breakout button, PDF index, and Wistia page, with platform crossings and five missing support features." width="1400" height="520" decoding="async">
+  <figcaption class="proposal-media-caption">Current delivery path from entry to video playback. Seven surfaces across four platforms.</figcaption>
 </figure>
 
 <details class="proposal-text-version" data-diagram-text-equivalent>
   <summary>Text version</summary>
-  <p>The proposed root is /sales-school. First-level MVP pages are /today, /day-one, /day-two, /resources, and /facilitator. Day One contains Breakout 1, Breakout 2, and Breakout 3. Day Two contains Breakout 4, Breakout 5, and Breakout 6. Wistia remains the media layer. Optional later platform features include search, progress, admin editing, cohorts, and login.</p>
+  <p>The student opens the GoHighLevel preview. The preview loads Firebase email HTML. The email index presents Day One and Day Two. The student chooses a day section, clicks one of six breakout buttons, opens a PDF index, and reaches a Wistia video page. Current support gaps: global nav, search, progress, current-session state, and facilitator control surface are not visible.</p>
 </details>
 
-<h2 class="section-heading section-heading--plain">MVP sitemap</h2>
+<h2 class="section-heading">The curriculum</h2>
+
+<p>The video breakouts follow a deliberate sequence. We have themes and many individual titles from what students reference in the Q&A debriefs. Jake's email or PDF index would complete the inventory.</p>
+
+<table class="responsive-table">
+  <thead>
+    <tr><th scope="col" style="width: 18%">Breakout</th><th scope="col" style="width: 18%">Day</th><th scope="col" style="width: 18%">Duration</th><th scope="col">Theme</th></tr>
+  </thead>
+  <tbody>
+    <tr><td data-label="Breakout">1</td><td data-label="Day">Monday</td><td data-label="Duration">~85 min</td><td data-label="Theme">Foundational mindset: goals, purpose, Common Denominator of Success (PDF), attitude, stealing sunshine, self-talk. ~10 items.</td></tr>
+    <tr><td data-label="Breakout">2</td><td data-label="Day">Monday</td><td data-label="Duration">~60 min</td><td data-label="Theme">Leadership and metrics: Five Levels of Leadership, The Metrics That Matter.</td></tr>
+    <tr><td data-label="Breakout">3</td><td data-label="Day">Monday</td><td data-label="Duration">~60 min</td><td data-label="Theme">Least documented. At least one Point of Leverage segment.</td></tr>
+    <tr><td data-label="Breakout">4</td><td data-label="Day">Tuesday</td><td data-label="Duration">~60 min</td><td data-label="Theme">Communication: nonverbal, metaverbal, connecting, Peter Klein training.</td></tr>
+    <tr><td data-label="Breakout">5</td><td data-label="Day">Tuesday</td><td data-label="Duration">~60 min</td><td data-label="Theme">The Approach: 10 steps of the cycle of approach, plus pitch practice time.</td></tr>
+    <tr><td data-label="Breakout">6</td><td data-label="Day">Tuesday</td><td data-label="Duration">~90 min</td><td data-label="Theme">Objections: objections, interjections, smokescreens, Points of Leverage, Four Aces framework.</td></tr>
+  </tbody>
+</table>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     TRANSFER
+     ═══════════════════════════════════════════════════════════════ -->
+
+<div id="transfer" class="tab-content" role="tabpanel" aria-labelledby="tab-transfer">
+
+<p>Jake was explicit about phasing on the call: Austin runs the existing program first, unchanged. Hold metrics for 90 days. Isolate person from system. "Integrate before you innovate." The portal comes after Austin proves he can run the room.</p>
+
+<h2 class="section-heading">What Austin inherits</h2>
+
+<p>The video library, unchanged. The six-breakout structure and its sequence. The major frameworks: Cycle of Achievement, FIRST, 12 Things You Need to Know, 6 Core Values, Four Aces, the Columbo Effect, the Buying Atmosphere, Cycle of the Approach, and 11 others documented in the curriculum map. The exercises and assignments: goals, purpose, vision, 25 Skills self-assessment, Carrot and the Stick, nightly script reading. The two-day rhythm and the alternating live, video, debrief format. The Wistia content. Miranda's logistics support.</p>
+
+<h2 class="section-heading section-heading--plain">What Austin replaces</h2>
+
+<p>Jake's personal stories. Jack's story is Jake's origin: a 19-year-old whose car breaks down, who knocks 80 hours for $40 in his first week, finishes #17 in the world as a rookie, comes back 8 more years. "His name wasn't Jack." That reveal is the program's emotional climax, and it only works as autobiography.</p>
+
+<p>Austin needs his own versions of five recurring story types: the opening energy story (Jake uses Gertrude Ederle swimming the English Channel, JJ Spaun at the US Open), the "this work is hard and here is why it is worth it" story (Jake uses the 12 Things as the vehicle), the resilience story (Jake uses David Goggins at length), the commitment story (Jake uses Jason's trajectory from drug dealer to Tony Robbins salesperson, Joe from Jenny Craig who made $37 after 90 days), and the personal origin reveal. The frameworks transfer. The stories that carry conviction are personal.</p>
+
+<h2 class="section-heading section-heading--plain">What Austin develops</h2>
+
+<p>The Socratic method Jake uses in every Q&A debrief. Calling on students by name and responding to their specific takeaways in real time with a relevant reframe or story. Emotional arc management: knowing where each session needs to peak, where to push, where to let the room breathe. His own version of the Session 8 commitment talk.</p>
+
+<h2 class="section-heading">Preparation path</h2>
+
+<div class="proposal-process-timeline">
+  <div class="proposal-process-timeline-step">
+    <div class="proposal-process-timeline-marker"><div class="proposal-process-timeline-dot"></div><div class="proposal-process-timeline-line"></div></div>
+    <div class="proposal-process-timeline-content">
+      <div class="proposal-process-step-label">Step 1</div>
+      <div class="proposal-process-step-title">Observe</div>
+      <p>Watch all 8 session recordings. Study the curriculum map and content inventory. Map the emotional arc across both days. Identify which frameworks Austin can teach now and which need development.</p>
+    </div>
+  </div>
+  <div class="proposal-process-timeline-step">
+    <div class="proposal-process-timeline-marker"><div class="proposal-process-timeline-dot"></div><div class="proposal-process-timeline-line"></div></div>
+    <div class="proposal-process-timeline-content">
+      <div class="proposal-process-step-label">Step 2</div>
+      <div class="proposal-process-step-title">Shadow</div>
+      <p>Attend a live cohort as a participant. Study Jake's call-on and response patterns. Note the moments where his teaching pivots from framework to story.</p>
+    </div>
+  </div>
+  <div class="proposal-process-timeline-step">
+    <div class="proposal-process-timeline-marker"><div class="proposal-process-timeline-dot"></div><div class="proposal-process-timeline-line"></div></div>
+    <div class="proposal-process-timeline-content">
+      <div class="proposal-process-step-label">Step 3</div>
+      <div class="proposal-process-step-title">Co-facilitate</div>
+      <p>Run defined segments with Jake in the room. The homework debrief (Session 5) and a breakout debrief are natural starting points: structured enough to prepare for, reactive enough to test the Socratic method.</p>
+    </div>
+  </div>
+  <div class="proposal-process-timeline-step">
+    <div class="proposal-process-timeline-marker"><div class="proposal-process-timeline-dot"></div><div class="proposal-process-timeline-line"></div></div>
+    <div class="proposal-process-timeline-content">
+      <div class="proposal-process-step-label">Step 4</div>
+      <div class="proposal-process-step-title">Solo with support</div>
+      <p>Run a full two-day cohort with Jake available but not visible to students.</p>
+    </div>
+  </div>
+  <div class="proposal-process-timeline-step">
+    <div class="proposal-process-timeline-marker"><div class="proposal-process-timeline-dot"></div></div>
+    <div class="proposal-process-timeline-content">
+      <div class="proposal-process-step-label">Step 5</div>
+      <div class="proposal-process-step-title">Solo</div>
+      <p>The 90-day metrics window begins. Austin runs the program independently and holds the results.</p>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PORTAL
+     ═══════════════════════════════════════════════════════════════ -->
+
+<div id="portal" class="tab-content" role="tabpanel" aria-labelledby="tab-portal">
+
+<p>Once Austin can run the room, the content delivery surface becomes the constraint worth solving. The current path crosses seven surfaces before a student reaches playback. A portal gives the training one stable home: navigable breakout pages, a live-session console for Zoom breaks, and a post-training surface for the 90 days after.</p>
+
+<figure class="proposal-media proposal-media-surface">
+  <img src="/proposals/sales-school/img/current-email-preview.png" alt="Current Sales School Training Videos email preview showing Day One and Day Two breakout buttons" width="2560" height="1568" loading="lazy">
+  <figcaption class="proposal-media-caption">Current entry point: a GoHighLevel email preview. Students navigate from here through PDF indexes to Wistia.</figcaption>
+</figure>
+
+<h2 class="section-heading">Proposed structure</h2>
+
+<figure class="proposal-media" tabindex="0">
+  <img src="/proposals/sales-school/diagrams/png/02-portal-architecture.png" alt="Proposed Sales School portal architecture: Course home at root, Today as live hub, Day One and Day Two with six Breakout pages, Resources, Progress, and Facilitator view." width="1400" height="560" decoding="async" loading="lazy">
+  <figcaption class="proposal-media-caption">Proposed portal structure. Wistia retained as media layer. Positioned as Phase 2 work after facilitation transfer.</figcaption>
+</figure>
+
+<details class="proposal-text-version" data-diagram-text-equivalent>
+  <summary>Text version</summary>
+  <p>The proposed root is /sales-school. First-level pages are /today, /day-one, /day-two, /resources, /progress, and /facilitator. Day One contains Breakout 1 (Foundational Mindset), Breakout 2 (Leadership + Metrics), and Breakout 3 (Points of Leverage). Day Two contains Breakout 4 (Communication), Breakout 5 (The Approach), and Breakout 6 (Objections). Wistia remains the media layer.</p>
+</details>
 
 <pre class="proposal-excerpt"><code>/sales-school
   /today
@@ -508,224 +592,145 @@
     /breakout-5
     /breakout-6
   /resources
+  /progress
   /facilitator</code></pre>
 
-<h2 class="section-heading section-heading--plain">Expanded sitemap</h2>
-
-<pre class="proposal-excerpt"><code>/sales-school
-  /today
-  /day-one
-    /breakout-1
-      /lessons/[lesson]
-    /breakout-2
-      /lessons/[lesson]
-    /breakout-3
-      /lessons/[lesson]
-  /day-two
-    /breakout-4
-      /lessons/[lesson]
-    /breakout-5
-      /lessons/[lesson]
-    /breakout-6
-      /lessons/[lesson]
-  /resources
-  /search
-  /progress
-  /facilitator
-  /admin</code></pre>
-
-<h2 class="section-heading">Page types</h2>
+<h2 class="section-heading section-heading--plain">Page types</h2>
 
 <table class="responsive-table">
   <thead>
     <tr><th scope="col">Page</th><th scope="col">Role</th><th scope="col">Core content</th></tr>
   </thead>
   <tbody>
-    <tr><td data-label="Page">Course home</td><td data-label="Role">Orient the student to the full school.</td><td data-label="Core content">Day cards, breakout cards, resume CTA, total runtime, resources link.</td></tr>
-    <tr><td data-label="Page">Today</td><td data-label="Role">Support the live Zoom session.</td><td data-label="Core content">Active breakout, watch order, return instructions, current status.</td></tr>
-    <tr><td data-label="Page">Day page</td><td data-label="Role">Group breakouts into the existing two-day structure.</td><td data-label="Core content">Three breakout cards, short theme labels, progress or completion state.</td></tr>
+    <tr><td data-label="Page">Course home</td><td data-label="Role">Orient the student to the full school.</td><td data-label="Core content">Day cards, breakout cards, total runtime, resources link.</td></tr>
+    <tr><td data-label="Page">Today</td><td data-label="Role">Support the live Zoom session.</td><td data-label="Core content">Active breakout, watch order, return instructions, current session status.</td></tr>
+    <tr><td data-label="Page">Day page</td><td data-label="Role">Group breakouts into the two-day structure.</td><td data-label="Core content">Three breakout cards with theme labels, video count, total runtime.</td></tr>
     <tr><td data-label="Page">Breakout page</td><td data-label="Role">Replace each PDF index.</td><td data-label="Core content">Video queue, total duration, resources, next action.</td></tr>
-    <tr><td data-label="Page">Lesson page</td><td data-label="Role">Optional deeper page for each video.</td><td data-label="Core content">Wistia embed, summary, notes, related resources.</td></tr>
-    <tr><td data-label="Page">Facilitator</td><td data-label="Role">Help the instructor run live breaks.</td><td data-label="Core content">Active breakout selector, share link, timer or return prompt.</td></tr>
+    <tr><td data-label="Page">Resources</td><td data-label="Role">Collect supporting material in one place.</td><td data-label="Core content">Common Denominator of Success, goals/purpose/vision exercises, 25 Skills assessment, Carrot and the Stick, book recommendations.</td></tr>
+    <tr><td data-label="Page">Progress</td><td data-label="Role">Track the 30/60/90-day commitment after training.</td><td data-label="Core content">Commitment date, daily check-in, script reading log, Carrot and the Stick tracker.</td></tr>
+    <tr><td data-label="Page">Facilitator</td><td data-label="Role">Help the instructor run live breaks.</td><td data-label="Core content">Active breakout selector, share link, return prompt.</td></tr>
   </tbody>
 </table>
 
-<h2 class="section-heading">System model</h2>
+<h2 class="section-heading">The live-break console</h2>
 
-<div class="proposal-process-timeline">
-  <div class="proposal-process-timeline-step">
-    <div class="proposal-process-timeline-marker"><div class="proposal-process-timeline-dot"></div><div class="proposal-process-timeline-line"></div></div>
-    <div class="proposal-process-timeline-content">
-      <div class="proposal-process-step-label">Program</div>
-      <div class="proposal-process-step-title">Sales School</div>
-      <p>The container for the two-day training and the student experience around it.</p>
-    </div>
-  </div>
-  <div class="proposal-process-timeline-step">
-    <div class="proposal-process-timeline-marker"><div class="proposal-process-timeline-dot"></div><div class="proposal-process-timeline-line"></div></div>
-    <div class="proposal-process-timeline-content">
-      <div class="proposal-process-step-label">Day</div>
-      <div class="proposal-process-step-title">Day One and Day Two</div>
-      <p>The current top-level curriculum structure becomes navigation.</p>
-    </div>
-  </div>
-  <div class="proposal-process-timeline-step">
-    <div class="proposal-process-timeline-marker"><div class="proposal-process-timeline-dot"></div><div class="proposal-process-timeline-line"></div></div>
-    <div class="proposal-process-timeline-content">
-      <div class="proposal-process-step-label">Breakout</div>
-      <div class="proposal-process-step-title">Six live break sections</div>
-      <p>Each breakout replaces a PDF index with a page or panel students can use directly.</p>
-    </div>
-  </div>
-  <div class="proposal-process-timeline-step">
-    <div class="proposal-process-timeline-marker"><div class="proposal-process-timeline-dot"></div></div>
-    <div class="proposal-process-timeline-content">
-      <div class="proposal-process-step-label">Lesson and resource</div>
-      <div class="proposal-process-step-title">Wistia videos and supporting files</div>
-      <p>The media stays where it is. The portal gives it context, order, and a stable home.</p>
-    </div>
-  </div>
-</div>
-
-</div>
-
-<div id="experience" class="tab-content" role="tabpanel" aria-labelledby="tab-experience">
-
-<p>The strongest interface idea is a live-break console. The course is partly synchronous, so the site should have a current-state screen instead of only a library.</p>
+<p>The strongest interface idea is a current-state screen. During Zoom breaks, students need to know what to watch, in what order, and when to return. The Today page shows the active breakout, the watch sequence, and the return time. The facilitator sets the active breakout from a control surface. One link shared in Zoom chat replaces the PDF lookup.</p>
 
 <figure class="proposal-media" tabindex="0">
-  <img src="/proposals/sales-school/diagrams/png/03-live-break-flow.png" alt="Proposed live-break operating flow with seven numbered steps across Facilitator, Student, Portal, and Zoom lanes, plus three exception paths for access failure, wrong breakout, and stuck students." width="1400" height="580" decoding="async">
-  <figcaption class="proposal-media-caption">Proposed live-break operating flow. Exception paths are assumptions until we confirm active-breakout control and support ownership.</figcaption>
+  <img src="/proposals/sales-school/diagrams/png/03-live-break-flow.png" alt="Proposed live-break operating flow with seven numbered steps across Facilitator, Student, Portal, and Zoom lanes, plus three exception paths." width="1400" height="580" decoding="async" loading="lazy">
+  <figcaption class="proposal-media-caption">Proposed live-break operating flow. The facilitator selects the active breakout; students open the Today page; the portal shows the right content and return time.</figcaption>
 </figure>
 
 <details class="proposal-text-version" data-diagram-text-equivalent>
   <summary>Text version</summary>
-  <p>In Zoom, the facilitator selects or announces the active breakout and cues students. Students open the Today page. The portal shows the active breakout, watch sequence, and return prompt. Students watch the assigned sequence, then return to Zoom for debrief. Exception notes cover Today access failure, wrong breakout, and stuck student states. These remain proposed until operational ownership is confirmed.</p>
+  <p>In Zoom, the facilitator selects the active breakout and cues students. Students open the Today page. The portal shows the active breakout, watch sequence, and return prompt. Students watch the assigned sequence, then return to Zoom for debrief.</p>
 </details>
 
-<h2 class="section-heading section-heading--plain">Direction 1: Live Break Console</h2>
+<h2 class="section-heading">Post-training surface</h2>
 
-<div class="scope-phase">
-  <div class="phase-label">Primary screen</div>
-  <h3>Today page</h3>
-  <p>A live dashboard shows the active breakout, the watch sequence, and the return instruction. The instructor can share one link during Zoom. Students land on the right thing immediately.</p>
-</div>
-
-
-<h2 class="section-heading section-heading--plain">Direction 2: Two-Day Course Map</h2>
-
-<div class="scope-phase">
-  <div class="phase-label">Course overview</div>
-  <h3>Day One and Day Two as the main structure</h3>
-  <p>The existing two-day structure becomes a map. Each breakout is a card with a theme label, video count, total runtime, and open state.</p>
-</div>
-
-<h2 class="section-heading section-heading--plain">Direction 3: Lesson Library</h2>
-
-<div class="scope-phase">
-  <div class="phase-label">Review mode</div>
-  <h3>Findable videos and resources</h3>
-  <p>After the live session, students can return to the library, filter by day or breakout, and find videos or resources without reopening a PDF.</p>
-</div>
+<p>The portal's highest-value extension covers the 90 days after the two-day session. Students need video access for review (Jake says the content makes more sense after field experience), commitment tracking for 30, 60, or 90 days, the Carrot and the Stick exercise, a nightly script reading log, and a channel for check-ins that Jake currently handles manually. Peter's Manus prototype was aimed at this same gap. App-based tracking has the clearest return here: the training is 2 days, but the behavior change happens over 90.</p>
 
 <figure class="proposal-media proposal-media-surface">
-  <img src="/proposals/sales-school/img/current-wistia-sample.png" alt="Current Wistia video page with player and transcript below" width="2560" height="2992" loading="lazy">
-  <figcaption class="proposal-media-caption">Wistia pages include the player and transcript area. The portal can embed or link to this layer instead of replacing it.</figcaption>
+  <img src="/proposals/sales-school/img/current-wistia-sample.png" alt="Current Wistia video page with player and transcript" width="2560" height="2992" loading="lazy">
+  <figcaption class="proposal-media-caption">Wistia pages include the player and transcript. The portal embeds or links to this layer.</figcaption>
 </figure>
 
-<h2 class="section-heading">Component set</h2>
-
-<table class="responsive-table">
-  <thead>
-    <tr><th scope="col">Component</th><th scope="col">Function</th></tr>
-  </thead>
-  <tbody>
-    <tr><td data-label="Component">Active Break Card</td><td data-label="Function">Shows the breakout students should watch now.</td></tr>
-    <tr><td data-label="Component">Breakout Card</td><td data-label="Function">Groups videos into a curriculum unit.</td></tr>
-    <tr><td data-label="Component">Lesson Card</td><td data-label="Function">Shows thumbnail, title, duration, and status.</td></tr>
-    <tr><td data-label="Component">Video Embed Area</td><td data-label="Function">Hosts Wistia without rehosting the media.</td></tr>
-    <tr><td data-label="Component">Resource Card</td><td data-label="Function">Separates PDFs, readings, worksheets, and scripts from the video queue.</td></tr>
-    <tr><td data-label="Component">Return-to-Zoom Strip</td><td data-label="Function">Keeps the live-session behavior visible while students watch.</td></tr>
-    <tr><td data-label="Component">Facilitator Launcher</td><td data-label="Function">Lets the instructor copy or open the current breakout link.</td></tr>
-  </tbody>
-</table>
-
 </div>
 
-<div id="scope" class="tab-content" role="tabpanel" aria-labelledby="tab-scope">
+<!-- ═══════════════════════════════════════════════════════════════
+     PATH
+     ═══════════════════════════════════════════════════════════════ -->
 
-<p>This can be scoped in two layers. The first layer makes the current training feel coherent. The second layer turns it into a fuller learning product.</p>
+<div id="path" class="tab-content" role="tabpanel" aria-labelledby="tab-path">
 
-<figure class="proposal-media" tabindex="0">
-  <img src="/proposals/sales-school/diagrams/png/04-scope-frontier.png" alt="Scope boundary with three zones: Build (Phase 1 course portal pages), Keep (retained Wistia media layer), and Wait (optional Phase 2 platform features)." width="1400" height="470" decoding="async">
-  <figcaption class="proposal-media-caption">Scope boundary. Phase 1 wraps existing media. Wistia retained. Phase 2 conditional on school reuse.</figcaption>
-</figure>
+<p>Three phases. Each depends on the one before it.</p>
 
-<details class="proposal-text-version" data-diagram-text-equivalent>
-  <summary>Text version</summary>
-  <p>Phase 1 includes Course home, Today, Day pages, Breakout pages, Resources, Facilitator, and Wistia embeds or links. The kept media layer is Wistia: existing hosting, embeds, and linked video pages. Phase 2 is optional platform work: search, progress, admin editing, cohorts, and login.</p>
-</details>
-
-<h2 class="section-heading section-heading--plain">Phase 1: Course portal</h2>
+<h2 class="section-heading section-heading--plain">Phase 1: Facilitation transfer</h2>
 
 <div class="scope-phase">
-  <div class="phase-label">Build</div>
-  <h3>Replace the PDF indexes with pages</h3>
-  <p>Build Course Home, Today, Day One, Day Two, six Breakout pages, Resources, and Facilitator. Keep Wistia as the media layer. Use the existing video URLs and resources.</p>
-  <p class="proposal-output"><strong>Output: a navigable training portal that supports live breaks and later review.</strong></p>
+  <div class="phase-label">First</div>
+  <h3>Austin learns to run the room</h3>
+  <p>Observe, shadow, co-facilitate, solo. The 90-day metrics window begins when Austin runs his first independent cohort. Jake defined this phase on the call: prove the system works with a different facilitator before building anything new.</p>
+  <p class="proposal-output"><strong>Output: Austin can run Sales School with results comparable to Jake's.</strong></p>
 </div>
 
-<h2 class="section-heading section-heading--plain">Phase 2: Platform layer</h2>
+<h2 class="section-heading section-heading--plain">Phase 2: Course portal</h2>
 
 <div class="scope-phase">
-  <div class="phase-label">Optional</div>
-  <h3>Add search, progress, and admin</h3>
-  <p>Add student progress state, searchable lesson content, transcript indexing, admin editing, cohort management, or login. These are useful if the sales school will run repeatedly.</p>
-  <p class="proposal-output"><strong>Output: a reusable learning system instead of a one-off training portal.</strong></p>
+  <div class="phase-label">Then</div>
+  <h3>Build the delivery platform</h3>
+  <p>Replace the PDF indexes with breakout pages. Add the Today page for live breaks, a facilitator control surface, a post-training tracking layer, and a resources section. Retain Wistia as the media layer. Austin's facilitation experience informs the portal design: running the room reveals what the delivery surface needs to do.</p>
+  <p class="proposal-output"><strong>Output: a navigable training portal that supports live breaks, later review, and 90-day follow-up.</strong></p>
 </div>
 
-<h2 class="section-heading">Material still needed</h2>
+<h2 class="section-heading section-heading--plain">Phase 3: Platform layer</h2>
+
+<div class="scope-phase">
+  <div class="phase-label">If needed</div>
+  <h3>Add scale features</h3>
+  <p>Search, progress analytics, admin editing, cohort management, login, and reporting. These features become useful when the school runs multiple cohorts per year and needs to track students across them.</p>
+  <p class="proposal-output"><strong>Output: a reusable learning platform.</strong></p>
+</div>
+
+<h2 class="section-heading">Material needed</h2>
 
 <div class="placeholder-grid">
   <div class="placeholder-item">
-    <div class="placeholder-label">Placeholder</div>
-    <h3>Design references</h3>
-    <p>Visual direction should wait until references are collected. The current wireframe is structural only.</p>
+    <div class="placeholder-label">For Phase 1</div>
+    <h3>Session recordings</h3>
+    <p>Video files or access to the 8 Zoom session recordings so Austin can study Jake's facilitation patterns directly.</p>
   </div>
   <div class="placeholder-item">
-    <div class="placeholder-label">Placeholder</div>
+    <div class="placeholder-label">For Phase 2</div>
+    <h3>Complete video inventory</h3>
+    <p>Jake's email or PDF index listing every Wistia video by title, breakout assignment, and duration. The transcript analysis covers most titles but Breakout 3 has gaps.</p>
+  </div>
+  <div class="placeholder-item">
+    <div class="placeholder-label">For Phase 2</div>
+    <h3>Manus prototype access</h3>
+    <p>Peter's build includes video hosting, a script tester, a Peak Performance Planner, and 30-day post-field content. Understanding it would inform the portal scope.</p>
+  </div>
+  <div class="placeholder-item">
+    <div class="placeholder-label">For Phase 2</div>
     <h3>Brand assets</h3>
-    <p>Final logo files, colors, type preferences, and any existing brand rules from the sales company.</p>
-  </div>
-  <div class="placeholder-item">
-    <div class="placeholder-label">Placeholder</div>
-    <h3>Curriculum labels</h3>
-    <p>Final breakout themes, lesson names, resource labels, and any student-facing instructions.</p>
-  </div>
-  <div class="placeholder-item">
-    <div class="placeholder-label">Placeholder</div>
-    <h3>Commercial terms</h3>
-    <p>Budget, timeline, and maintenance model depend on the scope decisions above. We can walk through Phase 1 options as a starting point.</p>
+    <p>Logo files, colors, type preferences, and any existing brand rules from Jake's company.</p>
   </div>
 </div>
 
-<h2 class="section-heading">Questions to answer</h2>
+<h2 class="section-heading">Questions answered</h2>
+
+<table class="responsive-table">
+  <thead>
+    <tr><th scope="col">Previous question</th><th scope="col">What we now know</th></tr>
+  </thead>
+  <tbody>
+    <tr><td data-label="Previous question">Will the course repeat?</td><td data-label="What we now know">Yes. It runs regularly with 80-90 students per cohort.</td></tr>
+    <tr><td data-label="Previous question">Who controls the active breakout?</td><td data-label="What we now know">Jake, verbally over Zoom. Miranda handles logistics and attendance.</td></tr>
+    <tr><td data-label="Previous question">Where should the portal live?</td><td data-label="What we now know">Separate from GoHighLevel. The GHL/Firebase chain handles enrollment; the portal handles content delivery.</td></tr>
+    <tr><td data-label="Previous question">What must be tracked?</td><td data-label="What we now know">30/60/90-day commitment completion, video rewatching, and student retention at partner companies. Currently all manual.</td></tr>
+    <tr><td data-label="Previous question">Will students log in?</td><td data-label="What we now know">Not currently. Access is via email link. Login would be a Phase 3 feature.</td></tr>
+  </tbody>
+</table>
+
+<h2 class="section-heading section-heading--plain">Questions remaining</h2>
 
 <table class="responsive-table">
   <thead>
     <tr><th scope="col">Question</th><th scope="col">Why it matters</th></tr>
   </thead>
   <tbody>
-    <tr><td data-label="Question">Will students log in?</td><td data-label="Why it matters">Login affects progress, privacy, cohort management, and implementation cost.</td></tr>
-    <tr><td data-label="Question">Who controls the active breakout?</td><td data-label="Why it matters">A facilitator view may be enough, or the site may need admin controls.</td></tr>
-    <tr><td data-label="Question">Will the course repeat?</td><td data-label="Why it matters">Repeated cohorts justify search, admin editing, and progress tracking.</td></tr>
-    <tr><td data-label="Question">Where should the portal live?</td><td data-label="Why it matters">The answer determines whether this is a standalone static site, a HighLevel page set, or a fuller web app.</td></tr>
-    <tr><td data-label="Question">What must be tracked?</td><td data-label="Why it matters">Watched state, completion, notes, attendance, and reporting each imply different data needs.</td></tr>
+    <tr><td data-label="Question">How many cohorts per year?</td><td data-label="Why it matters">Shapes Phase 3 investment and cohort management features.</td></tr>
+    <tr><td data-label="Question">What does "identical metrics" mean to Jake?</td><td data-label="Why it matters">Defines the success criteria for Austin's 90-day window.</td></tr>
+    <tr><td data-label="Question">What is the commercial model for the transfer?</td><td data-label="Why it matters">Revenue share, licensing, or full handoff affects the portal's ownership structure.</td></tr>
+    <tr><td data-label="Question">Does Peter still have access to Manus?</td><td data-label="Why it matters">Prior art for the post-training surface. Could save build time or reveal what did not work.</td></tr>
   </tbody>
 </table>
 
-
 </div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ?
+     ═══════════════════════════════════════════════════════════════ -->
 
 <div id="question" class="tab-content-full" role="tabpanel" aria-labelledby="tab-question">
 
@@ -740,7 +745,7 @@
 </main>
 
 <footer>
-  <span class="proposal-meta">Prepared April 2026. Source material reviewed from the provided preview link and linked assets.</span>
+  <span class="proposal-meta">May 2026. Source material: eight session transcripts from the April 2026 cohort, curriculum synthesis, and the original delivery chain inspection.</span>
 </footer>
 
 <script>

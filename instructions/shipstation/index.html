@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#ffffff">
+<title>ShipStation guide for Sherri | What are we capable of?</title>
+<meta property="og:title" content="ShipStation guide for Sherri">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/typography.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/proposal-media.css?v=instructions-shipstation-20260507">
+<style>
+  html,
+  body {
+    overflow-x: clip;
+  }
+
+  .page-proposal {
+    --proposal-header-height: var(--space-2);
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    padding: 0 var(--margin-inline) var(--margin-block);
+  }
+
+  .page-proposal main {
+    flex: 1;
+    max-width: var(--content-width-prose);
+    padding-top: var(--space-1);
+  }
+
+  .proposal-header {
+    min-height: var(--proposal-header-height);
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--color-bg);
+    margin-inline: calc(-1 * var(--margin-inline));
+    padding-inline: var(--margin-inline);
+  }
+
+  .proposal-home {
+    text-decoration: none;
+    color: inherit;
+    transition: opacity var(--transition-default);
+  }
+
+  .proposal-home:hover {
+    opacity: 0.6;
+  }
+
+  .proposal-meta {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--color-text);
+    opacity: 0.4;
+  }
+
+  .proposal-title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: var(--size-m);
+    margin-top: var(--space-1);
+    max-width: 52ch;
+  }
+
+  .proposal-guide {
+    margin-top: var(--space-1);
+    font-size: var(--size-m);
+    max-width: 52ch;
+  }
+
+  .proposal-guide strong {
+    font-weight: 700;
+  }
+
+  .tab-content > p,
+  .finding p,
+  .scope-phase p,
+  .note-box p,
+  .screenshot-slot p {
+    max-width: 52ch;
+  }
+
+  .tabs {
+    display: flex;
+    gap: var(--space-2);
+    min-height: var(--space-2);
+    align-items: center;
+    position: sticky;
+    top: var(--proposal-header-height);
+    background: var(--color-bg);
+    z-index: 15;
+    margin-inline: calc(-1 * var(--margin-inline));
+    padding-inline: var(--margin-inline);
+    width: 100vw;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--color-text);
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tab {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    text-decoration: none;
+    cursor: pointer;
+    color: var(--color-text);
+    opacity: 0.4;
+    border: none;
+    background: none;
+    padding: 0;
+    flex-shrink: 0;
+    transition: opacity var(--transition-default);
+  }
+
+  .tab:hover {
+    text-decoration: none;
+    opacity: 0.7;
+  }
+
+  .tab.active {
+    opacity: 1;
+  }
+
+  .tab-content,
+  .tab-content-full {
+    padding-top: var(--space-2);
+  }
+
+  .tabbed .tab-content {
+    display: none;
+    padding-top: var(--space-2);
+  }
+
+  .tabbed .tab-content.active {
+    display: block;
+  }
+
+  .tabbed .tab-content-full {
+    display: none;
+    min-height: calc(100svh - var(--proposal-header-height) - var(--space-2));
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .tabbed .tab-content-full.active {
+    display: flex;
+  }
+
+  .section-heading {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    margin-top: var(--space-4);
+    margin-bottom: var(--space-1);
+    padding-top: var(--space-1);
+    border-top: 1px solid rgba(0,0,0,0.15);
+    font-weight: 400;
+  }
+
+  .section-heading:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .section-heading.section-heading--ruled {
+    margin-top: var(--space-4);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-text);
+  }
+
+  .finding,
+  .scope-phase {
+    margin-bottom: var(--space-3);
+  }
+
+  .finding-label,
+  .phase-label {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.4;
+    margin-bottom: calc(var(--space-0-5) * 0.5);
+  }
+
+  .finding p:last-child,
+  .scope-phase p:last-child,
+  .note-box p:last-child,
+  .screenshot-slot p:last-child {
+    margin-bottom: 0;
+  }
+
+  .stat-row {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin: var(--space-1) 0 var(--space-2);
+  }
+
+  .stat-item {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+  }
+
+  .stat-item strong {
+    font-weight: 400;
+    font-family: var(--font-serif);
+    font-size: var(--size-m);
+    text-transform: none;
+    letter-spacing: 0;
+    display: block;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--space-1) 0 var(--space-2);
+    font-size: var(--size-m);
+    table-layout: fixed;
+    word-wrap: break-word;
+  }
+
+  th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    font-weight: 400;
+    opacity: 0.62;
+    padding: var(--space-0-5) 0;
+    border-bottom: 1px solid var(--color-text);
+  }
+
+  td {
+    padding: var(--space-0-5) 0;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    vertical-align: top;
+    font-family: var(--font-serif);
+  }
+
+  th + th,
+  td + td {
+    padding-left: var(--space-1);
+  }
+
+  .scope-phase h3 {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--size-m);
+    margin-bottom: var(--space-0-5);
+  }
+
+  .scope-phase ul,
+  .instruction-list,
+  .packet-list {
+    margin: var(--space-0-5) 0 0;
+    padding-left: 1.25rem;
+    list-style: none;
+  }
+
+  .numbered-list {
+    margin: var(--space-0-5) 0 var(--space-1);
+    padding-left: 1.5rem;
+  }
+
+  .scope-phase li,
+  .instruction-list li,
+  .packet-list li,
+  .numbered-list li {
+    font-size: var(--size-m);
+    margin-bottom: var(--space-0-5);
+    position: relative;
+  }
+
+  .numbered-list li::marker {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    opacity: 0.45;
+  }
+
+  .scope-phase li::before,
+  .instruction-list li::before,
+  .packet-list li::before {
+    content: "";
+    position: absolute;
+    left: -1rem;
+    top: 0.55em;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--color-text);
+    opacity: 0.25;
+  }
+
+  .note-box,
+  .screenshot-slot,
+  .issue-template {
+    border-top: 1px solid var(--color-text);
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    padding: var(--space-1) 0;
+    margin: var(--space-2) 0;
+  }
+
+  .note-box + .section-heading,
+  .screenshot-slot + .section-heading,
+  .issue-template + .section-heading {
+    margin-top: var(--space-3);
+  }
+
+  .screenshot-slot-label,
+  .issue-template-label {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.45;
+    margin-bottom: var(--space-0-5);
+  }
+
+  .issue-template pre {
+    font-family: var(--font-mono);
+    font-size: var(--size-m);
+    line-height: var(--line-height);
+    white-space: pre-wrap;
+  }
+
+  .page-proposal footer {
+    margin-top: var(--space-4);
+    padding-top: var(--space-1);
+    border-top: 1px solid rgba(0,0,0,0.08);
+  }
+
+  @media (max-width: 767px) {
+    :root {
+      --margin-inline: var(--space-1);
+    }
+
+    .stat-row {
+      flex-direction: column;
+      gap: var(--space-0-5);
+    }
+
+    .tabs {
+      gap: var(--space-1);
+    }
+
+    table {
+      table-layout: auto;
+    }
+  }
+</style>
+</head>
+<body class="page-proposal">
+
+<header class="proposal-header">
+  <a href="/" class="proposal-home">What are we capable of?</a>
+</header>
+
+<main>
+
+<div class="proposal-meta">Prepared for Sherri / May 2026</div>
+
+<p class="proposal-title">This guide is the working ShipStation process for Ezra Arthur production. It covers the daily queue, Nordstrom tracking rules, label creation, missing order checks, tracking failures, reprints, voids, split shipments, and the package information Sherri should collect.</p>
+
+<p class="proposal-guide"><strong>Summary</strong> is the rule and the order paths. <strong>Daily</strong> is the working queue routine. <strong>Ship</strong> is how to create and confirm a label. <strong>Issues</strong> is what to do when an order or tracking goes wrong. <strong>Setup</strong> is what the shipping station still needs.</p>
+
+<nav class="tabs" aria-label="Sections">
+  <a class="tab active" href="#summary">Summary</a>
+  <a class="tab" href="#daily">Daily</a>
+  <a class="tab" href="#ship">Ship</a>
+  <a class="tab" href="#issues">Issues</a>
+  <a class="tab" href="#setup">Setup</a>
+  <a class="tab" href="#question">?</a>
+</nav>
+
+<div id="summary" class="tab-content active">
+
+<div class="note-box">
+  <p><strong>Main rule:</strong> ship Nordstrom orders through ShipStation. Do not mark Nordstrom orders fulfilled in Shopify.</p>
+</div>
+
+<p>Nordstrom tracking depends on the order moving through the same chain every time. Nordstrom enters Mirakl, Mirakl syncs into Shopify, Shopify imports into ShipStation, ShipStation creates the label, ShipStation sends tracking back to Shopify, and Shopify plus Mirakl send tracking status to Nordstrom.</p>
+
+<p>If someone marks the Shopify order fulfilled without tracking, Nordstrom may never receive the tracking number. That is the missing tracking problem this process is meant to prevent.</p>
+
+<div class="stat-row">
+  <div class="stat-item"><strong>1</strong> Label source</div>
+  <div class="stat-item"><strong>ShipStation</strong> Shipping desk</div>
+  <div class="stat-item"><strong>Shopify</strong> Order context</div>
+  <div class="stat-item"><strong>Mirakl</strong> Nordstrom path</div>
+</div>
+
+<h2 class="section-heading">What ShipStation is for</h2>
+
+<p>Use ShipStation as the shipping desk for production. Use it to see orders ready to ship, confirm the ship-to address, compare rates, buy and print labels, send tracking back to the selling channel, check marketplace notification status, and reprint or void labels when something goes wrong.</p>
+
+<p>Use Shopify to view order context when needed. Use ShipStation to ship.</p>
+
+<h2 class="section-heading">Order paths</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Channel</th>
+      <th scope="col">Working path</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ezra Arthur website</td>
+      <td>Shopify to ShipStation to Shopify. These are normal ezraarthur.com orders. When the label is created in ShipStation, ShipStation updates Shopify with carrier and tracking.</td>
+    </tr>
+    <tr>
+      <td>Nordstrom</td>
+      <td>Nordstrom and Mirakl to Shopify to ShipStation to Shopify to Mirakl and Nordstrom. In Shopify, look for tags or notes such as Mirakl, Nordstrom, the Nordstrom order id, and a ship-by deadline.</td>
+    </tr>
+    <tr>
+      <td>Nokona</td>
+      <td>WooCommerce to ShipStation is still under validation. Do not change OrderDesk, WooCommerce, or Nokona shipping settings unless Noah asks.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 class="section-heading">Stop rules</h2>
+
+<ul class="instruction-list">
+  <li>Do not click Mark as fulfilled in Shopify for Nordstrom orders.</li>
+  <li>Do not manually create or manually fulfill a Nordstrom order unless Noah gives a specific instruction.</li>
+  <li>Do not use ShipStation Mark as Shipped for Nordstrom unless Noah approves it.</li>
+  <li>Do not ship the same order from two systems.</li>
+  <li>Do not force payment status changes.</li>
+  <li>Do not ignore a failed marketplace notification icon.</li>
+</ul>
+
+</div>
+
+<div id="daily" class="tab-content">
+
+<h2 class="section-heading">Start in ShipStation</h2>
+
+<p>Open ShipStation and go to the Orders tab. ShipStation usually displays Awaiting Shipment by default. This is the main working queue for paid orders that are ready to ship.</p>
+
+<div class="scope-phase">
+  <div class="phase-label">Step 1</div>
+  <h3>Refresh orders</h3>
+  <p>Click the Import icon in the top toolbar. Choose Update All Stores, or choose the import icon next to the Shopify store if you only need Shopify orders.</p>
+  <p>ShipStation can auto-import while you are away, but it does not let us set the exact auto-import schedule. If you are about to ship, manually refresh first.</p>
+</div>
+
+<div class="screenshot-slot">
+  <div class="screenshot-slot-label">Future screenshot</div>
+  <p>Orders tab with the Import icon and Awaiting Shipment queue visible.</p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Step 2</div>
+  <h3>Check the queue</h3>
+  <p>In Awaiting Shipment, sort or filter by store, source, order number, requested service, ship date, tags, label created, label printed, and marketplace notified.</p>
+  <p>For Nordstrom, search by the Shopify order number without the # mark, such as 5011. Cross-check the Shopify order if the deadline or source is unclear.</p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Step 3</div>
+  <h3>Hold anything unclear</h3>
+  <p>Do not create a label when something looks wrong. Put the order on hold or leave it unshipped and send Noah the issue.</p>
+</div>
+
+<h2 class="section-heading">Hold or flag the order when</h2>
+
+<ul class="instruction-list">
+  <li>The order is Nordstrom and does not show a clear tracking flow.</li>
+  <li>The address looks incomplete.</li>
+  <li>The package size or weight is uncertain.</li>
+  <li>The order has multiple items and needs split shipping.</li>
+  <li>The product is out of stock.</li>
+  <li>The customer requested something unusual.</li>
+  <li>The order appears fulfilled already but has no tracking.</li>
+</ul>
+
+<h2 class="section-heading">Daily quick check</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Check</th>
+      <th scope="col">What to confirm</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Order source</td>
+      <td>Website, Nordstrom, or another channel.</td>
+    </tr>
+    <tr>
+      <td>Nordstrom tags</td>
+      <td>Mirakl, Nordstrom, Nordstrom order id, and ship-by deadline if present.</td>
+    </tr>
+    <tr>
+      <td>Package</td>
+      <td>Correct package type, dimensions, and packed weight.</td>
+    </tr>
+    <tr>
+      <td>Status</td>
+      <td>Awaiting Shipment unless the order is intentionally on hold.</td>
+    </tr>
+    <tr>
+      <td>Notification</td>
+      <td>Marketplace notified after the label is created.</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
+<div id="ship" class="tab-content">
+
+<h2 class="section-heading">Ship one order</h2>
+
+<div class="scope-phase">
+  <div class="phase-label">Step 1</div>
+  <h3>Select the order</h3>
+  <p>In the Orders grid, select the order. The Configure Shipment widget should appear in the shipping sidebar. If the sidebar is hidden, turn on Show Sidebar.</p>
+</div>
+
+<div class="screenshot-slot">
+  <div class="screenshot-slot-label">Future screenshot</div>
+  <p>Selected order with the Configure Shipment widget open in the sidebar.</p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Step 2</div>
+  <h3>Confirm order details</h3>
+  <p>Before buying the label, check the order number, source, recipient name and address, product SKU and quantity, requested service, ship-from location, package type, dimensions, weight, insurance, signature needs, and ship date.</p>
+  <p>For Nordstrom orders, also check the ship-by deadline in Shopify tags or notes if it is not visible in ShipStation.</p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Step 3</div>
+  <h3>Enter packed weight</h3>
+  <p>Use the package's packed weight. If a USB scale is connected through ShipStation Connect, place the package on the scale and click the Scale button in the Configure Shipment widget.</p>
+  <p>ShipStation supports most HID-compliant USB scales connected directly to the workstation. Avoid USB hubs or extenders for the scale.</p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Step 4</div>
+  <h3>Choose service and package</h3>
+  <p>Select the carrier service and package type. Enter package dimensions whenever possible. Some services require dimensions, and dimensions help prevent inaccurate rates and carrier fee adjustments.</p>
+  <p>Current Ezra note: ShipStation imports from Shopify have shown package dimensions as 0 x 0 x 0. Choose the correct package or enter dimensions until presets are created.</p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Step 5</div>
+  <h3>Compare rates if needed</h3>
+  <p>Use the Rate Browser from the Configure Shipment widget to compare available services. That rate browser uses the order details, address type, package, weight, dimensions, confirmation type, and service class.</p>
+  <p>The toolbar Rate Browser can create a label without an order. Use that only for one-off shipments that do not need order items, packing slips, or customer notifications.</p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Step 6</div>
+  <h3>Create and print the label</h3>
+  <p>Use Create + Print Label when the order is ready to ship. ShipStation requests the label from the carrier, creates a shipment record, moves the shipment to Shipped, moves the order to Shipped when every shipment on that order is shipped, and sends shipment information back to the connected store by default.</p>
+  <p>If you want to create the label now and print later, use the dropdown and choose Create Label.</p>
+</div>
+
+<h2 class="section-heading">Print method</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Method</th>
+      <th scope="col">Use</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ShipStation Connect</td>
+      <td>Preferred for the shop. It sends the label to the selected printer and supports Smart Document Tracking.</td>
+    </tr>
+    <tr>
+      <td>Download PDF</td>
+      <td>Good fallback. ShipStation still marks the label as printed.</td>
+    </tr>
+    <tr>
+      <td>Browser print</td>
+      <td>Usable fallback. Browser print does not mark the label as printed in Smart Document Tracking.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>ShipStation Connect works best with USB printers. ShipStation says it does not support Rollo printers through ShipStation Connect. Rollo can still be used through Download PDF or browser print if needed.</p>
+
+<h2 class="section-heading">Confirm the shipment</h2>
+
+<ul class="instruction-list">
+  <li>Go to the Shipments tab or open the shipment record.</li>
+  <li>Confirm the tracking number is present.</li>
+  <li>Confirm the carrier is present.</li>
+  <li>Confirm marketplace notification shows Notified or Sent when the channel should be updated.</li>
+  <li>Check that no red failed notification icon appears.</li>
+</ul>
+
+<div class="screenshot-slot">
+  <div class="screenshot-slot-label">Future screenshot</div>
+  <p>Shipment record with tracking number, carrier, and marketplace notification status visible.</p>
+</div>
+
+<h2 class="section-heading">What tracking should do</h2>
+
+<p>ShipStation sends the connected store the shipment tracking number, carrier, order identifier, and notification information. For Shopify, the integration supports sending status update, tracking number, carrier, service, and item information.</p>
+
+<p>This is why the label must be created in ShipStation for Nordstrom orders. ShipStation updates Shopify, then the Shopify and Mirakl connection can update Nordstrom.</p>
+
+</div>
+
+<div id="issues" class="tab-content">
+
+<h2 class="section-heading">Missing from ShipStation</h2>
+
+<ol class="numbered-list">
+  <li>Refresh the store from ShipStation using the Import icon.</li>
+  <li>Search by order number without punctuation. Example: search 5011, not #5011.</li>
+  <li>Check Awaiting Shipment, On Hold, Shipped, and Cancelled.</li>
+  <li>Check Shopify for the order.</li>
+  <li>For Nordstrom, confirm the Shopify order has Nordstrom or Mirakl tags and is unfulfilled.</li>
+  <li>If the order still does not appear, stop and tell Noah.</li>
+</ol>
+
+<p>Send Noah the selling channel, Shopify order number, Nordstrom or Mirakl order id if present, what you searched in ShipStation, whether the order is visible in Shopify, Shopify fulfillment status, and any ShipStation error or screenshot.</p>
+
+<div class="note-box">
+  <p>Do not create a manual ShipStation order for Nordstrom unless Noah tells you to.</p>
+</div>
+
+<h2 class="section-heading">Tracking is missing</h2>
+
+<div class="scope-phase">
+  <div class="phase-label">If the label was created in ShipStation</div>
+  <h3>Check the shipment record</h3>
+  <p>Go to Shipments, search by order number or tracking number, open the shipment record, confirm tracking number and carrier, and check marketplace notification status. If marketplace notification failed, hover over the failure and send Noah the failure reason.</p>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">If there is no ShipStation label</div>
+  <h3>Find the label source</h3>
+  <p>Do not add a fake tracking number. Find out where the label was created. Gather carrier, tracking number, ship date, and order number. Send the details to Noah before changing Shopify or Nordstrom.</p>
+</div>
+
+<div class="note-box">
+  <p>If it is a Nordstrom order already fulfilled in Shopify with no tracking, tell Noah immediately. That is the failure pattern we are trying to prevent.</p>
+</div>
+
+<h2 class="section-heading">Reprint, void, and reship</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Action</th>
+      <th scope="col">Rule</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Reprint</td>
+      <td>Use when the printer failed or the label was lost before it was used. Reprinting prints the same label with the same tracking number and does not buy postage again.</td>
+    </tr>
+    <tr>
+      <td>Void</td>
+      <td>Use when the label should not be used. Voiding a label moves the order back to Awaiting Shipment. For Nordstrom, tell Noah before voiding and reshipping if tracking may already have been sent.</td>
+    </tr>
+    <tr>
+      <td>Split shipment</td>
+      <td>Use only when one order must ship in more than one package or at different times. The order stays in Awaiting Shipment until every shipment in that order is shipped. For Nordstrom, ask Noah before partial shipment unless approved for that order.</td>
+    </tr>
+    <tr>
+      <td>Mark as Shipped</td>
+      <td>Records shipment without buying a label. Use only when a label was created outside ShipStation and Noah approved that path. For Nordstrom, treat this as an exception.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="screenshot-slot">
+  <div class="screenshot-slot-label">Future screenshot</div>
+  <p>Failed marketplace notification icon and the hover message that explains the failure.</p>
+</div>
+
+<h2 class="section-heading">Send Noah this format</h2>
+
+<div class="issue-template">
+  <div class="issue-template-label">Issue report template</div>
+  <pre>ShipStation issue
+Channel:
+Order number:
+Nordstrom/Mirakl id, if any:
+Customer name:
+What I expected:
+What happened:
+Current status in ShipStation:
+Current status in Shopify:
+Tracking number, if any:
+Carrier, if any:
+Screenshot or error text:
+What I have not done yet:</pre>
+</div>
+
+<p>Do not include customer payment details or passwords.</p>
+
+</div>
+
+<div id="setup" class="tab-content">
+
+<h2 class="section-heading">Package presets</h2>
+
+<p>Current issue: ShipStation imports Shopify orders with package dimensions missing or set to 0 x 0 x 0. Sherri should document the physical packages used in production so ShipStation presets can be created later.</p>
+
+<p>For each package group, record the box or mailer used, outside dimensions, empty package weight, and notes.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Package group</th>
+      <th scope="col">Products</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Small padded mailer or small box</td>
+      <td>Wallets, jewelry, combs, toothpicks, and small leather goods.</td>
+    </tr>
+    <tr>
+      <td>Belt package</td>
+      <td>Belts.</td>
+    </tr>
+    <tr>
+      <td>Medium box</td>
+      <td>Ashtrays, notebooks, and multi-item small orders.</td>
+    </tr>
+    <tr>
+      <td>Bag box</td>
+      <td>Audrey, Dakota, Brooklyn, Phoebe, and similar totes.</td>
+    </tr>
+    <tr>
+      <td>Large bag box</td>
+      <td>Duffle, rucksack, executive briefcase, and multi-bag orders.</td>
+    </tr>
+    <tr>
+      <td>Special long item</td>
+      <td>Strops or other long products.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="screenshot-slot">
+  <div class="screenshot-slot-label">Future screenshot</div>
+  <p>Package preset list once Ezra Arthur package sizes are confirmed.</p>
+</div>
+
+<h2 class="section-heading">Package questions</h2>
+
+<ul class="instruction-list">
+  <li>When do we add insurance?</li>
+  <li>When do we require signature?</li>
+  <li>Which packages use USPS Ground Advantage, USPS Priority, UPS, or FedEx?</li>
+  <li>Are Shopify product weights product-only weights, or do they include packaging?</li>
+  <li>What happens for multi-item orders?</li>
+</ul>
+
+<h2 class="section-heading">Recommended shop setup</h2>
+
+<ol class="numbered-list">
+  <li>Install ShipStation Connect on the shipping workstation.</li>
+  <li>Use a USB label printer if possible.</li>
+  <li>Set label format to match the printer, usually 4 in x 6 in for a thermal label printer.</li>
+  <li>Set default printers for labels and packing slips.</li>
+  <li>Connect a HID-compliant USB scale directly to the workstation.</li>
+  <li>Test the Scale button in the Configure Shipment widget.</li>
+  <li>Create package presets after Sherri confirms package dimensions and product rules.</li>
+  <li>Create saved views for common work queues.</li>
+</ol>
+
+<h2 class="section-heading">Useful saved views</h2>
+
+<ul class="instruction-list">
+  <li>Awaiting Shipment, Shopify.</li>
+  <li>Awaiting Shipment, Nordstrom or Mirakl tag.</li>
+  <li>Orders with label created but label not printed.</li>
+  <li>Marketplace notification failed.</li>
+  <li>Orders on hold.</li>
+  <li>Orders with requested service Standard.</li>
+</ul>
+
+<h2 class="section-heading">Order status reference</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Status</th>
+      <th scope="col">Meaning</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Awaiting Shipment</td>
+      <td>Ready to ship. Main work queue.</td>
+    </tr>
+    <tr>
+      <td>Awaiting Payment</td>
+      <td>Do not ship. Labels cannot be created from this status.</td>
+    </tr>
+    <tr>
+      <td>On Hold</td>
+      <td>Intentionally paused.</td>
+    </tr>
+    <tr>
+      <td>Shipped</td>
+      <td>Label created or order marked shipped. Work is done unless there is a problem.</td>
+    </tr>
+    <tr>
+      <td>Cancelled</td>
+      <td>Inactive. Cancel in the selling channel first when possible, then refresh ShipStation.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 class="section-heading">Label button reference</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Button</th>
+      <th scope="col">Meaning</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Create + Print Label</td>
+      <td>Buy label and print now.</td>
+    </tr>
+    <tr>
+      <td>Create Label</td>
+      <td>Buy label now and print later.</td>
+    </tr>
+    <tr>
+      <td>Print Label</td>
+      <td>Reprint an existing label.</td>
+    </tr>
+    <tr>
+      <td>Void Label</td>
+      <td>Cancel a label that should not be used.</td>
+    </tr>
+    <tr>
+      <td>Mark as Shipped</td>
+      <td>Record shipment without creating a label. Use only with approval for marketplace orders.</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
+<div id="question" class="tab-content-full">
+
+<div>
+  <p class="proposal-title">When in doubt, pause.</p>
+  <p class="proposal-title" style="margin-top: var(--space-1);">Send Noah the order number, channel, current ShipStation status, current Shopify status, and a screenshot or error message.</p>
+</div>
+
+</div>
+
+</main>
+
+<footer>
+  <span class="proposal-meta">Prepared May 7, 2026. Sources: ShipStation help and Ezra Arthur internal shipping references.</span>
+</footer>
+
+<script>
+(function() {
+  var container = document.querySelector('main');
+  var tabsNav = document.querySelector('.tabs');
+  var header = document.querySelector('.proposal-header');
+  var tabs = document.querySelectorAll('.tab');
+  var panels = document.querySelectorAll('.tab-content, .tab-content-full');
+
+  container.classList.add('tabbed');
+
+  function stickyOffset() {
+    var headerHeight = header ? header.getBoundingClientRect().height : 0;
+    var tabsHeight = tabsNav ? tabsNav.getBoundingClientRect().height : 0;
+    return headerHeight + tabsHeight;
+  }
+
+  function scrollPanelToTop(panel) {
+    var top = panel.getBoundingClientRect().top + window.scrollY - stickyOffset();
+    var scrollTarget = Math.max(0, Math.round(top));
+    var root = document.documentElement;
+    var previousScrollBehavior = root.style.scrollBehavior;
+
+    root.style.scrollBehavior = 'auto';
+    window.scrollTo(0, scrollTarget);
+    root.style.scrollBehavior = previousScrollBehavior;
+  }
+
+  function activateTab(tab) {
+    var id = tab.getAttribute('href').slice(1);
+    var panel = document.getElementById(id);
+    if (!panel) return;
+
+    panels.forEach(function(el) { el.classList.remove('active'); });
+    tabs.forEach(function(t) { t.classList.remove('active'); });
+    panel.classList.add('active');
+    tab.classList.add('active');
+    scrollPanelToTop(panel);
+  }
+
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function(e) {
+      e.preventDefault();
+      activateTab(this);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

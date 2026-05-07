@@ -351,6 +351,32 @@
     white-space: pre-wrap;
   }
 
+  .instruction-figure {
+    margin: var(--space-2) 0;
+  }
+
+  .instruction-figure img {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,0.12);
+  }
+
+  .instruction-figure--contained img {
+    width: auto;
+    max-width: 100%;
+  }
+
+  .instruction-diptych {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-1);
+    margin: var(--space-2) 0;
+  }
+
+  .instruction-diptych .instruction-figure {
+    margin: 0;
+  }
+
   .page-proposal footer {
     margin-top: var(--space-4);
     padding-top: var(--space-1);
@@ -369,6 +395,10 @@
 
     .tabs {
       gap: var(--space-1);
+    }
+
+    .instruction-diptych {
+      grid-template-columns: 1fr;
     }
 
     table {
@@ -474,9 +504,15 @@
   <p>ShipStation can auto-import while you are away, but it does not let us set the exact auto-import schedule. If you are about to ship, manually refresh first.</p>
 </div>
 
-<div class="screenshot-slot">
-  <div class="screenshot-slot-label">Future screenshot</div>
-  <p>Orders tab with the Import icon and Awaiting Shipment queue visible.</p>
+<div class="instruction-diptych">
+  <figure class="instruction-figure instruction-figure--contained">
+    <img src="/instructions/shipstation/img/ss-awaiting-shipment.png" alt="ShipStation Orders sidebar with Awaiting Shipment highlighted.">
+    <figcaption class="proposal-media-caption">Start in Orders, then work from Awaiting Shipment.</figcaption>
+  </figure>
+  <figure class="instruction-figure instruction-figure--contained">
+    <img src="/instructions/shipstation/img/ss-import-menu.png" alt="ShipStation import menu with Update All Stores and store import buttons.">
+    <figcaption class="proposal-media-caption">Use the import icon before shipping so the queue is current.</figcaption>
+  </figure>
 </div>
 
 <div class="scope-phase">
@@ -485,6 +521,11 @@
   <p>In Awaiting Shipment, sort or filter by store, source, order number, requested service, ship date, tags, label created, label printed, and marketplace notified.</p>
   <p>For Nordstrom, search by the Shopify order number without the # mark, such as 5011. Cross-check the Shopify order if the deadline or source is unclear.</p>
 </div>
+
+<figure class="instruction-figure">
+  <img src="/instructions/shipstation/img/ss-search-order.png" alt="ShipStation Orders grid with the search field and matching order numbers highlighted.">
+  <figcaption class="proposal-media-caption">Search by order number without punctuation. If the quick search misses it, check the other statuses before changing anything.</figcaption>
+</figure>
 
 <div class="scope-phase">
   <div class="phase-label">Step 3</div>
@@ -549,10 +590,10 @@
   <p>In the Orders grid, select the order. The Configure Shipment widget should appear in the shipping sidebar. If the sidebar is hidden, turn on Show Sidebar.</p>
 </div>
 
-<div class="screenshot-slot">
-  <div class="screenshot-slot-label">Future screenshot</div>
-  <p>Selected order with the Configure Shipment widget open in the sidebar.</p>
-</div>
+<figure class="instruction-figure">
+  <img src="/instructions/shipstation/img/ss-configure-shipment.png" alt="ShipStation order selected with the Configure Shipment widget open in the sidebar.">
+  <figcaption class="proposal-media-caption">When an order is selected, the shipping sidebar is where you confirm package, service, weight, dimensions, rate, and label action.</figcaption>
+</figure>
 
 <div class="scope-phase">
   <div class="phase-label">Step 2</div>
@@ -567,6 +608,11 @@
   <p>Use the package's packed weight. If a USB scale is connected through ShipStation Connect, place the package on the scale and click the Scale button in the Configure Shipment widget.</p>
   <p>ShipStation supports most HID-compliant USB scales connected directly to the workstation. Avoid USB hubs or extenders for the scale.</p>
 </div>
+
+<figure class="instruction-figure instruction-figure--contained">
+  <img src="/instructions/shipstation/img/ss-scale-button.png" alt="ShipStation Configure Shipment widget with the Scale button highlighted near the weight field.">
+  <figcaption class="proposal-media-caption">Use the Scale button only after the packed order is sitting on the connected scale.</figcaption>
+</figure>
 
 <div class="scope-phase">
   <div class="phase-label">Step 4</div>
@@ -588,6 +634,11 @@
   <p>Use Create + Print Label when the order is ready to ship. ShipStation requests the label from the carrier, creates a shipment record, moves the shipment to Shipped, moves the order to Shipped when every shipment on that order is shipped, and sends shipment information back to the connected store by default.</p>
   <p>If you want to create the label now and print later, use the dropdown and choose Create Label.</p>
 </div>
+
+<figure class="instruction-figure instruction-figure--contained">
+  <img src="/instructions/shipstation/img/ss-create-print-label.png" alt="ShipStation shipping sidebar with Create + Print Label highlighted.">
+  <figcaption class="proposal-media-caption">Create + Print Label is the normal button when the order is checked and ready.</figcaption>
+</figure>
 
 <h2 class="section-heading">Print method</h2>
 
@@ -616,6 +667,11 @@
 
 <p>ShipStation Connect works best with USB printers. ShipStation says it does not support Rollo printers through ShipStation Connect. Rollo can still be used through Download PDF or browser print if needed.</p>
 
+<figure class="instruction-figure instruction-figure--contained">
+  <img src="/instructions/shipstation/img/ss-print-options.png" alt="ShipStation Print Label popup showing ShipStation Connect, Preview in Browser, and Download PDF options.">
+  <figcaption class="proposal-media-caption">Use ShipStation Connect for the normal station. Download PDF is the clean fallback when the printer path fails.</figcaption>
+</figure>
+
 <h2 class="section-heading">Confirm the shipment</h2>
 
 <ul class="instruction-list">
@@ -626,10 +682,10 @@
   <li>Check that no red failed notification icon appears.</li>
 </ul>
 
-<div class="screenshot-slot">
-  <div class="screenshot-slot-label">Future screenshot</div>
-  <p>Shipment record with tracking number, carrier, and marketplace notification status visible.</p>
-</div>
+<figure class="instruction-figure">
+  <img src="/instructions/shipstation/img/ss-tracking-details.png" alt="ShipStation shipment details with tracking number and smart tracking icons highlighted.">
+  <figcaption class="proposal-media-caption">After printing, check the shipment record for tracking. The shipment record is the proof that a real tracking number exists.</figcaption>
+</figure>
 
 <h2 class="section-heading">What tracking should do</h2>
 
@@ -705,9 +761,15 @@
   </tbody>
 </table>
 
-<div class="screenshot-slot">
-  <div class="screenshot-slot-label">Future screenshot</div>
-  <p>Failed marketplace notification icon and the hover message that explains the failure.</p>
+<div class="instruction-diptych">
+  <figure class="instruction-figure instruction-figure--contained">
+    <img src="/instructions/shipstation/img/ss-marketplace-notified.png" alt="ShipStation Marketplace Notified column showing Notified and Failed statuses.">
+    <figcaption class="proposal-media-caption">Marketplace Notified should say Notified. If it says Failed, hover and send Noah the failure message.</figcaption>
+  </figure>
+  <figure class="instruction-figure">
+    <img src="/instructions/shipstation/img/ss-void-label.png" alt="ShipStation Shipped tab with the Void Label button highlighted.">
+    <figcaption class="proposal-media-caption">Void only when the label should not be used. Ask Noah first for Nordstrom orders.</figcaption>
+  </figure>
 </div>
 
 <h2 class="section-heading">Send Noah this format</h2>
@@ -776,10 +838,10 @@ What I have not done yet:</pre>
   </tbody>
 </table>
 
-<div class="screenshot-slot">
-  <div class="screenshot-slot-label">Future screenshot</div>
-  <p>Package preset list once Ezra Arthur package sizes are confirmed.</p>
-</div>
+<figure class="instruction-figure instruction-figure--contained">
+  <img src="/instructions/shipstation/img/ss-manage-presets.png" alt="ShipStation Manage Presets window with hotkeys and barcode options.">
+  <figcaption class="proposal-media-caption">Package presets can hold ship-from location, service, package type, confirmation, insurance, weight, and dimensions. Create them after Sherri confirms the physical package list.</figcaption>
+</figure>
 
 <h2 class="section-heading">Package questions</h2>
 
@@ -803,6 +865,11 @@ What I have not done yet:</pre>
   <li>Create package presets after Sherri confirms package dimensions and product rules.</li>
   <li>Create saved views for common work queues.</li>
 </ol>
+
+<figure class="instruction-figure instruction-figure--contained">
+  <img src="/instructions/shipstation/img/ss-label-format.png" alt="ShipStation Shipping Label Format settings showing 4 x 6 selected.">
+  <figcaption class="proposal-media-caption">For a thermal label printer, the normal label format is 4 in x 6 in.</figcaption>
+</figure>
 
 <h2 class="section-heading">Useful saved views</h2>
 

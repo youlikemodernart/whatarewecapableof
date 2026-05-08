@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Substrate Semi-Custom Draft Review</title>
+<style>
+:root {
+  --bg: #ffffff;
+  --ink: #000000;
+  --accent: rgb(0, 15, 255);
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --size: 16px;
+  --leading: 1.35;
+  --unit: calc(16px * 1.35);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: var(--size); line-height: var(--leading); }
+a { color: inherit; }
+a:hover { color: var(--accent); }
+
+.top {
+  position: sticky; top: 0; z-index: 5;
+  background: rgba(255,255,255,.96);
+  border-bottom: 1px solid var(--ink);
+  backdrop-filter: blur(8px);
+}
+.nav {
+  max-width: 1280px; margin: 0 auto;
+  display: flex; align-items: baseline; justify-content: space-between;
+  padding: var(--unit) 28px;
+}
+.brand { font-family: var(--font-mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; }
+.menu { display: flex; gap: 24px; font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+.menu .active { color: var(--accent); }
+
+.page { max-width: 1280px; margin: 0 auto; padding: 0 28px; }
+
+.header {
+  padding: calc(var(--unit) * 4) 0 calc(var(--unit) * 2);
+  display: grid; grid-template-columns: 1fr 1fr; gap: calc(var(--unit) * 2);
+  align-items: start;
+  border-bottom: 1px solid var(--ink);
+}
+.header h1 { font-family: var(--font-body); font-size: var(--size); font-weight: 400; text-transform: uppercase; letter-spacing: .08em; }
+.header-meta { font-family: var(--font-mono); font-size: 13px; line-height: 1.5; }
+
+.review-block {
+  padding: calc(var(--unit) * 2) 0;
+  border-bottom: 1px solid var(--ink);
+  display: grid; grid-template-columns: 1fr 1fr; gap: calc(var(--unit) * 2);
+}
+.review-block h2 { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; margin-bottom: var(--unit); }
+.review-block ul { list-style: none; }
+.review-block li { padding-left: 1em; text-indent: -1em; margin-bottom: 8px; font-size: 15px; line-height: 1.45; }
+.review-block li::before { content: "- "; }
+
+.section-nav {
+  padding: calc(var(--unit) * 2) 0;
+  border-bottom: 1px solid var(--ink);
+  display: flex; gap: 28px;
+  font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .08em;
+}
+.section-nav a { text-decoration: none; }
+
+.collection {
+  padding: calc(var(--unit) * 3) 0 calc(var(--unit) * 4);
+}
+.collection-head {
+  display: grid; grid-template-columns: 1fr 1fr; gap: calc(var(--unit) * 2);
+  padding-bottom: calc(var(--unit) * 2);
+  border-bottom: 1px solid var(--ink);
+  margin-bottom: calc(var(--unit) * 2);
+}
+.collection-head h2 { font-family: var(--font-body); font-size: var(--size); font-weight: 400; text-transform: uppercase; letter-spacing: .08em; }
+.collection-head p { font-family: var(--font-mono); font-size: 13px; line-height: 1.5; }
+
+.grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+  background: var(--ink);
+  border: 1px solid var(--ink);
+}
+.item { background: var(--bg); }
+.item-media { aspect-ratio: 1 / 1; overflow: hidden; position: relative; }
+.item-media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.item-media .hover { position: absolute; inset: 0; opacity: 0; transition: opacity .15s ease; }
+.item:hover .item-media .hover { opacity: 1; }
+.item-body { padding: 16px; }
+.item-label { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .12em; margin-bottom: 6px; }
+.item-name { font-size: var(--size); font-weight: 400; margin-bottom: 6px; }
+.item-price { font-family: var(--font-mono); font-size: 12px; margin-bottom: 4px; }
+.item-meta { font-family: var(--font-mono); font-size: 11px; margin-bottom: 8px; }
+.item-link { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
+
+.footer {
+  padding: calc(var(--unit) * 2) 0 calc(var(--unit) * 4);
+  border-top: 1px solid var(--ink);
+  font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em;
+}
+
+@media (max-width: 980px) {
+  .header, .review-block, .collection-head { grid-template-columns: 1fr; }
+  .grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 700px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  .nav { flex-direction: column; gap: 12px; }
+}
+@media (max-width: 460px) {
+  .grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="nav">
+    <div class="brand">Substrate</div>
+    <nav class="menu" aria-label="Simulated navigation">
+      <span>Shop</span>
+      <span class="active">Semi-Custom</span>
+      <span>Samples</span>
+      <span>Trade</span>
+      <span>Contact</span>
+    </nav>
+  </div>
+</header>
+<main class="page">
+  <section class="header">
+    <div>
+      <h1>Semi-Custom Draft Review</h1>
+    </div>
+    <div class="header-meta">
+      Private review page for the Kaitlyn Wolfe team. Summit and Ember are unpublished Shopify drafts. Pricing is pending review.
+    </div>
+  </section>
+
+  <section class="review-block">
+    <div>
+      <h2>Review focus</h2>
+      <ul>
+        <li>Does SEMI-CUSTOM feel like the right shopping path?</li>
+        <li>Do Summit and Ember feel clear as separate collections?</li>
+        <li>Do the product cards give enough colorway context before opening a product?</li>
+        <li>Do the image crops feel consistent enough for draft review?</li>
+      </ul>
+    </div>
+    <div>
+      <h2>Still draft</h2>
+      <ul>
+        <li>Products are not published.</li>
+        <li>Some products have one image while final layout imagery is gathered.</li>
+        <li>Prices shown are draft ranges pending pricing review.</li>
+        <li>The quote email is temporary on Shopify previews until the real address is provided.</li>
+      </ul>
+    </div>
+  </section>
+
+  <nav class="section-nav">
+    <a href="#summit">Summit, 24 colorways</a>
+    <a href="#ember">Ember, 24 colorways</a>
+  </nav>
+
+  <section class="collection" id="summit">
+    <div class="collection-head">
+      <h2>Summit</h2>
+      <p>24 colorways. Draft retail tiers at $75, $90, and $105 per SF pending pricing approval.</p>
+    </div>
+    <div class="grid">
+      <article class="item" data-line="Summit">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-acadia-hero-01.jpg?v=1777945932" alt="Summit ACADIA">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-acadia-layout-02.jpg?v=1777945932" alt="Summit ACADIA layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Summit</div>
+          <div class="item-name">ACADIA</div>
+          <div class="item-price">Draft: $75 to $105/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=392274765640126ffe09db34ef63d706" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Summit">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-arches-hero-01.jpg?v=1777945906" alt="Summit ARCHES">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-arches-layout-02.jpg?v=1777945906" alt="Summit ARCHES layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Summit</div>
+          <div class="item-name">ARCHES</div>
+          <div class="item-price">Draft: $75 to $105/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=38254566b5ba89f64f9d74f999159d43" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Summit">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-arctic-hero-01.jpg?v=1777945975" alt="Summit ARCTIC">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-arctic-layout-02.jpg?v=1777945975" alt="Summit ARCTIC layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Summit</div>
+          <div class="item-name">ARCTIC</div>
+          <div class="item-price">Draft: $75 to $105/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=48a6a4b94aceac2afc897cb21257da94" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Summit">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-badlands-hero-01.jpg?v=1777945888" alt="Summit BADLANDS">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-badlands-layout-02.jpg?v=1777945888" alt="Summit BADLANDS layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Summit</div>
+          <div class="item-name">BADLANDS</div>
+          <div class="item-price">Draft: $75 to $105/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=ad88b49802a71a8b5293801aa25bfce5" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Summit">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-basin-hero-01.jpg?v=1777945897" alt="Summit BASIN">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-basin-layout-02.jpg?v=1777945897" alt="Summit BASIN layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Summit</div>
+          <div class="item-name">BASIN</div>
+          <div class="item-price">Draft: $75 to $105/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=5ec7d928387c5e0ba271ee9a1d8e0d3e" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Summit">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-big-bend-hero-01.jpg?v=1777945941" alt="Summit BIG BEND">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-big-bend-layout-02.jpg?v=1777945941" alt="Summit BIG BEND layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Summit</div>
+          <div class="item-name">BIG BEND</div>
+          <div class="item-price">Draft: $75 to $105/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=52d9a5bef7bfbf92c68e6729f10ec0f0" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Summit">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-biscayne-hero-01.jpg?v=1777945966" alt="Summit BISCAYNE">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-biscayne-layout-02.jpg?v=1777945966" alt="Summit BISCAYNE layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Summit</div>
+          <div class="item-name">BISCAYNE</div>
+          <div class="item-price">Draft: $75 to $105/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=b70f34bf93229b42fb539eb3cd0b1f00" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Summit">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-bryce-hero-01.jpg?v=1777945978" alt="Summit BRYCE">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Summit</div>
+          <div class="item-name">BRYCE</div>
+          <div class="item-price">Draft: $75 to $105/SF</div>
+          <div class="item-meta">25 sizes, 1 image</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=adc3e0ccff866c4601940d075569abdf" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Summit">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-cascade-hero-01.jpg?v=1777945928" alt="Summit CASCADE">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-cascade-layout-02.jpg?v=1777945928" alt="Summit CASCADE layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Summit</div>
+          <div class="item-name">CASCADE</div>
+          <div class="item-price">Draft: $75 to $105/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=9d42245fd2f5d1531ea43f14679b6eb3" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Summit">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-denali-hero-01.jpg?v=1777945970" alt="Summit DENALI">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-denali-layout-02.jpg?v=1777945970" alt="Summit DENALI layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Summit</div>
+          <div class="item-name">DENALI</div>
+          <div class="item-price">Draft: $75 to $105/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=5dbab3e0d1794455b9b04a0bad248b5a" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Summit">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-glacier-hero-01.jpg?v=1777945946" alt="Summit GLACIER">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-glacier-layout-02.jpg?v=1777945946" alt="Summit GLACIER layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Summit</div>
+          <div class="item-name">GLACIER</div>
+          <div class="item-price">Draft: $75 to $105/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=ab13828e1e6d09676ae628d6018af9ac" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Summit">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-gunnison-hero-01.jpg?v=1777945878" alt="Summit GUNNISON">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-gunnison-layout-02.jpg?v=1777945880" alt="Summit GUNNISON layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Summit</div>
+          <div class="item-name">GUNNISON</div>
+          <div class="item-price">Draft: $75 to $105/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=d905b71ce761ace8514ca06730acafd6" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Summit">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-lake-clark-hero-01.jpg?v=1777945951" alt="Summit LAKE CLARK">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-lake-clark-layout-02.jpg?v=1777945951" alt="Summit LAKE CLARK layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Summit</div>
+          <div class="item-name">LAKE CLARK</div>
+          <div class="item-price">Draft: $75 to $105/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=35f2d46a0120844ab81698af4dc9fea6" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Summit">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-mammoth-hero-01.jpg?v=1777945902" alt="Summit MAMMOTH">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-mammoth-layout-02.jpg?v=1777945902" alt="Summit MAMMOTH layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Summit</div>
+          <div class="item-name">MAMMOTH</div>
+          <div class="item-price">Draft: $75 to $105/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=55dbca4dbfdd1b81032e7fbf11d7d466" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Summit">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-rocky-hero-01.jpg?v=1777945910" alt="Summit ROCKY">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-rocky-layout-02.jpg?v=1777945910" alt="Summit ROCKY layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Summit</div>
+          <div class="item-name">ROCKY</div>
+          <div class="item-price">Draft: $75 to $105/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=dd408642e7727aa85f1d631471ac8bc3" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Summit">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-saguaro-hero-01.jpg?v=1777945956" alt="Summit SAGUARO">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-saguaro-layout-02.jpg?v=1777945956" alt="Summit SAGUARO layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Summit</div>
+          <div class="item-name">SAGUARO</div>
+          <div class="item-price">Draft: $75 to $105/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=49b805d134512eb072c8707347220691" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Summit">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-samoa-hero-01.jpg?v=1777945893" alt="Summit SAMOA">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-samoa-layout-02.jpg?v=1777945893" alt="Summit SAMOA layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Summit</div>
+          <div class="item-name">SAMOA</div>
+          <div class="item-price">Draft: $75 to $105/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=45cde54fbcbd518df698d0433ce78687" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Summit">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-sequoia-hero-01.jpg?v=1777945937" alt="Summit SEQUOIA">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-sequoia-layout-02.jpg?v=1777945937" alt="Summit SEQUOIA layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Summit</div>
+          <div class="item-name">SEQUOIA</div>
+          <div class="item-price">Draft: $75 to $105/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=66f9a9d71e3400a57a438d7ff02e560c" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Summit">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-teton-hero-01.jpg?v=1777945853" alt="Summit TETON">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-teton-layout-02.jpg?v=1777945855" alt="Summit TETON layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Summit</div>
+          <div class="item-name">TETON</div>
+          <div class="item-price">Draft: $75 to $105/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=6aaf221110b90382975be48127230373" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Summit">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-volcano-hero-01.jpg?v=1777945884" alt="Summit VOLCANO">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-volcano-layout-02.jpg?v=1777945884" alt="Summit VOLCANO layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Summit</div>
+          <div class="item-name">VOLCANO</div>
+          <div class="item-price">Draft: $75 to $105/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=7ae47824dae5347b09acd3645a131735" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Summit">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-white-sands-hero-01.jpg?v=1777945961" alt="Summit WHITE SANDS">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-white-sands-layout-02.jpg?v=1777945961" alt="Summit WHITE SANDS layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Summit</div>
+          <div class="item-name">WHITE SANDS</div>
+          <div class="item-price">Draft: $75 to $105/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=c295ce430a6d1b5bfb5cac63d08e1ff5" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Summit">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-yellowstone-hero-01.jpg?v=1777945914" alt="Summit YELLOWSTONE">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-yellowstone-layout-02.jpg?v=1777945914" alt="Summit YELLOWSTONE layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Summit</div>
+          <div class="item-name">YELLOWSTONE</div>
+          <div class="item-price">Draft: $75 to $105/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=2707afc0e3cec1addea963b8fe88af87" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Summit">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-yosemite-hero-01.jpg?v=1777945919" alt="Summit YOSEMITE">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-yosemite-layout-02.jpg?v=1777945919" alt="Summit YOSEMITE layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Summit</div>
+          <div class="item-name">YOSEMITE</div>
+          <div class="item-price">Draft: $75 to $105/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=7f0744a4eed26cc7d07f12b0c121a131" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Summit">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-zion-hero-01.jpg?v=1777945924" alt="Summit ZION">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-summit-zion-layout-02.jpg?v=1777945924" alt="Summit ZION layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Summit</div>
+          <div class="item-name">ZION</div>
+          <div class="item-price">Draft: $75 to $105/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=49b6ae7ec0b54a5d5b0f5c3adcb3dee7" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="collection" id="ember">
+    <div class="collection-head">
+      <h2>Ember</h2>
+      <p>24 colorways. Draft retail tiers at $90, $105, and $120 per SF pending pricing approval.</p>
+    </div>
+    <div class="grid">
+      <article class="item" data-line="Ember">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-azure-hero-01.jpg?v=1777946086" alt="Ember AZURE">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-azure-layout-02.jpg?v=1777946086" alt="Ember AZURE layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Ember</div>
+          <div class="item-name">AZURE</div>
+          <div class="item-price">Draft: $90 to $120/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=b91011bbdbcdab0bf4ba4e4923bb0f6e" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Ember">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-brass-hero-01.jpg?v=1777946057" alt="Ember BRASS">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-brass-layout-02.jpg?v=1777946057" alt="Ember BRASS layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Ember</div>
+          <div class="item-name">BRASS</div>
+          <div class="item-price">Draft: $90 to $120/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=9657fb03f99fca5110fcb8c0f304f83f" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Ember">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-bronze-hero-01.jpg?v=1777946065" alt="Ember BRONZE">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-bronze-layout-02.jpg?v=1777946065" alt="Ember BRONZE layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Ember</div>
+          <div class="item-name">BRONZE</div>
+          <div class="item-price">Draft: $90 to $120/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=60926d68c856f797a9560494d2741e52" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Ember">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-burnish-hero-01.jpg?v=1777946027" alt="Ember BURNISH">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-burnish-layout-02.jpg?v=1777946027" alt="Ember BURNISH layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Ember</div>
+          <div class="item-name">BURNISH</div>
+          <div class="item-price">Draft: $90 to $120/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=b71382d7c7b331d6ba8d5b596809571e" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Ember">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-cobalt-hero-01.jpg?v=1777946091" alt="Ember COBALT">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-cobalt-layout-02.jpg?v=1777946091" alt="Ember COBALT layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Ember</div>
+          <div class="item-name">COBALT</div>
+          <div class="item-price">Draft: $90 to $120/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=10a9ebc847bbf30a4500a13451b8c8a4" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Ember">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-copper-hero-01.jpg?v=1777946070" alt="Ember COPPER">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-copper-layout-02.jpg?v=1777946070" alt="Ember COPPER layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Ember</div>
+          <div class="item-name">COPPER</div>
+          <div class="item-price">Draft: $90 to $120/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=b2989c8dca1d742cb43e0d4c34f5e908" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Ember">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-corten-hero-01.jpg?v=1777946006" alt="Ember CORTEN">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Ember</div>
+          <div class="item-name">CORTEN</div>
+          <div class="item-price">Draft: $90 to $120/SF</div>
+          <div class="item-meta">25 sizes, 1 image</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=d068aae6e33cc5571db1a480120cce1c" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Ember">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-crater-hero-01.jpg?v=1777946015" alt="Ember CRATER">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-crater-layout-02.jpg?v=1777946015" alt="Ember CRATER layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Ember</div>
+          <div class="item-name">CRATER</div>
+          <div class="item-price">Draft: $90 to $120/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=b61ca067d54873dec6efd3aa75b058d2" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Ember">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-foam-hero-01.jpg?v=1777946051" alt="Ember FOAM">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-foam-layout-02.jpg?v=1777946051" alt="Ember FOAM layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Ember</div>
+          <div class="item-name">FOAM</div>
+          <div class="item-price">Draft: $90 to $120/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=46c1339216e9f94bf45fafd40016a85c" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Ember">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-forest-hero-01.jpg?v=1777946061" alt="Ember FOREST">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-forest-layout-02.jpg?v=1777946061" alt="Ember FOREST layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Ember</div>
+          <div class="item-name">FOREST</div>
+          <div class="item-price">Draft: $90 to $120/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=e7fd52e4dde44ef3cad33557cd43e61c" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Ember">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-forged-hero-01.jpg?v=1777946045" alt="Ember FORGED">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-forged-layout-02.jpg?v=1777946045" alt="Ember FORGED layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Ember</div>
+          <div class="item-name">FORGED</div>
+          <div class="item-price">Draft: $90 to $120/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=942e10cfe1dfad2c700245c28599eb00" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Ember">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-fossil-hero-01.jpg?v=1777946082" alt="Ember FOSSIL">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Ember</div>
+          <div class="item-name">FOSSIL</div>
+          <div class="item-price">Draft: $90 to $120/SF</div>
+          <div class="item-meta">25 sizes, 1 image</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=04052d50b5abc10a84b8c5c69c4d9506" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Ember">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-glided-hero-01.jpg?v=1777946040" alt="Ember GLIDED">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-glided-layout-02.jpg?v=1777946040" alt="Ember GLIDED layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Ember</div>
+          <div class="item-name">GLIDED</div>
+          <div class="item-price">Draft: $90 to $120/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=90e81aaadff32009c2ae7ad8f9072fba" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Ember">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-ink-hero-01.jpg?v=1777946035" alt="Ember INK">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-ink-layout-02.jpg?v=1777946035" alt="Ember INK layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Ember</div>
+          <div class="item-name">INK</div>
+          <div class="item-price">Draft: $90 to $120/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=d153da5e3af4af6775cb91ab72830743" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Ember">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-lagoon-hero-01.jpg?v=1777945982" alt="Ember LAGOON">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Ember</div>
+          <div class="item-name">LAGOON</div>
+          <div class="item-price">Draft: $90 to $120/SF</div>
+          <div class="item-meta">25 sizes, 1 image</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=dbdb1e46bce13dba23ff55b48ff4de12" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Ember">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-molten-hero-01.jpg?v=1777946074" alt="Ember MOLTEN">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-molten-layout-02.jpg?v=1777946074" alt="Ember MOLTEN layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Ember</div>
+          <div class="item-name">MOLTEN</div>
+          <div class="item-price">Draft: $90 to $120/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=ed0f53579ea6be1a5d91bfeb217358da" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Ember">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-olive-hero-01.jpg?v=1777946010" alt="Ember OLIVE">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-olive-layout-02.jpg?v=1777946010" alt="Ember OLIVE layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Ember</div>
+          <div class="item-name">OLIVE</div>
+          <div class="item-price">Draft: $90 to $120/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=01980ce04f70d4e00151a6326cb9ac0e" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Ember">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-oxblood-hero-01.jpg?v=1777946022" alt="Ember OXBLOOD">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Ember</div>
+          <div class="item-name">OXBLOOD</div>
+          <div class="item-price">Draft: $90 to $120/SF</div>
+          <div class="item-meta">25 sizes, 1 image</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=738e1dd693bf076e6683cb3f016d444b" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Ember">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-oxide-hero-01.jpg?v=1777946001" alt="Ember OXIDE">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-oxide-layout-02.jpg?v=1777946003" alt="Ember OXIDE layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Ember</div>
+          <div class="item-name">OXIDE</div>
+          <div class="item-price">Draft: $90 to $120/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=9e91867c5724af56e59c7e6694406adb" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Ember">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-shard-hero-01.jpg?v=1777946078" alt="Ember SHARD">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Ember</div>
+          <div class="item-name">SHARD</div>
+          <div class="item-price">Draft: $90 to $120/SF</div>
+          <div class="item-meta">25 sizes, 1 image</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=b4270d6bbd12d5b2de94e4f492869d4d" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Ember">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-solar-hero-01.jpg?v=1777946095" alt="Ember SOLAR">
+          <img class="hover" src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-solar-layout-02.jpg?v=1777946095" alt="Ember SOLAR layout">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Ember</div>
+          <div class="item-name">SOLAR</div>
+          <div class="item-price">Draft: $90 to $120/SF</div>
+          <div class="item-meta">25 sizes, 2 images</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=ff188b5510e7fe4001a697de6c2b7079" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Ember">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-sunbaked-hero-01.jpg?v=1777946018" alt="Ember SUNBAKED">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Ember</div>
+          <div class="item-name">SUNBAKED</div>
+          <div class="item-price">Draft: $90 to $120/SF</div>
+          <div class="item-meta">25 sizes, 1 image</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=d77877e5b1b08c6e771bedff4dea99e0" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Ember">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-thaw-hero-01.jpg?v=1777946031" alt="Ember THAW">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Ember</div>
+          <div class="item-name">THAW</div>
+          <div class="item-price">Draft: $90 to $120/SF</div>
+          <div class="item-meta">25 sizes, 1 image</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=dc536d06d26ce25143f54a1f2fd086be" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+      <article class="item" data-line="Ember">
+        <div class="item-media">
+          <img src="https://cdn.shopify.com/s/files/1/0573/4901/3638/files/substrate-ember-wheat-hero-01.jpg?v=1777945985" alt="Ember WHEAT">
+        </div>
+        <div class="item-body">
+          <div class="item-label">Ember</div>
+          <div class="item-name">WHEAT</div>
+          <div class="item-price">Draft: $90 to $120/SF</div>
+          <div class="item-meta">25 sizes, 1 image</div>
+          <a class="item-link" href="https://tg5fw71naz9o0c7m-57349013638.shopifypreview.com/products_preview?preview_key=c35d269ff0b8a9ccbcda7ceb63f29c42" target="_blank" rel="noreferrer">Preview</a>
+        </div>
+      </article>
+    </div>
+  </section>
+</main>
+<footer class="footer page">Private draft review page prepared by WAWCO. Products remain unpublished in Shopify. Last updated 2026-05-08.</footer>
+</body>
+</html>

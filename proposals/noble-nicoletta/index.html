@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#ffffff">
+<title>Noble</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/typography.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/proposal-media.css?v=rules-20260427">
+<style>
+  html {
+    overflow-x: clip;
+  }
+
+  .page-proposal {
+    --proposal-header-height: calc(var(--space-1) + var(--space-0-5));
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    padding: 0 var(--margin-inline) var(--margin-block);
+  }
+
+  .page-proposal main {
+    flex: 1;
+    max-width: var(--content-width-prose);
+    padding-top: var(--space-1);
+  }
+
+  .proposal-header {
+    min-height: var(--proposal-header-height);
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--color-bg);
+    margin-inline: calc(-1 * var(--margin-inline));
+    padding-inline: var(--margin-inline);
+  }
+
+  .proposal-home {
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .proposal-meta {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--color-text);
+    opacity: 0.4;
+  }
+
+  .proposal-title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: var(--size-m);
+    margin-top: var(--space-1);
+    max-width: 52ch;
+  }
+
+  .proposal-guide {
+    font-size: var(--size-m);
+    max-width: 52ch;
+  }
+
+  .proposal-guide strong {
+    font-weight: 700;
+  }
+
+  .tab-content > p,
+  .finding p,
+  .scope-phase p,
+  .closing p {
+    max-width: 52ch;
+  }
+
+  .tabs {
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-0-5) 0;
+    position: sticky;
+    top: var(--proposal-header-height);
+    background: var(--color-bg);
+    z-index: 15;
+  }
+
+  .tabs::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: calc(-1 * var(--margin-inline));
+    width: 100vw;
+    height: 1px;
+    background: var(--color-text);
+  }
+
+  .tab {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    text-decoration: none;
+    cursor: pointer;
+    color: var(--color-text);
+    opacity: 0.4;
+    border: none;
+    background: none;
+    padding: 0;
+    transition: opacity var(--transition-default);
+  }
+
+  .tab:hover { text-decoration: none; opacity: 0.7; }
+  .tab.active { opacity: 1; }
+
+  .tab-content {
+    padding-top: var(--space-2);
+  }
+
+  .tab-content-full {
+    padding-top: var(--space-2);
+  }
+
+  .tabbed .tab-content {
+    display: none;
+    padding-top: var(--space-2);
+  }
+  .tabbed .tab-content.active { display: block; }
+
+  .tabbed .tab-content-full {
+    display: none;
+    min-height: calc(100svh - 4rem);
+    flex-direction: column;
+    justify-content: center;
+  }
+  .tabbed .tab-content-full.active { display: flex; }
+
+  .section-heading {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    margin-top: var(--space-4);
+    margin-bottom: var(--space-1);
+    padding-top: var(--space-1);
+    border-top: 1px solid rgba(0,0,0,0.15);
+  }
+
+  .section-heading:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .section-heading.section-heading--ruled {
+    margin-top: var(--space-4);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-text);
+  }
+
+  .finding {
+    margin-bottom: var(--space-3);
+  }
+
+  .finding-label {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.4;
+    margin-bottom: calc(var(--space-0-5) * 0.5);
+  }
+
+  .finding p:last-child {
+    margin-bottom: 0;
+  }
+
+  .evidence {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    opacity: 0.35;
+    margin-top: calc(var(--space-0-5));
+  }
+
+  .stat-row {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin: var(--space-1) 0 var(--space-2);
+  }
+
+  .stat-item {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+  }
+
+  .stat-item strong {
+    font-weight: 400;
+    font-family: var(--font-serif);
+    font-size: var(--size-m);
+    text-transform: none;
+    letter-spacing: 0;
+    display: block;
+  }
+
+  .scope-phase {
+    margin-bottom: var(--space-3);
+  }
+
+  .scope-phase .phase-label {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.4;
+    margin-bottom: calc(var(--space-0-5) * 0.5);
+  }
+
+  .scope-phase h3 {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--size-m);
+    margin-bottom: var(--space-0-5);
+  }
+
+  .scope-phase ul {
+    margin: var(--space-0-5) 0 0;
+    padding-left: 1.25rem;
+    list-style: none;
+  }
+
+  .scope-phase li {
+    font-size: var(--size-m);
+    margin-bottom: var(--space-0-5);
+    position: relative;
+  }
+
+  .scope-phase li::before {
+    content: "";
+    position: absolute;
+    left: -1rem;
+    top: 0.55em;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--color-text);
+    opacity: 0.25;
+  }
+
+  .assumption-flag {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.5;
+    background: rgba(0,0,0,0.04);
+    padding: 0.15em 0.4em;
+    border-radius: 2px;
+  }
+
+  .closing {
+    margin-top: var(--space-3);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-text);
+  }
+
+  .closing p:last-of-type {
+    margin-top: var(--space-1);
+  }
+
+  .page-proposal footer {
+    margin-top: var(--space-4);
+    padding-top: var(--space-1);
+    border-top: 1px solid rgba(0,0,0,0.08);
+  }
+
+  /* ---- Specimen grid ---- */
+
+  .specimen-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    margin: var(--space-2) 0;
+    border-top: 1px solid var(--color-text);
+    border-bottom: 1px solid var(--color-text);
+  }
+
+  .specimen {
+    padding: var(--space-1) var(--space-1) var(--space-2);
+  }
+
+  .specimen-number {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.4;
+    margin-bottom: var(--space-0-5);
+  }
+
+  .specimen-label {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    margin-bottom: var(--space-0-5);
+  }
+
+  .specimen-image {
+    width: 100%;
+    aspect-ratio: 1;
+    background: #f5f5f3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--space-1);
+    overflow: hidden;
+  }
+
+  .specimen-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .specimen-image .placeholder {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.25;
+  }
+
+  .specimen-meta {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    opacity: 0.4;
+    margin-top: var(--space-0-5);
+  }
+
+  .specimen-desc {
+    font-family: var(--font-serif);
+    font-size: var(--size-m);
+    margin-top: var(--space-0-5);
+    max-width: 38ch;
+  }
+
+  .pillar-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.35;
+    border: 1px solid rgba(0,0,0,0.15);
+    padding: 0.15em 0.5em;
+    margin-top: var(--space-0-5);
+  }
+
+  @media (max-width: 767px) {
+    :root {
+      --margin-inline: var(--space-1);
+    }
+    .stat-row {
+      flex-direction: column;
+      gap: var(--space-0-5);
+    }
+    .tabs {
+      gap: var(--space-1);
+    }
+    .specimen-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body class="page-proposal">
+
+<header class="proposal-header">
+  <a href="/" class="proposal-home">What are we capable of?</a>
+</header>
+
+<main>
+
+<div class="proposal-meta">Prepared for Noble / May 2026</div>
+
+<p class="proposal-title" style="margin-top: var(--space-1);">Noble is entering a public expansion moment: campus tours, Call Her Holy, retreats, and a founder audience that moves faster than one brand account can contain. The immediate need is a clean transition into a system that keeps up with the movement.</p>
+
+<p class="proposal-guide" style="margin-top: var(--space-1);"><strong>Summary</strong> is what we see from the outside. <strong>Scope</strong> is the phased work we recommend. <strong>Confirm</strong> is what we need before this becomes a final plan.</p>
+
+<nav class="tabs" aria-label="Sections">
+  <a class="tab active" href="#summary">Summary</a>
+  <a class="tab" href="#scope">Scope</a>
+  <a class="tab" href="#confirm">Confirm</a>
+  <a class="tab" href="#question">?</a>
+</nav>
+
+<!-- ===== SUMMARY ===== -->
+<div id="summary" class="tab-content active">
+
+<p>Noble is a 501(c)(3) fitness and faith ministry for women, founded by Nicoletta Bradley in Fort Worth. The public promise: women can find freedom from body image struggles, disordered relationships with food, comparison, and insecurity through faith-based fitness, teaching, community, retreats, and resources. The homepage language is "Made Noble. Live Free."</p>
+
+<p>The public system is already active across multiple channels. Five patterns stood out.</p>
+
+<div class="stat-row">
+  <div class="stat-item"><strong>53K</strong> Nicoletta IG followers</div>
+  <div class="stat-item"><strong>39K</strong> Call Her Holy IG</div>
+  <div class="stat-item"><strong>8,613</strong> Noble IG</div>
+  <div class="stat-item"><strong>191</strong> Podcast episodes</div>
+  <div class="stat-item"><strong>700+</strong> Girls at TCU tour</div>
+  <div class="stat-item"><strong>28K</strong> Nicoletta TikTok</div>
+</div>
+
+<div class="section-heading">Findings</div>
+
+<div class="finding">
+  <div class="finding-label">01</div>
+  <p>Noble operates a live field system, not only a content brand. Spring 2026 campus tour attendance: over 700 at TCU, over 100 at Oklahoma University, over 50 at Palm Beach Atlantic, 200+ expected at Baylor. Each event combines a workout with a live Call Her Holy podcast Q&A. TCU 360 reported Noble became an official campus club in fall 2024 with eight women on the leadership team, 15 ambassadors, and over 30 members.</p>
+  <div class="evidence">areyounoble.com/noble-x-call-her-holy-college-tours, TCU 360 Sep 2024</div>
+</div>
+
+<!-- SLOT-A: campus tour or group workout energy. Large group of women, college campus or gym, high energy, movement, crowd. Proves the "field system" claim. -->
+<figure class="proposal-media" data-slot="A">
+  <img src="/proposals/noble-nicoletta/img/slot-a.jpg" alt="Noble campus tour or group workout event." loading="lazy" decoding="async">
+</figure>
+
+<div class="finding">
+  <div class="finding-label">02</div>
+  <p>The founder's personal audience is larger than the brand account by a factor of six. Nicoletta's Instagram has 53K followers and 1,085 posts. Noble's brand account has 8,613 followers and 195 posts. Call Her Holy sits between them at 39K. On TikTok, Nicoletta has about 28K followers and 1.49M likes across 319 videos. The distribution surface is already multi-channel; any content system needs to decide what each channel owns.</p>
+  <div class="evidence">Public Instagram and TikTok metadata, unauthenticated fetch</div>
+</div>
+
+<div class="finding">
+  <div class="finding-label">03</div>
+  <p>Call Her Holy is a distribution engine, not a side channel. 191 Apple Podcast episodes since 2021. 4.7 rating from 452 ratings. The Call Her Holy website claims 1M+ downloads, 1,000+ five-star reviews, and 20K+ followers. The podcast already drives campus tour demand, speaking authority, and content themes that feed Noble's social surfaces.</p>
+  <div class="evidence">Apple Podcasts metadata, callherholy.com, callherholy.com/call-her-holy-x-noble</div>
+</div>
+
+<!-- SLOT-B: podcast or speaking moment. Microphone, two women in conversation, studio or stage, intimate professional production. Shows Call Her Holy as a real engine. -->
+<figure class="proposal-media" data-slot="B">
+  <img src="/proposals/noble-nicoletta/img/slot-b.jpg" alt="Podcast recording or speaking engagement." loading="lazy" decoding="async">
+</figure>
+
+<div class="finding">
+  <div class="finding-label">04</div>
+  <p>The public conversion system spans multiple tools and domains. Noble runs on Squarespace. Merch routes to Inksoft. Donations route through Classy. Nicoletta's personal site handles Bible study memberships via Stripe. Call Her Holy uses Donorbox and Shopify for its own merch. Tour check-in uses Google Forms. The current website navigation prioritizes About, Events, Testimonials, Donate, and Shop, but podcast, speaking, Bible study, and campus tour channels live on separate sites.</p>
+  <div class="evidence">areyounoble.com sitemap (28 URLs), nicoletta-bradley.com, callherholy.com</div>
+</div>
+
+<div class="finding">
+  <div class="finding-label">05</div>
+  <p>The Noble website's social icons route to Nicoletta's personal Instagram and TikTok accounts. The official Noble brand Instagram (@noblefitnessministry) appears through the Call Her Holy x Noble page, not through Noble's own homepage. The giveaway terms instruct entrants to follow @AreYouNoble, but a public check of that handle returned a small unrelated profile. <span class="assumption-flag">Assumption to confirm</span></p>
+  <div class="evidence">areyounoble.com homepage social links, giveaway-terms-and-conditions page, public IG metadata</div>
+</div>
+
+<div class="section-heading">What's working</div>
+
+<p>The visual language already has athletic energy: high-contrast photography, condensed all-caps type, dark overlays, and direct calls to action. The first-viewport homepage read is closer to a Nike campaign than a soft ministry page. The You Go First fundraising campaign hit its public goal framing: five retreats, tripled staff, doubled revenue, and a $65,000 target for 2026 expansion including devotionals, podcasts, events, conferences, and experiences.</p>
+
+<p>The content engine is producing real proof: campus tour numbers, retreat testimonials, podcast episodes, professional guest appearances (Heart of Dating, Cleerely Stated), and a clear expansion arc from Fort Worth to a multi-campus national presence.</p>
+
+<!-- ASSUMPTION: we cannot verify the You Go First campaign hit its target, only that it existed with these stated goals -->
+
+<!-- SLOT-C: Noble's athletic visual identity. Dark overlay, high-contrast fitness photography, condensed type, campaign energy. The visual language that already works. Could be from Noble's own site or a reference that matches the direction. -->
+<figure class="proposal-media" data-slot="C">
+  <img src="/proposals/noble-nicoletta/img/slot-c.jpg" alt="Athletic campaign-style fitness photography." loading="lazy" decoding="async">
+</figure>
+
+<div class="section-heading">The immediate transition</div>
+
+<p>The current social media vendor contract reportedly ends soon. <span class="assumption-flag">Assumption to confirm</span> That creates a narrow window: Noble needs continuity in posting, asset production, channel management, and approval workflows. The transition needs to happen without visible disruption to an audience that is actively growing through campus tours and podcast distribution.</p>
+
+<!-- ASSUMPTION: current vendor scope and exact end date not confirmed. Austin said "about three weeks" on 2026-05-07. -->
+
+<p>This is where we start. The first month stabilizes the transition and maps the system. The second month builds the content infrastructure that can keep up with a live movement expanding to multiple campuses and cities.</p>
+
+<!-- SLOT-D: movement and momentum. Women in motion: running, working out, gathering, campus energy. Warm light, expansion feeling. Carries the reader from Summary into Scope. -->
+<figure class="proposal-media" data-slot="D">
+  <img src="/proposals/noble-nicoletta/img/slot-d.jpg" alt="Women in movement, fitness, community energy." loading="lazy" decoding="async">
+</figure>
+
+</div>
+
+<!-- ===== SCOPE ===== -->
+<div id="scope" class="tab-content">
+
+<p>The work below assumes Noble needs both a safe transition and a durable system. The transition sprint addresses the immediate timing pressure. The content system addresses the longer-term need: turning live events, podcast episodes, speaking clips, and field footage into a coordinated publishing rhythm across Noble, Nicoletta, and Call Her Holy.</p>
+
+<div class="scope-phase">
+  <div class="phase-label">Phase 1: 30-day transition sprint</div>
+  <h3>Stabilize before momentum is lost</h3>
+  <p>Goal: keep Noble visible and coherent when the current vendor contract ends. We manage the operational mapping so Nicoletta only needs to provide a few source materials and confirm a few decisions.</p>
+  <ul>
+    <li>Account and asset intake across Noble, Nicoletta, and Call Her Holy</li>
+    <li>Channel map: what each account owns, what it links to, how they relate</li>
+    <li>Content pillars from Nicoletta's existing social direction document <span class="assumption-flag">Assumption to confirm</span></li>
+    <li>Two-week emergency posting calendar</li>
+    <li>Clip and post production queue: podcast episodes, speaking footage, field content</li>
+    <li>Approval workflow for faith, body image, nutrition, and mental health language</li>
+    <li>Website and social routing cleanup list: account links, CTAs, official handles</li>
+  </ul>
+</div>
+
+<!-- ASSUMPTION: the existence of a "social direction document" comes from transcript notes. We have not seen it. -->
+
+<!-- SLOT-E: behind-the-scenes production energy. Phone filming a workout, content creation in action, someone editing clips on a laptop, or a production-ready moment at an event. Bridges the deliverable list into the content system. -->
+<figure class="proposal-media" data-slot="E">
+  <img src="/proposals/noble-nicoletta/img/slot-e.jpg" alt="Content production in action." loading="lazy" decoding="async">
+</figure>
+
+<div class="scope-phase">
+  <div class="phase-label">Phase 2: 60-day content system</div>
+  <h3>Turn the movement into a repeatable publishing rhythm</h3>
+  <p>Goal: make social, podcast, speaking, workouts, campus tours, and retreats feed one another. The system should work whether Noble runs two events a month or ten.</p>
+  <ul>
+    <li>Channel roles and cadence: what Noble posts vs. what Nicoletta posts vs. what Call Her Holy covers</li>
+    <li>Podcast and speaking clip pipeline: episode to social, long-form to short-form</li>
+    <li>Field content checklist for workouts, retreats, and campus events</li>
+    <li>Swipe post templates: encouraging, shareable, aligned with the visual direction</li>
+    <li>Testimonial capture and approval process</li>
+    <li>Event recap format: consistent enough to scale across campuses</li>
+    <li>Donor-facing proof bank: tour attendance, retreat outcomes, campus growth, campaign progress</li>
+    <li>Website alignment plan</li>
+  </ul>
+</div>
+
+<div class="section-heading">What the content system produces</div>
+
+<p>Each format below is repeatable: a series that runs weekly or monthly from existing material. The formats are designed around what Noble already generates through tours, workouts, retreats, podcast episodes, and speaking engagements.</p>
+
+<div class="specimen-grid">
+
+  <div class="specimen">
+    <div class="specimen-number">01</div>
+    <div class="specimen-image">
+      <!-- IMAGE: athletic group fitness, dark gym, warm highlights, Nike/Lululemon energy -->
+      <span class="placeholder">Workout Reel</span>
+    </div>
+    <div class="specimen-label">Workout Reel</div>
+    <div class="specimen-desc">60 seconds of campus or gym workout footage. Group energy, athletic movement, the visual direction Nicoletta described: Nike meets faith community.</div>
+    <div class="specimen-meta">Reel / TikTok / Shorts</div>
+    <div class="pillar-tag">Field content</div>
+  </div>
+
+  <div class="specimen">
+    <div class="specimen-number">02</div>
+    <div class="specimen-image">
+      <!-- IMAGE: college event crowd, worship gathering, large group on campus -->
+      <span class="placeholder">Campus Tour Recap</span>
+    </div>
+    <div class="specimen-label">Campus Tour Recap</div>
+    <div class="specimen-desc">One tour stop in 8-10 slides: the venue, the crowd, the workout, the Q&A, the prayer moment, the numbers. Consistent enough to scale across campuses.</div>
+    <div class="specimen-meta">Carousel (8-10 slides)</div>
+    <div class="pillar-tag">Event proof</div>
+  </div>
+
+  <div class="specimen">
+    <div class="specimen-number">03</div>
+    <div class="specimen-image">
+      <!-- IMAGE: podcast clip aesthetic, speaker portrait, audiogram, Call Her Holy branding -->
+      <span class="placeholder">Podcast Clip</span>
+    </div>
+    <div class="specimen-label">Podcast Clip Card</div>
+    <div class="specimen-desc">A Call Her Holy episode distilled to 30-60 seconds. Speaker portrait, pull quote, waveform or audiogram. Professional, not homemade.</div>
+    <div class="specimen-meta">Reel / Audiogram</div>
+    <div class="pillar-tag">Podcast pipeline</div>
+  </div>
+
+  <div class="specimen">
+    <div class="specimen-number">04</div>
+    <div class="specimen-image">
+      <!-- IMAGE: shareable swipe post, Free People / Jenna Pawlik style, encouragement graphic, warm, non-cheesy -->
+      <span class="placeholder">Swipe Post</span>
+    </div>
+    <div class="specimen-label">Shareable Resource</div>
+    <div class="specimen-desc">Encouraging, motivational, designed for saves and shares. Body image, food freedom, faith, identity. The small resources Nicoletta described: something a follower sends to a friend.</div>
+    <div class="specimen-meta">Carousel (4-6 slides)</div>
+    <div class="pillar-tag">Resources</div>
+  </div>
+
+  <div class="specimen">
+    <div class="specimen-number">05</div>
+    <div class="specimen-image">
+      <!-- IMAGE: intimate portrait, natural light, real person, testimonial moment -->
+      <span class="placeholder">Testimonial</span>
+    </div>
+    <div class="specimen-label">Testimonial Capture</div>
+    <div class="specimen-desc">One woman, one story, one minute. Portrait-style, intimate, natural light. The retreat and campus testimonials Noble already collects, packaged for social.</div>
+    <div class="specimen-meta">Reel or Carousel</div>
+    <div class="pillar-tag">Community proof</div>
+  </div>
+
+  <div class="specimen">
+    <div class="specimen-number">06</div>
+    <div class="specimen-image">
+      <!-- IMAGE: retreat photography, outdoor worship, group moment, event wrap-up -->
+      <span class="placeholder">Event Recap</span>
+    </div>
+    <div class="specimen-label">Event Recap</div>
+    <div class="specimen-desc">Noble One Day, a retreat, or a campus event in a single package: prep, crowd, workout, teaching, community, aftermath. A donor sees what their support built.</div>
+    <div class="specimen-meta">Reel (30-60s) or Carousel</div>
+    <div class="pillar-tag">Donor proof</div>
+  </div>
+
+</div>
+
+<div class="section-heading section-heading--ruled">Website alignment</div>
+
+<p>The current website's visual direction appears to be working. Nicoletta has said she likes the look. <span class="assumption-flag">Assumption to confirm</span> The work here is alignment, not a redesign: making the site's routing, CTAs, account links, email journey, donation path, event path, and tour inquiry path match the content system being built on social and podcast.</p>
+
+<p>Specific areas to address:</p>
+
+<ul class="scope-phase" style="margin-top: var(--space-0-5);">
+  <li>Official social account links (currently routing to Nicoletta personal, not Noble brand)</li>
+  <li>Call-to-action hierarchy: events, donation, tour inquiry, email signup, podcast</li>
+  <li>Email subscriber journey after signup (public pages do not currently show what happens next)</li>
+  <li>Donation and campaign path clarity</li>
+  <li>Tour inquiry and campus interest routing</li>
+  <li>Resource page or content hub plan, if the social system produces archivable resources</li>
+</ul>
+
+<!-- SLOT-F: retreat or worship landscape. Outdoor gathering, golden hour, community in nature, retreat setting. The aspirational end-state of the content system: a movement that looks as good as it feels. -->
+<figure class="proposal-media" data-slot="F">
+  <img src="/proposals/noble-nicoletta/img/slot-f.jpg" alt="Retreat or outdoor gathering in warm light." loading="lazy" decoding="async">
+</figure>
+
+</div>
+
+<!-- ===== CONFIRM ===== -->
+<div id="confirm" class="tab-content">
+
+<div class="section-heading" style="margin-top: 0; border-top: none; padding-top: 0;">Assumptions to confirm</div>
+
+<p>This proposal is built from public research and relationship context. The sections above mark specific assumptions inline. Collected here for review:</p>
+
+<div class="scope-phase">
+  <div class="phase-label">Context we need</div>
+  <h3>Before this becomes a final scope</h3>
+  <ul>
+    <li>Nicoletta's existing social direction document: we reference it above but have not seen it</li>
+    <li>Current vendor scope: strategy, design, captions, posting, video editing, analytics, community management, or a subset</li>
+    <li>Exact contract end date and transition timeline</li>
+    <li>What Nicoletta would change about the current vendor's work</li>
+    <li>Accounts in scope: Noble, Nicoletta personal, Call Her Holy, or a combination</li>
+    <li>Available asset inventory: podcast recordings, speaking footage, workout video, retreat photos, tour footage, testimonial clips</li>
+    <li>Approval rules and sensitive topics: who reviews faith claims, body image language, nutrition references, mental health language</li>
+    <li>Primary goal by channel: donation, event attendance, email signup, tour inquiry, podcast audience, speaking bookings, Bible study membership</li>
+    <li>Budget range and desired start date</li>
+  </ul>
+</div>
+
+<div class="scope-phase">
+  <div class="phase-label">Channel relationship question</div>
+  <h3>How Noble, Nicoletta, and Call Her Holy relate</h3>
+  <p>Public sources show three active brands with overlapping audiences and content themes. We do not assume they should be treated as one brand. The relationship between them, who coordinates, who posts where, and how they cross-promote, is a question for Nicoletta to answer before the content system can be built correctly.</p>
+</div>
+
+<div class="section-heading">Next step</div>
+
+<p>A working session with Nicoletta and Austin. The goal: confirm account scope, review available assets, agree on priorities for the first two weeks, and set transition dates. The session does not need to resolve every question above. It needs to resolve enough to start the transition sprint without guessing.</p>
+
+<p>Low pressure. Conversational. Nicoletta brings context; we bring the operating plan.</p>
+
+</div>
+
+<!-- ===== ? ===== -->
+<div id="question" class="tab-content-full">
+
+<div>
+  <p class="proposal-title">What are <strong style="font-weight: 700;">we</strong> capable of?</p>
+  <p class="proposal-title" style="margin-top: var(--space-1);">Let's find out.</p>
+  <p class="mono size-s" style="margin-top: var(--space-1);"><a class="cta-link" href="/book">Book a call</a></p>
+</div>
+
+</div>
+
+</main>
+
+<footer>
+  <span class="proposal-meta">Research conducted May 7, 2026. All findings from publicly available sources.</span>
+</footer>
+
+<script>
+(function() {
+  var container = document.querySelector('main');
+  var tabsNav = document.querySelector('.tabs');
+  var header = document.querySelector('.proposal-header');
+  var tabs = document.querySelectorAll('.tab');
+  var panels = document.querySelectorAll('.tab-content, .tab-content-full');
+
+  container.classList.add('tabbed');
+
+  function stickyOffset() {
+    var headerHeight = header ? header.getBoundingClientRect().height : 0;
+    var tabsHeight = tabsNav ? tabsNav.getBoundingClientRect().height : 0;
+    return headerHeight + tabsHeight;
+  }
+
+  function scrollPanelToTop(panel) {
+    var top = panel.getBoundingClientRect().top + window.scrollY - stickyOffset();
+    var scrollTarget = Math.max(0, Math.round(top));
+    var root = document.documentElement;
+    var previousScrollBehavior = root.style.scrollBehavior;
+
+    root.style.scrollBehavior = 'auto';
+    window.scrollTo(0, scrollTarget);
+    root.style.scrollBehavior = previousScrollBehavior;
+  }
+
+  function activateTab(tab) {
+    var id = tab.getAttribute('href').slice(1);
+    var panel = document.getElementById(id);
+    if (!panel) return;
+
+    panels.forEach(function(el) { el.classList.remove('active'); });
+    tabs.forEach(function(t) { t.classList.remove('active'); });
+    panel.classList.add('active');
+    tab.classList.add('active');
+    scrollPanelToTop(panel);
+  }
+
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function(e) {
+      e.preventDefault();
+      activateTab(this);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

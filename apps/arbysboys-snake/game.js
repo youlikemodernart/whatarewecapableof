@@ -1,10 +1,11 @@
 (() => {
   'use strict';
 
-  const GRID_COLS = 17;
-  const GRID_ROWS = 19;
+  const GRID_COLS = 11;
+  const GRID_ROWS = 11;
   const MAX_INPUT_QUEUE = 2;
   const SWIPE_THRESHOLD = 24;
+  const STORAGE_PREFIX = 'abs-v2';
 
   const Scene = {
     MENU: 'menu',
@@ -14,10 +15,16 @@
   };
 
   const Direction = {
-    up: { x: 0, y: -1 },
-    down: { x: 0, y: 1 },
-    left: { x: -1, y: 0 },
-    right: { x: 1, y: 0 }
+    up: { x: 0, y: -1, angle: -Math.PI / 2 },
+    down: { x: 0, y: 1, angle: Math.PI / 2 },
+    left: { x: -1, y: 0, angle: Math.PI },
+    right: { x: 1, y: 0, angle: 0 }
+  };
+
+  const assetManifest = {
+    head: 'assets/snake-head.png',
+    food: 'assets/beef-n-cheddar.png',
+    growth: 'assets/curly-snake-growth.png'
   };
 
   const canvas = document.getElementById('game-canvas');
@@ -36,25 +43,28 @@
 
   const storage = safeStorage();
   const systemReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const assets = {};
 
+  let assetsLoaded = false;
   let scene = Scene.MENU;
   let snake = [];
   let direction = 'right';
   let visualDirection = 'right';
   let inputQueue = [];
-  let food = { x: 12, y: 9 };
+  let food = { x: 7, y: 6 };
   let score = 0;
-  let highScore = readNumber('abs-high-score', 0);
+  let highScore = readNumber(`${STORAGE_PREFIX}-high-score`, 0);
   let soundEnabled = readBoolean('abs-sound', true);
   let reducedMotion = readBoolean('abs-reduced-motion', systemReducedMotion);
   let speedMode = storage?.getItem('abs-speed-mode') || 'normal';
   let tickInterval = calculateTickInterval(0);
   let lastTimestamp = 0;
   let accumulator = 0;
-  let layout = { width: 340, height: 380, cell: 20, offsetX: 0, offsetY: 0, pixelRatio: 1 };
+  let layout = { width: 360, height: 360, cell: 40, offsetX: 0, offsetY: 0, pixelRatio: 1 };
   let audioCtx = null;
   let pointerStart = null;
   let eatEffects = [];
+  let directionPulse = 0;
   let deathMarker = null;
   let shakeTime = 0;
 
@@ -64,6 +74,7 @@
   resizeCanvas();
   resetGame();
   setScene(Scene.MENU);
+  preloadAssets();
   requestAnimationFrame(loop);
 
   window.addEventListener('resize', resizeCanvas);
@@ -140,6 +151,7 @@
   });
 
   canvas.addEventListener('pointerdown', (event) => {
+    if (!event.isPrimary) return;
     canvas.setPointerCapture?.(event.pointerId);
     pointerStart = {
       id: event.pointerId,
@@ -149,6 +161,7 @@
   });
 
   canvas.addEventListener('pointerup', (event) => {
+    if (!event.isPrimary) return;
     unlockAudio();
 
     if (!pointerStart || pointerStart.id !== event.pointerId) return;
@@ -175,6 +188,28 @@
   canvas.addEventListener('pointercancel', () => {
     pointerStart = null;
   });
+
+  async function preloadAssets() {
+    const entries = Object.entries(assetManifest);
+    await Promise.all(entries.map(async ([name, src]) => {
+      try {
+        assets[name] = await loadImage(src);
+      } catch {
+        assets[name] = null;
+      }
+    }));
+    assetsLoaded = true;
+  }
+
+  function loadImage(src) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.decoding = 'async';
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = src;
+    });
+  }
 
   function loop(timestamp) {
     if (!lastTimestamp) lastTimestamp = timestamp;
@@ -204,12 +239,13 @@
   }
 
   function resetGame() {
-    const cy = Math.floor(GRID_ROWS / 2);
-    const cx = Math.floor(GRID_COLS / 2);
+    const cy = Math.min(GRID_ROWS - 3, Math.max(4, Math.floor(GRID_ROWS * 0.72)));
+    const cx = 4;
     snake = [
       { x: cx, y: cy },
       { x: cx - 1, y: cy },
-      { x: cx - 2, y: cy }
+      { x: cx - 2, y: cy },
+      { x: cx - 3, y: cy }
     ];
     direction = 'right';
     visualDirection = 'right';
@@ -217,9 +253,10 @@
     score = 0;
     tickInterval = calculateTickInterval(score);
     eatEffects = [];
+    directionPulse = 0;
     deathMarker = null;
     shakeTime = 0;
-    spawnFood();
+    spawnFood({ prefer: { x: GRID_COLS - 3, y: Math.max(1, cy - 2) } });
     syncScore();
   }
 
@@ -250,6 +287,7 @@
       spawnFood();
       syncScore();
       playTone('eat');
+      if (!reducedMotion && navigator.vibrate) navigator.vibrate(28);
     } else {
       snake.pop();
     }
@@ -258,7 +296,7 @@
   function endRun() {
     if (score > highScore) {
       highScore = score;
-      writeNumber('abs-high-score', highScore);
+      writeNumber(`${STORAGE_PREFIX}-high-score`, highScore);
     }
     syncScore();
     shakeTime = reducedMotion ? 0 : 220;
@@ -283,11 +321,17 @@
     if (inputQueue.length >= MAX_INPUT_QUEUE) return;
     inputQueue.push(next);
     visualDirection = next;
+    directionPulse = reducedMotion ? 0 : 120;
     playTone('turn');
   }
 
-  function spawnFood() {
+  function spawnFood(options = {}) {
     const occupied = new Set(snake.map(cellKey));
+    if (options.prefer && !occupied.has(cellKey(options.prefer))) {
+      food = { ...options.prefer };
+      return;
+    }
+
     const empty = [];
     for (let y = 0; y < GRID_ROWS; y += 1) {
       for (let x = 0; x < GRID_COLS; x += 1) {
@@ -306,9 +350,9 @@
 
   function calculateTickInterval(points) {
     if (speedMode === 'relaxed') {
-      return Math.max(105, 190 - Math.floor(points * 2));
+      return Math.max(125, 280 - Math.floor(points * 4));
     }
-    return Math.max(75, 150 - Math.floor(points * 2.5));
+    return Math.max(100, 230 - Math.floor(points * 5));
   }
 
   function setScene(nextScene, reason = '') {
@@ -316,18 +360,19 @@
     pauseButton.textContent = scene === Scene.PAUSED ? 'Resume' : 'Pause';
 
     if (scene === Scene.MENU) {
-      showOverlay('Tap to begin', 'Secure the sauces.', 'Swipe to turn. Eat the sauce packets. Do not run into your own curly ambition.', 'Tap to Play');
+      showOverlay('V2 prototype', 'Eat the Beef \'N Cheddars.', 'Swipe to steer the curly fry. Every sandwich makes it longer. Walls and your own tail end the run.', 'Tap to Play', 'hero');
     } else if (scene === Scene.PAUSED) {
-      showOverlay(reason || 'Paused', 'Hold the sauce.', 'Tap resume when you are ready to keep the line moving.', 'Resume');
+      showOverlay(reason || 'Paused', 'Hold the curly fry.', 'Tap resume when you are ready to keep chasing sandwiches.', 'Resume', 'compact');
     } else if (scene === Scene.GAME_OVER) {
-      const best = score >= highScore && score > 0 ? 'New best run.' : `Best run: ${highScore}.`;
-      showOverlay('Drive-through closed', 'The line collapsed.', `Sauces secured: ${score}. ${best}`, 'Run It Back');
+      const best = score >= highScore && score > 0 ? 'New best fry.' : `Best fry: ${highScore}.`;
+      showOverlay('Drive-through closed', 'The curly fry crashed.', `Beef \'N Cheddars eaten: ${score}. ${best}`, 'Run It Back', 'compact');
     } else {
       hideOverlay();
     }
   }
 
-  function showOverlay(kicker, title, copy, action) {
+  function showOverlay(kicker, title, copy, action, mode = 'compact') {
+    overlay.dataset.mode = mode;
     overlayKicker.textContent = kicker;
     overlayTitle.textContent = title;
     overlayCopy.textContent = copy;
@@ -342,25 +387,23 @@
   function resizeCanvas() {
     const rect = canvas.getBoundingClientRect();
     const dpr = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
-    const cssWidth = Math.max(260, Math.floor(rect.width));
-    const cssHeight = Math.max(290, Math.floor(rect.height));
+    const size = Math.max(260, Math.floor(Math.min(rect.width, rect.height || rect.width)));
 
-    canvas.width = Math.floor(cssWidth * dpr);
-    canvas.height = Math.floor(cssHeight * dpr);
+    canvas.width = Math.floor(size * dpr);
+    canvas.height = Math.floor(size * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
 
-    const cell = Math.min(cssWidth / GRID_COLS, cssHeight / GRID_ROWS);
-    const boardWidth = cell * GRID_COLS;
-    const boardHeight = cell * GRID_ROWS;
-
+    const cell = size / GRID_COLS;
     layout = {
-      width: cssWidth,
-      height: cssHeight,
+      width: size,
+      height: size,
       cell,
-      offsetX: (cssWidth - boardWidth) / 2,
-      offsetY: (cssHeight - boardHeight) / 2,
-      boardWidth,
-      boardHeight,
+      offsetX: 0,
+      offsetY: 0,
+      boardWidth: size,
+      boardHeight: size,
       pixelRatio: dpr
     };
   }
@@ -373,9 +416,13 @@
     let shakeY = 0;
     if (shakeTime > 0 && !reducedMotion) {
       shakeTime = Math.max(0, shakeTime - delta);
-      const amount = (shakeTime / 220) * 6;
+      const amount = (shakeTime / 220) * 5;
       shakeX = (Math.random() * 2 - 1) * amount;
       shakeY = (Math.random() * 2 - 1) * amount;
+    }
+
+    if (directionPulse > 0) {
+      directionPulse = Math.max(0, directionPulse - delta);
     }
 
     ctx.save();
@@ -385,104 +432,198 @@
     drawSnake();
     drawEffects(delta);
     if (deathMarker) drawDeathMarker();
+    if (!assetsLoaded) drawLoadingMark();
     ctx.restore();
   }
 
   function drawBoard() {
-    const { cell, offsetX, offsetY } = layout;
-    ctx.fillStyle = '#fff1d4';
-    roundedRect(ctx, offsetX, offsetY, layout.boardWidth, layout.boardHeight, 18);
-    ctx.fill();
+    const { cell } = layout;
+    ctx.fillStyle = '#fff7ef';
+    ctx.fillRect(0, 0, layout.width, layout.height);
 
     for (let y = 0; y < GRID_ROWS; y += 1) {
       for (let x = 0; x < GRID_COLS; x += 1) {
-        ctx.fillStyle = (x + y) % 2 === 0 ? '#f8dfae' : '#f0cd93';
-        ctx.fillRect(offsetX + x * cell, offsetY + y * cell, cell + 0.5, cell + 0.5);
+        ctx.fillStyle = (x + y) % 2 === 0 ? '#ead4c5' : '#f7ede4';
+        ctx.fillRect(x * cell, y * cell, cell + 0.5, cell + 0.5);
+        if ((x + y) % 2 === 0) drawBoysWatermark(x, y);
       }
     }
 
-    ctx.strokeStyle = '#2d120d';
-    ctx.lineWidth = 4;
-    roundedRect(ctx, offsetX + 2, offsetY + 2, layout.boardWidth - 4, layout.boardHeight - 4, 18);
+    ctx.strokeStyle = '#d40000';
+    ctx.lineWidth = Math.max(4, cell * 0.08);
+    ctx.strokeRect(ctx.lineWidth / 2, ctx.lineWidth / 2, layout.width - ctx.lineWidth, layout.height - ctx.lineWidth);
+  }
+
+  function drawBoysWatermark(col, row) {
+    const { cell } = layout;
+    ctx.save();
+    ctx.translate(col * cell + cell * 0.5, row * cell + cell * 0.54);
+    ctx.globalAlpha = 0.38;
+    ctx.fillStyle = '#bf785c';
+    ctx.font = `900 ${cell * 0.22}px Georgia, serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('Boys', 0, cell * 0.04);
+    ctx.strokeStyle = '#bf785c';
+    ctx.lineWidth = Math.max(1, cell * 0.025);
+    ctx.beginPath();
+    ctx.arc(-cell * 0.06, -cell * 0.15, cell * 0.12, Math.PI * 1.05, Math.PI * 1.95);
+    ctx.arc(cell * 0.08, -cell * 0.15, cell * 0.11, Math.PI * 1.05, Math.PI * 1.95);
     ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(0, cell * 0.16, cell * 0.18, 0.1, Math.PI * 0.95);
+    ctx.stroke();
+    ctx.restore();
   }
 
   function drawFood() {
-    const { x, y } = cellRect(food);
+    const rect = cellRect(food);
     const s = layout.cell;
+    const size = s * 1.26;
+    const x = rect.x + s * 0.5;
+    const y = rect.y + s * 0.52;
+
     ctx.save();
-    ctx.translate(x + s * 0.5, y + s * 0.5);
-    ctx.rotate(-0.12);
-    ctx.fillStyle = '#f8f0e2';
-    roundedRect(ctx, -s * 0.34, -s * 0.24, s * 0.68, s * 0.48, s * 0.12);
+    ctx.globalAlpha = 0.22;
+    ctx.fillStyle = '#7a260f';
+    ctx.beginPath();
+    ctx.ellipse(x, y + s * 0.32, s * 0.36, s * 0.09, 0, 0, Math.PI * 2);
     ctx.fill();
-    ctx.fillStyle = '#b32822';
-    roundedRect(ctx, -s * 0.24, -s * 0.15, s * 0.48, s * 0.3, s * 0.08);
-    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    if (assets.food) {
+      drawImageCentered(assets.food, x, y, size, size);
+    } else {
+      drawFallbackSandwich(x, y, s);
+    }
     ctx.restore();
   }
 
   function drawSnake() {
-    const { cell } = layout;
     for (let i = snake.length - 1; i >= 0; i -= 1) {
       const part = snake[i];
-      const rect = cellRect(part);
-      const pad = i === 0 ? cell * 0.12 : cell * 0.18;
-      ctx.fillStyle = i === 0 ? '#b32822' : '#f2a93b';
-      roundedRect(ctx, rect.x + pad, rect.y + pad, cell - pad * 2, cell - pad * 2, cell * 0.22);
-      ctx.fill();
-
-      if (i > 0) {
-        ctx.fillStyle = '#be701f';
-        ctx.globalAlpha = 0.4;
-        ctx.fillRect(rect.x + cell * 0.25, rect.y + cell * 0.48, cell * 0.5, cell * 0.1);
-        ctx.globalAlpha = 1;
-      }
+      if (i === 0) continue;
+      drawFryBody(part, i);
     }
-
-    drawHeadDetails();
+    drawHead();
   }
 
-  function drawHeadDetails() {
+  function drawFryBody(cellPos, index) {
+    const rect = cellRect(cellPos);
+    const s = layout.cell;
+    const cx = rect.x + s * 0.5;
+    const cy = rect.y + s * 0.5;
+    const radius = s * 0.36;
+
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate((index % 4) * 0.12);
+
+    ctx.lineWidth = Math.max(3, s * 0.1);
+    ctx.strokeStyle = '#060100';
+    ctx.fillStyle = '#ff9400';
+    ctx.beginPath();
+    ctx.arc(0, 0, radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+
+    const gradient = ctx.createRadialGradient(-radius * 0.45, -radius * 0.52, radius * 0.1, 0, 0, radius);
+    gradient.addColorStop(0, '#ffc04a');
+    gradient.addColorStop(0.55, '#ff9400');
+    gradient.addColorStop(1, '#e86d00');
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(0, 0, radius * 0.88, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.strokeStyle = 'rgba(255, 196, 46, 0.8)';
+    ctx.lineWidth = Math.max(2, s * 0.04);
+    ctx.beginPath();
+    ctx.arc(-radius * 0.12, -radius * 0.06, radius * 0.66, Math.PI * 1.08, Math.PI * 1.72);
+    ctx.stroke();
+
+    ctx.restore();
+  }
+
+  function drawHead() {
     const head = snake[0];
     const rect = cellRect(head);
     const s = layout.cell;
-    const centerX = rect.x + s * 0.5;
-    const centerY = rect.y + s * 0.5;
-    const look = Direction[visualDirection];
-    const eyeOffsetX = look.y !== 0 ? s * 0.16 : 0;
-    const eyeOffsetY = look.x !== 0 ? s * 0.16 : 0;
-    const forwardX = look.x * s * 0.16;
-    const forwardY = look.y * s * 0.16;
+    const cx = rect.x + s * 0.5;
+    const cy = rect.y + s * 0.5;
+    const pulse = directionPulse > 0 ? 1 + (directionPulse / 120) * 0.08 : 1;
+    const size = s * 1.45 * pulse;
 
-    drawEye(centerX - eyeOffsetX + forwardX, centerY - eyeOffsetY + forwardY, s);
-    drawEye(centerX + eyeOffsetX + forwardX, centerY + eyeOffsetY + forwardY, s);
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(Direction[visualDirection].angle);
+    if (assets.head) {
+      ctx.drawImage(assets.head, -size * 0.5, -size * 0.5, size, size);
+    } else {
+      drawFallbackHead(s * pulse);
+    }
+    ctx.restore();
+  }
+
+  function drawFallbackHead(size) {
+    const r = size * 0.38;
+    ctx.fillStyle = '#ff9400';
+    ctx.strokeStyle = '#050100';
+    ctx.lineWidth = Math.max(3, size * 0.08);
+    ctx.beginPath();
+    ctx.arc(0, 0, r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    drawEye(size * 0.1, -size * 0.12, size);
+    drawEye(size * 0.26, size * 0.03, size);
+    ctx.fillStyle = '#050100';
+    ctx.beginPath();
+    ctx.arc(size * 0.1, size * 0.13, size * 0.13, 0, Math.PI);
+    ctx.fill();
   }
 
   function drawEye(x, y, s) {
-    ctx.fillStyle = '#fffaf0';
+    ctx.fillStyle = '#fff';
     ctx.beginPath();
-    ctx.arc(x, y, s * 0.09, 0, Math.PI * 2);
+    ctx.arc(x, y, s * 0.1, 0, Math.PI * 2);
     ctx.fill();
-    ctx.fillStyle = '#24110d';
+    ctx.fillStyle = '#000';
     ctx.beginPath();
-    ctx.arc(x, y, s * 0.04, 0, Math.PI * 2);
+    ctx.arc(x + s * 0.03, y, s * 0.04, 0, Math.PI * 2);
     ctx.fill();
   }
 
+  function drawFallbackSandwich(x, y, s) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.strokeStyle = '#5a1b0f';
+    ctx.lineWidth = Math.max(2, s * 0.06);
+    ctx.fillStyle = '#d28734';
+    roundedRect(ctx, -s * 0.34, -s * 0.24, s * 0.68, s * 0.28, s * 0.12);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = '#f6c21a';
+    roundedRect(ctx, -s * 0.33, -s * 0.02, s * 0.66, s * 0.1, s * 0.04);
+    ctx.fill();
+    ctx.fillStyle = '#9d4430';
+    roundedRect(ctx, -s * 0.32, s * 0.08, s * 0.64, s * 0.16, s * 0.07);
+    ctx.fill();
+    ctx.restore();
+  }
+
   function drawEffects(delta) {
-    eatEffects = eatEffects.filter((effect) => effect.age < 180);
+    eatEffects = eatEffects.filter((effect) => effect.age < 240);
     for (const effect of eatEffects) {
       effect.age += delta;
-      const t = effect.age / 180;
+      const t = effect.age / 240;
       const rect = cellRect(effect);
       const s = layout.cell;
       ctx.save();
       ctx.globalAlpha = 1 - t;
-      ctx.strokeStyle = '#b32822';
-      ctx.lineWidth = 3;
+      ctx.strokeStyle = '#d40000';
+      ctx.lineWidth = Math.max(3, s * 0.08);
       ctx.beginPath();
-      ctx.arc(rect.x + s * 0.5, rect.y + s * 0.5, s * (0.25 + t * 0.55), 0, Math.PI * 2);
+      ctx.arc(rect.x + s * 0.5, rect.y + s * 0.5, s * (0.25 + t * 0.65), 0, Math.PI * 2);
       ctx.stroke();
       ctx.restore();
     }
@@ -492,8 +633,9 @@
     const rect = cellRect(deathMarker);
     const s = layout.cell;
     ctx.save();
-    ctx.strokeStyle = '#fffaf0';
-    ctx.lineWidth = Math.max(3, s * 0.12);
+    ctx.strokeStyle = '#d40000';
+    ctx.lineWidth = Math.max(4, s * 0.12);
+    ctx.lineCap = 'round';
     ctx.beginPath();
     ctx.moveTo(rect.x + s * 0.25, rect.y + s * 0.25);
     ctx.lineTo(rect.x + s * 0.75, rect.y + s * 0.75);
@@ -501,6 +643,23 @@
     ctx.lineTo(rect.x + s * 0.25, rect.y + s * 0.75);
     ctx.stroke();
     ctx.restore();
+  }
+
+  function drawLoadingMark() {
+    ctx.save();
+    ctx.fillStyle = 'rgba(212, 0, 0, 0.86)';
+    roundedRect(ctx, layout.width * 0.28, layout.height * 0.44, layout.width * 0.44, layout.height * 0.12, 18);
+    ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.font = `900 ${layout.cell * 0.28}px system-ui, sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('Loading fry', layout.width * 0.5, layout.height * 0.5);
+    ctx.restore();
+  }
+
+  function drawImageCentered(img, x, y, width, height) {
+    ctx.drawImage(img, x - width / 2, y - height / 2, width, height);
   }
 
   function cellRect(cell) {
@@ -602,8 +761,8 @@
     const settings = {
       start: [220, 0.08, 'triangle', 0.025],
       turn: [330, 0.035, 'square', 0.012],
-      eat: [620, 0.09, 'sine', 0.035],
-      death: [90, 0.18, 'sawtooth', 0.04],
+      eat: [640, 0.09, 'sine', 0.035],
+      death: [88, 0.18, 'sawtooth', 0.04],
       click: [420, 0.05, 'triangle', 0.02]
     }[kind];
 
@@ -616,7 +775,8 @@
 
     oscillator.type = type;
     oscillator.frequency.setValueAtTime(frequency, now);
-    if (kind === 'death') oscillator.frequency.exponentialRampToValueAtTime(45, now + duration);
+    if (kind === 'eat') oscillator.frequency.exponentialRampToValueAtTime(860, now + duration);
+    if (kind === 'death') oscillator.frequency.exponentialRampToValueAtTime(44, now + duration);
 
     gain.gain.setValueAtTime(0.0001, now);
     gain.gain.exponentialRampToValueAtTime(volume, now + 0.01);

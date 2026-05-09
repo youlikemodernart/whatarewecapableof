@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#7a1f1f">
+  <meta name="description" content="A mobile-first Snake prototype for Arby's Boys.">
+  <title>Arby's Boys Snake</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://whatarewecapableof.com/apps/arbysboys-snake/">
+  <meta property="og:title" content="Arby's Boys Snake">
+  <meta property="og:description" content="A mobile-first Snake prototype for Arby's Boys.">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Arby's Boys Snake">
+  <meta name="twitter:description" content="A mobile-first Snake prototype for Arby's Boys.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%237a1f1f'/%3E%3Ccircle cx='32' cy='32' r='18' fill='%23f6b84b'/%3E%3Cpath d='M23 35c7-13 18-11 18-1 0 8-13 10-18 1Z' fill='%23b32822'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="game-shell" aria-labelledby="game-title">
+    <header class="game-header" aria-live="polite">
+      <div class="brand-lockup">
+        <p class="eyebrow">Prototype</p>
+        <h1 id="game-title">Arby's Boys Snake</h1>
+      </div>
+      <div class="scoreboard" aria-label="Scoreboard">
+        <div class="score-pill"><span class="score-label">Sauces</span><span id="score">0</span></div>
+        <div class="score-pill"><span class="score-label">Best</span><span id="high-score">0</span></div>
+      </div>
+    </header>
+
+    <section class="game-card" aria-label="Snake game">
+      <canvas id="game-canvas" width="340" height="380" tabindex="0" role="img" aria-label="Snake game board. Swipe or use arrow keys to turn.">
+        Arby's Boys Snake is a grid game. Swipe or use arrow keys to turn. Eat pickups, grow longer, and avoid the wall and yourself.
+      </canvas>
+
+      <div id="overlay" class="overlay" role="dialog" aria-modal="false" aria-labelledby="overlay-title">
+        <div class="overlay-panel">
+          <p id="overlay-kicker" class="overlay-kicker">Tap to begin</p>
+          <h2 id="overlay-title">Secure the sauces.</h2>
+          <p id="overlay-copy">Swipe to turn. Eat the sauce packets. Do not run into your own curly ambition.</p>
+          <button id="primary-action" class="primary-action" type="button">Tap to Play</button>
+        </div>
+      </div>
+    </section>
+
+    <nav class="controls" aria-label="Game controls">
+      <button id="pause-button" type="button">Pause</button>
+      <button id="sound-button" type="button" aria-pressed="true">Sound On</button>
+      <button id="motion-button" type="button" aria-pressed="false">Motion On</button>
+      <button id="speed-button" type="button" aria-pressed="false">Normal</button>
+    </nav>
+
+    <p class="instructions">Swipe on the board or use arrow keys/WASD. Space or Enter starts and restarts. Escape pauses.</p>
+  </main>
+
+  <script src="game.js" defer></script>
+</body>
+</html>

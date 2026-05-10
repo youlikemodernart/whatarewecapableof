@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#ffffff">
+<title>Systems research | What are we capable of?</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/typography.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<style>
+  /*
+     Page-specific styles for internal review pages.
+     Follows the instruction-page pattern: sticky header, left-anchored
+     prose column, section headings in mono caps. No tabs on this page.
+     All spacing uses the shared baseline grid tokens.
+  */
+
+  .page-internal {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    padding: 0 var(--margin-inline) var(--margin-block);
+  }
+
+  .page-internal main {
+    flex: 1;
+    max-width: var(--content-width-prose);
+    padding-top: var(--space-1);
+  }
+
+  .internal-header {
+    min-height: var(--space-2);
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--color-bg);
+    margin-inline: calc(-1 * var(--margin-inline));
+    padding-inline: var(--margin-inline);
+  }
+
+  .internal-home {
+    text-decoration: none;
+    color: inherit;
+    transition: opacity var(--transition-default);
+  }
+
+  .internal-home:hover {
+    opacity: 0.6;
+  }
+
+  .internal-meta {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--color-text);
+    opacity: 0.4;
+  }
+
+  .internal-summary {
+    margin-top: var(--space-1);
+    max-width: 52ch;
+  }
+
+  .section-heading {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    margin-top: var(--space-4);
+    margin-bottom: var(--space-1);
+    padding-top: var(--space-1);
+    border-top: 1px solid rgba(0,0,0,0.15);
+    font-weight: 400;
+  }
+
+  .track {
+    margin-bottom: var(--space-3);
+  }
+
+  .track-label {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.4;
+    margin-bottom: calc(var(--space-0-5) * 0.5);
+  }
+
+  .track p {
+    max-width: 52ch;
+  }
+
+  .track-source {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    opacity: 0.4;
+    margin-top: var(--space-0-5);
+  }
+
+  .review-list {
+    margin: var(--space-0-5) 0 0;
+    padding-left: 1.25rem;
+    list-style: none;
+  }
+
+  .review-list li {
+    font-size: var(--size-m);
+    margin-bottom: var(--space-0-5);
+    position: relative;
+    max-width: 52ch;
+  }
+
+  .review-list li::before {
+    content: "";
+    position: absolute;
+    left: -1rem;
+    top: 0.55em;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--color-text);
+    opacity: 0.25;
+  }
+
+  .loop-group {
+    margin-bottom: var(--space-2);
+  }
+
+  .loop-group-label {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.4;
+    margin-bottom: calc(var(--space-0-5) * 0.5);
+  }
+
+  .boundary-note {
+    border-top: 1px solid var(--color-text);
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    padding: var(--space-1) 0;
+    margin: var(--space-2) 0;
+  }
+
+  .boundary-note p {
+    max-width: 52ch;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--space-1) 0 var(--space-2);
+    font-size: var(--size-m);
+    table-layout: fixed;
+    word-wrap: break-word;
+  }
+
+  th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    font-weight: 400;
+    opacity: 0.62;
+    padding: var(--space-0-5) 0;
+    border-bottom: 1px solid var(--color-text);
+  }
+
+  td {
+    padding: var(--space-0-5) 0;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    vertical-align: top;
+    font-family: var(--font-serif);
+  }
+
+  th + th,
+  td + td {
+    padding-left: var(--space-1);
+  }
+
+  .source-item {
+    margin-bottom: var(--space-1);
+  }
+
+  .source-label {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.4;
+    margin-bottom: 0;
+  }
+
+  .source-path {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    line-height: var(--line-height);
+    word-break: break-all;
+  }
+
+  .page-internal footer {
+    margin-top: var(--space-4);
+    padding-top: var(--space-1);
+    border-top: 1px solid rgba(0,0,0,0.08);
+  }
+
+  @media (max-width: 767px) {
+    :root {
+      --margin-inline: var(--space-1);
+    }
+
+    table {
+      table-layout: auto;
+    }
+  }
+</style>
+</head>
+<body class="page-internal">
+
+<header class="internal-header">
+  <a href="/" class="internal-home">What are we capable of?</a>
+</header>
+
+<main>
+
+<div class="internal-meta">Internal / Systems research / Updated 2026-05-09</div>
+
+<h1>Systems research</h1>
+
+<p class="internal-summary">The research has moved from general AI systems architecture into a concrete fake-data Ezra production operations pilot. Mesa, Cabinet, custom tooling, HTML artifacts, and future tools remain open for evaluation under a strict source-truth and approval policy.</p>
+
+<div class="boundary-note">
+  <p>All implementation uses fake data. No live Ezra, customer, or external system data enters the research. The Markdown record is the source of truth; this HTML page is a review surface.</p>
+</div>
+
+<p>Recommended next session: intake new tools using the structured rubric at the bottom of this page.</p>
+
+<h2 class="section-heading">Research tracks</h2>
+
+<div class="track">
+  <div class="track-label">Architecture base</div>
+  <p>Route by risk shape, not task size. Parent session remains single writer for live systems. Workboards coordinate active runs. Proposal packets gate accepted state and external action. Mesa stays fake-data or public-only until permissions, deletion, retention, export, recovery, and FUSE behavior are proven.</p>
+  <p class="track-source">agents-model-switching-brainstorm-2026-05-08, mesa-beta-2026-05-07</p>
+</div>
+
+<div class="track">
+  <div class="track-label">Ezra production operations pilot</div>
+  <p>The first concrete pilot. Target: reduce Sherri's digital production-manager workload through orchestrated agents with human review and approval gates. Responsibilities are modular, reviewable, and reassignable among Sherri, Sebastian, Noah, agents, verifiers, collaborators, future UI, and external systems.</p>
+  <p class="track-source">production-operations-agent-pilot</p>
+</div>
+
+<div class="track">
+  <div class="track-label">Fake daily production manager workflow</div>
+  <p>12 fake orders classified: 2 routine, 10 exceptions. Exceptions map to responsibility packets R1, R2, R3, R4, R6, and R7. Field detection and register formatting look downshiftable to lower-cost models. Source authority, approval scope, spec changes, and durable guidance remain high-reasoning work.</p>
+  <p>Built so far: fake orders, fake product specs, fake package rules, fake shop notes, fake transcript correction, source ladder and boundaries, validation types, human approval matrix, local classifier script, daily review output, exception register CSV, model-routing observation, staff-visible daily review draft, questions for Sebastian and Sherri, fake spec update proposal, proposal packet, generated HTML dashboard.</p>
+  <p class="track-source">fake-daily-production-manager</p>
+</div>
+
+<div class="track">
+  <div class="track-label">HTML artifact policy</div>
+  <p>HTML serves as a human review layer. Source truth stays in Markdown, CSV, JSON, YAML, workboards, and proposal packets. Every HTML artifact must show status, source files, generated time, data boundary, and no-write boundary. Useful HTML interactions should export back into structured data. Ezra-facing HTML requires the Ezra Arthur taste profile before review or sharing.</p>
+  <p class="track-source">html-artifact-research-2026-05-09</p>
+</div>
+
+<div class="track">
+  <div class="track-label">Cabinet investigation</div>
+  <p>Recommendation: study Cabinet and borrow patterns. Useful patterns include plain-file workspaces, conversations as task records, agent personas on disk, human-approved pending actions, Git-backed history, and multi-provider local CLI adapters. Blocking issues for live client use: same-origin HTML app surface, open Markdown XSS, broad local CLI execution surface, linked folders expanding read/write boundary, optional auth without role scoping, opt-out telemetry, path containment needing hardening.</p>
+  <p class="track-source">cabinet-research-2026-05-09</p>
+</div>
+
+<div class="track">
+  <div class="track-label">Tool intake process</div>
+  <p>Every new tool enters through a structured intake card before experimentation. The rubric covers data boundary, auth needs, source-truth model, artifact model, external write surface, export and deletion, security risks, Mesa fit, Ezra pilot fit, lowest-risk test, kill criteria, and decision. See the full rubric below.</p>
+</div>
+
+<h2 class="section-heading">Active decisions</h2>
+
+<ul class="review-list">
+  <li>Mesa stays fake-data or public-only until permissions, deletion, retention, export, recovery, and FUSE behavior are proven.</li>
+  <li>Parent session remains single writer for live systems.</li>
+  <li>Workboards coordinate active runs.</li>
+  <li>Proposal packets gate accepted state and external action.</li>
+  <li>Source truth stays Markdown, CSV, JSON, YAML, workboards, proposal packets, and scripts.</li>
+  <li>HTML is generated for human review and must be reversible: clean content recoverable as Markdown or structured data without reconstructing from layout markup.</li>
+  <li>Cabinet is a reference and pattern source. The current substrate is local Markdown, files, and Git.</li>
+  <li>Agents scout, draft, review, annotate, and verify. They act on live systems only when a specific action is approved.</li>
+  <li>Ezra-facing HTML requires the Ezra Arthur taste profile before review or sharing.</li>
+  <li>Ezra is a case study, not the architecture container. Reusable conclusions promote into the shared AI systems corpus with evidence links and without private or client-specific data.</li>
+</ul>
+
+<h2 class="section-heading">Generalization pipeline</h2>
+
+<p>Project pilots are evidence sources. Before closeout or compaction, each lesson is classified as project-only context, reusable client-operations pattern, general AI systems principle, tool-evaluation finding, approval or security boundary, or candidate template.</p>
+
+<p>Project-only context stays in the project folder. Reusable conclusions move into the shared pattern library with links back to the evidence source. Current promoted candidates include responsibility packets, source ladders, proposal gates, fake-data-first pilots, generated review surfaces, and tool intake cards.</p>
+
+<div class="source-item">
+  <p class="source-label">Shared pattern library</p>
+  <p class="source-path">.pi / projects / -Users-noah--pi / memory / reference_ai_systems_pattern_library.md</p>
+</div>
+
+<h2 class="section-heading">Open loops</h2>
+
+<div class="loop-group">
+  <div class="loop-group-label">Waiting on people</div>
+  <ul class="review-list">
+    <li>Sebastian has not yet provided the broader Sherri task inventory.</li>
+    <li>Sherri has not reviewed the fake staff-visible daily review surface.</li>
+    <li>Noah has not yet chosen whether to create a fake Mesa repo pilot.</li>
+  </ul>
+</div>
+
+<div class="loop-group">
+  <div class="loop-group-label">Needs review</div>
+  <ul class="review-list">
+    <li>Compare the generated HTML dashboard against the staff-visible Markdown draft.</li>
+    <li>Decide whether the fake daily workflow needs another scenario before Sebastian's input.</li>
+    <li>Locate or build the Ezra Arthur taste profile before any polished Ezra-facing HTML.</li>
+    <li>Review Cabinet patterns again if Noah wants a fake Cabinet sandbox.</li>
+  </ul>
+</div>
+
+<div class="loop-group">
+  <div class="loop-group-label">Needs proposal packet before action</div>
+  <ul class="review-list">
+    <li>Any fake Mesa repo creation or deletion.</li>
+    <li>Any durable memory, skill, agent, or talent update.</li>
+    <li>Any Git commit, push, or deployment.</li>
+    <li>Any Shopify, Mirakl, Nordstrom, ShipStation, Gmail, Google, Slack, DNS, Vercel, or client-facing write.</li>
+    <li>Any real Ezra data intake.</li>
+  </ul>
+</div>
+
+<h2 class="section-heading">Tool intake rubric</h2>
+
+<p>For every new tool Noah brings into a session, create a short intake card before experimenting. Process each tool through this rubric before using browser automation, cloning repos, installing packages, creating accounts, authenticating, or testing with project files.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th scope="col" style="width: 35%;">Field</th>
+      <th scope="col">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Tool name and URL</td>
+      <td>The tool's name and primary address.</td>
+    </tr>
+    <tr>
+      <td>Category</td>
+      <td>Workspace, agent runtime, knowledge base, browser automation, design artifact, data pipeline, workflow automation, model router, deployment, or other.</td>
+    </tr>
+    <tr>
+      <td>Claim</td>
+      <td>What the tool says it solves.</td>
+    </tr>
+    <tr>
+      <td>Possible role</td>
+      <td>Where the tool could fit in this architecture.</td>
+    </tr>
+    <tr>
+      <td>Data boundary</td>
+      <td>Local, cloud, browser, external API, or unknown.</td>
+    </tr>
+    <tr>
+      <td>Auth and credentials</td>
+      <td>What login, API keys, tokens, or permissions the tool needs.</td>
+    </tr>
+    <tr>
+      <td>Source-truth model</td>
+      <td>Markdown, database, proprietary workspace, Git, files, API, or unknown.</td>
+    </tr>
+    <tr>
+      <td>Artifact model</td>
+      <td>Generated, editable, embedded, hosted, or none.</td>
+    </tr>
+    <tr>
+      <td>External write surface</td>
+      <td>What systems the tool writes to outside the local machine.</td>
+    </tr>
+    <tr>
+      <td>Export and deletion story</td>
+      <td>Can data be exported cleanly? Can it be deleted completely?</td>
+    </tr>
+    <tr>
+      <td>Security and privacy risks</td>
+      <td>Telemetry, data retention, third-party access, credential exposure, or other risks.</td>
+    </tr>
+    <tr>
+      <td>Mesa fit</td>
+      <td>Compatibility with Mesa as a permissioned project workspace.</td>
+    </tr>
+    <tr>
+      <td>Ezra fake-pilot fit</td>
+      <td>Compatibility with the Ezra production operations fake-data pilot.</td>
+    </tr>
+    <tr>
+      <td>Lowest-risk fake-data test</td>
+      <td>The simplest test using only public or fake data.</td>
+    </tr>
+    <tr>
+      <td>Kill criteria</td>
+      <td>Conditions that would disqualify the tool from further evaluation.</td>
+    </tr>
+    <tr>
+      <td>Decision</td>
+      <td>Study, sandbox, borrow pattern, bypass, or propose deeper pilot.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 class="section-heading">Format policy</h2>
+
+<p>Future-agent-readable content stays Markdown or structured data. Repeatedly edited content stays Markdown or structured data. Long-lived content stays Markdown or structured data. HTML is generated for human review, dashboards, demos, prototypes, and stakeholder views.</p>
+
+<p>Decision test for every artifact: who is the audience (humans, future agents, or both), what is the lifecycle (written once or edited repeatedly), and what is the horizon (day, quarter, or years).</p>
+
+<h2 class="section-heading">Source packet</h2>
+
+<p>The canonical source for this page is the systems research review record. The Markdown file is what agents, future sessions, and handoffs should read. This HTML page is a browser-accessible review surface for Noah.</p>
+
+<div class="source-item">
+  <p class="source-label">Canonical source</p>
+  <p class="source-path">ezra-arthur-ai-systems-ethos / research / production-operations-agent-pilot / systems-research-review-record-2026-05-09.md</p>
+</div>
+
+<div class="source-item">
+  <p class="source-label">Shared pattern library</p>
+  <p class="source-path">.pi / projects / -Users-noah--pi / memory / reference_ai_systems_pattern_library.md</p>
+</div>
+
+<div class="source-item">
+  <p class="source-label">Active workboard</p>
+  <p class="source-path">ezra-arthur-ai-systems-ethos / .pi / workboards / production-operations-mesa-pilot.md</p>
+</div>
+
+<div class="source-item">
+  <p class="source-label">Tool exploration handoff</p>
+  <p class="source-path">ezra-arthur-ai-systems-ethos / research / handoffs / 2026-05-09-systems-research-tool-exploration-handoff.md</p>
+</div>
+
+<div class="source-item">
+  <p class="source-label">Fake daily pilot</p>
+  <p class="source-path">ezra-arthur-ai-systems-ethos / research / production-operations-agent-pilot / fake-daily-production-manager</p>
+</div>
+
+<div class="source-item">
+  <p class="source-label">HTML artifact memo</p>
+  <p class="source-path">ezra-arthur-ai-systems-ethos / research / production-operations-agent-pilot / html-artifact-research-2026-05-09</p>
+</div>
+
+<div class="source-item">
+  <p class="source-label">Cabinet memo</p>
+  <p class="source-path">ezra-arthur-ai-systems-ethos / research / production-operations-agent-pilot / cabinet-research-2026-05-09</p>
+</div>
+
+<div class="source-item">
+  <p class="source-label">Generated HTML dashboard (fake data)</p>
+  <p class="source-path">ezra-arthur-ai-systems-ethos / research / production-operations-agent-pilot / fake-daily-production-manager / outputs / fake-daily-production-manager-2026-05-09.html</p>
+</div>
+
+</main>
+
+<footer>
+  <span class="internal-meta">Review surface updated 2026-05-09. Source truth is the Markdown record and shared pattern library.</span>
+</footer>
+
+</body>
+</html>

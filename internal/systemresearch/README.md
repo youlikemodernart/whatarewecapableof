@@ -5,50 +5,60 @@ Status: noindex, nofollow, internal only
 
 ## What this page is
 
-A browser-accessible internal review surface for Noah's AI systems architecture research. It tracks the current state, active decisions, open loops, and tool intake rubric. It is a review surface; the Markdown record is the source of truth.
+A browser-accessible internal review surface for WAWCO's AI systems architecture research. It maps the active abstractions, research arms, operating rules, and current evidence streams behind Noah's AI system development process.
 
-## Canonical source
+The page should read as a high-level systems research map. Ezra production operations is the first concrete case study, not the frame for the whole page.
 
-The page content comes from:
-`ezra-arthur-ai-systems-ethos/research/production-operations-agent-pilot/systems-research-review-record-2026-05-09.md`
+## Source model
 
-Reusable patterns come from:
-`.pi/projects/-Users-noah--pi/memory/reference_ai_systems_pattern_library.md`
+This page is synthesized from a source packet rather than a single canonical Markdown record.
 
-When the research produces a new review record (a new date or a revised version), the canonical source path updates.
+Primary source groups:
+
+- Ethos and architecture memory: `~/.pi/projects/-Users-noah--pi/memory/reference_ai_systems_ethos.md` and `~/.pi/projects/-Users-noah--pi/memory/project_ai_systems_architecture.md`
+- Orchestration research: `~/.pi/projects/-Users-noah--pi/research/agent-orchestration-papers-2026-05-06/`
+- Shared patterns: `~/.pi/projects/-Users-noah--pi/memory/reference_ai_systems_pattern_library.md`
+- Talent manifest layer: `~/.pi/agent/talents/README.md`
+- Ezra pilot evidence: `~/Projects/ezra-arthur-ai-systems-ethos/research/production-operations-agent-pilot/` and its active workboard
+
+The HTML page is a review surface. Source truth stays in Markdown, CSV, JSON, YAML, workboards, proposal packets, scripts, and accepted memory files.
 
 ## How to update this page
 
-1. Update the canonical Markdown source in the ezra-arthur-ai-systems-ethos project.
-2. Promote reusable lessons into `.pi/projects/-Users-noah--pi/memory/reference_ai_systems_pattern_library.md` when they generalize beyond the project.
-3. Edit `internal/systemresearch/index.html` to reflect the changes.
-4. Update the "Updated" date in the meta line at the top of the page.
-5. Update the source packet section to reference the current canonical file and shared pattern library.
-6. Commit and deploy.
+1. Read the current source packet named in the page.
+2. Check the active Ezra workboard if the page still references the production operations pilot.
+3. Check the shared pattern library for promoted reusable patterns.
+4. Draft revised page copy in Markdown before editing HTML when the page frame changes materially.
+5. Edit `internal/systemresearch/index.html` to reflect the approved revision.
+6. Update the `Updated` date in the meta line and footer if needed.
+7. Update the source packet section.
+8. Commit and deploy only after Noah approves the content and the publish action.
 
-There is no generator script. The page is hand-edited HTML that mirrors the Markdown source. This keeps the page structure intentional and the update process visible. If update frequency increases, a generator script could convert the Markdown source into this HTML format using the existing CSS tokens and page structure.
+There is no generator script. The page is hand-edited HTML so the structure stays intentional and reviewable. If update frequency increases, a generator can convert a Markdown source file into this HTML format using the existing CSS tokens and page structure.
 
-## Adding new research records
+## Adding new research arms
 
-When a new review record is written (for example, `systems-research-review-record-2026-06-01.md`):
+When a new research arm is added:
 
-1. Update the canonical source path reference in the HTML and in this README.
-2. Update the "Updated" date in the internal-meta line.
-3. Revise the content sections to reflect the new state: research tracks, decisions, open loops.
-4. Add or remove research tracks, decisions, and open loops as needed.
-5. Update the source packet to reference the new file and any new related files.
+1. Add it to the active research arms section.
+2. Add its source file or folder to the source packet.
+3. Classify any reusable conclusions before closeout: project-only context, reusable client-operations pattern, general AI systems principle, tool-evaluation finding, approval or security boundary, or candidate template.
+4. Promote reusable conclusions to the shared pattern library with evidence links and without private or client-specific data.
 
 ## Keeping the page in sync
 
-The Markdown record is canonical. The HTML page lags by one manual edit. Pi or Claude can perform the update by reading the new Markdown source and editing the HTML.
+The page should lag source truth by one manual edit, not become source truth itself.
 
 Sync steps:
-1. Read the current Markdown review record.
-2. Read the shared AI systems pattern library.
-3. Compare both sources against the HTML page content.
-4. Edit the HTML to match the current state.
-5. Commit and deploy.
+
+1. Read the current source packet.
+2. Compare source claims against the HTML page.
+3. Mark draft-level claims as draft-level in the page language.
+4. Remove stale operational detail that belongs in workboards or proposal packets.
+5. Edit the HTML.
+6. Verify the local page.
+7. Commit, push, deploy, and verify production only after approval.
 
 ## Auth and access
 
-The page is served without authentication. It relies on noindex/nofollow and unlisted path for obscurity. The tracker at `/tracker/` uses a password and signed-cookie session pattern. That pattern could be reused for this page later if authentication becomes necessary.
+The page is served without authentication. It relies on noindex/nofollow and an unlisted path for obscurity. The tracker at `/tracker/` uses a password and signed-cookie session pattern. That pattern could be reused for this page later if authentication becomes necessary.

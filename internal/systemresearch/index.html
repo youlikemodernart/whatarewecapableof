@@ -73,6 +73,10 @@
     max-width: 52ch;
   }
 
+  main > p {
+    max-width: 52ch;
+  }
+
   .section-heading {
     font-family: var(--font-mono);
     font-size: var(--size-s);
@@ -240,243 +244,247 @@
 
 <h1>Systems research</h1>
 
-<p class="internal-summary">The research has moved from general AI systems architecture into a concrete fake-data Ezra production operations pilot. Mesa, Cabinet, custom tooling, HTML artifacts, and future tools remain open for evaluation under a strict source-truth and approval policy.</p>
+<p class="internal-summary">WAWCO is researching how AI systems can preserve source material, coordinate agent work, route candidate state through review, and keep human judgment at the point where work becomes accepted. This page maps the active research: current abstractions, research arms, evidence streams, and operating rules.</p>
 
 <div class="boundary-note">
-  <p>All implementation uses fake data. No live Ezra, customer, or external system data enters the research. The Markdown record is the source of truth; this HTML page is a review surface.</p>
+  <p>This is research, planning, fake-data implementation, and internal review. Live data and external writes require explicit approval. Markdown and structured files are source truth; this HTML page is a review surface generated from those files.</p>
 </div>
 
-<p>Recommended next session: intake new tools using the structured rubric at the bottom of this page.</p>
+<h2 class="section-heading">From ethos to operating system</h2>
 
-<h2 class="section-heading">Research tracks</h2>
+<p>The guiding reference is a fictional text about a project environment where accumulated material becomes active context. Documents, stakeholder claims, design proposals, constraints, and decisions compose into a namespace that the project's participants can navigate. The system's purpose is to let accumulated work remember what it is.</p>
 
-<div class="track">
-  <div class="track-label">Architecture base</div>
-  <p>Route by risk shape, not task size. Parent session remains single writer for live systems. Workboards coordinate active runs. Proposal packets gate accepted state and external action. Mesa stays fake-data or public-only until permissions, deletion, retention, export, recovery, and FUSE behavior are proven.</p>
-  <p class="track-source">agents-model-switching-brainstorm-2026-05-08, mesa-beta-2026-05-07</p>
-</div>
+<p>Four principles govern the translation into operating patterns. Source material remains active: research, interviews, notes, and stakeholder comments continue to act on future proposals. Every claim carries provenance: recommendations and generated work point back to the material that produced them. Candidate work moves through review: new proposals surface relevant constraints, conflicts, and prior decisions. Humans accept or reject state: the system provides memory, consequence, and surface area for judgment, while people compose and decide.</p>
 
-<div class="track">
-  <div class="track-label">Ezra production operations pilot</div>
-  <p>The first concrete pilot. Target: reduce Sherri's digital production-manager workload through orchestrated agents with human review and approval gates. Responsibilities are modular, reviewable, and reassignable among Sherri, Sebastian, Noah, agents, verifiers, collaborators, future UI, and external systems.</p>
-  <p class="track-source">production-operations-agent-pilot</p>
-</div>
+<p>Memory works through graduated commitment. Most context stays light: session notes, workboards, source packets, handoffs, and closeouts. Durable memory holds context that is source-backed, useful across sessions, and accepted. Context moves through stages: raw event, observation, candidate lesson, repeated pattern, operating rule, stable principle.</p>
+
+<h2 class="section-heading">Core abstractions</h2>
 
 <div class="track">
-  <div class="track-label">Fake daily production manager workflow</div>
-  <p>12 fake orders classified: 2 routine, 10 exceptions. Exceptions map to responsibility packets R1, R2, R3, R4, R6, and R7. Field detection and register formatting look downshiftable to lower-cost models. Source authority, approval scope, spec changes, and durable guidance remain high-reasoning work.</p>
-  <p>Built so far: fake orders, fake product specs, fake package rules, fake shop notes, fake transcript correction, source ladder and boundaries, validation types, human approval matrix, local classifier script, daily review output, exception register CSV, model-routing observation, staff-visible daily review draft, questions for Sebastian and Sherri, fake spec update proposal, proposal packet, generated HTML dashboard.</p>
-  <p class="track-source">fake-daily-production-manager</p>
+  <div class="track-label">Skills</div>
+  <p>Methods and procedural references. A skill defines how to do a class of work: procedures, reference files, constraints, and routing tables. Skills live in <code>~/.pi/agent/skills/</code> and are shared between Pi and Claude Code through symlinks.</p>
+  <p class="track-source">Examples: web-design, writing-style, orchestration-workboard, mail-intake</p>
 </div>
 
 <div class="track">
-  <div class="track-label">HTML artifact policy</div>
-  <p>HTML serves as a human review layer. Source truth stays in Markdown, CSV, JSON, YAML, workboards, and proposal packets. Every HTML artifact must show status, source files, generated time, data boundary, and no-write boundary. Useful HTML interactions should export back into structured data. Ezra-facing HTML requires the Ezra Arthur taste profile before review or sharing.</p>
+  <div class="track-label">Agents</div>
+  <p>Executable roles. An agent is a role prompt that can perform work when routed with bounded prompts and source packets. Shared agents exist in both Pi format and Claude Code format so the role can travel across harnesses.</p>
+  <p class="track-source">Examples: consulting-pipeline, web-design, ezra-production, typography</p>
+</div>
+
+<div class="track">
+  <div class="track-label">Talent manifests</div>
+  <p>Descriptive capability contracts. A talent manifest sits above skills and agents. It describes how a role should be deployed: skills, memory roots, tools, approval gates, smoke tests, known risks, and harness support. Talent manifests guide routing and review; they do not grant permissions.</p>
+  <p class="track-source">Current shared test: consulting-pipeline</p>
+</div>
+
+<div class="track">
+  <div class="track-label">Workboards</div>
+  <p>Run coordination artifacts. A workboard tracks the state of a multi-step task: goals, source packets, task graphs, worker slots, routing decisions, conflicts, verifier notes, proposed durable updates, and closeout. Workboards coordinate process. They do not approve action.</p>
+  <p class="track-source">orchestration-workboard skill, production-operations-mesa-pilot workboard</p>
+</div>
+
+<div class="track">
+  <div class="track-label">Proposal packets</div>
+  <p>Acceptance gates. A proposal packet evaluates candidate state before it becomes accepted, staff-facing, external, durable, pushed, deployed, remembered, or used as operational guidance. Approval intent recorded in a packet is still only intent. The parent session verifies state before acting.</p>
+  <p class="track-source">orchestration-workboard / references / 04-project-proposal-packets.md</p>
+</div>
+
+<div class="track">
+  <div class="track-label">Responsibility packets</div>
+  <p>Recurring work units with explicit ownership. Each packet describes one job: current owner, candidate AI owner, inputs, outputs, source of truth, allowed actions, forbidden actions, approval gates, validation type, escalation path, reassignment options, and automation status.</p>
+  <p class="track-source">responsibility-map-draft.md</p>
+</div>
+
+<div class="track">
+  <div class="track-label">Source ladders</div>
+  <p>Authority maps for conflicting systems. When several systems hold overlapping data, a source ladder establishes which system is authoritative for each field and action. If two sources conflict, the workflow produces an exception or proposal instead of choosing silently.</p>
+  <p class="track-source">fake daily production manager operating model</p>
+</div>
+
+<div class="track">
+  <div class="track-label">Project memory and pattern library</div>
+  <p>Two layers of accepted durable context. Project memory preserves facts, decisions, current state, and next actions for a specific project. The shared pattern library holds reusable patterns promoted from project pilots after client-specific data is stripped and evidence links are attached.</p>
+  <p class="track-source">reference_ai_systems_pattern_library.md</p>
+</div>
+
+<div class="track">
+  <div class="track-label">Review surfaces</div>
+  <p>HTML pages, preview deployments, dashboards, Discord summaries, and staff-visible drafts generated from source truth. Review surfaces make structured data legible for humans who do not read Markdown or YAML. Source truth stays in Markdown, CSV, JSON, YAML, workboards, proposal packets, and scripts.</p>
   <p class="track-source">html-artifact-research-2026-05-09</p>
 </div>
 
 <div class="track">
-  <div class="track-label">Cabinet investigation</div>
-  <p>Recommendation: study Cabinet and borrow patterns. Useful patterns include plain-file workspaces, conversations as task records, agent personas on disk, human-approved pending actions, Git-backed history, and multi-provider local CLI adapters. Blocking issues for live client use: same-origin HTML app surface, open Markdown XSS, broad local CLI execution surface, linked folders expanding read/write boundary, optional auth without role scoping, opt-out telemetry, path containment needing hardening.</p>
-  <p class="track-source">cabinet-research-2026-05-09</p>
+  <div class="track-label">Workspace substrates</div>
+  <p>The storage and versioning layers where project artifacts live. Current substrate: local Markdown files and Git. Mesa is under fake-data evaluation as a hosted versioning layer with proposal branches, diffs, merges, and a virtual filesystem. Cabinet has been studied for patterns but is not adopted as a live substrate.</p>
+  <p class="track-source">project_ai_systems_architecture.md, cabinet-research-2026-05-09</p>
+</div>
+
+<h2 class="section-heading">Active research arms</h2>
+
+<div class="track">
+  <div class="track-label">Ethos and adaptive memory</div>
+  <p>How project context accumulates, stays active, and decays gracefully. Current work includes graduated commitment from raw event through candidate lesson to stable principle, witness chains from source to implication, and observation-before-action as the default agent posture. The mail-intake workflow is the first concrete observation-ledger pattern in use.</p>
+  <p class="track-source">reference_ai_systems_ethos.md</p>
 </div>
 
 <div class="track">
-  <div class="track-label">Tool intake process</div>
-  <p>Every new tool enters through a structured intake card before experimentation. The rubric covers data boundary, auth needs, source-truth model, artifact model, external write surface, export and deletion, security risks, Mesa fit, Ezra pilot fit, lowest-risk test, kill criteria, and decision. See the full rubric below.</p>
+  <div class="track-label">Orchestration and delegation</div>
+  <p>How parent sessions, subagents, workers, verifiers, and reviewers coordinate without losing source provenance or approval boundaries. Seven arXiv papers were synthesized in May 2026 on talent packaging, workboards, agent-native project artifacts, and verified memory evolution. The current posture is workboard-first: use thin coordination for active runs and defer broader automation until patterns prove useful across real pilots.</p>
+  <p class="track-source">agent-orchestration-papers-2026-05-06</p>
 </div>
 
-<h2 class="section-heading">Active decisions</h2>
+<div class="track">
+  <div class="track-label">Capability packaging</div>
+  <p>How skills, agents, and talent manifests relate. Skills define procedures. Agents execute roles. Talent manifests describe deployment boundaries. The open question is which abstractions stay lightweight Markdown and which deserve runtime tooling for permission enforcement, smoke tests, or model routing.</p>
+  <p class="track-source">~/.pi/agent/talents/README.md</p>
+</div>
+
+<div class="track">
+  <div class="track-label">Workspace substrates and proposal state</div>
+  <p>Which storage layer holds project artifacts, proposal branches, accepted state, and review surfaces. Mesa was tested with fake data through REST, Git, SDK, and FUSE workflows. The AI Website Concierge proved the local Git branch, Vercel preview, and approval-merge-deploy workflow. The current operational substrate remains local files and Git with GitHub branches and Vercel previews.</p>
+  <p class="track-source">project_ai_systems_architecture.md</p>
+</div>
+
+<div class="track">
+  <div class="track-label">Human review surfaces</div>
+  <p>How structured source data becomes legible for nontechnical reviewers, staff, and clients. The format policy keeps source truth in Markdown or structured data while generating HTML for review. A three-question test guides each artifact: audience, lifecycle, and horizon.</p>
+  <p class="track-source">html-artifact-research-2026-05-09</p>
+</div>
+
+<div class="track">
+  <div class="track-label">Client operations pilots</div>
+  <p>Concrete test cases for the abstractions. Registered or holding pilots span production operations, consulting proposals, grant writing, website migration, pricing intelligence, and real estate transaction coordination. Each pilot uses its own workboard and source packet; closeout compares friction, rediscovery, proportionality, and which patterns generalize.</p>
+  <p class="track-source">orchestration-next-layer-map.md</p>
+</div>
+
+<div class="track">
+  <div class="track-label">Model routing and tool governance</div>
+  <p>Which model tier handles which task, and how new tools enter the system. Use high reasoning for source authority, approval scope, contradictions, and operational policy. Downshift when the task is bounded, reversible, mechanical, and has a clear verifier. Every new online tool enters through an intake card before experimentation.</p>
+  <p class="track-source">model-switching-task-map-draft.md, systems-research-review-record-2026-05-09.md</p>
+</div>
+
+<h2 class="section-heading">Current evidence stream: Ezra production operations</h2>
+
+<p>Ezra production operations is the first concrete pilot. The target is to map digital production-manager work into modular responsibilities that can move from manual to AI-assisted with human review and approval gates.</p>
+
+<p>The pilot uses fake data exclusively. The first fake daily workflow produced a queue review, exception register, staff-visible review draft, source ladder, validation types, human approval matrix, model-routing observations, questions for staff, a fake spec proposal, a proposal packet, and a generated HTML review page.</p>
+
+<p>The model-routing observation is still draft-level: field detection and register formatting look downshiftable after source-ladder rules are fixed. Source authority decisions, approval scope, transcript-to-spec proposals, and durable guidance remain high-reasoning work.</p>
+
+<p>Candidate talents have been sketched for queue scouting, shipping exception triage, transcript-to-spec extraction, spec lookup, shop guide building, product data proposals, source ladder verification, and orchestration.</p>
+
+<p>Open for this pilot: actual task inventory from the production team, Mesa workspace decision, staff-facing review surface usability, and which findings generalize into the shared pattern library.</p>
+
+<p class="track-source">ezra-arthur-ai-systems-ethos / research / production-operations-agent-pilot</p>
+
+<h2 class="section-heading">Operating rules</h2>
 
 <ul class="review-list">
-  <li>Mesa stays fake-data or public-only until permissions, deletion, retention, export, recovery, and FUSE behavior are proven.</li>
+  <li>Fake data first for new client-operation pilots.</li>
   <li>Parent session remains single writer for live systems.</li>
-  <li>Workboards coordinate active runs.</li>
+  <li>Agents scout, draft, verify, and review. They act on live systems only when a specific action is approved.</li>
   <li>Proposal packets gate accepted state and external action.</li>
   <li>Source truth stays Markdown, CSV, JSON, YAML, workboards, proposal packets, and scripts.</li>
-  <li>HTML is generated for human review and must be reversible: clean content recoverable as Markdown or structured data without reconstructing from layout markup.</li>
-  <li>Cabinet is a reference and pattern source. The current substrate is local Markdown, files, and Git.</li>
-  <li>Agents scout, draft, review, annotate, and verify. They act on live systems only when a specific action is approved.</li>
-  <li>Ezra-facing HTML requires the Ezra Arthur taste profile before review or sharing.</li>
-  <li>Ezra is a case study, not the architecture container. Reusable conclusions promote into the shared AI systems corpus with evidence links and without private or client-specific data.</li>
+  <li>HTML is generated for human review and must be reversible.</li>
+  <li>Talent manifests describe boundaries. They do not grant permissions.</li>
+  <li>Workboards coordinate process. They do not approve action.</li>
+  <li>Approval intent is not application. Verification precedes action.</li>
+  <li>Project pilots feed the shared pattern library after client-specific data is stripped.</li>
 </ul>
 
-<h2 class="section-heading">Generalization pipeline</h2>
+<h2 class="section-heading">Open questions</h2>
 
-<p>Project pilots are evidence sources. Before closeout or compaction, each lesson is classified as project-only context, reusable client-operations pattern, general AI systems principle, tool-evaluation finding, approval or security boundary, or candidate template.</p>
-
-<p>Project-only context stays in the project folder. Reusable conclusions move into the shared pattern library with links back to the evidence source. Current promoted candidates include responsibility packets, source ladders, proposal gates, fake-data-first pilots, generated review surfaces, and tool intake cards.</p>
-
-<div class="source-item">
-  <p class="source-label">Shared pattern library</p>
-  <p class="source-path">.pi / projects / -Users-noah--pi / memory / reference_ai_systems_pattern_library.md</p>
-</div>
-
-<h2 class="section-heading">Open loops</h2>
-
-<div class="loop-group">
-  <div class="loop-group-label">Waiting on people</div>
-  <ul class="review-list">
-    <li>Sebastian has not yet provided the broader Sherri task inventory.</li>
-    <li>Sherri has not reviewed the fake staff-visible daily review surface.</li>
-    <li>Noah has not yet chosen whether to create a fake Mesa repo pilot.</li>
-  </ul>
-</div>
-
-<div class="loop-group">
-  <div class="loop-group-label">Needs review</div>
-  <ul class="review-list">
-    <li>Compare the generated HTML dashboard against the staff-visible Markdown draft.</li>
-    <li>Decide whether the fake daily workflow needs another scenario before Sebastian's input.</li>
-    <li>Locate or build the Ezra Arthur taste profile before any polished Ezra-facing HTML.</li>
-    <li>Review Cabinet patterns again if Noah wants a fake Cabinet sandbox.</li>
-  </ul>
-</div>
-
-<div class="loop-group">
-  <div class="loop-group-label">Needs proposal packet before action</div>
-  <ul class="review-list">
-    <li>Any fake Mesa repo creation or deletion.</li>
-    <li>Any durable memory, skill, agent, or talent update.</li>
-    <li>Any Git commit, push, or deployment.</li>
-    <li>Any Shopify, Mirakl, Nordstrom, ShipStation, Gmail, Google, Slack, DNS, Vercel, or client-facing write.</li>
-    <li>Any real Ezra data intake.</li>
-  </ul>
-</div>
-
-<h2 class="section-heading">Tool intake rubric</h2>
-
-<p>For every new tool Noah brings into a session, create a short intake card before experimenting. Process each tool through this rubric before using browser automation, cloning repos, installing packages, creating accounts, authenticating, or testing with project files.</p>
-
-<table>
-  <thead>
-    <tr>
-      <th scope="col" style="width: 35%;">Field</th>
-      <th scope="col">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Tool name and URL</td>
-      <td>The tool's name and primary address.</td>
-    </tr>
-    <tr>
-      <td>Category</td>
-      <td>Workspace, agent runtime, knowledge base, browser automation, design artifact, data pipeline, workflow automation, model router, deployment, or other.</td>
-    </tr>
-    <tr>
-      <td>Claim</td>
-      <td>What the tool says it solves.</td>
-    </tr>
-    <tr>
-      <td>Possible role</td>
-      <td>Where the tool could fit in this architecture.</td>
-    </tr>
-    <tr>
-      <td>Data boundary</td>
-      <td>Local, cloud, browser, external API, or unknown.</td>
-    </tr>
-    <tr>
-      <td>Auth and credentials</td>
-      <td>What login, API keys, tokens, or permissions the tool needs.</td>
-    </tr>
-    <tr>
-      <td>Source-truth model</td>
-      <td>Markdown, database, proprietary workspace, Git, files, API, or unknown.</td>
-    </tr>
-    <tr>
-      <td>Artifact model</td>
-      <td>Generated, editable, embedded, hosted, or none.</td>
-    </tr>
-    <tr>
-      <td>External write surface</td>
-      <td>What systems the tool writes to outside the local machine.</td>
-    </tr>
-    <tr>
-      <td>Export and deletion story</td>
-      <td>Can data be exported cleanly? Can it be deleted completely?</td>
-    </tr>
-    <tr>
-      <td>Security and privacy risks</td>
-      <td>Telemetry, data retention, third-party access, credential exposure, or other risks.</td>
-    </tr>
-    <tr>
-      <td>Mesa fit</td>
-      <td>Compatibility with Mesa as a permissioned project workspace.</td>
-    </tr>
-    <tr>
-      <td>Ezra fake-pilot fit</td>
-      <td>Compatibility with the Ezra production operations fake-data pilot.</td>
-    </tr>
-    <tr>
-      <td>Lowest-risk fake-data test</td>
-      <td>The simplest test using only public or fake data.</td>
-    </tr>
-    <tr>
-      <td>Kill criteria</td>
-      <td>Conditions that would disqualify the tool from further evaluation.</td>
-    </tr>
-    <tr>
-      <td>Decision</td>
-      <td>Study, sandbox, borrow pattern, bypass, or propose deeper pilot.</td>
-    </tr>
-  </tbody>
-</table>
-
-<h2 class="section-heading">Format policy</h2>
-
-<p>Future-agent-readable content stays Markdown or structured data. Repeatedly edited content stays Markdown or structured data. Long-lived content stays Markdown or structured data. HTML is generated for human review, dashboards, demos, prototypes, and stakeholder views.</p>
-
-<p>Decision test for every artifact: who is the audience (humans, future agents, or both), what is the lifecycle (written once or edited repeatedly), and what is the horizon (day, quarter, or years).</p>
+<ul class="review-list">
+  <li>Which abstractions stay lightweight files, and which deserve runtime tooling?</li>
+  <li>What belongs in project memory, shared pattern memory, a skill, an agent, or a talent manifest?</li>
+  <li>Which workspace substrate can safely hold proposal state for staff or client review?</li>
+  <li>What review surface is useful enough for nontechnical collaborators?</li>
+  <li>Which findings from current pilots generalize, and which stay project-specific?</li>
+  <li>How should context decay, supersession, and retirement work without losing useful continuity?</li>
+  <li>What is the smallest useful version of auto-projection in the current system?</li>
+</ul>
 
 <h2 class="section-heading">Source packet</h2>
 
-<p>The canonical source for this page is the systems research review record. The Markdown file is what agents, future sessions, and handoffs should read. This HTML page is a browser-accessible review surface for Noah.</p>
+<p>This page is a browser-accessible review surface. The source truth is the files below: shared memory records, orchestration research, pattern library entries, talent docs, and the Ezra pilot packet.</p>
 
-<div class="source-item">
-  <p class="source-label">Canonical source</p>
-  <p class="source-path">ezra-arthur-ai-systems-ethos / research / production-operations-agent-pilot / systems-research-review-record-2026-05-09.md</p>
+<div class="loop-group">
+  <div class="loop-group-label">Ethos and architecture memory</div>
+  <div class="source-item">
+    <p class="source-label">AI systems ethos</p>
+    <p class="source-path">.pi / projects / -Users-noah--pi / memory / reference_ai_systems_ethos.md</p>
+  </div>
+  <div class="source-item">
+    <p class="source-label">Architecture memory</p>
+    <p class="source-path">.pi / projects / -Users-noah--pi / memory / project_ai_systems_architecture.md</p>
+  </div>
 </div>
 
-<div class="source-item">
-  <p class="source-label">Shared pattern library</p>
-  <p class="source-path">.pi / projects / -Users-noah--pi / memory / reference_ai_systems_pattern_library.md</p>
+<div class="loop-group">
+  <div class="loop-group-label">Orchestration research</div>
+  <div class="source-item">
+    <p class="source-label">Agent orchestration papers synthesis</p>
+    <p class="source-path">.pi / projects / -Users-noah--pi / research / agent-orchestration-papers-2026-05-06 / README.md</p>
+  </div>
+  <div class="source-item">
+    <p class="source-label">Orchestration next-layer map</p>
+    <p class="source-path">.pi / projects / -Users-noah--pi / research / agent-orchestration-papers-2026-05-06 / orchestration-next-layer-map.md</p>
+  </div>
 </div>
 
-<div class="source-item">
-  <p class="source-label">Active workboard</p>
-  <p class="source-path">ezra-arthur-ai-systems-ethos / .pi / workboards / production-operations-mesa-pilot.md</p>
+<div class="loop-group">
+  <div class="loop-group-label">Pattern library and talent layer</div>
+  <div class="source-item">
+    <p class="source-label">Shared pattern library</p>
+    <p class="source-path">.pi / projects / -Users-noah--pi / memory / reference_ai_systems_pattern_library.md</p>
+  </div>
+  <div class="source-item">
+    <p class="source-label">Talent manifest README</p>
+    <p class="source-path">.pi / agent / talents / README.md</p>
+  </div>
 </div>
 
-<div class="source-item">
-  <p class="source-label">Tool exploration handoff</p>
-  <p class="source-path">ezra-arthur-ai-systems-ethos / research / handoffs / 2026-05-09-systems-research-tool-exploration-handoff.md</p>
+<div class="loop-group">
+  <div class="loop-group-label">Ezra pilot evidence</div>
+  <div class="source-item">
+    <p class="source-label">Systems research review record</p>
+    <p class="source-path">ezra-arthur-ai-systems-ethos / research / production-operations-agent-pilot / systems-research-review-record-2026-05-09.md</p>
+  </div>
+  <div class="source-item">
+    <p class="source-label">Active workboard</p>
+    <p class="source-path">ezra-arthur-ai-systems-ethos / .pi / workboards / production-operations-mesa-pilot.md</p>
+  </div>
+  <div class="source-item">
+    <p class="source-label">Responsibility map draft</p>
+    <p class="source-path">ezra-arthur-ai-systems-ethos / research / production-operations-agent-pilot / responsibility-map-draft.md</p>
+  </div>
+  <div class="source-item">
+    <p class="source-label">Talent and agent architecture draft</p>
+    <p class="source-path">ezra-arthur-ai-systems-ethos / research / production-operations-agent-pilot / talent-and-agent-architecture-draft.md</p>
+  </div>
+  <div class="source-item">
+    <p class="source-label">Model switching task map</p>
+    <p class="source-path">ezra-arthur-ai-systems-ethos / research / production-operations-agent-pilot / model-switching-task-map-draft.md</p>
+  </div>
 </div>
 
-<div class="source-item">
-  <p class="source-label">Fake daily pilot</p>
-  <p class="source-path">ezra-arthur-ai-systems-ethos / research / production-operations-agent-pilot / fake-daily-production-manager</p>
-</div>
-
-<div class="source-item">
-  <p class="source-label">HTML artifact memo</p>
-  <p class="source-path">ezra-arthur-ai-systems-ethos / research / production-operations-agent-pilot / html-artifact-research-2026-05-09</p>
-</div>
-
-<div class="source-item">
-  <p class="source-label">Cabinet memo</p>
-  <p class="source-path">ezra-arthur-ai-systems-ethos / research / production-operations-agent-pilot / cabinet-research-2026-05-09</p>
-</div>
-
-<div class="source-item">
-  <p class="source-label">Generated HTML dashboard (fake data)</p>
-  <p class="source-path">ezra-arthur-ai-systems-ethos / research / production-operations-agent-pilot / fake-daily-production-manager / outputs / fake-daily-production-manager-2026-05-09.html</p>
+<div class="loop-group">
+  <div class="loop-group-label">WAWCO page files</div>
+  <div class="source-item">
+    <p class="source-label">Review page</p>
+    <p class="source-path">whatarewecapableof / internal / systemresearch / index.html</p>
+  </div>
+  <div class="source-item">
+    <p class="source-label">Update notes</p>
+    <p class="source-path">whatarewecapableof / internal / systemresearch / README.md</p>
+  </div>
 </div>
 
 </main>
 
 <footer>
-  <span class="internal-meta">Review surface updated 2026-05-09. Source truth is the Markdown record and shared pattern library.</span>
+  <span class="internal-meta">Review surface updated 2026-05-09. Source truth is the source packet, pattern library, and project records.</span>
 </footer>
 
 </body>

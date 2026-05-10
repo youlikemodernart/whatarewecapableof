@@ -5,7 +5,8 @@
   const GRID_ROWS = 11;
   const MAX_INPUT_QUEUE = 2;
   const SWIPE_THRESHOLD = 24;
-  const STORAGE_PREFIX = 'abs-v2';
+  const STORAGE_PREFIX = 'abs-v3';
+  const STAGE_COUNT = 5;
 
   const Scene = {
     MENU: 'menu',
@@ -22,9 +23,14 @@
   };
 
   const assetManifest = {
-    head: 'assets/snake-head.png',
+    head: 'assets/curly-head-v3.png',
     food: 'assets/beef-n-cheddar.png',
-    growth: 'assets/curly-snake-growth.png'
+    logo: 'assets/boys-logo.png',
+    stage1: 'assets/curly-stage-1.png',
+    stage2: 'assets/curly-stage-2.png',
+    stage3: 'assets/curly-stage-3.png',
+    stage4: 'assets/curly-stage-4.png',
+    stage5: 'assets/curly-stage-5.png'
   };
 
   const canvas = document.getElementById('game-canvas');
@@ -36,6 +42,7 @@
   const overlayTitle = document.getElementById('overlay-title');
   const overlayCopy = document.getElementById('overlay-copy');
   const primaryAction = document.getElementById('primary-action');
+  const stageArt = document.getElementById('stage-art');
   const pauseButton = document.getElementById('pause-button');
   const soundButton = document.getElementById('sound-button');
   const motionButton = document.getElementById('motion-button');
@@ -258,6 +265,7 @@
     shakeTime = 0;
     spawnFood({ prefer: { x: GRID_COLS - 3, y: Math.max(1, cy - 2) } });
     syncScore();
+    updateStageArt();
   }
 
   function updateTick() {
@@ -286,6 +294,7 @@
       eatEffects.push({ x: food.x, y: food.y, age: 0 });
       spawnFood();
       syncScore();
+      updateStageArt();
       playTone('eat');
       if (!reducedMotion && navigator.vibrate) navigator.vibrate(28);
     } else {
@@ -350,9 +359,9 @@
 
   function calculateTickInterval(points) {
     if (speedMode === 'relaxed') {
-      return Math.max(125, 280 - Math.floor(points * 4));
+      return Math.max(125, 295 - Math.floor(points * 4));
     }
-    return Math.max(100, 230 - Math.floor(points * 5));
+    return Math.max(100, 245 - Math.floor(points * 6));
   }
 
   function setScene(nextScene, reason = '') {
@@ -360,10 +369,12 @@
     pauseButton.textContent = scene === Scene.PAUSED ? 'Resume' : 'Pause';
 
     if (scene === Scene.MENU) {
-      showOverlay('V2 prototype', 'Eat the Beef \'N Cheddars.', 'Swipe to steer the curly fry. Every sandwich makes it longer. Walls and your own tail end the run.', 'Tap to Play', 'hero');
+      updateStageArt(0);
+      showOverlay('Level 1 curly fry', 'Swipe or tap to steer.', 'Eat sandwiches, add curls, and speed up a little every time.', 'Tap to Play', 'hero');
     } else if (scene === Scene.PAUSED) {
       showOverlay(reason || 'Paused', 'Hold the curly fry.', 'Tap resume when you are ready to keep chasing sandwiches.', 'Resume', 'compact');
     } else if (scene === Scene.GAME_OVER) {
+      updateStageArt(score);
       const best = score >= highScore && score > 0 ? 'New best fry.' : `Best fry: ${highScore}.`;
       showOverlay('Drive-through closed', 'The curly fry crashed.', `Beef \'N Cheddars eaten: ${score}. ${best}`, 'Run It Back', 'compact');
     } else {
@@ -438,18 +449,19 @@
 
   function drawBoard() {
     const { cell } = layout;
-    ctx.fillStyle = '#fff7ef';
+    ctx.fillStyle = '#fffdf8';
     ctx.fillRect(0, 0, layout.width, layout.height);
 
     for (let y = 0; y < GRID_ROWS; y += 1) {
       for (let x = 0; x < GRID_COLS; x += 1) {
-        ctx.fillStyle = (x + y) % 2 === 0 ? '#ead4c5' : '#f7ede4';
+        const isRed = (x + y) % 2 === 0;
+        ctx.fillStyle = isRed ? '#c6322d' : '#fffdf8';
         ctx.fillRect(x * cell, y * cell, cell + 0.5, cell + 0.5);
-        if ((x + y) % 2 === 0) drawBoysWatermark(x, y);
+        if (!isRed) drawBoysWatermark(x, y);
       }
     }
 
-    ctx.strokeStyle = '#d40000';
+    ctx.strokeStyle = '#ffffff';
     ctx.lineWidth = Math.max(4, cell * 0.08);
     ctx.strokeRect(ctx.lineWidth / 2, ctx.lineWidth / 2, layout.width - ctx.lineWidth, layout.height - ctx.lineWidth);
   }
@@ -457,22 +469,21 @@
   function drawBoysWatermark(col, row) {
     const { cell } = layout;
     ctx.save();
-    ctx.translate(col * cell + cell * 0.5, row * cell + cell * 0.54);
-    ctx.globalAlpha = 0.38;
-    ctx.fillStyle = '#bf785c';
-    ctx.font = `900 ${cell * 0.22}px Georgia, serif`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('Boys', 0, cell * 0.04);
-    ctx.strokeStyle = '#bf785c';
-    ctx.lineWidth = Math.max(1, cell * 0.025);
-    ctx.beginPath();
-    ctx.arc(-cell * 0.06, -cell * 0.15, cell * 0.12, Math.PI * 1.05, Math.PI * 1.95);
-    ctx.arc(cell * 0.08, -cell * 0.15, cell * 0.11, Math.PI * 1.05, Math.PI * 1.95);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(0, cell * 0.16, cell * 0.18, 0.1, Math.PI * 0.95);
-    ctx.stroke();
+    ctx.translate(col * cell + cell * 0.5, row * cell + cell * 0.5);
+    ctx.globalAlpha = 0.14;
+
+    if (assets.logo) {
+      const width = cell * 0.62;
+      const height = width * (assets.logo.naturalHeight / assets.logo.naturalWidth);
+      ctx.drawImage(assets.logo, -width / 2, -height / 2, width, height);
+    } else {
+      ctx.fillStyle = '#c6322d';
+      ctx.font = `900 ${cell * 0.18}px Georgia, serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('Boys', 0, 0);
+    }
+
     ctx.restore();
   }
 
@@ -552,7 +563,7 @@
     const cx = rect.x + s * 0.5;
     const cy = rect.y + s * 0.5;
     const pulse = directionPulse > 0 ? 1 + (directionPulse / 120) * 0.08 : 1;
-    const size = s * 1.45 * pulse;
+    const size = s * 1.02 * pulse;
 
     ctx.save();
     ctx.translate(cx, cy);
@@ -647,14 +658,14 @@
 
   function drawLoadingMark() {
     ctx.save();
-    ctx.fillStyle = 'rgba(212, 0, 0, 0.86)';
+    ctx.fillStyle = 'rgba(198, 50, 45, 0.9)';
     roundedRect(ctx, layout.width * 0.28, layout.height * 0.44, layout.width * 0.44, layout.height * 0.12, 18);
     ctx.fill();
     ctx.fillStyle = '#fff';
     ctx.font = `900 ${layout.cell * 0.28}px system-ui, sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('Loading fry', layout.width * 0.5, layout.height * 0.5);
+    ctx.fillText('Loading curls', layout.width * 0.5, layout.height * 0.5);
     ctx.restore();
   }
 
@@ -727,6 +738,12 @@
       x: Math.min(GRID_COLS - 1, Math.max(0, cell.x)),
       y: Math.min(GRID_ROWS - 1, Math.max(0, cell.y))
     };
+  }
+
+  function updateStageArt(points = score) {
+    if (!stageArt) return;
+    const stage = Math.min(STAGE_COUNT, Math.max(1, points + 1));
+    stageArt.src = assetManifest[`stage${stage}`];
   }
 
   function syncScore() {

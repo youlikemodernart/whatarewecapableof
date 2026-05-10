@@ -3,19 +3,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-  <meta name="theme-color" content="#d40000">
-  <meta name="description" content="Eat Beef 'N Cheddars, grow the curly fry, and do not crash into your own tail.">
-  <title>Arby's Boys Snake V2</title>
+  <meta name="theme-color" content="#c6322d">
+  <meta name="description" content="Steer the curly fry, eat Beef 'N Cheddars, and grow curl by curl.">
+  <title>Arby's Boys Snake V3</title>
   <meta name="robots" content="noindex, nofollow">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://whatarewecapableof.com/apps/arbysboys-snake/">
   <meta property="og:title" content="Arby's Boys Snake">
-  <meta property="og:description" content="Eat Beef 'N Cheddars, grow the curly fry, and do not crash into your own tail.">
+  <meta property="og:description" content="Steer the curly fry, eat Beef 'N Cheddars, and grow curl by curl.">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Arby's Boys Snake">
-  <meta name="twitter:description" content="Eat Beef 'N Cheddars, grow the curly fry, and do not crash into your own tail.">
-  <link rel="icon" href="assets/beef-n-cheddar.png">
-  <link rel="preload" as="image" href="assets/snake-head.png">
+  <meta name="twitter:description" content="Steer the curly fry, eat Beef 'N Cheddars, and grow curl by curl.">
+  <link rel="icon" href="assets/favicon.png">
+  <link rel="preload" as="image" href="assets/boys-logo.png">
+  <link rel="preload" as="image" href="assets/curly-head-v3.png">
+  <link rel="preload" as="image" href="assets/curly-stage-1.png">
   <link rel="preload" as="image" href="assets/beef-n-cheddar.png">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -28,8 +30,8 @@
       </div>
 
       <div class="brand-lockup">
-        <p class="eyebrow">Curly Fry Snake</p>
-        <h1 id="game-title">Boys</h1>
+        <h1 id="game-title" class="visually-hidden">Arby's Boys Snake</h1>
+        <img class="brand-logo" src="assets/boys-logo.png" alt="Arby's Boys" width="390" height="368">
       </div>
 
       <div class="score-cluster best" aria-label="Best score">
@@ -45,10 +47,11 @@
 
       <div id="overlay" class="overlay" role="dialog" aria-modal="false" aria-labelledby="overlay-title">
         <div class="overlay-panel">
-          <img class="overlay-snake" src="assets/curly-snake-growth.png" alt="" width="360" height="240">
-          <p id="overlay-kicker" class="overlay-kicker">V2 prototype</p>
-          <h2 id="overlay-title">Eat the Beef 'N Cheddars.</h2>
-          <p id="overlay-copy">Swipe to steer the curly fry. Every sandwich makes it longer. Walls and your own tail end the run.</p>
+          <img class="tutorial-controls" src="assets/movement-controls-v3.svg" alt="" width="640" height="420">
+          <img id="stage-art" class="overlay-snake" src="assets/curly-stage-1.png" alt="" width="812" height="333">
+          <p id="overlay-kicker" class="overlay-kicker">Level 1 curly fry</p>
+          <h2 id="overlay-title">Swipe or tap to steer.</h2>
+          <p id="overlay-copy">Eat sandwiches, add curls, and speed up a little every time.</p>
           <button id="primary-action" class="primary-action" type="button">Tap to Play</button>
         </div>
       </div>
@@ -61,7 +64,7 @@
       <button id="speed-button" type="button" aria-pressed="false">Normal</button>
     </nav>
 
-    <p class="instructions">Swipe on the board, or use arrow keys/WASD. Eat sandwiches. Grow the curly fry. Do not crash.</p>
+    <p class="instructions">Swipe on the board, tap to start, or use arrow keys/WASD. Eat sandwiches. Grow curl by curl.</p>
   </main>
 
   <script src="game.js" defer></script>

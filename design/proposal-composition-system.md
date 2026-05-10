@@ -52,6 +52,8 @@ The proposal pages are allowed to become denser than the public site because the
 
 Size is for role, never rank. Use `--size-m` for body prose, proposal titles, section headings, scope phase titles, scope lists, table body cells, output lines, placeholder descriptions, specimen descriptions, readable diagram text, and text-carrying graphic labels. Use `--size-s` or `--size-xs` only for apparatus: mono labels, metadata, captions, counters, table headers, source notes, tabs, and nav.
 
+The tab guide sentence before the tab bar should bold the tab names with real `<strong>` weight for scannability. This is approved inline wayfinding, not structural hierarchy. Do not set `.proposal-guide strong` back to regular weight.
+
 Do not make a heading larger because it is important. Do not make a list, table, output line, card description, or diagram paragraph smaller because it is subordinate. To create hierarchy, change position, sequence, grouping, spacing, rule placement, or case role.
 
 Text-carrying graphics follow the same contract as the page. Flow diagrams, maps, wireframes, system diagrams, and artifact mockups should be live HTML/CSS by default when they carry readable words. If a bitmap or SVG is used, it must still avoid generic SaaS hierarchy: large bold titles, card stacks, gray secondary text, colored badges, rounded boxes, shadows, and multi-size text ladders.
@@ -396,7 +398,7 @@ Before final images are inserted, create an in-flow placeholder draft when Noah 
 
 Implement final media only after the placeholder draft is approved or the task explicitly asks for implementation. Use reusable classes where possible. Keep page-specific CSS small.
 
-When a proposal visual directly precedes a section heading, suppress the heading rule by default. The visual already resets attention; the rule becomes a second break unless the heading explicitly opts back in with `.section-heading--ruled`. More broadly, rules should group, introduce, or compare content. Do not bracket every artifact by default. See `design/rules-and-dividers.md` before creating new section systems or media-heavy page structures.
+Section headings are plain by default. Add `.section-heading--ruled` only when the rule marks a major argument turn or formal grouping. When a proposal visual directly precedes a section heading, the visual already resets attention; adding a rule usually creates a second break. More broadly, rules should group, introduce, or compare content. Do not bracket every artifact by default. See `design/rules-and-dividers.md` before creating new section systems or media-heavy page structures.
 
 Text-carrying graphics are open by default. Use `.proposal-text-graphic--ruled` only when the graphic needs to read as a formal specimen or comparison plate. Internal lines in flows, maps, and wireframes must encode structure; do not add a top rule to every item as decoration.
 

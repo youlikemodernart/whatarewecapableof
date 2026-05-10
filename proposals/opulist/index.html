@@ -71,6 +71,15 @@
     max-width: 52ch;
   }
 
+  .proposal-guide {
+    font-size: var(--size-m);
+    max-width: 52ch;
+  }
+
+  .proposal-guide strong {
+    font-weight: 700;
+  }
+
   .tabs {
     display: flex;
     gap: var(--space-2);
@@ -99,7 +108,7 @@
     text-decoration: none;
     cursor: pointer;
     color: var(--color-text);
-    opacity: 0.35;
+    opacity: 0.4;
     border: none;
     background: none;
     padding: 0;
@@ -138,8 +147,8 @@
     letter-spacing: var(--tracking-caps);
     margin-top: var(--space-4);
     margin-bottom: var(--space-1);
-    padding-top: var(--space-2);
-    border-top: 1px solid var(--color-text);
+    padding-top: var(--space-1);
+    border-top: 1px solid rgba(0,0,0,0.15);
   }
 
   .section-heading:first-child {
@@ -155,7 +164,7 @@
   }
 
   .finding {
-    margin-bottom: var(--space-2);
+    margin-bottom: var(--space-3);
   }
 
   .finding-label {
@@ -243,11 +252,12 @@
     text-transform: uppercase;
     letter-spacing: var(--tracking-caps);
     opacity: 0.4;
+    margin-bottom: calc(var(--space-0-5) * 0.5);
   }
 
   .scope-phase h3 {
     font-family: var(--font-serif);
-    font-weight: 400;
+    font-weight: 600;
     font-size: var(--size-m);
     margin-bottom: var(--space-0-5);
   }
@@ -318,7 +328,7 @@
 
 <p class="proposal-title" style="margin-top: var(--space-1);">We spent time with Opulist's public infrastructure: the site's source code, the database structure, the blog tags, the sitemap, and what the analytics are already tracking. This is what we found, what the platform contains that most visitors never see, and where the patterns point.</p>
 
-<p style="margin-top: var(--space-1); font-size: var(--size-s); max-width: 52ch;"><strong>Summary</strong> is what we noticed. <strong>Research</strong> is the evidence behind each observation and the methodology that produced it. <strong>Scope</strong> is where we see potential space, and the questions we'd want to explore together.</p>
+<p class="proposal-guide" style="margin-top: var(--space-1);"><strong>Summary</strong> is what we noticed. <strong>Research</strong> is the evidence behind each observation and the methodology that produced it. <strong>Scope</strong> is where we see potential space, and the questions we'd want to explore together.</p>
 
 <nav class="tabs" aria-label="Sections">
   <a class="tab active" href="#summary">Summary</a>
@@ -385,7 +395,7 @@
   <img src="/proposals/opulist/img/op-03-barcecil-palmsprings.webp" alt="Bar Cecil in Palm Springs, view through a window into a warm-lit bar with curated shelving and blue tufted seats." width="1200" height="800" loading="lazy" decoding="async">
 </figure>
 
-<div class="section-heading" style="margin-top: var(--space-3);">What we'd want to learn</div>
+<div class="section-heading">What we'd want to learn</div>
 
 <p>These observations come from the outside. We can see the site's source code, the sitemap, the tag taxonomy, and the public content. We can't see the analytics dashboard, the newsletter subscriber count, the affiliate revenue data, the brand feature pricing, or what the Member Areas configuration is for. The patterns above are specific enough to be useful, and general enough that the real picture could shift once those internal layers are visible.</p>
 

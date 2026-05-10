@@ -4,6 +4,43 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 
 ## Active
 
+### Kaitlyn Wolfe / Substrate Catalog Launch
+
+| | |
+|---|---|
+| URL | [whatarewecapableof.com/proposals/kaitlyn-wolfe/](https://whatarewecapableof.com/proposals/kaitlyn-wolfe/) |
+| Prepared | April 2026 |
+| Status | Proposal email sent to Kaitlyn 2026-04-28 |
+| Relationship | Warm client, Scottsdale/Phoenix interior designer and licensed general contractor |
+| Tabs | Summary / Process / Scope / Packet / ? |
+| Source | Built from the 2026-04-28 Substrate conversation, public Shopify scan, and Noah's recorded reactions |
+
+**Client:** Kaitlyn Wolfe. Her brand includes Kaitlyn Wolfe studio, Substrate tile, Ground Floor furniture and lighting, Shop My Warehouse, and Marble or Dirt/Substack content.
+
+**What we're proposing:** A focused initial Substrate catalog build. The working plan uses Kaitlyn's master sheet as source of truth, reviews pricing and margin before writes, prepares manufacturer and internal imagery, creates Shopify draft products, runs QA, and leaves a source-packet and decision-log structure for future tile additions.
+
+**Commercial direction:** Initial build priced for 15 to 20 hours at $110/hour, or $1,650 to $2,200, assuming the source packet matches expectations. Optional after-launch support is month to month, suggested at 1 to 2 hours per month at the same rate depending on support volume. Larger requests are pre-approved separately at $110/hour or quoted as fixed add-ons.
+
+**History:**
+- 2026-04-28: Two Kaitlyn Wolfe call recordings transcribed and summarized in `~/Projects/consulting/clients/kaitlyn-wolfe/`.
+- 2026-04-28: Public Substrate Shopify scan found 53 products, 161 variants, 216 images, Banjo 3.2.1 theme, Custom Price Calculator/Calconic, GA4, Meta pixel, and Mailchimp web pixel.
+- 2026-04-28: Architecture and internal proposal draft created for a Substrate catalog onboarding system.
+- 2026-04-28: Noah's first recorded reaction transcribed. Commercial direction changed to 15 to 20 hours and a possible 1 to 2 week build window after a complete source packet.
+- 2026-04-28: Local WAWCO proposal/checklist page created at `~/Projects/whatarewecapableof/proposals/kaitlyn-wolfe/index.html`. Email draft created at `~/Projects/consulting/clients/kaitlyn-wolfe/proposal/email-plus-wawco-checklist-draft.md`.
+- 2026-04-28: Production deployed by Vercel CLI. Live route: `https://whatarewecapableof.com/proposals/kaitlyn-wolfe/`. Deployment alias: `https://whatarewecapableof-alxp69dzh-noahs-projects-591c66d2.vercel.app`.
+- 2026-04-28: Noah's second recorded reaction transcribed. Commercial direction corrected: 15 to 20 hours is the likely total initial build, not a scoping sprint. New email draft created at `~/Projects/consulting/clients/kaitlyn-wolfe/proposal/email-combined-first-build-draft.md`. Live proposal revised and redeployed. Deployment alias: `https://whatarewecapableof-e7ezg8kmc-noahs-projects-591c66d2.vercel.app`.
+- 2026-04-28: Tab label changed from Architecture to Process to prevent mobile tab side scroll. Guide tab names restored to visible bold. The ? tab keeps "What are we capable of?" and "Let's find out." but removes Book a call because this outreach does not go through the booking system. Copy deployment alias: `https://whatarewecapableof-rd0svxlkp-noahs-projects-591c66d2.vercel.app`.
+- 2026-04-28: Noah reported that the proposal email was sent to Kaitlyn and included the live site link. Tracker/status was redeployed after the send-state update, but future status-only context updates should not trigger another deployment unless Noah asks.
+- 2026-05-02: Live proposal checked against local context for scoping and implementation language. Current live commercial structure is combined first build at 15 to 20 hours, optional after-launch support at 1 to 2 hours per month, and no separate scoping-sprint framing.
+
+**Open questions:** Who Kaitlyn names as day-to-day team contact, Shopify access, master sheet structure, updated supplier costs, margin rules, manufacturer image-use rule, buyer path, calculator behavior, and launch timing.
+
+**Next:** Wait for Kaitlyn's reply and source packet. Use `email-combined-first-build-draft.md` as the sent-draft reference unless Noah later provides a final edited send copy.
+
+**Deep docs:** `~/Projects/consulting/clients/kaitlyn-wolfe/status.md`, project memory at `project_kaitlyn_wolfe.md`, local page at `~/Projects/whatarewecapableof/proposals/kaitlyn-wolfe/index.html`
+
+---
+
 ### Sales School Portal
 
 | | |
@@ -172,7 +209,7 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 
 **Heidi context:** Heidi Glynn brought Food for the Hungry experience. Main addition: nonprofit teams can agree with consultant strategy and still fail to execute because they lack capacity, confidence, internal authority, or production muscle. Follow-up should emphasize proof of execution. Key strategic question: is Compassion Causes primarily a partner-church fundraising tool or a Gen Z donor acquisition engine?
 
-**Next:** Work through the DR trip proof-of-concept path with Austin. Questions: can Noah attend if self-funded, would Compassion permit content capture, what are the restrictions and ownership terms, who is the target decision-maker, and does the June budget cycle still create urgency? Content deep-dives remain deferred until the team shows interest.
+**Next:** Noah is asking Alden Sia who to reach out to. After Alden's recommendations, work through the DR trip proof-of-concept path with Austin. Questions: can Noah attend if self-funded, would Compassion permit content capture, what are the restrictions and ownership terms, who is the target decision-maker, and does the June budget cycle still create urgency? Content deep-dives remain deferred until the team shows interest.
 
 **Deep docs:** `~/Projects/consulting/clients/compassion/`, memory at `project_compassion.md`, handoff at `~/Projects/consulting/clients/compassion/next-move-handoff-2026-04-27.md`
 
@@ -245,9 +282,9 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 
 ## Pipeline context
 
-**Template:** `proposals/_template/index.html` defines the structural pattern: sticky header, meta line, title, tab guide, four tabs (customizable names), findings/stat-row/table/scope-phase components, ? tab CTA. As of 2026-04-24, the template and all active proposal pages use the stable tab scroll handler: on tab click, scroll the selected panel to the top under the sticky header and tab bar. Do not restore the old `.tabs.offsetTop - 10` smooth-scroll pattern; it caused viewport drift on repeated mobile tab switching.
+**Template:** `proposals/_template/index.html` defines the structural pattern: sticky header, meta line, title, tab guide, four tabs (customizable names), findings/stat-row/table/scope-phase components, ? tab CTA. As of 2026-04-24, the template and all active proposal pages use the stable tab scroll handler: on tab click, scroll the selected panel to the top under the sticky header and tab bar. Do not restore the old `.tabs.offsetTop - 10` smooth-scroll pattern; it caused viewport drift on repeated mobile tab switching. As of 2026-04-28, the template uses full-bleed tabs with direct `border-bottom`, plain section headings by default with `.section-heading--ruled` opt-in, and `52ch` body prose inside a wider artifact column. Tab names in the guide sentence must be actual bold `<strong>` text for scannability; do not override `.proposal-guide strong` to regular weight. Audit note: `docs/proposal-template-audit-2026-04-28.md`.
 
-**Composition system:** `design/proposal-composition-system.md` and `docs/proposal-composition-partner.md` govern visual rhythm for text-heavy proposals. Type-size audit: `design/audit-report-2026-04-26-type-hierarchy.md`. Default sequence: make the proposal first, then run a visual composition pass. The system maps the finished or near-finished proposal as an argument, identifies proof, atmosphere, and fatigue points, then creates an in-flow placeholder draft before final media insertion. Exception: creative-led proposals, such as Compassion, can let visuals shape the proposal from the beginning when specimens, feed direction, or media examples are central to the offer. Default to a single body-width image or simple video unless Noah asks for a more complex layout or the argument clearly needs one. `css/proposal-media.css` contains optional primitives for evidence plates, diptychs, specimen grids, process strips, timelines, diagrams, text graphics, maps, wireframes, excerpts, stat fields, and video plates. Use these to avoid page-specific visual inventions unless the content requires a new move. Rule-density invariant: horizontal rules should mark major argument turns, formal grouping, or real comparison structure; text graphics are open by default and ruled variants opt in. Use `.section-heading--plain` for local labels that do not need a ruled break. Type-size invariant: size is for role, never rank; body-like proposal content stays `--size-m`. Run `npm run check:type-hierarchy` before handoff when proposal files, proposal media CSS, or text-carrying graphics change.
+**Composition system:** `design/proposal-composition-system.md` and `docs/proposal-composition-partner.md` govern visual rhythm for text-heavy proposals. Type-size audit: `design/audit-report-2026-04-26-type-hierarchy.md`. Default sequence: make the proposal first, then run a visual composition pass. The system maps the finished or near-finished proposal as an argument, identifies proof, atmosphere, and fatigue points, then creates an in-flow placeholder draft before final media insertion. Exception: creative-led proposals, such as Compassion, can let visuals shape the proposal from the beginning when specimens, feed direction, or media examples are central to the offer. Default to a single body-width image or simple video unless Noah asks for a more complex layout or the argument clearly needs one. `css/proposal-media.css` contains optional primitives for evidence plates, diptychs, specimen grids, process strips, timelines, diagrams, text graphics, maps, wireframes, excerpts, stat fields, and video plates. Use these to avoid page-specific visual inventions unless the content requires a new move. Rule-density invariant: horizontal rules should mark major argument turns, formal grouping, or real comparison structure; text graphics are open by default and ruled variants opt in. Default `.section-heading` is plain. Use `.section-heading--ruled` only when a ruled break has a structural job. Type-size invariant: size is for role, never rank; body-like proposal content stays `--size-m`. Run `npm run check:type-hierarchy` before handoff when proposal files, proposal media CSS, or text-carrying graphics change.
 
 **Tim referral channel:** Austin's brother Tim served 4 clients in the past year. Plan is to run all 4 through the pipeline, show Tim the output, get buy-in, then Tim refers or sells on behalf. Clients identified so far: Teaspressa, Five Points Strategies.
 

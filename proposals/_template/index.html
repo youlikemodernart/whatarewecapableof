@@ -22,9 +22,11 @@
     overflow-x: clip;
   }
 
-  /* Type-size invariant: use size for role, never rank. Body-like proposal
-     content stays at --size-m; small sizes are only for labels, metadata,
-     captions, counters, table headers, nav, and tabs. */
+  /* Type-size invariant: size indicates role (body vs label), never rank.
+     Body content stays at --size-m; small sizes for labels, metadata, tabs.
+     Hierarchy tools: weight (600 for h3), opacity (0.4 for labels/meta),
+     spacing (space-3/space-4 between blocks/sections), and light rules
+     (rgba 0,0,0,0.15) above section headings. */
 
   .page-proposal {
     --proposal-header-height: calc(var(--space-1) + var(--space-0-5));
@@ -67,7 +69,8 @@
     opacity: 0.4;
   }
 
-  .proposal-title {
+  .proposal-title,
+  .proposal-guide {
     font-family: var(--font-serif);
     font-weight: 400;
     font-size: var(--size-m);
@@ -75,24 +78,37 @@
     max-width: 52ch;
   }
 
+  .proposal-guide strong {
+    font-weight: 700;
+  }
+
+  .tab-content > p,
+  .finding p,
+  .scope-phase p,
+  .closing p {
+    max-width: 52ch;
+  }
+
   .tabs {
     display: flex;
     gap: var(--space-2);
-    padding: var(--space-0-5) 0;
+    min-height: var(--space-2);
+    align-items: center;
     position: sticky;
     top: var(--proposal-header-height);
     background: var(--color-bg);
     z-index: 15;
+    margin-inline: calc(-1 * var(--margin-inline));
+    padding-inline: var(--margin-inline);
+    width: 100vw;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--color-text);
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 
-  .tabs::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: calc(-1 * var(--margin-inline));
-    width: 100vw;
-    height: 1px;
-    background: var(--color-text);
+  .tabs::-webkit-scrollbar {
+    display: none;
   }
 
   .tab {
@@ -103,7 +119,7 @@
     text-decoration: none;
     cursor: pointer;
     color: var(--color-text);
-    opacity: 0.35;
+    opacity: 0.4;
     border: none;
     background: none;
     padding: 0;
@@ -142,8 +158,8 @@
     letter-spacing: var(--tracking-caps);
     margin-top: var(--space-4);
     margin-bottom: var(--space-1);
-    padding-top: var(--space-2);
-    border-top: 1px solid var(--color-text);
+    padding-top: var(--space-1);
+    border-top: 1px solid rgba(0,0,0,0.15);
   }
 
   .section-heading:first-child {
@@ -152,14 +168,14 @@
     border-top: none;
   }
 
-  .section-heading.section-heading--plain {
-    border-top: none;
-    padding-top: 0;
-    margin-top: var(--space-3);
+  .section-heading.section-heading--ruled {
+    margin-top: var(--space-4);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-text);
   }
 
   .finding {
-    margin-bottom: var(--space-2);
+    margin-bottom: var(--space-3);
   }
 
   .finding-label {
@@ -251,7 +267,7 @@
 
   .scope-phase h3 {
     font-family: var(--font-serif);
-    font-weight: 400;
+    font-weight: 600;
     font-size: var(--size-m);
     margin-bottom: var(--space-0-5);
   }
@@ -325,8 +341,8 @@
 <!-- INTRO: what we looked at, what this document is -->
 <p class="proposal-title" style="margin-top: var(--space-1);"><!-- 2-3 sentences: what we examined, what this contains, what we'd want to learn more about --></p>
 
-<!-- TAB GUIDE: bold tab names for scannability -->
-<p style="margin-top: var(--space-1); font-size: var(--size-s); max-width: 52ch;"><strong>Summary</strong> is what we noticed. <strong>Research</strong> is the evidence behind each observation and the methodology that produced it. <strong>Scope</strong> is where we see potential space, and the questions we'd want to explore together.</p>
+<!-- TAB GUIDE: bold tab names for scannability. Keep <strong> visible; do not reset proposal-guide strong to regular weight. -->
+<p class="proposal-guide"><strong>Summary</strong> is what we noticed. <strong>Research</strong> is the evidence behind each observation and the methodology that produced it. <strong>Scope</strong> is where we see potential space, and the questions we'd want to explore together.</p>
 
 <nav class="tabs" aria-label="Sections">
   <a class="tab active" href="#summary">Summary</a>
@@ -366,7 +382,7 @@
 <!-- Concrete observations about strengths. No validation language. -->
 <p><!-- Specific things the business does well, with evidence --></p>
 
-<div class="section-heading" style="margin-top: var(--space-3);">What we'd want to learn</div>
+<div class="section-heading">What we'd want to learn</div>
 
 <!-- BRIDGE: name the limits of outside observation, frame a conversation as the next step -->
 <p><!-- What we can see vs. what we can't. What internal data would sharpen the picture. --></p>

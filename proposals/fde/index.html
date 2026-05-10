@@ -101,7 +101,7 @@
     text-decoration: none;
     cursor: pointer;
     color: var(--color-text);
-    opacity: 0.35;
+    opacity: 0.4;
     border: none;
     background: none;
     padding: 0;
@@ -140,8 +140,8 @@
     letter-spacing: var(--tracking-caps);
     margin-top: var(--space-4);
     margin-bottom: var(--space-1);
-    padding-top: var(--space-2);
-    border-top: 1px solid var(--color-text);
+    padding-top: var(--space-1);
+    border-top: 1px solid rgba(0,0,0,0.15);
   }
 
   .section-heading:first-child {
@@ -152,7 +152,7 @@
 
 
   .finding {
-    margin-bottom: var(--space-2);
+    margin-bottom: var(--space-3);
   }
 
   .finding-label {
@@ -233,11 +233,12 @@
     text-transform: uppercase;
     letter-spacing: var(--tracking-caps);
     opacity: 0.4;
+    margin-bottom: calc(var(--space-0-5) * 0.5);
   }
 
   .scope-phase h3 {
     font-family: var(--font-serif);
-    font-weight: 400;
+    font-weight: 600;
     font-size: var(--size-m);
     margin-bottom: var(--space-0-5);
   }
@@ -278,8 +279,12 @@
 
   .proposal-guide {
     margin-top: var(--space-1);
-    font-size: var(--size-s);
+    font-size: var(--size-m);
     max-width: 52ch;
+  }
+
+  .proposal-guide strong {
+    font-weight: 700;
   }
 
   .mt-1 {
@@ -428,7 +433,7 @@
   <img src="/proposals/fde/img/fde-03-birds.jpg" alt="Birds flying in formation across a sunset sky" width="1043" height="710">
 </div>
 
-<h2 class="section-heading mt-3">What we would want to confirm</h2>
+<h2 class="section-heading">What we would want to confirm</h2>
 
 <p>The plan depends on the first 5 campuses having the right conditions: a credible student director, a local church partner, at least one entrepreneur mentor, and enough institutional openness to gather weekly. A conversation would identify the first campuses, define the student director profile, and set the reporting cadence FDE leadership wants.</p>
 

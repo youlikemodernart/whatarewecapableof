@@ -75,6 +75,15 @@
     max-width: 52ch;
   }
 
+  .proposal-guide {
+    font-size: var(--size-m);
+    max-width: 52ch;
+  }
+
+  .proposal-guide strong {
+    font-weight: 700;
+  }
+
   .tabs {
     display: flex;
     gap: var(--space-2);
@@ -103,7 +112,7 @@
     text-decoration: none;
     cursor: pointer;
     color: var(--color-text);
-    opacity: 0.35;
+    opacity: 0.4;
     border: none;
     background: none;
     padding: 0;
@@ -142,8 +151,8 @@
     letter-spacing: var(--tracking-caps);
     margin-top: var(--space-4);
     margin-bottom: var(--space-1);
-    padding-top: var(--space-2);
-    border-top: 1px solid var(--color-text);
+    padding-top: var(--space-1);
+    border-top: 1px solid rgba(0,0,0,0.15);
   }
 
   .section-heading:first-child {
@@ -153,7 +162,7 @@
   }
 
   .finding {
-    margin-bottom: var(--space-2);
+    margin-bottom: var(--space-3);
   }
 
   .finding-label {
@@ -241,11 +250,12 @@
     text-transform: uppercase;
     letter-spacing: var(--tracking-caps);
     opacity: 0.4;
+    margin-bottom: calc(var(--space-0-5) * 0.5);
   }
 
   .scope-phase h3 {
     font-family: var(--font-serif);
-    font-weight: 400;
+    font-weight: 600;
     font-size: var(--size-m);
     margin-bottom: var(--space-0-5);
   }
@@ -437,7 +447,7 @@
 
 <p class="proposal-title" style="margin-top: var(--space-1);">Compassion International is the 11th-largest charity in the United States. Compassion Causes is their effort to reach the next generation. The sub-brand has the raw material: 27 countries of church partnerships, a parent brand with 258K followers and 950K email subscribers, and a platform that works. What it lacks is a connection to that distribution, a visual identity, and an editorial direction. A content strategy that addresses all three can reach the team's $1M fundraising goal.</p>
 
-<p style="margin-top: var(--space-1); font-size: var(--size-s); max-width: 52ch;"><strong>Research</strong> is what we observed. <strong>Content</strong> is the strategy and the specific ideas. <strong>Proposal</strong> is how we'd work together and what each tier looks like.</p>
+<p class="proposal-guide" style="margin-top: var(--space-1);"><strong>Research</strong> is what we observed. <strong>Content</strong> is the strategy and the specific ideas. <strong>Proposal</strong> is how we'd work together and what each tier looks like.</p>
 
 <nav class="tabs" aria-label="Sections">
   <a class="tab active" href="#research">Research</a>
@@ -602,7 +612,7 @@
 
 </div>
 
-<div class="section-heading" style="margin-top: var(--space-2); border-top: none; padding-top: 0;">Visual identity</div>
+<div class="section-heading">Visual identity</div>
 
 <p>The proposed direction:</p>
 

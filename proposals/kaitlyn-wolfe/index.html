@@ -66,7 +66,7 @@
     text-transform: uppercase;
     letter-spacing: var(--tracking-caps);
     color: var(--color-text);
-    opacity: 0.62;
+    opacity: 0.4;
   }
 
   .proposal-title {
@@ -124,7 +124,7 @@
     text-decoration: none;
     cursor: pointer;
     color: var(--color-text);
-    opacity: 0.62;
+    opacity: 0.4;
     border: none;
     background: none;
     padding: 0;
@@ -132,7 +132,7 @@
     transition: opacity var(--transition-default);
   }
 
-  .tab:hover { text-decoration: none; opacity: 0.8; }
+  .tab:hover { text-decoration: none; opacity: 0.7; }
   .tab.active { opacity: 1; }
 
   .tab-content {
@@ -162,15 +162,17 @@
     font-size: var(--size-s);
     text-transform: uppercase;
     letter-spacing: var(--tracking-caps);
-    margin-top: var(--space-3);
+    margin-top: var(--space-4);
     margin-bottom: var(--space-1);
-    padding-top: 0;
-    border-top: none;
+    padding-top: var(--space-1);
+    border-top: 1px solid rgba(0,0,0,0.15);
     font-weight: 400;
   }
 
   .section-heading:first-child {
     margin-top: 0;
+    padding-top: 0;
+    border-top: none;
   }
 
   .section-heading.section-heading--ruled {
@@ -181,7 +183,7 @@
 
   .finding,
   .scope-phase {
-    margin-bottom: var(--space-2);
+    margin-bottom: var(--space-3);
   }
 
   .finding-label,
@@ -190,8 +192,8 @@
     font-size: var(--size-xs);
     text-transform: uppercase;
     letter-spacing: var(--tracking-caps);
-    opacity: 0.62;
-    margin-bottom: var(--space-0-5);
+    opacity: 0.4;
+    margin-bottom: calc(var(--space-0-5) * 0.5);
   }
 
   .finding p:last-child,
@@ -257,7 +259,7 @@
 
   .scope-phase h3 {
     font-family: var(--font-serif);
-    font-weight: 400;
+    font-weight: 600;
     font-size: var(--size-m);
     margin-bottom: var(--space-0-5);
   }
@@ -557,7 +559,7 @@
     </tr>
     <tr>
       <td>Suggested range</td>
-      <td>$350 to $500/month, depending on the support volume the team wants covered.</td>
+      <td>1 to 2 hours per month at the same rate, depending on volume.</td>
     </tr>
     <tr>
       <td>Larger requests</td>

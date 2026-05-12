@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#ffffff">
+<title>Sitemap | What are we capable of?</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/typography.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<style>
+  html {
+    overflow-x: clip;
+  }
+
+  body.page-sitemap {
+    width: 100%;
+    max-width: 100vw;
+    min-height: 100svh;
+    overflow-x: hidden;
+    padding: 0 var(--margin-inline) var(--margin-block);
+  }
+
+  .sitemap-header {
+    min-height: calc(var(--space-1) + var(--space-0-5));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-1);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--color-bg);
+    margin-inline: calc(-1 * var(--margin-inline));
+    padding-inline: var(--margin-inline);
+  }
+
+  .sitemap-home {
+    color: inherit;
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+
+  .sitemap-session {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+  }
+
+  .sitemap-session button,
+  .text-button {
+    color: inherit;
+    font: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .sitemap-session button:hover,
+  .text-button:hover {
+    color: var(--color-accent);
+  }
+
+  .sitemap-login {
+    max-width: var(--content-width-narrow);
+    padding-top: var(--space-4);
+  }
+
+  .sitemap-login h1,
+  .sitemap-title {
+    font-family: var(--font-serif);
+    font-size: var(--size-m);
+    font-weight: 400;
+    line-height: var(--line-height);
+    margin: 0;
+  }
+
+  .sitemap-title:focus {
+    outline: none;
+  }
+
+  .sitemap-login p,
+  .sitemap-intro {
+    max-width: calc(100vw - var(--margin-inline) - var(--margin-inline));
+    margin-top: var(--space-1);
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .sitemap-form {
+    margin-top: var(--space-2);
+  }
+
+  .sitemap-form label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    margin-bottom: var(--space-0-5);
+  }
+
+  .sitemap-form input {
+    display: block;
+    width: 100%;
+    min-height: var(--space-2);
+    border: 0;
+    border-bottom: 1px solid var(--color-text);
+    border-radius: 0;
+    background: transparent;
+    color: var(--color-text);
+    font: var(--size-m) / var(--line-height) var(--font-serif);
+  }
+
+  .sitemap-form input:focus-visible,
+  .text-button:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+  }
+
+  .sitemap-form button {
+    margin-top: var(--space-1);
+  }
+
+  .sitemap-error,
+  .sitemap-message {
+    margin-top: var(--space-1);
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+  }
+
+  .sitemap-error {
+    color: var(--color-accent);
+  }
+
+  .sitemap-app {
+    width: 100%;
+    max-width: calc(100vw - var(--margin-inline) - var(--margin-inline));
+    padding-top: var(--space-2);
+  }
+
+  .sitemap-topline {
+    width: min(var(--content-width-prose), 100%);
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .sitemap-meta {
+    margin-top: var(--space-1);
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    line-height: var(--line-height);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    max-width: calc(100vw - var(--margin-inline) - var(--margin-inline));
+    opacity: 0.45;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .sitemap-section-heading {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    font-weight: 400;
+    margin: var(--space-3) 0 var(--space-1);
+    opacity: 0.4;
+  }
+
+  .sitemap-svg-wrap {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin-top: var(--space-1);
+    overflow-x: auto;
+    border-top: 1px solid rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    padding: var(--space-2) 0;
+  }
+
+  .sitemap-svg {
+    display: block;
+    height: auto;
+  }
+
+  .sitemap-svg .node {
+    stroke: var(--color-accent);
+    stroke-width: 1;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .sitemap-svg .node--protected {
+    fill: var(--color-accent);
+    fill-opacity: 0.18;
+  }
+
+  .sitemap-svg .connector {
+    stroke: var(--color-accent);
+    stroke-width: 1;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .sitemap-svg .label-path {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    fill: var(--color-text);
+  }
+
+  .sitemap-svg .label-note {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-text);
+    opacity: 0.4;
+  }
+
+  .sitemap-outline {
+    margin-top: var(--space-1);
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+  }
+
+  .sitemap-outline ul {
+    list-style: none;
+    padding-left: var(--space-1);
+    margin: 0;
+  }
+
+  .sitemap-outline > ul {
+    padding-left: 0;
+  }
+
+  .sitemap-outline li {
+    padding: 2px 0;
+  }
+
+  .sitemap-outline .outline-path {
+    color: var(--color-text);
+  }
+
+  .sitemap-outline .outline-note {
+    opacity: 0.4;
+    margin-left: var(--space-0-5);
+  }
+
+  .sitemap-outline .outline-protected {
+    color: var(--color-accent);
+  }
+
+  .sitemap-exclusions {
+    margin-top: var(--space-1);
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    list-style: none;
+    padding: 0;
+  }
+
+  .sitemap-exclusions li {
+    padding: 2px 0;
+  }
+
+  .sitemap-exclusions .pattern {
+    color: var(--color-text);
+  }
+
+  .sitemap-exclusions .reason {
+    opacity: 0.4;
+    margin-left: var(--space-0-5);
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+
+  @media (max-width: 767px) {
+    :root {
+      --margin-inline: var(--space-1);
+    }
+
+    .sitemap-header {
+      align-items: flex-start;
+      flex-direction: column;
+      justify-content: center;
+      padding-block: var(--space-0-5);
+    }
+  }
+</style>
+</head>
+<body class="page-sitemap">
+<header class="sitemap-header">
+  <a class="sitemap-home" href="/">What are we capable of?</a>
+  <div class="sitemap-session" id="sessionActions" hidden>
+    <button type="button" id="logoutButton">Log out</button>
+  </div>
+</header>
+
+<main>
+  <div class="sitemap-login" id="loginView">
+    <h1>Sitemap</h1>
+    <p>This page is private. Enter the tracker password to view the route tree for whatarewecapableof.com.</p>
+    <form class="sitemap-form" id="loginForm">
+      <label for="sitemapPassword">Password</label>
+      <input id="sitemapPassword" name="password" type="password" autocomplete="current-password" required>
+      <button class="text-button" type="submit">Enter sitemap</button>
+    </form>
+    <p class="sitemap-error" id="loginError" role="alert" hidden></p>
+  </div>
+
+  <div class="sitemap-app" id="sitemapApp" hidden>
+    <div class="sitemap-topline">
+      <h1 class="sitemap-title" id="sitemapTitle" tabindex="-1">Sitemap</h1>
+      <p class="sitemap-intro">Pages and branch groups.<br>Blue ovals mark protected routes.<br>Inline notes describe each node.</p>
+      <p class="sitemap-meta" id="sitemapMeta"></p>
+    </div>
+
+    <h2 class="sitemap-section-heading">Tree</h2>
+    <div class="sitemap-svg-wrap" id="svgWrap"></div>
+
+    <h2 class="sitemap-section-heading">Outline</h2>
+    <div class="sitemap-outline" id="outlineWrap"></div>
+
+    <h2 class="sitemap-section-heading">Exclusions</h2>
+    <ul class="sitemap-exclusions" id="exclusionsWrap"></ul>
+  </div>
+</main>
+
+<script>
+(function() {
+  var state = { data: null };
+
+  var els = {
+    loginView: document.getElementById('loginView'),
+    loginForm: document.getElementById('loginForm'),
+    loginError: document.getElementById('loginError'),
+    password: document.getElementById('sitemapPassword'),
+    sitemapApp: document.getElementById('sitemapApp'),
+    sessionActions: document.getElementById('sessionActions'),
+    logoutButton: document.getElementById('logoutButton'),
+    sitemapMeta: document.getElementById('sitemapMeta'),
+    svgWrap: document.getElementById('svgWrap'),
+    outlineWrap: document.getElementById('outlineWrap'),
+    exclusionsWrap: document.getElementById('exclusionsWrap')
+  };
+
+  function escapeHtml(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  function showLogin(message) {
+    els.loginView.hidden = false;
+    els.sitemapApp.hidden = true;
+    els.sessionActions.hidden = true;
+    if (message) {
+      els.loginError.textContent = message;
+      els.loginError.hidden = false;
+    }
+  }
+
+  function showApp() {
+    els.loginView.hidden = true;
+    els.sitemapApp.hidden = false;
+    els.sessionActions.hidden = false;
+    els.loginError.hidden = true;
+    document.getElementById('sitemapTitle').focus({ preventScroll: true });
+  }
+
+  async function loadSitemap() {
+    try {
+      var response = await fetch('/api/sitemap-data', {
+        credentials: 'same-origin',
+        cache: 'no-store'
+      });
+
+      if (response.status === 401) {
+        showLogin();
+        return;
+      }
+
+      var payload = await response.json().catch(function() { return {}; });
+      if (!response.ok) {
+        showLogin(payload.error || 'Could not load sitemap.');
+        return;
+      }
+
+      state.data = payload;
+      showApp();
+      render();
+    } catch (err) {
+      showLogin('Could not reach sitemap data.');
+    }
+  }
+
+  function buildTree(data) {
+    var nodes = {};
+    (data.nodes || []).forEach(function(node) { nodes[node.path] = node; });
+
+    var childMap = {};
+    (data.relations || []).filter(function(r) { return r.verb === 'contains'; }).forEach(function(r) {
+      childMap[r.from] = childMap[r.from] || [];
+      childMap[r.from].push(r.to);
+    });
+
+    var protectedPaths = {};
+    (data.relations || []).filter(function(r) { return r.verb === 'protects'; }).forEach(function(r) {
+      protectedPaths[r.to] = true;
+    });
+
+    return { nodes: nodes, childMap: childMap, protectedPaths: protectedPaths };
+  }
+
+  function flattenTree(tree, rootPath) {
+    var rows = [];
+    function visit(path, depth) {
+      var node = tree.nodes[path];
+      if (!node) return;
+      rows.push({ path: path, node: node, depth: depth, isProtected: !!tree.protectedPaths[path] });
+      (tree.childMap[path] || []).forEach(function(child) { visit(child, depth + 1); });
+    }
+    visit(rootPath, 0);
+    return rows;
+  }
+
+  function wobble(seed, range) {
+    var x = Math.sin((seed + 1) * 12.9898) * 43758.5453;
+    var frac = x - Math.floor(x);
+    return frac * range - range / 2;
+  }
+
+  function renderSvg(tree) {
+    var rows = flattenTree(tree, '/');
+    var ROW_HEIGHT = 34;
+    var INDENT = 32;
+    var PADDING_X = 28;
+    var PADDING_Y = 28;
+    var RX_BASE = 11;
+    var RY_BASE = 7;
+    var PATH_CHAR_PX = 8;
+    var NOTE_CHAR_PX = 7;
+    var NOTE_GAP_PX = 14;
+
+    var totalWidth = 0;
+    rows.forEach(function(r) {
+      var labelStart = PADDING_X + r.depth * INDENT + RX_BASE + 12;
+      var pathWidth = r.path.length * PATH_CHAR_PX;
+      var noteWidth = (r.node && r.node.note) ? NOTE_GAP_PX + r.node.note.length * NOTE_CHAR_PX : 0;
+      var rowWidth = labelStart + pathWidth + noteWidth + PADDING_X;
+      if (rowWidth > totalWidth) totalWidth = rowWidth;
+    });
+    var totalHeight = rows.length * ROW_HEIGHT + PADDING_Y * 2;
+
+    var rowIndex = {};
+    rows.forEach(function(r, i) { rowIndex[r.path] = i; });
+
+    var parts = [];
+    parts.push('<svg class="sitemap-svg" viewBox="0 0 ' + totalWidth + ' ' + totalHeight + '" width="' + totalWidth + '" height="' + totalHeight + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="sitemap-svg-title sitemap-svg-desc">');
+    parts.push('<title id="sitemap-svg-title">Sitemap tree for whatarewecapableof.com</title>');
+    parts.push('<desc id="sitemap-svg-desc">Indented diagram of the route hierarchy. The same hierarchy is provided as a text outline below this diagram.</desc>');
+
+    rows.forEach(function(parentRow, parentI) {
+      var children = tree.childMap[parentRow.path] || [];
+      if (!children.length) return;
+      var parentX = PADDING_X + parentRow.depth * INDENT;
+      var parentY = PADDING_Y + parentI * ROW_HEIGHT;
+      var lastChildI = rowIndex[children[children.length - 1]];
+      var spineEndY = PADDING_Y + lastChildI * ROW_HEIGHT;
+      parts.push('<path class="connector" d="M ' + parentX + ' ' + (parentY + RY_BASE + 2) + ' L ' + parentX + ' ' + spineEndY + '" />');
+
+      children.forEach(function(childPath) {
+        var childI = rowIndex[childPath];
+        var childRow = rows[childI];
+        var childX = PADDING_X + childRow.depth * INDENT;
+        var childY = PADDING_Y + childI * ROW_HEIGHT;
+        var stubEndX = childX - RX_BASE - 2;
+        if (stubEndX < parentX) stubEndX = parentX;
+        parts.push('<path class="connector" d="M ' + parentX + ' ' + childY + ' L ' + stubEndX + ' ' + childY + '" />');
+      });
+    });
+
+    rows.forEach(function(row, i) {
+      var x = PADDING_X + row.depth * INDENT;
+      var y = PADDING_Y + i * ROW_HEIGHT;
+      var rx = RX_BASE + wobble(i, 2);
+      var ry = RY_BASE + wobble(i + 17, 1.6);
+      var rot = wobble(i + 41, 8);
+      var nodeClass = 'node' + (row.isProtected ? ' node--protected' : '');
+      parts.push('<ellipse class="' + nodeClass + '" cx="' + x + '" cy="' + y + '" rx="' + rx.toFixed(2) + '" ry="' + ry.toFixed(2) + '" transform="rotate(' + rot.toFixed(2) + ' ' + x + ' ' + y + ')" />');
+
+      var labelX = x + RX_BASE + 12;
+      var labelY = y + 4;
+      var noteX = labelX + row.path.length * PATH_CHAR_PX + NOTE_GAP_PX;
+      parts.push('<text x="' + labelX + '" y="' + labelY + '" class="label-path">' + escapeHtml(row.path) + '</text>');
+      if (row.node && row.node.note) {
+        parts.push('<text x="' + noteX + '" y="' + labelY + '" class="label-note">' + escapeHtml(row.node.note) + '</text>');
+      }
+    });
+
+    parts.push('</svg>');
+    return parts.join('');
+  }
+
+  function renderOutlineNode(tree, path) {
+    var node = tree.nodes[path];
+    var isProtected = !!tree.protectedPaths[path];
+    var pathClass = 'outline-path' + (isProtected ? ' outline-protected' : '');
+    var children = tree.childMap[path] || [];
+    var inner = '';
+    if (children.length) {
+      inner = '<ul>' + children.map(function(child) { return renderOutlineNode(tree, child); }).join('') + '</ul>';
+    }
+    return '<li>'
+      + '<span class="' + pathClass + '">' + escapeHtml(path) + '</span>'
+      + (node && node.note ? '<span class="outline-note">' + escapeHtml(node.note) + '</span>' : '')
+      + inner
+      + '</li>';
+  }
+
+  function renderOutline(tree) {
+    return '<ul>' + renderOutlineNode(tree, '/') + '</ul>';
+  }
+
+  function renderExclusions(data) {
+    var exclusions = data.exclusions || [];
+    return exclusions.map(function(item) {
+      return '<li><span class="pattern">' + escapeHtml(item.pattern) + '</span><span class="reason">' + escapeHtml(item.reason) + '</span></li>';
+    }).join('');
+  }
+
+  function render() {
+    if (!state.data) return;
+    var data = state.data;
+    var tree = buildTree(data);
+    var count = data.count || (data.nodes ? data.nodes.length : 0);
+    var pageCount = data.pageCount || count;
+    els.sitemapMeta.textContent = pageCount + ' pages / ' + count + ' tree nodes';
+    els.svgWrap.innerHTML = renderSvg(tree);
+    els.outlineWrap.innerHTML = renderOutline(tree);
+    els.exclusionsWrap.innerHTML = renderExclusions(data);
+  }
+
+  els.loginForm.addEventListener('submit', async function(event) {
+    event.preventDefault();
+    els.loginError.hidden = true;
+
+    try {
+      var response = await fetch('/api/tracker-login', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: els.password.value })
+      });
+      var payload = await response.json().catch(function() { return {}; });
+
+      if (!response.ok) {
+        showLogin(payload.error || 'Incorrect password.');
+        return;
+      }
+
+      els.password.value = '';
+      await loadSitemap();
+    } catch (err) {
+      showLogin('Could not submit password.');
+    }
+  });
+
+  els.logoutButton.addEventListener('click', async function() {
+    await fetch('/api/tracker-logout', {
+      method: 'POST',
+      credentials: 'same-origin'
+    }).catch(function() {});
+    state.data = null;
+    showLogin();
+  });
+
+  loadSitemap();
+})();
+</script>
+</body>
+</html>

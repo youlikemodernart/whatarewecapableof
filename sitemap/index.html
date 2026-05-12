@@ -209,6 +209,19 @@
     fill-opacity: 0.18;
   }
 
+  .sitemap-svg .node-link {
+    cursor: pointer;
+  }
+
+  .sitemap-svg .node-link:hover .node,
+  .sitemap-svg .node-link:focus-visible .node {
+    stroke-width: 2;
+  }
+
+  .sitemap-svg .node-link:focus-visible {
+    outline: none;
+  }
+
   .sitemap-svg .connector {
     stroke: var(--color-accent);
     stroke-width: 1;
@@ -326,7 +339,7 @@
   <div class="sitemap-app" id="sitemapApp" hidden>
     <div class="sitemap-topline">
       <h1 class="sitemap-title" id="sitemapTitle" tabindex="-1">Sitemap</h1>
-      <p class="sitemap-intro">Pages and branch groups.<br>Blue ovals mark protected routes.<br>Inline notes describe each node.</p>
+      <p class="sitemap-intro">Pages and branch groups.<br>Click page ovals to open pages.<br>Blue ovals mark protected routes.</p>
       <p class="sitemap-meta" id="sitemapMeta"></p>
     </div>
 
@@ -474,9 +487,9 @@
     rows.forEach(function(r, i) { rowIndex[r.path] = i; });
 
     var parts = [];
-    parts.push('<svg class="sitemap-svg" viewBox="0 0 ' + totalWidth + ' ' + totalHeight + '" width="' + totalWidth + '" height="' + totalHeight + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="sitemap-svg-title sitemap-svg-desc">');
+    parts.push('<svg class="sitemap-svg" viewBox="0 0 ' + totalWidth + ' ' + totalHeight + '" width="' + totalWidth + '" height="' + totalHeight + '" xmlns="http://www.w3.org/2000/svg" role="group" aria-labelledby="sitemap-svg-title sitemap-svg-desc">');
     parts.push('<title id="sitemap-svg-title">Sitemap tree for whatarewecapableof.com</title>');
-    parts.push('<desc id="sitemap-svg-desc">Indented diagram of the route hierarchy. The same hierarchy is provided as a text outline below this diagram.</desc>');
+    parts.push('<desc id="sitemap-svg-desc">Indented diagram of the route hierarchy. Page ovals are links. The same hierarchy is provided as a text outline below this diagram.</desc>');
 
     rows.forEach(function(parentRow, parentI) {
       var children = tree.childMap[parentRow.path] || [];
@@ -505,7 +518,12 @@
       var ry = RY_BASE + wobble(i + 17, 1.6);
       var rot = wobble(i + 41, 8);
       var nodeClass = 'node' + (row.isProtected ? ' node--protected' : '');
-      parts.push('<ellipse class="' + nodeClass + '" cx="' + x + '" cy="' + y + '" rx="' + rx.toFixed(2) + '" ry="' + ry.toFixed(2) + '" transform="rotate(' + rot.toFixed(2) + ' ' + x + ' ' + y + ')" />');
+      var ellipse = '<ellipse class="' + nodeClass + '" cx="' + x + '" cy="' + y + '" rx="' + rx.toFixed(2) + '" ry="' + ry.toFixed(2) + '" transform="rotate(' + rot.toFixed(2) + ' ' + x + ' ' + y + ')" />';
+      if (row.node && row.node.type === 'page') {
+        parts.push('<a class="node-link" href="' + escapeHtml(row.path) + '" aria-label="Open ' + escapeHtml(row.path) + '">' + ellipse + '</a>');
+      } else {
+        parts.push(ellipse);
+      }
 
       var labelX = x + RX_BASE + 12;
       var labelY = y + 4;

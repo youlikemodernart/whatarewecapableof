@@ -12,13 +12,12 @@
 .page-home main {
   flex: 1;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
   max-width: var(--content-width-prose);
 }
 
-.page-home .primary-nav {
-  padding-bottom: var(--space-1);
-}
 
 /* ============================================
    Interior pages: nav at top, content below

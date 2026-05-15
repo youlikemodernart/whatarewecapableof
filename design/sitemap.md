@@ -1,6 +1,6 @@
 # Sitemap — whatarewecapableof.com
 
-Revised 2026-04-25. Production live at `whatarewecapableof.com` (merged from draft 2026-04-22). Vercel linked to GitHub; push to `main` auto-deploys.
+Revised 2026-05-15. Production live at `whatarewecapableof.com`. Vercel linked to GitHub; push to `main` auto-deploys.
 
 ---
 
@@ -9,17 +9,17 @@ Revised 2026-04-25. Production live at `whatarewecapableof.com` (merged from dra
 ```
 whatarewecapableof.com
 
-/                           HOME ("What are we capable of?" links to /question/)
-├── /question/              Ethos page: the firm's worldview (hidden link from homepage question)
-├── /coach/                 Austin's coaching vertical
+/                           HOME: name + focused AI systems tagline + email
+├── /question/              Ethos page: direct route only, not linked from homepage
+├── /coach/                 Legacy/direct coaching vertical, not linked from homepage
 │   └── /coach/book         Austin coaching booking flow (Google Calendar API)
-├── /consult/               Shared advisory vertical
-├── /creative/              Noah's design/build vertical
+├── /consult/               Legacy/direct advisory vertical, not linked from homepage
+├── /creative/              Legacy/direct design/build vertical, not linked from homepage
+├── /about/                 Legacy/direct bios page, not linked from homepage
 └── /book                   Discovery-call booking flow for proposal CTAs
 
-Footer-only (secondary):
-  ABOUT                     /about/
-  CONTACT                   email in footer text (no dedicated page unless needed)
+Homepage contact:
+  hello@whatarewecapableof.com as the only visible link
 
 Non-navigation (direct link only):
   /tracker/                 Password-gated internal proposal tracker (noindex, nofollow)
@@ -38,23 +38,24 @@ Non-navigation (direct link only):
 **Layout:** Primitive A (single-column, left-anchored). One viewport, no scroll.
 
 **Content:**
-- "What are we capable of?" as the primary typographic element. Clickable (links to `/question/`) but with no visible link styling: no underline, no color change. Cursor change on hover is the only signal. System UI via `--font-serif`, `--size-m` by default. `--size-l` requires explicit one-off approval as a signature lockup. Takes up 60-70% of the viewport through placement and whitespace, not a heading scale. Breathes.
-- Below the question: `COACH  CONSULT  CREATIVE` as three mono ALL CAPS links. No descriptions. The words are self-explanatory.
-- Footer visible at bottom: `ABOUT` link + contact info (email).
+- "What are we capable of?" as the primary typographic element. It is plain text, not a link. System UI via `--font-serif`, bumped one role step to `--size-l` for the current stripped homepage. The baseline remains 24px.
+- `DEVELOPING SYSTEMS AND ARTIFICIAL INTELLIGENCE SOLUTIONS` as the focused positioning line. It sits in the old nav slot above the footer, using Geist Mono, ALL CAPS, `--size-s`, and the same apparatus scale as the footer email.
+- Footer visible at bottom: `hello@whatarewecapableof.com` as the only homepage link.
 
 **What's NOT on this page:**
-- No one-liner about the agency (for now; revisit if the page feels incomplete once built).
-- No descriptions of the three verticals.
+- No `COACH / CONSULT / CREATIVE` nav.
+- No About link.
+- No hidden `/question/` link from the question text.
 - No images.
-- No hero, no animation on first load (motion is optional, added later if a specific moment earns it).
+- No hero, no animation on first load.
 
-> **Decision note (2026-04-22):** Starting with approach B — question + three words, no descriptions. If it feels too bare once built, the first thing to try is a single-sentence agency line between the question and the verticals. If it still needs more, short one-line descriptions under each vertical name. Add in that order; don't skip to the heavy version.
+> **Decision note (2026-05-15):** The homepage was narrowed to name, focused AI systems positioning, and email because Noah wants the public offer to be more specific for now. Earlier vertical language made the firm feel broader than the current sales focus. Existing vertical and ethos routes remain in the repo as direct or legacy surfaces, but the homepage no longer advertises them.
 
 ---
 
 ### `/question/` — Ethos
 
-**Access:** Hidden link from the homepage. Clicking the question text navigates here. No visible link styling on the homepage; cursor change on hover is the only signal. This is the Lola `+` pattern: content that rewards engagement.
+**Access:** Direct route only in the current homepage iteration. The homepage question text is plain text and does not link here. The earlier hidden-link pattern is parked while the public homepage focuses on the narrower AI systems offer.
 
 **Layout:** Primitive A, scrollable.
 
@@ -195,23 +196,17 @@ If a contact form is ever needed, it becomes `/contact` as a minimal page. For n
 
 ## Navigation model
 
-**Primary nav** (visible on every page, top of viewport):
+**Homepage navigation:** none. The current homepage has no visible nav links. The only link is the footer email.
+
+**Homepage positioning line:**
 
 ```
-COACH    CONSULT    CREATIVE
+DEVELOPING SYSTEMS AND ARTIFICIAL INTELLIGENCE SOLUTIONS
 ```
 
-Mono, ALL CAPS, `--size-s`, left-anchored. Active page gets `--color-accent` (blue). Comma-separated on mobile.
+Mono, ALL CAPS, `--size-s`, left-anchored, placed where the old three-word service nav sat.
 
-**Footer nav** (visible on every page, bottom):
-
-```
-ABOUT    hello@whatarewecapableof.com
-```
-
-Mono, ALL CAPS, `--size-s`. Email is a mailto link.
-
-**No secondary nav in the header.** About and contact are footer-only. This keeps the header to exactly three items.
+**Interior or legacy page nav:** `/coach`, `/consult`, `/creative`, `/about`, and `/question` may still contain the older nav or page structure. They are direct or legacy routes until Noah decides whether to remove, redirect, or rebuild them.
 
 ---
 
@@ -267,11 +262,11 @@ Max depth: 2 from the primary nav. 3 counting home as level 0.
 | Decision | Made | Revisit trigger |
 |----------|------|-----------------|
 | Portfolio integrated into service landing pages (scroll-through) rather than separate `/work` pages | 2026-04-22 | When any vertical has 5+ portfolio items worth distinct pages |
-| Homepage: question + three vertical names, no descriptions | 2026-04-22 | After first build — if it feels too bare, try adding a one-liner first, then per-vertical descriptions |
-| About and contact in footer only, not in primary nav | 2026-04-22 | If user research shows visitors can't find about/contact |
+| Homepage narrowed to name, AI systems positioning line, and email | 2026-05-15 | When the offer broadens beyond systems and artificial intelligence solutions |
+| Homepage email is the only visible link | 2026-05-15 | If visitors need a booking path, about context, or portfolio proof on the homepage |
 | Custom booking tool (Google Calendar API) over Calendly | 2026-04-22 | If implementation takes >2 days or the UX isn't clean enough; Calendly inline embed is the fallback |
 | Contact as footer text, not a dedicated page | 2026-04-22 | If a contact form or more complex routing (different inboxes per vertical) becomes necessary |
-| Homepage question links to /question/ (no visible styling) | 2026-04-22 | If users don't discover the ethos page; consider a subtle hover effect |
+| Homepage question is plain text, not linked | 2026-05-15 | If the ethos page becomes part of the public homepage path again |
 | /question/ as ethos vs /about as biographical | 2026-04-22 | If the distinction confuses visitors |
 | About page as text bios (scaffold) | 2026-04-22 | Voice memo, photography, or richer format when the firm's voice is clearer |
 | URL pattern: always `<name>/index.html` for clean paths | 2026-04-22 | Permanent; `about.html` style 404s on Vercel |

@@ -18,6 +18,15 @@
   max-width: var(--content-width-prose);
 }
 
+.page-home .home-question {
+  font-size: var(--size-l);
+  line-height: var(--baseline);
+}
+
+.page-home .home-tagline {
+  margin-bottom: 0;
+  padding-bottom: var(--space-1);
+}
 
 /* ============================================
    Interior pages: nav at top, content below

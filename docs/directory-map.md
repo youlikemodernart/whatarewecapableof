@@ -66,14 +66,14 @@ Production site: `https://whatarewecapableof.com`
 
 | Public route | Source file | Role |
 |---|---|---|
-| `/` | `index.html` | Home page. Question, three verticals, footer. |
-| `/question` | `question/index.html` | Ethos page. Intellectual home for the agency. |
-| `/coach` | `coach/index.html` | Austin coaching vertical. |
+| `/` | `index.html` | Home page. Name, focused AI systems positioning line, and email-only contact. No homepage nav. |
+| `/question` | `question/index.html` | Ethos page. Intellectual home for the agency. Direct route only in the current homepage iteration. |
+| `/coach` | `coach/index.html` | Austin coaching vertical. Legacy/direct route, not linked from the current homepage. |
 | `/coach/book` | `coach/book/index.html` | Austin coaching booking tool UI. |
 | `/book` | `book/index.html` | Discovery-call booking tool for proposal CTAs. |
-| `/consult` | `consult/index.html` | Shared advisory vertical. |
-| `/creative` | `creative/index.html` | Noah design and build vertical. |
-| `/about` | `about/index.html` | Bios and contact. Footer-only access. |
+| `/consult` | `consult/index.html` | Shared advisory vertical. Legacy/direct route, not linked from the current homepage. |
+| `/creative` | `creative/index.html` | Noah design and build vertical. Legacy/direct route, not linked from the current homepage. |
+| `/about` | `about/index.html` | Bios and contact. Legacy/direct route, not linked from the current homepage. |
 | `/work/fde` | `work/fde/index.html` | Direct-link, noindex FDE client-facing work index. Collects the Campus Initiative proposal, Foundation Course site, working links, and decisions to confirm. Not in public navigation. |
 | `/tracker` | `tracker/index.html` | Password-gated internal proposal tracker. Reads `PROPOSALS.md` through authenticated API data. |
 | `/proposals/teaspressa` | `proposals/teaspressa/index.html` | Direct-link proposal. |

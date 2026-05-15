@@ -295,6 +295,17 @@ Content is **always left-anchored.** No `margin-inline: auto` on the main contai
 
 Every navigation/index page should fit in `100vh` at desktop. If content overflows 800px of vertical space at 1280px viewport width, reduce content count or split into sub-pages. Scrolling is for **content**, not for **chrome**.
 
+### Current homepage variant
+
+As of 2026-05-15, the public homepage is a stripped, specific positioning surface:
+
+- `What are we capable of?` is plain text, system UI, `--size-l`, and not linked.
+- `DEVELOPING SYSTEMS AND ARTIFICIAL INTELLIGENCE SOLUTIONS` sits in the old nav slot above the footer, using Geist Mono, ALL CAPS, `--size-s`.
+- `hello@whatarewecapableof.com` is the only visible homepage link and remains `mailto:`.
+- `COACH / CONSULT / CREATIVE`, About, and `/question/` are not linked from the homepage.
+
+Reason: Noah wants the public offer to be more specific and narrow for now, centered on systems and artificial intelligence solutions rather than the earlier broad three-vertical agency frame.
+
 ---
 
 ## 5. Imagery rules
@@ -537,7 +548,7 @@ These are decisions the constraints can't make alone — they require Noah and A
 ### Resolved (2026-04-22)
 
 1. ~~**Specific typefaces.**~~ **Resolved in production.** The live site uses system UI for prose, titles, and data display, plus Geist Mono 400 for UI labels, metadata, navigation, and proposal chrome. `--font-serif` remains a legacy token name for the system UI stack.
-2. ~~**Content model.**~~ **Resolved.** See `design/sitemap.md`. Three verticals (`/coach`, `/consult`, `/creative`) with integrated portfolio (scroll-through, not separate pages). About and contact are footer-only. Custom booking tools at `/coach/book` for Austin coaching and `/book` for proposal discovery calls via shared Google Calendar API infrastructure. Revisit portfolio-as-separate-pages when any vertical has 5+ items.
+2. ~~**Content model.**~~ **Resolved, with a 2026-05-15 homepage override.** See `design/sitemap.md`. The current homepage is name + focused AI systems positioning + email only. Three vertical routes (`/coach`, `/consult`, `/creative`) and `/about` still exist as direct or legacy routes, but they are not linked from the homepage. Custom booking tools remain at `/coach/book` for Austin coaching and `/book` for proposal discovery calls via shared Google Calendar API infrastructure.
 
 ### Still open
 

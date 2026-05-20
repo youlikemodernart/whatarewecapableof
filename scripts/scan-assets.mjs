@@ -11,7 +11,18 @@ const today = new Date().toISOString().slice(0, 10);
 
 const IMAGE_EXTS = new Set(['.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg', '.avif']);
 const REFERENCE_EXTS = new Set(['.html', '.css', '.js', '.mjs']);
-const SKIP_DIRS = new Set(['.git', 'node_modules', '.vercel']);
+const MAX_REFERENCE_BYTES = 512 * 1024;
+const SKIP_DIRS = new Set([
+  '.git',
+  'node_modules',
+  '.vercel',
+  '.pi',
+  '.mail',
+  '.sheets',
+  '.shopify',
+  '.finance',
+  'trademark',
+]);
 const SKIP_PATH_PATTERNS = [
   /^proposals\/[^/]+\/img\/src(?:\/|$)/,
   /^proposals\/[^/]+\/slots(?:\/|$)/,
@@ -277,7 +288,10 @@ async function main() {
         usedIn: [],
       });
     } else if (shouldScanReferences(rel, ext)) {
-      textFiles.push({ filePath, rel, ext });
+      const stat = await fs.stat(filePath);
+      if (stat.size <= MAX_REFERENCE_BYTES) {
+        textFiles.push({ filePath, rel, ext });
+      }
     }
   }
 

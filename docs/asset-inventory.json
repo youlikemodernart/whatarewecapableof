@@ -1,23 +1,24 @@
 {
   "summary": {
-    "generatedAt": "2026-04-27",
+    "generatedAt": "2026-05-20",
     "root": "/Users/noah/Projects/whatarewecapableof",
-    "assetCount": 345,
-    "siteVisibleAssetCount": 53,
-    "referencedAssetCount": 38,
-    "unreferencedSiteVisibleAssetCount": 15,
-    "missingReferenceCount": 0,
-    "relativeLocalReferenceCount": 0,
-    "formatMismatchCount": 2,
+    "assetCount": 419,
+    "siteVisibleAssetCount": 127,
+    "referencedAssetCount": 65,
+    "unreferencedSiteVisibleAssetCount": 62,
+    "missingReferenceCount": 30,
+    "relativeLocalReferenceCount": 20,
+    "formatMismatchCount": 6,
     "categories": {
       "site-shell": 4,
+      "unclassified": 70,
       "design-reference-originals": 9,
       "design-reference-quarantine": 3,
       "design-reference-frames": 249,
       "design-reference-gifs": 2,
       "design-reference-images": 5,
       "design-reference-screenshots": 24,
-      "proposal-content": 49
+      "proposal-content": 53
     }
   },
   "assets": [
@@ -42,7 +43,277 @@
         "creative/index.html",
         "index.html",
         "question/index.html",
-        "tracker/index.html"
+        "sitemap/index.html",
+        "tracker/index.html",
+        "work/fde/index.html"
+      ]
+    },
+    {
+      "path": "apps/arbysboys-snake/assets/beef-n-cheddar.png",
+      "publicPath": "/apps/arbysboys-snake/assets/beef-n-cheddar.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 126014,
+      "size": "123.1 KB",
+      "dimensions": {
+        "width": 512,
+        "height": 512
+      },
+      "category": "unclassified",
+      "usedIn": [
+        "apps/arbysboys-snake/game.js",
+        "apps/arbysboys-snake/index.html"
+      ]
+    },
+    {
+      "path": "apps/arbysboys-snake/assets/boys-logo.png",
+      "publicPath": "/apps/arbysboys-snake/assets/boys-logo.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 105268,
+      "size": "102.8 KB",
+      "dimensions": {
+        "width": 390,
+        "height": 368
+      },
+      "category": "unclassified",
+      "usedIn": [
+        "apps/arbysboys-snake/game.js",
+        "apps/arbysboys-snake/index.html"
+      ]
+    },
+    {
+      "path": "apps/arbysboys-snake/assets/curly-head-v3.png",
+      "publicPath": "/apps/arbysboys-snake/assets/curly-head-v3.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 128916,
+      "size": "125.9 KB",
+      "dimensions": {
+        "width": 320,
+        "height": 320
+      },
+      "category": "unclassified",
+      "usedIn": [
+        "apps/arbysboys-snake/game.js",
+        "apps/arbysboys-snake/index.html"
+      ]
+    },
+    {
+      "path": "apps/arbysboys-snake/assets/curly-stage-1.png",
+      "publicPath": "/apps/arbysboys-snake/assets/curly-stage-1.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 342731,
+      "size": "334.7 KB",
+      "dimensions": {
+        "width": 812,
+        "height": 333
+      },
+      "category": "unclassified",
+      "usedIn": [
+        "apps/arbysboys-snake/game.js",
+        "apps/arbysboys-snake/index.html"
+      ]
+    },
+    {
+      "path": "apps/arbysboys-snake/assets/curly-stage-2.png",
+      "publicPath": "/apps/arbysboys-snake/assets/curly-stage-2.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 370227,
+      "size": "361.5 KB",
+      "dimensions": {
+        "width": 1000,
+        "height": 333
+      },
+      "category": "unclassified",
+      "usedIn": [
+        "apps/arbysboys-snake/game.js"
+      ]
+    },
+    {
+      "path": "apps/arbysboys-snake/assets/curly-stage-3.png",
+      "publicPath": "/apps/arbysboys-snake/assets/curly-stage-3.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 340010,
+      "size": "332.0 KB",
+      "dimensions": {
+        "width": 1000,
+        "height": 281
+      },
+      "category": "unclassified",
+      "usedIn": [
+        "apps/arbysboys-snake/game.js"
+      ]
+    },
+    {
+      "path": "apps/arbysboys-snake/assets/curly-stage-4.png",
+      "publicPath": "/apps/arbysboys-snake/assets/curly-stage-4.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 311164,
+      "size": "303.9 KB",
+      "dimensions": {
+        "width": 1000,
+        "height": 254
+      },
+      "category": "unclassified",
+      "usedIn": [
+        "apps/arbysboys-snake/game.js"
+      ]
+    },
+    {
+      "path": "apps/arbysboys-snake/assets/curly-stage-5.png",
+      "publicPath": "/apps/arbysboys-snake/assets/curly-stage-5.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 183376,
+      "size": "179.1 KB",
+      "dimensions": {
+        "width": 1000,
+        "height": 322
+      },
+      "category": "unclassified",
+      "usedIn": [
+        "apps/arbysboys-snake/game.js"
+      ]
+    },
+    {
+      "path": "apps/arbysboys-snake/assets/favicon.png",
+      "publicPath": "/apps/arbysboys-snake/assets/favicon.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 102402,
+      "size": "100.0 KB",
+      "dimensions": {
+        "width": 512,
+        "height": 512
+      },
+      "category": "unclassified",
+      "usedIn": [
+        "apps/arbysboys-snake/index.html"
+      ]
+    },
+    {
+      "path": "apps/arbysboys-snake/assets/movement-controls-v3.svg",
+      "publicPath": "/apps/arbysboys-snake/assets/movement-controls-v3.svg",
+      "ext": "svg",
+      "detectedFormat": "svg",
+      "bytes": 1913,
+      "size": "1.9 KB",
+      "dimensions": {
+        "width": 640,
+        "height": 420
+      },
+      "category": "unclassified",
+      "usedIn": [
+        "apps/arbysboys-snake/index.html"
+      ]
+    },
+    {
+      "path": "assets/qr/rainbow-gathering-donation.png",
+      "publicPath": "/assets/qr/rainbow-gathering-donation.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 14847,
+      "size": "14.5 KB",
+      "dimensions": {
+        "width": 1600,
+        "height": 1600
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "assets/qr/rainbow-gathering-donation.svg",
+      "publicPath": "/assets/qr/rainbow-gathering-donation.svg",
+      "ext": "svg",
+      "detectedFormat": "svg",
+      "bytes": 2579,
+      "size": "2.5 KB",
+      "dimensions": {
+        "width": 41,
+        "height": 41
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "demo/ptw/assets/ptw-circles-black.png",
+      "publicPath": "/demo/ptw/assets/ptw-circles-black.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 12003,
+      "size": "11.7 KB",
+      "dimensions": {
+        "width": 900,
+        "height": 900
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "demo/ptw/assets/ptw-circles-cream.png",
+      "publicPath": "/demo/ptw/assets/ptw-circles-cream.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 11405,
+      "size": "11.1 KB",
+      "dimensions": {
+        "width": 900,
+        "height": 900
+      },
+      "category": "unclassified",
+      "usedIn": [
+        "demo/ptw/checkout/index.html"
+      ]
+    },
+    {
+      "path": "demo/ptw/assets/ptw-circles-favicon-16x16.png",
+      "publicPath": "/demo/ptw/assets/ptw-circles-favicon-16x16.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 391,
+      "size": "391 B",
+      "dimensions": {
+        "width": 16,
+        "height": 16
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "demo/ptw/assets/ptw-circles-favicon-180x180.png",
+      "publicPath": "/demo/ptw/assets/ptw-circles-favicon-180x180.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 4840,
+      "size": "4.7 KB",
+      "dimensions": {
+        "width": 180,
+        "height": 180
+      },
+      "category": "unclassified",
+      "usedIn": [
+        "demo/ptw/checkout/index.html"
+      ]
+    },
+    {
+      "path": "demo/ptw/assets/ptw-circles-favicon-32x32.png",
+      "publicPath": "/demo/ptw/assets/ptw-circles-favicon-32x32.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 781,
+      "size": "781 B",
+      "dimensions": {
+        "width": 32,
+        "height": 32
+      },
+      "category": "unclassified",
+      "usedIn": [
+        "demo/ptw/checkout/index.html"
       ]
     },
     {
@@ -4154,15 +4425,23 @@
         "consult/index.html",
         "creative/index.html",
         "index.html",
+        "instructions/shipstation/index.html",
+        "internal/systemresearch/index.html",
         "proposals/_template/index.html",
         "proposals/belhaus/index.html",
         "proposals/compassion/index.html",
+        "proposals/eidi/index.html",
         "proposals/fde/index.html",
+        "proposals/kaitlyn-wolfe/index.html",
+        "proposals/noble/index.html",
+        "proposals/opulist/index.html",
         "proposals/paste/index.html",
         "proposals/sales-school/index.html",
         "proposals/teaspressa/index.html",
         "question/index.html",
-        "tracker/index.html"
+        "sitemap/index.html",
+        "tracker/index.html",
+        "work/fde/index.html"
       ]
     },
     {
@@ -4186,15 +4465,215 @@
         "consult/index.html",
         "creative/index.html",
         "index.html",
+        "instructions/shipstation/index.html",
+        "internal/systemresearch/index.html",
         "proposals/_template/index.html",
         "proposals/belhaus/index.html",
         "proposals/compassion/index.html",
+        "proposals/eidi/index.html",
         "proposals/fde/index.html",
+        "proposals/kaitlyn-wolfe/index.html",
+        "proposals/noble/index.html",
+        "proposals/opulist/index.html",
         "proposals/paste/index.html",
         "proposals/sales-school/index.html",
         "proposals/teaspressa/index.html",
         "question/index.html",
-        "tracker/index.html"
+        "sitemap/index.html",
+        "tracker/index.html",
+        "work/fde/index.html"
+      ]
+    },
+    {
+      "path": "instructions/shipstation/img/ss-awaiting-shipment.png",
+      "publicPath": "/instructions/shipstation/img/ss-awaiting-shipment.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 106256,
+      "size": "103.8 KB",
+      "dimensions": {
+        "width": 375,
+        "height": 1022
+      },
+      "category": "unclassified",
+      "usedIn": [
+        "instructions/shipstation/index.html"
+      ]
+    },
+    {
+      "path": "instructions/shipstation/img/ss-configure-shipment.png",
+      "publicPath": "/instructions/shipstation/img/ss-configure-shipment.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 472136,
+      "size": "461.1 KB",
+      "dimensions": {
+        "width": 2322,
+        "height": 1180
+      },
+      "category": "unclassified",
+      "usedIn": [
+        "instructions/shipstation/index.html"
+      ]
+    },
+    {
+      "path": "instructions/shipstation/img/ss-create-print-label.png",
+      "publicPath": "/instructions/shipstation/img/ss-create-print-label.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 119174,
+      "size": "116.4 KB",
+      "dimensions": {
+        "width": 702,
+        "height": 756
+      },
+      "category": "unclassified",
+      "usedIn": [
+        "instructions/shipstation/index.html"
+      ]
+    },
+    {
+      "path": "instructions/shipstation/img/ss-import-menu.png",
+      "publicPath": "/instructions/shipstation/img/ss-import-menu.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 21269,
+      "size": "20.8 KB",
+      "dimensions": {
+        "width": 545,
+        "height": 242
+      },
+      "category": "unclassified",
+      "usedIn": [
+        "instructions/shipstation/index.html"
+      ]
+    },
+    {
+      "path": "instructions/shipstation/img/ss-label-format.png",
+      "publicPath": "/instructions/shipstation/img/ss-label-format.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 14463,
+      "size": "14.1 KB",
+      "dimensions": {
+        "width": 400,
+        "height": 151
+      },
+      "category": "unclassified",
+      "usedIn": [
+        "instructions/shipstation/index.html"
+      ]
+    },
+    {
+      "path": "instructions/shipstation/img/ss-manage-presets.png",
+      "publicPath": "/instructions/shipstation/img/ss-manage-presets.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 25312,
+      "size": "24.7 KB",
+      "dimensions": {
+        "width": 445,
+        "height": 342
+      },
+      "category": "unclassified",
+      "usedIn": [
+        "instructions/shipstation/index.html"
+      ]
+    },
+    {
+      "path": "instructions/shipstation/img/ss-marketplace-notified.png",
+      "publicPath": "/instructions/shipstation/img/ss-marketplace-notified.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 7028,
+      "size": "6.9 KB",
+      "dimensions": {
+        "width": 168,
+        "height": 127
+      },
+      "category": "unclassified",
+      "usedIn": [
+        "instructions/shipstation/index.html"
+      ]
+    },
+    {
+      "path": "instructions/shipstation/img/ss-print-options.png",
+      "publicPath": "/instructions/shipstation/img/ss-print-options.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 41504,
+      "size": "40.5 KB",
+      "dimensions": {
+        "width": 344,
+        "height": 500
+      },
+      "category": "unclassified",
+      "usedIn": [
+        "instructions/shipstation/index.html"
+      ]
+    },
+    {
+      "path": "instructions/shipstation/img/ss-scale-button.png",
+      "publicPath": "/instructions/shipstation/img/ss-scale-button.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 32980,
+      "size": "32.2 KB",
+      "dimensions": {
+        "width": 418,
+        "height": 330
+      },
+      "category": "unclassified",
+      "usedIn": [
+        "instructions/shipstation/index.html"
+      ]
+    },
+    {
+      "path": "instructions/shipstation/img/ss-search-order.png",
+      "publicPath": "/instructions/shipstation/img/ss-search-order.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 135949,
+      "size": "132.8 KB",
+      "dimensions": {
+        "width": 1280,
+        "height": 482
+      },
+      "category": "unclassified",
+      "usedIn": [
+        "instructions/shipstation/index.html"
+      ]
+    },
+    {
+      "path": "instructions/shipstation/img/ss-tracking-details.png",
+      "publicPath": "/instructions/shipstation/img/ss-tracking-details.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 71317,
+      "size": "69.6 KB",
+      "dimensions": {
+        "width": 1000,
+        "height": 256
+      },
+      "category": "unclassified",
+      "usedIn": [
+        "instructions/shipstation/index.html"
+      ]
+    },
+    {
+      "path": "instructions/shipstation/img/ss-void-label.png",
+      "publicPath": "/instructions/shipstation/img/ss-void-label.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 124761,
+      "size": "121.8 KB",
+      "dimensions": {
+        "width": 1298,
+        "height": 442
+      },
+      "category": "unclassified",
+      "usedIn": [
+        "instructions/shipstation/index.html"
       ]
     },
     {
@@ -4692,7 +5171,8 @@
       },
       "category": "proposal-content",
       "usedIn": [
-        "proposals/fde/index.html"
+        "proposals/fde/index.html",
+        "work/fde/index.html"
       ]
     },
     {
@@ -4820,7 +5300,8 @@
       },
       "category": "proposal-content",
       "usedIn": [
-        "proposals/fde/index.html"
+        "proposals/fde/index.html",
+        "work/fde/index.html"
       ]
     },
     {
@@ -4836,8 +5317,647 @@
       },
       "category": "proposal-content",
       "usedIn": [
-        "proposals/fde/index.html"
+        "proposals/fde/index.html",
+        "work/fde/index.html"
       ]
+    },
+    {
+      "path": "proposals/opulist/img/op-01-granblanco-venicebeach.webp",
+      "publicPath": "/proposals/opulist/img/op-01-granblanco-venicebeach.webp",
+      "ext": "webp",
+      "detectedFormat": "jpg",
+      "bytes": 159699,
+      "size": "156.0 KB",
+      "dimensions": {
+        "width": 1200,
+        "height": 800
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/opulist/index.html"
+      ]
+    },
+    {
+      "path": "proposals/opulist/img/op-02-jeuneetjolie-carlsbad.webp",
+      "publicPath": "/proposals/opulist/img/op-02-jeuneetjolie-carlsbad.webp",
+      "ext": "webp",
+      "detectedFormat": "jpg",
+      "bytes": 91180,
+      "size": "89.0 KB",
+      "dimensions": {
+        "width": 1170,
+        "height": 780
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/opulist/index.html"
+      ]
+    },
+    {
+      "path": "proposals/opulist/img/op-03-barcecil-palmsprings.webp",
+      "publicPath": "/proposals/opulist/img/op-03-barcecil-palmsprings.webp",
+      "ext": "webp",
+      "detectedFormat": "jpg",
+      "bytes": 106467,
+      "size": "104.0 KB",
+      "dimensions": {
+        "width": 902,
+        "height": 601
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/opulist/index.html"
+      ]
+    },
+    {
+      "path": "proposals/opulist/img/op-04-hermitagehotel-nashville.webp",
+      "publicPath": "/proposals/opulist/img/op-04-hermitagehotel-nashville.webp",
+      "ext": "webp",
+      "detectedFormat": "jpg",
+      "bytes": 139622,
+      "size": "136.3 KB",
+      "dimensions": {
+        "width": 1169,
+        "height": 779
+      },
+      "category": "proposal-content",
+      "usedIn": [
+        "proposals/opulist/index.html"
+      ]
+    },
+    {
+      "path": "proposals/sales-school/diagrams/html/01-preview.png",
+      "publicPath": "/proposals/sales-school/diagrams/html/01-preview.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 186141,
+      "size": "181.8 KB",
+      "dimensions": {
+        "width": 3600,
+        "height": 1672
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/html/02-preview.png",
+      "publicPath": "/proposals/sales-school/diagrams/html/02-preview.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 282768,
+      "size": "276.1 KB",
+      "dimensions": {
+        "width": 3600,
+        "height": 1672
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/png/01-current-access-chain.png",
+      "publicPath": "/proposals/sales-school/diagrams/png/01-current-access-chain.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 132678,
+      "size": "129.6 KB",
+      "dimensions": {
+        "width": 2800,
+        "height": 1040
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/png/01-current-access-terrain.png",
+      "publicPath": "/proposals/sales-school/diagrams/png/01-current-access-terrain.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 88785,
+      "size": "86.7 KB",
+      "dimensions": {
+        "width": 1800,
+        "height": 780
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/png/02-portal-architecture.png",
+      "publicPath": "/proposals/sales-school/diagrams/png/02-portal-architecture.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 184187,
+      "size": "179.9 KB",
+      "dimensions": {
+        "width": 2800,
+        "height": 1120
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/png/02-structure-shift.png",
+      "publicPath": "/proposals/sales-school/diagrams/png/02-structure-shift.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 70242,
+      "size": "68.6 KB",
+      "dimensions": {
+        "width": 1800,
+        "height": 660
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/png/03-live-break-flow.png",
+      "publicPath": "/proposals/sales-school/diagrams/png/03-live-break-flow.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 195785,
+      "size": "191.2 KB",
+      "dimensions": {
+        "width": 2560,
+        "height": 1672
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/png/03-portal-architecture.png",
+      "publicPath": "/proposals/sales-school/diagrams/png/03-portal-architecture.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 77821,
+      "size": "76.0 KB",
+      "dimensions": {
+        "width": 1800,
+        "height": 960
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/png/04-live-break-operating-flow.png",
+      "publicPath": "/proposals/sales-school/diagrams/png/04-live-break-operating-flow.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 93742,
+      "size": "91.5 KB",
+      "dimensions": {
+        "width": 1800,
+        "height": 800
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/png/04-scope-frontier.png",
+      "publicPath": "/proposals/sales-school/diagrams/png/04-scope-frontier.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 158397,
+      "size": "154.7 KB",
+      "dimensions": {
+        "width": 2800,
+        "height": 940
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/png/05-today-state-surface.png",
+      "publicPath": "/proposals/sales-school/diagrams/png/05-today-state-surface.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 100089,
+      "size": "97.7 KB",
+      "dimensions": {
+        "width": 1800,
+        "height": 1020
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/png/06-scope-frontier.png",
+      "publicPath": "/proposals/sales-school/diagrams/png/06-scope-frontier.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 85179,
+      "size": "83.2 KB",
+      "dimensions": {
+        "width": 1800,
+        "height": 840
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/svg/01-current-access-chain.svg",
+      "publicPath": "/proposals/sales-school/diagrams/svg/01-current-access-chain.svg",
+      "ext": "svg",
+      "detectedFormat": "svg",
+      "bytes": 11627,
+      "size": "11.4 KB",
+      "dimensions": {
+        "width": 1400,
+        "height": 520
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/svg/01-current-access-terrain.svg",
+      "publicPath": "/proposals/sales-school/diagrams/svg/01-current-access-terrain.svg",
+      "ext": "svg",
+      "detectedFormat": "svg",
+      "bytes": 13158,
+      "size": "12.8 KB",
+      "dimensions": {
+        "width": 1800,
+        "height": 780
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/svg/02-portal-architecture.svg",
+      "publicPath": "/proposals/sales-school/diagrams/svg/02-portal-architecture.svg",
+      "ext": "svg",
+      "detectedFormat": "svg",
+      "bytes": 10546,
+      "size": "10.3 KB",
+      "dimensions": {
+        "width": 1400,
+        "height": 560
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/svg/02-structure-shift.svg",
+      "publicPath": "/proposals/sales-school/diagrams/svg/02-structure-shift.svg",
+      "ext": "svg",
+      "detectedFormat": "svg",
+      "bytes": 7715,
+      "size": "7.5 KB",
+      "dimensions": {
+        "width": 1800,
+        "height": 660
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/svg/03-live-break-flow.svg",
+      "publicPath": "/proposals/sales-school/diagrams/svg/03-live-break-flow.svg",
+      "ext": "svg",
+      "detectedFormat": "svg",
+      "bytes": 13504,
+      "size": "13.2 KB",
+      "dimensions": {
+        "width": 1400,
+        "height": 580
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/svg/03-portal-architecture.svg",
+      "publicPath": "/proposals/sales-school/diagrams/svg/03-portal-architecture.svg",
+      "ext": "svg",
+      "detectedFormat": "svg",
+      "bytes": 8960,
+      "size": "8.8 KB",
+      "dimensions": {
+        "width": 1800,
+        "height": 960
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/svg/04-live-break-operating-flow.svg",
+      "publicPath": "/proposals/sales-school/diagrams/svg/04-live-break-operating-flow.svg",
+      "ext": "svg",
+      "detectedFormat": "svg",
+      "bytes": 8950,
+      "size": "8.7 KB",
+      "dimensions": {
+        "width": 1800,
+        "height": 800
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/svg/04-scope-frontier.svg",
+      "publicPath": "/proposals/sales-school/diagrams/svg/04-scope-frontier.svg",
+      "ext": "svg",
+      "detectedFormat": "svg",
+      "bytes": 8152,
+      "size": "8.0 KB",
+      "dimensions": {
+        "width": 1400,
+        "height": 470
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/svg/05-today-state-surface.svg",
+      "publicPath": "/proposals/sales-school/diagrams/svg/05-today-state-surface.svg",
+      "ext": "svg",
+      "detectedFormat": "svg",
+      "bytes": 11394,
+      "size": "11.1 KB",
+      "dimensions": {
+        "width": 1800,
+        "height": 1020
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/svg/06-scope-frontier.svg",
+      "publicPath": "/proposals/sales-school/diagrams/svg/06-scope-frontier.svg",
+      "ext": "svg",
+      "detectedFormat": "svg",
+      "bytes": 8359,
+      "size": "8.2 KB",
+      "dimensions": {
+        "width": 1800,
+        "height": 840
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/toolchain/03-portal-architecture-graphviz.svg",
+      "publicPath": "/proposals/sales-school/diagrams/toolchain/03-portal-architecture-graphviz.svg",
+      "ext": "svg",
+      "detectedFormat": "svg",
+      "bytes": 34064,
+      "size": "33.3 KB",
+      "dimensions": {
+        "width": 1635,
+        "height": 460
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/toolchain/checks/03-portal-architecture/desktop.png",
+      "publicPath": "/proposals/sales-school/diagrams/toolchain/checks/03-portal-architecture/desktop.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 1549399,
+      "size": "1.48 MB",
+      "dimensions": {
+        "width": 1425,
+        "height": 9392
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/toolchain/checks/03-portal-architecture/mobile.png",
+      "publicPath": "/proposals/sales-school/diagrams/toolchain/checks/03-portal-architecture/mobile.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 1422440,
+      "size": "1.36 MB",
+      "dimensions": {
+        "width": 390,
+        "height": 25953
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/toolchain/checks/03-portal-architecture/reduced-motion.png",
+      "publicPath": "/proposals/sales-school/diagrams/toolchain/checks/03-portal-architecture/reduced-motion.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 1549399,
+      "size": "1.48 MB",
+      "dimensions": {
+        "width": 1425,
+        "height": 9392
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-architecture/desktop.png",
+      "publicPath": "/proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-architecture/desktop.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 342907,
+      "size": "334.9 KB",
+      "dimensions": {
+        "width": 1440,
+        "height": 4152
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-architecture/mobile.png",
+      "publicPath": "/proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-architecture/mobile.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 252453,
+      "size": "246.5 KB",
+      "dimensions": {
+        "width": 390,
+        "height": 5317
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-architecture/reduced-motion.png",
+      "publicPath": "/proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-architecture/reduced-motion.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 342907,
+      "size": "334.9 KB",
+      "dimensions": {
+        "width": 1440,
+        "height": 4152
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-experience/desktop.png",
+      "publicPath": "/proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-experience/desktop.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 368392,
+      "size": "359.8 KB",
+      "dimensions": {
+        "width": 1440,
+        "height": 4556
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-experience/mobile.png",
+      "publicPath": "/proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-experience/mobile.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 250024,
+      "size": "244.2 KB",
+      "dimensions": {
+        "width": 390,
+        "height": 5065
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-experience/reduced-motion.png",
+      "publicPath": "/proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-experience/reduced-motion.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 585745,
+      "size": "572.0 KB",
+      "dimensions": {
+        "width": 1440,
+        "height": 4556
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-overview/desktop.png",
+      "publicPath": "/proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-overview/desktop.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 474535,
+      "size": "463.4 KB",
+      "dimensions": {
+        "width": 1440,
+        "height": 3378
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-overview/mobile.png",
+      "publicPath": "/proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-overview/mobile.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 340025,
+      "size": "332.1 KB",
+      "dimensions": {
+        "width": 390,
+        "height": 3957
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-overview/reduced-motion.png",
+      "publicPath": "/proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-overview/reduced-motion.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 474535,
+      "size": "463.4 KB",
+      "dimensions": {
+        "width": 1440,
+        "height": 3378
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-question/desktop.png",
+      "publicPath": "/proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-question/desktop.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 70709,
+      "size": "69.1 KB",
+      "dimensions": {
+        "width": 1440,
+        "height": 1345
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-question/mobile.png",
+      "publicPath": "/proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-question/mobile.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 50421,
+      "size": "49.2 KB",
+      "dimensions": {
+        "width": 390,
+        "height": 1421
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-question/reduced-motion.png",
+      "publicPath": "/proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-question/reduced-motion.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 70709,
+      "size": "69.1 KB",
+      "dimensions": {
+        "width": 1440,
+        "height": 1345
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-scope/desktop.png",
+      "publicPath": "/proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-scope/desktop.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 331970,
+      "size": "324.2 KB",
+      "dimensions": {
+        "width": 1440,
+        "height": 3312
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-scope/mobile.png",
+      "publicPath": "/proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-scope/mobile.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 246075,
+      "size": "240.3 KB",
+      "dimensions": {
+        "width": 390,
+        "height": 4450
+      },
+      "category": "unclassified",
+      "usedIn": []
+    },
+    {
+      "path": "proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-scope/reduced-motion.png",
+      "publicPath": "/proposals/sales-school/diagrams/toolchain/checks/proposal-integrated-scope/reduced-motion.png",
+      "ext": "png",
+      "detectedFormat": "png",
+      "bytes": 331970,
+      "size": "324.2 KB",
+      "dimensions": {
+        "width": 1440,
+        "height": 3312
+      },
+      "category": "unclassified",
+      "usedIn": []
     },
     {
       "path": "proposals/sales-school/img/current-email-preview.png",
@@ -4883,9 +6003,7 @@
         "height": 968
       },
       "category": "proposal-content",
-      "usedIn": [
-        "proposals/sales-school/index.html"
-      ]
+      "usedIn": []
     },
     {
       "path": "proposals/sales-school/img/wistia-thumbnails-contact-sheet.jpg",
@@ -4899,9 +6017,7 @@
         "height": 896
       },
       "category": "proposal-content",
-      "usedIn": [
-        "proposals/sales-school/index.html"
-      ]
+      "usedIn": []
     },
     {
       "path": "proposals/teaspressa/img/ts-02-wholesale-guide.jpg",
@@ -5010,6 +6126,310 @@
       "absolute": false
     },
     {
+      "source": "apps/arbysboys-snake/game.js",
+      "raw": "assets/curly-head-v3.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/curly-head-v3.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/game.js",
+      "raw": "assets/beef-n-cheddar.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/beef-n-cheddar.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/game.js",
+      "raw": "assets/boys-logo.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/boys-logo.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/game.js",
+      "raw": "assets/curly-stage-1.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/curly-stage-1.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/game.js",
+      "raw": "assets/curly-stage-2.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/curly-stage-2.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/game.js",
+      "raw": "assets/curly-stage-3.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/curly-stage-3.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/game.js",
+      "raw": "assets/curly-stage-4.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/curly-stage-4.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/game.js",
+      "raw": "assets/curly-stage-5.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/curly-stage-5.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/index.html",
+      "raw": "assets/favicon.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/favicon.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/index.html",
+      "raw": "assets/boys-logo.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/boys-logo.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/index.html",
+      "raw": "assets/curly-head-v3.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/curly-head-v3.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/index.html",
+      "raw": "assets/curly-stage-1.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/curly-stage-1.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/index.html",
+      "raw": "assets/beef-n-cheddar.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/beef-n-cheddar.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/index.html",
+      "raw": "assets/beef-n-cheddar.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/beef-n-cheddar.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/index.html",
+      "raw": "assets/boys-logo.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/boys-logo.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/index.html",
+      "raw": "assets/movement-controls-v3.svg",
+      "normalizedPath": "apps/arbysboys-snake/assets/movement-controls-v3.svg",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/index.html",
+      "raw": "assets/curly-stage-1.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/curly-stage-1.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/Bahar_Honed__Limestone_Mosaic_12x10__1_.webp",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/Bahar_Honed__Limestone_Mosaic_12x10__1_.webp",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/Calacatta_Viola_Honed_Thin_Fluted_Marble_Accent_Tiles_18x36.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/Calacatta_Viola_Honed_Thin_Fluted_Marble_Accent_Tiles_18x36.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/Diana_Royal_Honed_Thin_Fluted_Marble_Tile_4x18.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/Diana_Royal_Honed_Thin_Fluted_Marble_Tile_4x18.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/ASH_LINES_M.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/ASH_LINES_M.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/ASH_LINES_M.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/ASH_LINES_M.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/BASALT_LINES_M.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/BASALT_LINES_M.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/CHALK_LINES_M.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/CHALK_LINES_M.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/CHALK_LINES_S.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/CHALK_LINES_S.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/CHALK_LINES_S.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/CHALK_LINES_S.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/CLAY_LINES_M.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/CLAY_LINES_M.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/CLAY_GRID_M.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/CLAY_GRID_M.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/CLAY_GRID_S.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/CLAY_GRID_S.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/DEEP_BLUE_LINES_M.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/DEEP_BLUE_LINES_M.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/DEEP_BLUE_GRID_M.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/DEEP_BLUE_GRID_M.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/MOSS_LINES_M.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/MOSS_LINES_M.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/MOSS_LINES_M.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/MOSS_LINES_M.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/OFF_WHITE_LINES_M.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/OFF_WHITE_LINES_M.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/OFF_WHITE_LINES_M.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/OFF_WHITE_LINES_M.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/OFF_WHITE_LINES_M.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/OFF_WHITE_LINES_M.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/OFF_WHITE_GRID_S.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/OFF_WHITE_GRID_S.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/Calacatta_Green_Honed_Flute_Trim_Marble_Tile_6x12__1_.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/Calacatta_Green_Honed_Flute_Trim_Marble_Tile_6x12__1_.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
       "source": "book/index.html",
       "raw": "/favicon.svg",
       "normalizedPath": "favicon.svg",
@@ -5125,6 +6545,30 @@
       "source": "creative/index.html",
       "raw": "/apple-touch-icon.png",
       "normalizedPath": "apple-touch-icon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "demo/ptw/checkout/index.html",
+      "raw": "/demo/ptw/assets/ptw-circles-favicon-32x32.png",
+      "normalizedPath": "demo/ptw/assets/ptw-circles-favicon-32x32.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "demo/ptw/checkout/index.html",
+      "raw": "/demo/ptw/assets/ptw-circles-favicon-180x180.png",
+      "normalizedPath": "demo/ptw/assets/ptw-circles-favicon-180x180.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "demo/ptw/checkout/index.html",
+      "raw": "/demo/ptw/assets/ptw-circles-cream.png",
+      "normalizedPath": "demo/ptw/assets/ptw-circles-cream.png",
       "exists": true,
       "rootRelative": true,
       "absolute": false
@@ -5168,6 +6612,134 @@
       "exists": true,
       "rootRelative": true,
       "absolute": true
+    },
+    {
+      "source": "instructions/shipstation/index.html",
+      "raw": "/favicon.svg",
+      "normalizedPath": "favicon.svg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "instructions/shipstation/index.html",
+      "raw": "/favicon.png",
+      "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "instructions/shipstation/index.html",
+      "raw": "/instructions/shipstation/img/ss-awaiting-shipment.png",
+      "normalizedPath": "instructions/shipstation/img/ss-awaiting-shipment.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "instructions/shipstation/index.html",
+      "raw": "/instructions/shipstation/img/ss-import-menu.png",
+      "normalizedPath": "instructions/shipstation/img/ss-import-menu.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "instructions/shipstation/index.html",
+      "raw": "/instructions/shipstation/img/ss-search-order.png",
+      "normalizedPath": "instructions/shipstation/img/ss-search-order.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "instructions/shipstation/index.html",
+      "raw": "/instructions/shipstation/img/ss-configure-shipment.png",
+      "normalizedPath": "instructions/shipstation/img/ss-configure-shipment.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "instructions/shipstation/index.html",
+      "raw": "/instructions/shipstation/img/ss-scale-button.png",
+      "normalizedPath": "instructions/shipstation/img/ss-scale-button.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "instructions/shipstation/index.html",
+      "raw": "/instructions/shipstation/img/ss-create-print-label.png",
+      "normalizedPath": "instructions/shipstation/img/ss-create-print-label.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "instructions/shipstation/index.html",
+      "raw": "/instructions/shipstation/img/ss-print-options.png",
+      "normalizedPath": "instructions/shipstation/img/ss-print-options.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "instructions/shipstation/index.html",
+      "raw": "/instructions/shipstation/img/ss-tracking-details.png",
+      "normalizedPath": "instructions/shipstation/img/ss-tracking-details.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "instructions/shipstation/index.html",
+      "raw": "/instructions/shipstation/img/ss-marketplace-notified.png",
+      "normalizedPath": "instructions/shipstation/img/ss-marketplace-notified.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "instructions/shipstation/index.html",
+      "raw": "/instructions/shipstation/img/ss-void-label.png",
+      "normalizedPath": "instructions/shipstation/img/ss-void-label.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "instructions/shipstation/index.html",
+      "raw": "/instructions/shipstation/img/ss-manage-presets.png",
+      "normalizedPath": "instructions/shipstation/img/ss-manage-presets.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "instructions/shipstation/index.html",
+      "raw": "/instructions/shipstation/img/ss-label-format.png",
+      "normalizedPath": "instructions/shipstation/img/ss-label-format.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "internal/systemresearch/index.html",
+      "raw": "/favicon.svg",
+      "normalizedPath": "favicon.svg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "internal/systemresearch/index.html",
+      "raw": "/favicon.png",
+      "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
     },
     {
       "source": "proposals/_template/index.html",
@@ -5362,6 +6934,22 @@
       "absolute": false
     },
     {
+      "source": "proposals/eidi/index.html",
+      "raw": "/favicon.svg",
+      "normalizedPath": "favicon.svg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/eidi/index.html",
+      "raw": "/favicon.png",
+      "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
       "source": "proposals/fde/index.html",
       "raw": "/favicon.svg",
       "normalizedPath": "favicon.svg",
@@ -5458,6 +7046,134 @@
       "absolute": false
     },
     {
+      "source": "proposals/kaitlyn-wolfe/index.html",
+      "raw": "/favicon.svg",
+      "normalizedPath": "favicon.svg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/kaitlyn-wolfe/index.html",
+      "raw": "/favicon.png",
+      "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/noble/index.html",
+      "raw": "/favicon.svg",
+      "normalizedPath": "favicon.svg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/noble/index.html",
+      "raw": "/favicon.png",
+      "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/noble/index.html",
+      "raw": "/proposals/noble/img/slot-a.jpg",
+      "normalizedPath": "proposals/noble/img/slot-a.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/noble/index.html",
+      "raw": "/proposals/noble/img/slot-b.jpg",
+      "normalizedPath": "proposals/noble/img/slot-b.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/noble/index.html",
+      "raw": "/proposals/noble/img/slot-c.jpg",
+      "normalizedPath": "proposals/noble/img/slot-c.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/noble/index.html",
+      "raw": "/proposals/noble/img/slot-d.jpg",
+      "normalizedPath": "proposals/noble/img/slot-d.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/noble/index.html",
+      "raw": "/proposals/noble/img/slot-e.jpg",
+      "normalizedPath": "proposals/noble/img/slot-e.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/noble/index.html",
+      "raw": "/proposals/noble/img/slot-f.jpg",
+      "normalizedPath": "proposals/noble/img/slot-f.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/opulist/index.html",
+      "raw": "/favicon.svg",
+      "normalizedPath": "favicon.svg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/opulist/index.html",
+      "raw": "/favicon.png",
+      "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/opulist/index.html",
+      "raw": "/proposals/opulist/img/op-01-granblanco-venicebeach.webp",
+      "normalizedPath": "proposals/opulist/img/op-01-granblanco-venicebeach.webp",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/opulist/index.html",
+      "raw": "/proposals/opulist/img/op-02-jeuneetjolie-carlsbad.webp",
+      "normalizedPath": "proposals/opulist/img/op-02-jeuneetjolie-carlsbad.webp",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/opulist/index.html",
+      "raw": "/proposals/opulist/img/op-03-barcecil-palmsprings.webp",
+      "normalizedPath": "proposals/opulist/img/op-03-barcecil-palmsprings.webp",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/opulist/index.html",
+      "raw": "/proposals/opulist/img/op-04-hermitagehotel-nashville.webp",
+      "normalizedPath": "proposals/opulist/img/op-04-hermitagehotel-nashville.webp",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
       "source": "proposals/paste/index.html",
       "raw": "/favicon.svg",
       "normalizedPath": "favicon.svg",
@@ -5471,6 +7187,22 @@
       "normalizedPath": "favicon.png",
       "exists": true,
       "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/sales-school/diagrams/toolchain/03-portal-architecture-outline.html",
+      "raw": "~/Projects/whatarewecapableof/proposals/sales-school/diagrams/svg/03-portal-architecture.svg",
+      "normalizedPath": "proposals/sales-school/diagrams/toolchain/~/Projects/whatarewecapableof/proposals/sales-school/diagrams/svg/03-portal-architecture.svg",
+      "exists": false,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "proposals/sales-school/diagrams/toolchain/03-portal-architecture-review.html",
+      "raw": "~/Projects/whatarewecapableof/proposals/sales-school/diagrams/svg/03-portal-architecture.svg",
+      "normalizedPath": "proposals/sales-school/diagrams/toolchain/~/Projects/whatarewecapableof/proposals/sales-school/diagrams/svg/03-portal-architecture.svg",
+      "exists": false,
+      "rootRelative": false,
       "absolute": false
     },
     {
@@ -5493,22 +7225,6 @@
       "source": "proposals/sales-school/index.html",
       "raw": "/proposals/sales-school/img/current-email-preview.png",
       "normalizedPath": "proposals/sales-school/img/current-email-preview.png",
-      "exists": true,
-      "rootRelative": true,
-      "absolute": false
-    },
-    {
-      "source": "proposals/sales-school/index.html",
-      "raw": "/proposals/sales-school/img/pdf-index-contact-sheet.png",
-      "normalizedPath": "proposals/sales-school/img/pdf-index-contact-sheet.png",
-      "exists": true,
-      "rootRelative": true,
-      "absolute": false
-    },
-    {
-      "source": "proposals/sales-school/index.html",
-      "raw": "/proposals/sales-school/img/wistia-thumbnails-contact-sheet.jpg",
-      "normalizedPath": "proposals/sales-school/img/wistia-thumbnails-contact-sheet.jpg",
       "exists": true,
       "rootRelative": true,
       "absolute": false
@@ -5594,6 +7310,38 @@
       "absolute": false
     },
     {
+      "source": "sitemap/index.html",
+      "raw": "/favicon.svg",
+      "normalizedPath": "favicon.svg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "sitemap/index.html",
+      "raw": "/favicon.png",
+      "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "sitemap/index.html",
+      "raw": "/apple-touch-icon.png",
+      "normalizedPath": "apple-touch-icon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "sitemap/index.html",
+      "raw": "els.svg",
+      "normalizedPath": "sitemap/els.svg",
+      "exists": false,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
       "source": "tracker/index.html",
       "raw": "/favicon.svg",
       "normalizedPath": "favicon.svg",
@@ -5616,8 +7364,458 @@
       "exists": true,
       "rootRelative": true,
       "absolute": false
+    },
+    {
+      "source": "work/fde/index.html",
+      "raw": "/favicon.svg",
+      "normalizedPath": "favicon.svg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "work/fde/index.html",
+      "raw": "/favicon.png",
+      "normalizedPath": "favicon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "work/fde/index.html",
+      "raw": "/apple-touch-icon.png",
+      "normalizedPath": "apple-touch-icon.png",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "work/fde/index.html",
+      "raw": "/proposals/fde/img/fde-01-atmosphere.jpg",
+      "normalizedPath": "proposals/fde/img/fde-01-atmosphere.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "work/fde/index.html",
+      "raw": "/proposals/fde/img/fde-14-classroom.jpg",
+      "normalizedPath": "proposals/fde/img/fde-14-classroom.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "work/fde/index.html",
+      "raw": "/proposals/fde/img/fde-10-community.jpg",
+      "normalizedPath": "proposals/fde/img/fde-10-community.jpg",
+      "exists": true,
+      "rootRelative": true,
+      "absolute": false
     }
   ],
-  "missing": [],
-  "relativeLocalRefs": []
+  "missing": [
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/Bahar_Honed__Limestone_Mosaic_12x10__1_.webp",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/Bahar_Honed__Limestone_Mosaic_12x10__1_.webp",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/Calacatta_Viola_Honed_Thin_Fluted_Marble_Accent_Tiles_18x36.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/Calacatta_Viola_Honed_Thin_Fluted_Marble_Accent_Tiles_18x36.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/Diana_Royal_Honed_Thin_Fluted_Marble_Tile_4x18.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/Diana_Royal_Honed_Thin_Fluted_Marble_Tile_4x18.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/ASH_LINES_M.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/ASH_LINES_M.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/ASH_LINES_M.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/ASH_LINES_M.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/BASALT_LINES_M.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/BASALT_LINES_M.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/CHALK_LINES_M.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/CHALK_LINES_M.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/CHALK_LINES_S.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/CHALK_LINES_S.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/CHALK_LINES_S.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/CHALK_LINES_S.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/CLAY_LINES_M.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/CLAY_LINES_M.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/CLAY_GRID_M.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/CLAY_GRID_M.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/CLAY_GRID_S.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/CLAY_GRID_S.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/DEEP_BLUE_LINES_M.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/DEEP_BLUE_LINES_M.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/DEEP_BLUE_GRID_M.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/DEEP_BLUE_GRID_M.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/MOSS_LINES_M.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/MOSS_LINES_M.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/MOSS_LINES_M.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/MOSS_LINES_M.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/OFF_WHITE_LINES_M.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/OFF_WHITE_LINES_M.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/OFF_WHITE_LINES_M.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/OFF_WHITE_LINES_M.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/OFF_WHITE_LINES_M.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/OFF_WHITE_LINES_M.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/OFF_WHITE_GRID_S.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/OFF_WHITE_GRID_S.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "apps/substratepricing/index.html",
+      "raw": "/Customer-Content/www/products/Photos/Original/Calacatta_Green_Honed_Flute_Trim_Marble_Tile_6x12__1_.jpg",
+      "normalizedPath": "Customer-Content/www/products/Photos/Original/Calacatta_Green_Honed_Flute_Trim_Marble_Tile_6x12__1_.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/noble/index.html",
+      "raw": "/proposals/noble/img/slot-a.jpg",
+      "normalizedPath": "proposals/noble/img/slot-a.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/noble/index.html",
+      "raw": "/proposals/noble/img/slot-b.jpg",
+      "normalizedPath": "proposals/noble/img/slot-b.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/noble/index.html",
+      "raw": "/proposals/noble/img/slot-c.jpg",
+      "normalizedPath": "proposals/noble/img/slot-c.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/noble/index.html",
+      "raw": "/proposals/noble/img/slot-d.jpg",
+      "normalizedPath": "proposals/noble/img/slot-d.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/noble/index.html",
+      "raw": "/proposals/noble/img/slot-e.jpg",
+      "normalizedPath": "proposals/noble/img/slot-e.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/noble/index.html",
+      "raw": "/proposals/noble/img/slot-f.jpg",
+      "normalizedPath": "proposals/noble/img/slot-f.jpg",
+      "exists": false,
+      "rootRelative": true,
+      "absolute": false
+    },
+    {
+      "source": "proposals/sales-school/diagrams/toolchain/03-portal-architecture-outline.html",
+      "raw": "~/Projects/whatarewecapableof/proposals/sales-school/diagrams/svg/03-portal-architecture.svg",
+      "normalizedPath": "proposals/sales-school/diagrams/toolchain/~/Projects/whatarewecapableof/proposals/sales-school/diagrams/svg/03-portal-architecture.svg",
+      "exists": false,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "proposals/sales-school/diagrams/toolchain/03-portal-architecture-review.html",
+      "raw": "~/Projects/whatarewecapableof/proposals/sales-school/diagrams/svg/03-portal-architecture.svg",
+      "normalizedPath": "proposals/sales-school/diagrams/toolchain/~/Projects/whatarewecapableof/proposals/sales-school/diagrams/svg/03-portal-architecture.svg",
+      "exists": false,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "sitemap/index.html",
+      "raw": "els.svg",
+      "normalizedPath": "sitemap/els.svg",
+      "exists": false,
+      "rootRelative": false,
+      "absolute": false
+    }
+  ],
+  "relativeLocalRefs": [
+    {
+      "source": "apps/arbysboys-snake/game.js",
+      "raw": "assets/curly-head-v3.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/curly-head-v3.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/game.js",
+      "raw": "assets/beef-n-cheddar.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/beef-n-cheddar.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/game.js",
+      "raw": "assets/boys-logo.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/boys-logo.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/game.js",
+      "raw": "assets/curly-stage-1.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/curly-stage-1.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/game.js",
+      "raw": "assets/curly-stage-2.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/curly-stage-2.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/game.js",
+      "raw": "assets/curly-stage-3.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/curly-stage-3.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/game.js",
+      "raw": "assets/curly-stage-4.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/curly-stage-4.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/game.js",
+      "raw": "assets/curly-stage-5.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/curly-stage-5.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/index.html",
+      "raw": "assets/favicon.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/favicon.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/index.html",
+      "raw": "assets/boys-logo.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/boys-logo.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/index.html",
+      "raw": "assets/curly-head-v3.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/curly-head-v3.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/index.html",
+      "raw": "assets/curly-stage-1.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/curly-stage-1.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/index.html",
+      "raw": "assets/beef-n-cheddar.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/beef-n-cheddar.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/index.html",
+      "raw": "assets/beef-n-cheddar.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/beef-n-cheddar.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/index.html",
+      "raw": "assets/boys-logo.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/boys-logo.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/index.html",
+      "raw": "assets/movement-controls-v3.svg",
+      "normalizedPath": "apps/arbysboys-snake/assets/movement-controls-v3.svg",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "apps/arbysboys-snake/index.html",
+      "raw": "assets/curly-stage-1.png",
+      "normalizedPath": "apps/arbysboys-snake/assets/curly-stage-1.png",
+      "exists": true,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "proposals/sales-school/diagrams/toolchain/03-portal-architecture-outline.html",
+      "raw": "~/Projects/whatarewecapableof/proposals/sales-school/diagrams/svg/03-portal-architecture.svg",
+      "normalizedPath": "proposals/sales-school/diagrams/toolchain/~/Projects/whatarewecapableof/proposals/sales-school/diagrams/svg/03-portal-architecture.svg",
+      "exists": false,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "proposals/sales-school/diagrams/toolchain/03-portal-architecture-review.html",
+      "raw": "~/Projects/whatarewecapableof/proposals/sales-school/diagrams/svg/03-portal-architecture.svg",
+      "normalizedPath": "proposals/sales-school/diagrams/toolchain/~/Projects/whatarewecapableof/proposals/sales-school/diagrams/svg/03-portal-architecture.svg",
+      "exists": false,
+      "rootRelative": false,
+      "absolute": false
+    },
+    {
+      "source": "sitemap/index.html",
+      "raw": "els.svg",
+      "normalizedPath": "sitemap/els.svg",
+      "exists": false,
+      "rootRelative": false,
+      "absolute": false
+    }
+  ]
 }

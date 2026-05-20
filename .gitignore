@@ -6,6 +6,19 @@ design/claude-session.log
 design/reference-analysis/_quarantine/
 .env*.local
 
+# Local agent/workboard and private ops artifacts
+.pi/
+.mail/
+.sheets/
+.shopify/
+.finance/
+
+# Local-only research and handoff artifacts
+internal/systemresearch/claude-*.md
+trademark/
+scripts/id-manual-search.mjs
+scripts/trademark-search.mjs
+
 # Local-only proposal planning boards
 proposals/*/slots/
 

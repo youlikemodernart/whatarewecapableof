@@ -127,6 +127,22 @@ body {
   line-height: 1.5;
 }
 
+.about-link {
+  display: block;
+  color: var(--fg-muted);
+  font-size: 13px;
+  opacity: 0.5;
+  text-decoration: none;
+  text-align: center;
+  padding: 20px 0 0;
+  flex-shrink: 0;
+  transition: opacity 200ms ease;
+}
+
+.about-link:hover {
+  opacity: 0.8;
+}
+
 #messages {
   position: absolute;
   inset: 0;
@@ -246,10 +262,11 @@ body {
 </svg>
 
 <main id="chat">
+  <a href="/dream/about" class="about-link">What am I interacting with?</a>
   <div id="body">
     <div id="disclosure">
       <p class="prompt-text">Describe your dream.</p>
-      <p class="disclosure-text">This is a well trained language model and nothing more. Nothing is stored.</p>
+      <p class="disclosure-text">This is a well trained language model<br>and nothing more. Nothing is stored.</p>
     </div>
     <div id="messages" role="log" aria-live="polite" aria-label="Dream conversation">
       <div id="messages-inner"></div>

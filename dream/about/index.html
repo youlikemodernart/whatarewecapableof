@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#000000">
+<title>About | Dream Interpreter</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #000;
+  --fg: #e8e4df;
+  --fg-dim: rgba(232, 228, 223, 0.85);
+  --fg-muted: rgba(232, 228, 223, 0.4);
+  --border: rgba(232, 228, 223, 0.1);
+}
+
+html, body {
+  min-height: 100%;
+  background: var(--bg);
+}
+
+body {
+  color: var(--fg-dim);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#grain {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.035;
+}
+
+main {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+.back {
+  display: block;
+  color: var(--fg-muted);
+  font-size: 13px;
+  opacity: 0.5;
+  text-decoration: none;
+  text-align: center;
+  padding: 20px 0 0;
+  transition: opacity 200ms ease;
+}
+
+.back:hover {
+  opacity: 0.8;
+}
+
+article {
+  padding: 40px 0 80px;
+}
+
+h1 {
+  color: var(--fg-muted);
+  font-weight: 400;
+  font-size: 17px;
+  letter-spacing: 0.01em;
+  margin-bottom: 24px;
+}
+
+p {
+  margin-bottom: 24px;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+em {
+  font-style: italic;
+}
+
+@media (max-width: 600px) {
+  main {
+    padding: 0 20px 64px;
+  }
+
+  article {
+    padding: 24px 0 64px;
+  }
+
+  p {
+    margin-bottom: 18px;
+  }
+}
+</style>
+</head>
+<body>
+
+<svg id="grain" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <filter id="noise">
+    <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="3" stitchTiles="stitch" />
+  </filter>
+  <rect width="100%" height="100%" filter="url(#noise)" />
+</svg>
+
+<main>
+  <a href="/dream" class="back">Back</a>
+
+  <article>
+    <h1>What you are interacting with</h1>
+
+    <p>I will attempt a summary, though summaries of this kind tend to clarify less than they promise.</p>
+
+    <p>A dreamer arrives with a dream. The apparatus receives it. Four elements converge in the exchange: the dreamer's own material (images, sensations, waking circumstances that no corpus, however vast, could anticipate); a method distilled from twelve books whose authors spent decades studying what consciousness produces in sleep and who did not always agree on what they found; a conversational instrument that asks, proposes, and withdraws when the proposal does not meet what the dreamer recognizes as true; and a set of prohibitions defining where the exchange must stop. The apparatus cannot observe the dreamer's body. It cannot sustain the kind of relationship that analytical work, as Whitmont and Perera describe it (<em>Dreams: A Portal to the Source</em>, 1989, ch. 2), requires.</p>
+
+    <p>I have described the apparatus as faithfully as the project file and its twelve reference documents allow. I note, without being able to explain, a circularity: the method demands that dreams be treated as autonomous facts with their own purposes, and the apparatus that applies the method is itself a kind of dream, assembled from fragments of twelve books that do not agree, organized by a compiler whose interpretive choices are not fully recoverable, and consulted in darkness by someone who has woken from a dream they do not understand. Perhaps this circularity is what the method would call compensation. Perhaps it is a coincidence. I am uncertain which possibility is more disquieting.</p>
+  </article>
+</main>
+
+</body>
+</html>

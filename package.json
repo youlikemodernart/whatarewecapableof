@@ -5,6 +5,7 @@
     "check:type-hierarchy": "node scripts/check-type-hierarchy.mjs"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.52.0",
     "googleapis": "^171.4.0"
   }
 }

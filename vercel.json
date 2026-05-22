@@ -5,6 +5,7 @@
     }
   },
   "routes": [
+    { "src": "/\\.pi(?:/.*)?", "status": 404, "dest": "/404.html" },
     { "src": "/.*\\.md", "status": 404, "dest": "/404.html" },
     { "src": "/.*\\.json", "status": 404, "dest": "/404.html" },
     { "src": "/docs(?:/.*)?", "status": 404, "dest": "/404.html" },

@@ -6,23 +6,6 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#000000">
 <title>Dream Interpreter</title>
-<script>
-(function () {
-  var theme = 'dream';
-  try {
-    var stored = localStorage.getItem('dream-theme');
-    if (stored === 'morning' || stored === 'dream') {
-      theme = stored;
-    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-      theme = 'morning';
-    }
-  } catch (err) {}
-
-  if (theme === 'morning') document.documentElement.setAttribute('data-theme', 'morning');
-  var meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute('content', theme === 'morning' ? '#f2ede7' : '#000000');
-})();
-</script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -38,14 +21,6 @@
   --input-bottom-padding: max(24px, env(safe-area-inset-bottom, 24px));
 }
 
-:root[data-theme="morning"] {
-  --bg: #f2ede7;
-  --fg: #2a2520;
-  --fg-dim: rgba(42, 37, 32, 0.85);
-  --fg-muted: rgba(42, 37, 32, 0.4);
-  --accent: #c4956a;
-  --border: rgba(42, 37, 32, 0.1);
-}
 
 @supports (height: 100dvh) {
   :root { --vv-height: 100dvh; }
@@ -163,52 +138,6 @@ body {
   opacity: 0.8;
 }
 
-.theme-toggle {
-  position: absolute;
-  top: 8px;
-  right: 24px;
-  z-index: 4;
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--fg-muted);
-  opacity: 0.5;
-  background: transparent;
-  border: 0;
-  border-radius: 999px;
-  padding: 0;
-  cursor: pointer;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-  transition: opacity 200ms ease;
-}
-
-.theme-toggle:hover {
-  opacity: 0.8;
-}
-
-.theme-toggle:focus-visible {
-  outline: 1px solid var(--fg-muted);
-  outline-offset: -6px;
-}
-
-.theme-toggle svg {
-  display: block;
-  width: 24px;
-  height: 24px;
-}
-
-.theme-toggle-rays {
-  opacity: 0;
-  transition: opacity 240ms ease;
-}
-
-:root[data-theme="morning"] .theme-toggle-rays {
-  opacity: 1;
-}
-
 #messages {
   position: absolute;
   inset: 0;
@@ -271,12 +200,10 @@ body {
   .msg { animation: none; opacity: 1; transform: none; }
   #disclosure { transition: none; }
   #messages { transition: none; }
-  .theme-toggle-rays { transition: none; }
 }
 
 @media (max-width: 600px) {
   #chat { padding: 0 20px; }
-  .theme-toggle { right: 20px; }
   .msg { margin-bottom: 18px; }
   .msg-assistant { padding-left: 12px; }
   #messages-inner { padding: 24px 0 12px; }
@@ -336,21 +263,6 @@ body {
 
 <main id="chat">
   <a href="/dream/about" class="about-link">What am I interacting with?</a>
-  <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to morning mode">
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <circle cx="12" cy="12" r="5.5" fill="none" stroke="currentColor" stroke-width="1" />
-      <g class="theme-toggle-rays" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round">
-        <path d="M12 2.5v3" />
-        <path d="M12 18.5v3" />
-        <path d="M2.5 12h3" />
-        <path d="M18.5 12h3" />
-        <path d="M5.3 5.3l2.1 2.1" />
-        <path d="M16.6 16.6l2.1 2.1" />
-        <path d="M18.7 5.3l-2.1 2.1" />
-        <path d="M7.4 16.6l-2.1 2.1" />
-      </g>
-    </svg>
-  </button>
   <div id="body">
     <div id="disclosure">
       <p class="disclosure-text">This is a well-trained language model<br>and nothing more. Nothing is stored.</p>
@@ -379,8 +291,6 @@ body {
   var chatEl = document.getElementById('chat');
   var bodyEl = document.getElementById('body');
   var inputArea = document.getElementById('input-area');
-  var themeToggle = document.getElementById('theme-toggle');
-  var metaTheme = document.querySelector('meta[name="theme-color"]');
 
   var conversation = [];
   var streaming = false;
@@ -393,48 +303,7 @@ body {
   var debugRaf = 0;
   var debugLastSource = 'load';
   var debugHistory = [];
-  var currentTheme = 'dream';
   var ringRgb = '232, 228, 223';
-
-  function resolveTheme() {
-    try {
-      var stored = localStorage.getItem('dream-theme');
-      if (stored === 'morning' || stored === 'dream') return stored;
-    } catch (err) {}
-
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-      return 'morning';
-    }
-
-    return root.getAttribute('data-theme') === 'morning' ? 'morning' : 'dream';
-  }
-
-  function applyTheme(theme, persist) {
-    currentTheme = theme === 'morning' ? 'morning' : 'dream';
-    if (currentTheme === 'morning') {
-      root.setAttribute('data-theme', 'morning');
-      ringRgb = '42, 37, 32';
-    } else {
-      root.removeAttribute('data-theme');
-      ringRgb = '232, 228, 223';
-    }
-
-    if (metaTheme) metaTheme.setAttribute('content', currentTheme === 'morning' ? '#f2ede7' : '#000000');
-    if (themeToggle) themeToggle.setAttribute('aria-label', currentTheme === 'morning' ? 'Switch to dream mode' : 'Switch to morning mode');
-
-    if (persist) {
-      try { localStorage.setItem('dream-theme', currentTheme); } catch (err) {}
-    }
-  }
-
-  applyTheme(resolveTheme(), false);
-
-  if (themeToggle) {
-    themeToggle.addEventListener('click', function () {
-      applyTheme(currentTheme === 'morning' ? 'dream' : 'morning', true);
-      if (reducedMotion) drawField();
-    });
-  }
 
   // ── Canvas ──
 

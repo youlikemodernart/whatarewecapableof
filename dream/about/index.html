@@ -6,6 +6,23 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#000000">
 <title>About | Dream Interpreter</title>
+<script>
+(function () {
+  var theme = 'dream';
+  try {
+    var stored = localStorage.getItem('dream-theme');
+    if (stored === 'morning' || stored === 'dream') {
+      theme = stored;
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+      theme = 'morning';
+    }
+  } catch (err) {}
+
+  if (theme === 'morning') document.documentElement.setAttribute('data-theme', 'morning');
+  var meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', theme === 'morning' ? '#f2ede7' : '#000000');
+})();
+</script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -14,12 +31,22 @@
   --fg: #e8e4df;
   --fg-dim: rgba(232, 228, 223, 0.85);
   --fg-muted: rgba(232, 228, 223, 0.4);
+  --accent: #c4956a;
   --border: rgba(232, 228, 223, 0.1);
+}
+
+:root[data-theme="morning"] {
+  --bg: #f2ede7;
+  --fg: #2a2520;
+  --fg-dim: rgba(42, 37, 32, 0.85);
+  --fg-muted: rgba(42, 37, 32, 0.4);
+  --accent: #c4956a;
+  --border: rgba(42, 37, 32, 0.1);
 }
 
 html, body {
   min-height: 100%;
-  background: var(--bg);
+  background-color: var(--bg);
 }
 
 body {
@@ -29,6 +56,7 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 400ms ease, color 400ms ease;
 }
 
 #grain {
@@ -55,12 +83,58 @@ main {
   opacity: 0.5;
   text-decoration: none;
   text-align: left;
-  padding: 20px 0 0;
+  padding: 20px 64px 0 0;
   transition: opacity 200ms ease;
 }
 
 .back:hover {
   opacity: 0.8;
+}
+
+.theme-toggle {
+  position: absolute;
+  top: 8px;
+  right: 24px;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg-muted);
+  opacity: 0.5;
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  padding: 0;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 200ms ease;
+}
+
+.theme-toggle:hover {
+  opacity: 0.8;
+}
+
+.theme-toggle:focus-visible {
+  outline: 1px solid var(--fg-muted);
+  outline-offset: -6px;
+}
+
+.theme-toggle svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+.theme-toggle-rays {
+  opacity: 0;
+  transition: opacity 240ms ease;
+}
+
+:root[data-theme="morning"] .theme-toggle-rays {
+  opacity: 1;
 }
 
 article {
@@ -87,10 +161,17 @@ em {
   font-style: italic;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  body { transition: none; }
+  .theme-toggle-rays { transition: none; }
+}
+
 @media (max-width: 600px) {
   main {
     padding: 0 20px 64px;
   }
+
+  .theme-toggle { right: 20px; }
 
   article {
     padding: 24px 0 64px;
@@ -113,6 +194,21 @@ em {
 
 <main>
   <a href="/dream" class="back">back</a>
+  <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to morning mode">
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <circle cx="12" cy="12" r="5.5" fill="none" stroke="currentColor" stroke-width="1" />
+      <g class="theme-toggle-rays" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round">
+        <path d="M12 2.5v3" />
+        <path d="M12 18.5v3" />
+        <path d="M2.5 12h3" />
+        <path d="M18.5 12h3" />
+        <path d="M5.3 5.3l2.1 2.1" />
+        <path d="M16.6 16.6l2.1 2.1" />
+        <path d="M18.7 5.3l-2.1 2.1" />
+        <path d="M7.4 16.6l-2.1 2.1" />
+      </g>
+    </svg>
+  </button>
 
   <article>
     <h1>What you are interacting with</h1>
@@ -124,6 +220,52 @@ em {
     <p>I have described the apparatus as faithfully as the project file and its twelve reference documents allow. I note, without being able to explain, a circularity: the method demands that dreams be treated as autonomous facts with their own purposes, and the apparatus that applies the method is itself a kind of dream, assembled from fragments of twelve books that do not agree, organized by a compiler whose interpretive choices are not fully recoverable, and consulted in darkness by someone who has woken from a dream they do not understand. Perhaps this circularity is what the method would call compensation. Perhaps it is a coincidence. I am uncertain which possibility is more disquieting.</p>
   </article>
 </main>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var themeToggle = document.getElementById('theme-toggle');
+  var metaTheme = document.querySelector('meta[name="theme-color"]');
+  var currentTheme = 'dream';
+
+  function resolveTheme() {
+    try {
+      var stored = localStorage.getItem('dream-theme');
+      if (stored === 'morning' || stored === 'dream') return stored;
+    } catch (err) {}
+
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+      return 'morning';
+    }
+
+    return root.getAttribute('data-theme') === 'morning' ? 'morning' : 'dream';
+  }
+
+  function applyTheme(theme, persist) {
+    currentTheme = theme === 'morning' ? 'morning' : 'dream';
+    if (currentTheme === 'morning') {
+      root.setAttribute('data-theme', 'morning');
+    } else {
+      root.removeAttribute('data-theme');
+    }
+
+    if (metaTheme) metaTheme.setAttribute('content', currentTheme === 'morning' ? '#f2ede7' : '#000000');
+    if (themeToggle) themeToggle.setAttribute('aria-label', currentTheme === 'morning' ? 'Switch to dream mode' : 'Switch to morning mode');
+
+    if (persist) {
+      try { localStorage.setItem('dream-theme', currentTheme); } catch (err) {}
+    }
+  }
+
+  applyTheme(resolveTheme(), false);
+
+  if (themeToggle) {
+    themeToggle.addEventListener('click', function () {
+      applyTheme(currentTheme === 'morning' ? 'dream' : 'morning', true);
+    });
+  }
+})();
+</script>
 
 </body>
 </html>

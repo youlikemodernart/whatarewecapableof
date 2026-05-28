@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WAWCO TrendScope</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #fff;
+      color: #1f1f1f;
+      line-height: 1.6;
+    }
+    header {
+      border-bottom: 1px solid #e0e0e0;
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo { font-weight: 700; font-size: 18px; }
+    .logo span { color: #e60023; }
+    .btn {
+      display: inline-block;
+      padding: 10px 24px;
+      border-radius: 24px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+    }
+    .btn-primary {
+      background: #e60023;
+      color: #fff;
+    }
+    .btn-primary:hover { background: #b3001b; }
+    .btn-outline {
+      background: #fff;
+      color: #e60023;
+      border: 2px solid #e60023;
+    }
+    .hero {
+      max-width: 720px;
+      margin: 80px auto;
+      text-align: center;
+      padding: 0 24px;
+    }
+    .hero h1 { font-size: 36px; margin-bottom: 16px; }
+    .hero p { font-size: 18px; color: #555; margin-bottom: 32px; }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      max-width: 900px;
+      margin: 0 auto 60px;
+      padding: 0 24px;
+    }
+    .feature {
+      padding: 24px;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+    }
+    .feature h3 { font-size: 16px; margin-bottom: 8px; }
+    .feature p { font-size: 14px; color: #555; }
+    /* Dashboard view (hidden by default) */
+    #dashboard { display: none; }
+    .dash-header {
+      border-bottom: 1px solid #e0e0e0;
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .dash-content {
+      max-width: 960px;
+      margin: 40px auto;
+      padding: 0 24px;
+    }
+    .dash-content h2 { font-size: 24px; margin-bottom: 8px; }
+    .dash-content .subtitle { color: #888; margin-bottom: 40px; }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .card {
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .card h3 { font-size: 15px; color: #888; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .trend-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+    }
+    .trend-item .up { color: #00a341; }
+    .trend-item .term { font-weight: 500; }
+    .bar-container { margin-top: 12px; }
+    .bar-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
+    .bar-track { height: 6px; background: #f0f0f0; border-radius: 3px; }
+    .bar-fill { height: 100%; background: #e60023; border-radius: 3px; }
+    .insight-box {
+      background: #fafafa;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .insight-box h4 { font-size: 14px; margin-bottom: 4px; }
+    .insight-box p { font-size: 14px; color: #555; }
+  </style>
+</head>
+<body>
+  <!-- LANDING VIEW -->
+  <div id="landing">
+    <header>
+      <div class="logo">WAWCO <span>TrendScope</span></div>
+      <a href="#" class="btn btn-primary" onclick="showDashboard()">Connect Pinterest</a>
+    </header>
+    <div class="hero">
+      <h1>Discover visual trends before they peak</h1>
+      <p>WAWCO TrendScope connects to your Pinterest account and surfaces the search data, related terms, and audience analytics that signal where visual culture is heading.</p>
+      <a href="#" class="btn btn-primary" onclick="showDashboard()" style="font-size: 16px; padding: 14px 36px;">Connect Pinterest &rarr;</a>
+    </div>
+    <div class="features">
+      <div class="feature">
+        <h3>Search Trend Tracking</h3>
+        <p>Monitor how search volume shifts across terms and categories. Spot rising trends before they hit the mainstream.</p>
+      </div>
+      <div class="feature">
+        <h3>Related Term Discovery</h3>
+        <p>See what adjacent searches Pinterest connects to your terms for content strategy and keyword planning.</p>
+      </div>
+      <div class="feature">
+        <h3>Competitive Landscape</h3>
+        <p>Map the trend space around your brand. Identify which territories are crowded and which are open.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD VIEW (shown after "auth") -->
+  <div id="dashboard">
+    <div class="dash-header">
+      <div class="logo">WAWCO <span>TrendScope</span></div>
+      <div style="display: flex; gap: 12px; align-items: center;">
+        <span style="font-size: 14px; color: #888;">Connected: noah@whatarewecapableof.com</span>
+        <a href="#" class="btn btn-outline" style="font-size: 13px; padding: 6px 16px;" onclick="location.reload()">Disconnect</a>
+      </div>
+    </div>
+    <div class="dash-content">
+      <h2>Trend Dashboard</h2>
+      <p class="subtitle">Search trend data from your connected Pinterest account</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <h3>Trending Search Terms</h3>
+          <div class="trend-item"><span class="term">modern architecture</span><span class="up">&uarr; 34%</span></div>
+          <div class="trend-item"><span class="term">japandi interior</span><span class="up">&uarr; 28%</span></div>
+          <div class="trend-item"><span class="term">biophilic design</span><span class="up">&uarr; 22%</span></div>
+          <div class="trend-item"><span class="term">warm minimalism</span><span class="up">&uarr; 19%</span></div>
+          <div class="trend-item"><span class="term">textured neutrals</span><span class="up">&uarr; 15%</span></div>
+        </div>
+        <div class="card">
+          <h3>Related Term Clusters</h3>
+          <div class="trend-item"><span class="term">interior design</span><span>&rarr; organic modern, limewash walls, curved furniture</span></div>
+          <div class="trend-item"><span class="term">graphic design</span><span>&rarr; brutalist type, risograph textures, grid deconstruction</span></div>
+          <div class="trend-item"><span class="term">fashion 2026</span><span>&rarr; quiet luxury, tailored denim, tonal dressing</span></div>
+          <div class="trend-item"><span class="term">brand identity</span><span>&rarr; wordmark revival, heritage colors, mono weight</span></div>
+        </div>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <h3>Category Trend Strength</h3>
+          <div class="bar-container">
+            <div class="bar-label"><span>Home &amp; Design</span><span>92%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:92%"></div></div>
+          </div>
+          <div class="bar-container">
+            <div class="bar-label"><span>Fashion</span><span>78%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:78%"></div></div>
+          </div>
+          <div class="bar-container">
+            <div class="bar-label"><span>Beauty</span><span>65%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:65%"></div></div>
+          </div>
+          <div class="bar-container">
+            <div class="bar-label"><span>Food &amp; Drink</span><span>58%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:58%"></div></div>
+          </div>
+          <div class="bar-container">
+            <div class="bar-label"><span>Travel</span><span>47%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:47%"></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Audience Insights</h3>
+          <div class="bar-container">
+            <div class="bar-label"><span>Impressions (30d)</span><span>847,200</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:85%"></div></div>
+          </div>
+          <div class="bar-container">
+            <div class="bar-label"><span>Pin Clicks</span><span>62,400</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:62%"></div></div>
+          </div>
+          <div class="bar-container">
+            <div class="bar-label"><span>Saves</span><span>18,900</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:38%"></div></div>
+          </div>
+          <div class="bar-container">
+            <div class="bar-label"><span>Outbound Clicks</span><span>8,200</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:18%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showDashboard() {
+      document.getElementById('landing').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+    }
+  </script>
+</body>
+</html>

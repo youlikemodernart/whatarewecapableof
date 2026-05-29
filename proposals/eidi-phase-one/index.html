@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="A first AI operations build for Eidi Properties. Private draft prepared after the second call.">
+<meta name="theme-color" content="#ffffff">
+<title>Eidi Properties | What are we capable of?</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/typography.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="/css/proposal-media.css?v=rules-20260427">
+<style>
+  html {
+    overflow-x: clip;
+  }
+
+  .page-proposal {
+    --proposal-header-height: calc(var(--space-1) + var(--space-0-5));
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    padding: 0 var(--margin-inline) var(--margin-block);
+  }
+
+  .page-proposal main {
+    flex: 1;
+    max-width: var(--content-width-prose);
+    padding-top: var(--space-1);
+  }
+
+  .proposal-header {
+    min-height: var(--proposal-header-height);
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--color-bg);
+    margin-inline: calc(-1 * var(--margin-inline));
+    padding-inline: var(--margin-inline);
+  }
+
+  .proposal-home {
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .proposal-meta {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--color-text);
+    opacity: 0.4;
+  }
+
+  .proposal-title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: var(--size-m);
+    margin-top: var(--space-1);
+    max-width: 52ch;
+  }
+
+  .proposal-guide {
+    font-size: var(--size-m);
+    max-width: 52ch;
+  }
+
+  .proposal-guide strong {
+    font-weight: 700;
+  }
+
+  .tab-content > p,
+  .scope-phase p,
+  .category-item p,
+  .guardrail-item p,
+  .closing p {
+    max-width: 52ch;
+  }
+
+  .tabs {
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-0-5) 0;
+    position: sticky;
+    top: var(--proposal-header-height);
+    background: var(--color-bg);
+    z-index: 15;
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tabs::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: calc(-1 * var(--margin-inline));
+    width: 100vw;
+    height: 1px;
+    background: var(--color-text);
+  }
+
+  .tab {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    text-decoration: none;
+    cursor: pointer;
+    color: var(--color-text);
+    opacity: 0.4;
+    border: none;
+    background: none;
+    padding: 0;
+    transition: opacity var(--transition-default);
+    white-space: nowrap;
+  }
+
+  .tab:hover { text-decoration: none; opacity: 0.7; }
+  .tab.active { opacity: 1; }
+
+  .tab-content {
+    padding-top: var(--space-2);
+  }
+
+  .tabbed .tab-content {
+    display: none;
+    padding-top: var(--space-2);
+  }
+  .tabbed .tab-content.active { display: block; }
+
+  .section-heading {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    margin-top: var(--space-4);
+    margin-bottom: var(--space-1);
+    padding-top: var(--space-1);
+    border-top: 1px solid rgba(0,0,0,0.15);
+  }
+
+  .section-heading:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .scope-phase {
+    margin-bottom: var(--space-3);
+  }
+
+  .scope-phase .phase-label,
+  .category-label,
+  .guardrail-label,
+  .meta-label {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.4;
+  }
+
+  .scope-phase .phase-label {
+    margin-bottom: calc(var(--space-0-5) * 0.5);
+  }
+
+  .scope-phase h3,
+  .category-item h3,
+  .guardrail-item h3 {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--size-m);
+    margin-bottom: var(--space-0-5);
+  }
+
+  .scope-phase ul,
+  .scope-phase ol {
+    margin: var(--space-0-5) 0 0;
+    padding-left: 1.25rem;
+    list-style: none;
+  }
+
+  .scope-phase li {
+    font-size: var(--size-m);
+    margin-bottom: var(--space-0-5);
+    position: relative;
+  }
+
+  .scope-phase li::before {
+    content: "";
+    position: absolute;
+    left: -1rem;
+    top: 0.55em;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--color-text);
+    opacity: 0.25;
+  }
+
+  .scope-phase ol {
+    counter-reset: phase-step;
+  }
+
+  .scope-phase ol li::before {
+    counter-increment: phase-step;
+    content: counter(phase-step);
+    left: -1.25rem;
+    top: 0;
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    background: none;
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.45;
+  }
+
+  .category-list,
+  .guardrail-list {
+    margin: var(--space-1) 0 var(--space-3);
+  }
+
+  .category-item {
+    display: grid;
+    grid-template-columns: minmax(9rem, 0.8fr) minmax(0, 2.2fr);
+    gap: var(--space-1);
+    padding: var(--space-1) 0;
+    border-top: 1px solid rgba(0,0,0,0.12);
+  }
+
+  .category-item:first-child {
+    border-top: 1px solid var(--color-text);
+  }
+
+  .category-label {
+    margin-bottom: calc(var(--space-0-5) * 0.5);
+  }
+
+  .category-item p:last-child,
+  .guardrail-item p:last-child {
+    margin-bottom: 0;
+  }
+
+  .category-meta {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-1);
+    margin-top: var(--space-1);
+  }
+
+  .category-meta p {
+    font-size: var(--size-s);
+    margin: calc(var(--space-0-5) * 0.5) 0 0;
+  }
+
+  .guardrail-item {
+    display: grid;
+    grid-template-columns: minmax(9rem, 0.8fr) minmax(0, 2.2fr);
+    gap: var(--space-1);
+    padding: var(--space-1) 0;
+    border-top: 1px solid rgba(0,0,0,0.12);
+  }
+
+  .guardrail-item:first-child {
+    border-top: 1px solid var(--color-text);
+  }
+
+  .callout {
+    margin: var(--space-2) 0 var(--space-3);
+    padding-top: var(--space-1);
+    border-top: 1px solid var(--color-text);
+  }
+
+  .callout p:last-child {
+    margin-bottom: 0;
+  }
+
+  .closing {
+    margin-top: var(--space-3);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-text);
+  }
+
+  .closing p:last-of-type {
+    margin-top: var(--space-1);
+  }
+
+  .page-proposal footer {
+    margin-top: var(--space-4);
+    padding-top: var(--space-1);
+    border-top: 1px solid rgba(0,0,0,0.08);
+  }
+
+  @media (max-width: 767px) {
+    :root {
+      --margin-inline: var(--space-1);
+    }
+    .tabs {
+      gap: var(--space-0-5);
+    }
+    .tab {
+      font-size: var(--size-xs);
+    }
+    .category-item,
+    .guardrail-item,
+    .category-meta {
+      display: block;
+    }
+    .category-meta > div + div {
+      margin-top: var(--space-0-5);
+    }
+  }
+</style>
+</head>
+<body class="page-proposal">
+
+<header class="proposal-header">
+  <a href="/" class="proposal-home">What are we capable of?</a>
+</header>
+
+<main>
+
+<div class="proposal-meta">Prepared for Eidi Properties / May 2026 / Private draft</div>
+
+<p class="proposal-title">A first AI operations build for Eidi Properties, focused on lease abstracts.</p>
+
+<p class="proposal-guide"><strong>Summary</strong> is the recommendation and category map. <strong>Phase One</strong> is the lease abstract build. <strong>Next</strong> is what we need to start.</p>
+
+<nav class="tabs" aria-label="Sections">
+  <a class="tab active" href="#summary">Summary</a>
+  <a class="tab" href="#phase-one">Phase One</a>
+  <a class="tab" href="#next">Next</a>
+</nav>
+
+<div id="summary" class="tab-content active">
+
+<div class="section-heading">After the second call</div>
+
+<p>The first call was about what an AI-enabled operating layer could do for a firm like Eidi. For the second call, Eidi came prepared with concrete categories of work for the family office. Six came up, each one a workflow the team runs today. This page puts them in an order and recommends where to start.</p>
+
+<p>The first build should be lease abstracts.</p>
+
+<p>Lease abstracts are useful, self-contained, and easy to check. Each field in an abstract can cite the page and clause it came from, so the team can verify the output against the lease itself. The team already reaches for AI when lease questions come up, so the first build extends a habit that exists. It also stays clear of the systems that need the most care.</p>
+
+<p>The other categories still matter. The largest prize is rent payment intake and Yardi posting, and it is also the most sensitive: it touches money, tenant records, and the accounting system at once. Starting with lease abstracts gives both teams a real workflow to judge before that work comes into scope.</p>
+
+<div class="section-heading">Category map</div>
+
+<p>The sequence below separates the work that is ready to prototype now from the work that needs tighter access, process, and security planning.</p>
+
+<div class="category-list">
+  <div class="category-item">
+    <div>
+      <div class="category-label">First build</div>
+      <h3>Lease abstracts</h3>
+    </div>
+    <div>
+      <p>Turn leases into structured summaries of landlord-critical terms, with each field linked back to the source page and clause.</p>
+      <div class="category-meta">
+        <div><div class="meta-label">Readiness</div><p>Ready now.</p></div>
+        <div><div class="meta-label">Sensitivity</div><p>Moderate. Start with redacted or representative examples.</p></div>
+        <div><div class="meta-label">Position</div><p>Recommended Phase One.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="category-item">
+    <div>
+      <div class="category-label">Near next</div>
+      <h3>Underwriting intake</h3>
+    </div>
+    <div>
+      <p>Read offering memorandums and portfolio packets against a consistent first-screen view: price per square foot, orientation, traffic, co-tenancy, demographics, and open diligence questions.</p>
+      <div class="category-meta">
+        <div><div class="meta-label">Readiness</div><p>Ready after Phase One or in parallel if needed.</p></div>
+        <div><div class="meta-label">Sensitivity</div><p>Lower, but every source packet still needs approval.</p></div>
+        <div><div class="meta-label">Position</div><p>Strong second build candidate.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="category-item">
+    <div>
+      <div class="category-label">Acquisition pipeline</div>
+      <h3>Deal and portfolio sourcing</h3>
+    </div>
+    <div>
+      <p>Create a monitored, organized view of opportunities from the approved broker, listing, and special-servicer sources that matter to Eidi.</p>
+      <div class="category-meta">
+        <div><div class="meta-label">Readiness</div><p>Ready with a source list.</p></div>
+        <div><div class="meta-label">Sensitivity</div><p>Medium. Source terms and access rules need review first.</p></div>
+        <div><div class="meta-label">Position</div><p>Good after source approval.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="category-item">
+    <div>
+      <div class="category-label">Accounting adjacent</div>
+      <h3>CAM, tax, and insurance reconciliations</h3>
+    </div>
+    <div>
+      <p>Make annual reconciliations faster and easier to check while keeping Yardi as the accounting backbone.</p>
+      <div class="category-meta">
+        <div><div class="meta-label">Readiness</div><p>Later.</p></div>
+        <div><div class="meta-label">Sensitivity</div><p>Higher. Accounting records and lease terms need finance sign-off.</p></div>
+        <div><div class="meta-label">Position</div><p>Second wave.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="category-item">
+    <div>
+      <div class="category-label">Market presence</div>
+      <h3>Outreach and brand</h3>
+    </div>
+    <div>
+      <p>Sharpen outreach to sellers, brokers, family offices, and special servicers while keeping execution with the team already handling the website, flyers, photos, and email.</p>
+      <div class="category-meta">
+        <div><div class="meta-label">Readiness</div><p>Can run alongside operations work.</p></div>
+        <div><div class="meta-label">Sensitivity</div><p>Lower, but public changes still need approval.</p></div>
+        <div><div class="meta-label">Position</div><p>Parallel lane, with Mike Cartell in the loop.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="category-item">
+    <div>
+      <div class="category-label">Later prize</div>
+      <h3>Rent payment intake and Yardi posting</h3>
+    </div>
+    <div>
+      <p>Help with payments coming in, posting to Yardi, and reconciling against leases. This is high-value work, and it is the category that needs the most care.</p>
+      <div class="category-meta">
+        <div><div class="meta-label">Readiness</div><p>Its own phase.</p></div>
+        <div><div class="meta-label">Sensitivity</div><p>Highest. Money, tenant records, and the accounting system touch at once.</p></div>
+        <div><div class="meta-label">Position</div><p>Later, after on-site process mapping.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-heading">Guardrails</div>
+
+<p>Three commitments keep Phase One moving without pulling sensitive systems into the prototype.</p>
+
+<div class="guardrail-list">
+  <div class="guardrail-item">
+    <div><div class="guardrail-label">Yardi</div><h3>Yardi stays the system of record.</h3></div>
+    <div><p>We build around it and enhance the work next to it. Nothing we propose replaces or copies it. Any later Yardi work starts read-only and moves toward write access only with a specific reason and an agreed test path.</p></div>
+  </div>
+  <div class="guardrail-item">
+    <div><div class="guardrail-label">Data</div><h3>Phase One runs on samples.</h3></div>
+    <div><p>Redacted or representative lease examples are enough to begin. The first build needs no production exports, tenant records, payment data, or system logins.</p></div>
+  </div>
+  <div class="guardrail-item">
+    <div><div class="guardrail-label">Payments</div><h3>The payment workflow gets a slower path.</h3></div>
+    <div><p>Rent payment intake and Yardi posting need on-site process mapping, a security review, and change control before any build.</p></div>
+  </div>
+</div>
+
+<div class="callout">
+  <p><strong>Recommended first build.</strong> A working lease abstract prototype on a small set of redacted or representative leases. Phase One is sized to answer one question: does it produce abstracts the team uses and trusts?</p>
+</div>
+
+</div>
+
+<div id="phase-one" class="tab-content">
+
+<div class="section-heading">Phase One: lease abstracts</div>
+
+<p>Phase One is a focused lease abstract build. The goal is a working prototype that turns a lease into a concise, checkable abstract the team uses in real work.</p>
+
+<div class="section-heading">What we deliver</div>
+
+<div class="scope-phase">
+  <ol>
+    <li>An abstract template defined with the team. Co-tenancy, exclusivities, rent bumps, options, expirations, assignment language, prohibited uses, and notice requirements are examples; the team sets the final list of fields.</li>
+    <li>A working tool that produces a structured abstract from a lease document.</li>
+    <li>Source links for each extracted field, so the team can jump back to the page and clause behind the answer.</li>
+    <li>Review flags for terms that need human judgment instead of a forced answer.</li>
+    <li>A short readout on reliability, gaps, and what it takes to run the workflow across more of the portfolio.</li>
+  </ol>
+</div>
+
+<div class="section-heading">What success looks like</div>
+
+<p>At the end of Phase One, the team answers one question: does this produce an abstract you use and trust?</p>
+
+<p>If yes, we choose the next build together. If no, we have spent a small, bounded amount of time and we know where the constraints are.</p>
+
+<div class="section-heading">Timeline and terms</div>
+
+<p>A Phase One build like this can run in a few weeks. We can keep commercial terms in the cover note or finalize them once Eidi approves the lease abstract build.</p>
+
+</div>
+
+<div id="next" class="tab-content">
+
+<div class="section-heading">How we want to work</div>
+
+<p>The useful version of this work is a partner close enough to the business to learn the systems, the people, and how Eidi makes decisions. Most of what slows AI work down is access and context. The model is rarely the bottleneck. Phase One is a low-commitment way to start that relationship on work neither team has to worry about.</p>
+
+<div class="section-heading">What we need to do lease abstracts well</div>
+
+<div class="scope-phase">
+  <ol>
+    <li>A short working session to confirm the abstract fields Eidi wants every time.</li>
+    <li>A small set of redacted or representative lease examples, after Eidi approves Phase One.</li>
+    <li>One reviewer from the team who can tell us whether an abstract is accurate and useful.</li>
+    <li>Any existing abstract formats, checklists, or internal shorthand the team already trusts.</li>
+  </ol>
+</div>
+
+<p>That is enough to start. The first build needs no production exports, tenant records, payment data, Yardi access, or logins.</p>
+
+<div class="section-heading">How we decide whether to keep going</div>
+
+<p>Phase One should earn the next one. At the end, we review the prototype against real leases and decide together whether it saves enough time and produces output the team trusts.</p>
+
+<p>If it does, we choose the next build: broader lease coverage, underwriting intake, deal and portfolio sourcing, or the deeper payment and Yardi discovery. If it does not, we adjust or stop, with limited time spent.</p>
+
+<div class="closing">
+  <p>The next step is to approve Phase One as a focused lease abstract build.</p>
+  <p>That path gives Eidi a useful first tool while keeping sensitive systems protected.</p>
+</div>
+
+</div>
+
+</main>
+
+<footer>
+  <span class="proposal-meta">Prepared by What are we capable of? for Eidi Properties. Private draft, not for distribution.</span>
+</footer>
+
+<script>
+(function() {
+  var container = document.querySelector('main');
+  var tabsNav = document.querySelector('.tabs');
+  var header = document.querySelector('.proposal-header');
+  var tabs = document.querySelectorAll('.tab');
+  var panels = document.querySelectorAll('.tab-content');
+
+  container.classList.add('tabbed');
+
+  function stickyOffset() {
+    var headerHeight = header ? header.getBoundingClientRect().height : 0;
+    var tabsHeight = tabsNav ? tabsNav.getBoundingClientRect().height : 0;
+    return headerHeight + tabsHeight;
+  }
+
+  function scrollPanelToTop(panel) {
+    var top = panel.getBoundingClientRect().top + window.scrollY - stickyOffset();
+    var scrollTarget = Math.max(0, Math.round(top));
+    var root = document.documentElement;
+    var previousScrollBehavior = root.style.scrollBehavior;
+
+    root.style.scrollBehavior = 'auto';
+    window.scrollTo(0, scrollTarget);
+    root.style.scrollBehavior = previousScrollBehavior;
+  }
+
+  function activateTab(tab) {
+    var id = tab.getAttribute('href').slice(1);
+    var panel = document.getElementById(id);
+    if (!panel) return;
+
+    panels.forEach(function(el) { el.classList.remove('active'); });
+    tabs.forEach(function(t) { t.classList.remove('active'); });
+    panel.classList.add('active');
+    tab.classList.add('active');
+    scrollPanelToTop(panel);
+  }
+
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function(e) {
+      e.preventDefault();
+      activateTab(this);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

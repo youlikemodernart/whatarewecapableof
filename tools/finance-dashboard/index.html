@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WAWCO finance dashboard</title>
+  <link rel="stylesheet" href="/finance-dashboard/styles.css">
+</head>
+<body>
+  <header>
+    <div>
+      <p class="eyebrow">What are we capable of?</p>
+      <h1>Finance dashboard</h1>
+      <p class="lede">Local read-only view of Mercury snapshots, expected recurring costs, and invoice studio drafts.</p>
+    </div>
+    <div class="controls">
+      <label for="monthSelect">Month</label>
+      <select id="monthSelect"></select>
+    </div>
+  </header>
+
+  <main>
+    <section class="grid metrics" id="metrics"></section>
+
+    <section class="section-grid">
+      <article>
+        <div class="section-head">
+          <h2>Recurring stack forecast</h2>
+          <p>Manual recurring costs from the private `.finance` file, including future estimates.</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Service</th>
+                <th>Plan</th>
+                <th>Monthly</th>
+                <th>Status</th>
+                <th>Next</th>
+              </tr>
+            </thead>
+            <tbody id="recurringRows"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article>
+        <div class="section-head">
+          <h2>Money out</h2>
+          <p>Top counterparties in the selected month.</p>
+        </div>
+        <div id="spendBars" class="bars"></div>
+      </article>
+    </section>
+
+    <section class="section-grid">
+      <article>
+        <div class="section-head">
+          <h2>Active Mercury cards</h2>
+          <p>Read-only card inventory from the latest Mercury snapshot.</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Card</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Account</th>
+              </tr>
+            </thead>
+            <tbody id="cardRows"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article>
+        <div class="section-head">
+          <h2>Card spend</h2>
+          <p>Selected-month transactions grouped by card payment method.</p>
+        </div>
+        <div id="cardSpendBars" class="bars"></div>
+      </article>
+    </section>
+
+    <section class="section-grid">
+      <article>
+        <div class="section-head">
+          <h2>Observed card expenses</h2>
+          <p>Vendor charges only. Mercury Credit repayment movements are excluded to avoid double counting.</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Merchant</th>
+                <th>Category</th>
+                <th class="num">Amount</th>
+                <th>Funding signal</th>
+              </tr>
+            </thead>
+            <tbody id="observedExpenseRows"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article>
+        <div class="section-head">
+          <h2>Personal funding signals</h2>
+          <p>Nearby Ally/Allied transfers that look like Noah reimbursing WAWCO for card charges.</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Batch</th>
+                <th class="num">Amount</th>
+                <th>Match</th>
+              </tr>
+            </thead>
+            <tbody id="fundingBatchRows"></tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <section class="section-grid">
+      <article>
+        <div class="section-head">
+          <h2>Money in and invoices</h2>
+          <p>Mercury invoice state plus local invoice studio drafts.</p>
+        </div>
+        <div id="invoiceBlocks" class="mini-grid"></div>
+      </article>
+
+      <article>
+        <div class="section-head">
+          <h2>Review queue</h2>
+          <p>Items that need confirmation before the dashboard can forecast cleanly.</p>
+        </div>
+        <div id="exceptions" class="stack"></div>
+      </article>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>Recent Mercury transactions</h2>
+        <p>Private local data. Nothing on this page is sent externally.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Counterparty</th>
+              <th>Category</th>
+              <th>Kind</th>
+              <th>Card</th>
+              <th class="num">Amount</th>
+            </tr>
+          </thead>
+          <tbody id="transactionRows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>Sources</h2>
+        <p>Derived metrics are built from ignored local files.</p>
+      </div>
+      <dl id="sources" class="sources"></dl>
+    </section>
+  </main>
+
+  <script src="/finance-dashboard/app.js"></script>
+</body>
+</html>

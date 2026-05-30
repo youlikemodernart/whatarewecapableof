@@ -1,0 +1,11 @@
+{
+  "name": "wawco-fin",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.1.0"
+  }
+}

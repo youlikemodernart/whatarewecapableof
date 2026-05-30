@@ -1,0 +1,79 @@
+const { getSession, storageConfig, json } = require('./_auth');
+const { makeHttpError, readJsonBody, handleApiError } = require('./_http');
+const { listInvoices, createInvoice, getInvoice, updateInvoice, deleteInvoice, latestPaymentRequestForInvoice } = require('./_db');
+
+function invoiceIdFromRequest(req) {
+  const url = new URL(req.url || '/api/invoices', 'http://127.0.0.1');
+  const id = String(url.searchParams.get('id') || '').trim();
+  return id || '';
+}
+
+function ensureStorageReady() {
+  const storage = storageConfig();
+  if (!storage.configured) {
+    throw makeHttpError(503, 'Hosted database is not configured yet.');
+  }
+  if (storage.mode !== 'postgres') {
+    throw makeHttpError(501, `Hosted invoice storage mode is not supported: ${storage.mode}`);
+  }
+  return storage;
+}
+
+async function attachPayment(user, invoice) {
+  if (!invoice?.id) return invoice;
+  return { ...invoice, payment: await latestPaymentRequestForInvoice(user, invoice.id) };
+}
+
+async function handleGet(req, res, user, storage) {
+  const id = invoiceIdFromRequest(req);
+  if (id) {
+    const invoice = await getInvoice(user, id);
+    if (!invoice) throw makeHttpError(404, 'Invoice draft not found.');
+    return json(res, 200, { ok: true, storage, invoice: await attachPayment(user, invoice) });
+  }
+
+  const invoices = await listInvoices(user);
+  return json(res, 200, { ok: true, storage, invoices });
+}
+
+async function handlePost(req, res, user, storage) {
+  const body = await readJsonBody(req);
+  const invoice = await createInvoice(user, body.invoice || body);
+  return json(res, 201, { ok: true, storage, invoice: await attachPayment(user, invoice) });
+}
+
+async function handleUpdate(req, res, user, storage) {
+  const id = invoiceIdFromRequest(req);
+  if (!id) throw makeHttpError(400, 'Invoice id is required.');
+  const body = await readJsonBody(req);
+  const invoice = await updateInvoice(user, id, body.invoice || body);
+  if (!invoice) throw makeHttpError(404, 'Invoice draft not found.');
+  return json(res, 200, { ok: true, storage, invoice: await attachPayment(user, invoice) });
+}
+
+async function handleDelete(req, res, user, storage) {
+  const id = invoiceIdFromRequest(req);
+  if (!id) throw makeHttpError(400, 'Invoice id is required.');
+  const deleted = await deleteInvoice(user, id);
+  if (!deleted) throw makeHttpError(404, 'Invoice draft not found.');
+  return json(res, 200, { ok: true, storage, deleted: true, id });
+}
+
+module.exports = async function handler(req, res) {
+  const user = getSession(req);
+  if (!user) return json(res, 401, { error: 'Sign in required.' });
+
+  try {
+    const storage = ensureStorageReady();
+
+    if (req.method === 'GET') return await handleGet(req, res, user, storage);
+    if (req.method === 'POST') return await handlePost(req, res, user, storage);
+    if (req.method === 'PUT' || req.method === 'PATCH') return await handleUpdate(req, res, user, storage);
+    if (req.method === 'DELETE') return await handleDelete(req, res, user, storage);
+
+    res.setHeader('Allow', 'GET, POST, PUT, PATCH, DELETE');
+    return json(res, 405, { error: 'Method not allowed' });
+  } catch (error) {
+    return handleApiError(res, json, error);
+  }
+};

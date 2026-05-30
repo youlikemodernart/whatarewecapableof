@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Fin | What are we capable of?</title>
+  <link rel="stylesheet" href="/styles.css?v=20260530a">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-bar">
+      <a class="site-brand" href="/">Fin</a>
+      <nav class="site-nav" aria-label="Fin navigation">
+        <a aria-current="page" href="/">Home</a>
+        <a href="/invoices">Invoices</a>
+        <a href="/finance">Finance</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <header class="page-head">
+      <p class="eyebrow">What are we capable of?</p>
+      <h1>Fin</h1>
+      <p class="page-note">Private finance workspace for WAWCO invoices, online payment links, and read-only finance summaries.</p>
+    </header>
+
+    <section class="panel intro-panel">
+      <div>
+        <p class="eyebrow">Selected path</p>
+        <h2>Custom WAWCO invoice + Stripe Checkout</h2>
+        <p>The app keeps the custom invoice and PDF. Stripe Checkout collects online payments from approved invoice snapshots. Mercury remains the bank and reconciliation surface.</p>
+      </div>
+      <div class="status-grid" aria-label="System status">
+        <div class="status-card">
+          <span class="label">Auth</span>
+          <strong id="auth-status">Checking</strong>
+        </div>
+        <div class="status-card">
+          <span class="label">Storage</span>
+          <strong id="storage-status">Checking</strong>
+        </div>
+        <div class="status-card">
+          <span class="label">Payments</span>
+          <strong id="payment-status">Disabled</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="signin-panel" hidden>
+      <p class="eyebrow">Team login</p>
+      <h2>Sign in with your WAWCO account</h2>
+      <p id="signin-copy">Only allowlisted What are we capable of? accounts can use this workspace.</p>
+      <div class="actions">
+        <a class="button" href="/api/login/google">Sign in with Google</a>
+      </div>
+      <p class="help" id="signin-help"></p>
+    </section>
+
+    <section class="panel" id="workspace-panel" hidden>
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">Workspace</p>
+          <h2 id="welcome-title">Finance workspace</h2>
+        </div>
+        <a class="button secondary" href="/api/logout">Sign out</a>
+      </div>
+
+      <div class="module-grid">
+        <a class="module-card active" href="/invoices">
+          <span class="label">First module</span>
+          <h3>Invoices</h3>
+          <p>Hosted drafts, approval states, custom PDF output, and admin-created Stripe Checkout payment links.</p>
+        </a>
+        <a class="module-card active" href="/finance">
+          <span class="label">Read-only</span>
+          <h3>Finance dashboard</h3>
+          <p>Hosted invoice totals, payment status, read-only Mercury import summaries, card spend, and recurring stack review.</p>
+        </a>
+        <article class="module-card">
+          <span class="label">Next</span>
+          <h3>Costs</h3>
+          <p>Recurring software and operating cost review.</p>
+        </article>
+        <article class="module-card">
+          <span class="label">Later</span>
+          <h3>Cash</h3>
+          <p>Read-only Mercury balances and transaction snapshots.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel" id="invoices-panel" hidden>
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">Invoices</p>
+          <h2>Hosted invoice tracker</h2>
+        </div>
+        <div class="actions compact-actions">
+          <button type="button" id="new-invoice">New blank draft</button>
+          <button type="button" class="secondary" id="refresh-invoices">Refresh</button>
+        </div>
+      </div>
+      <div id="invoice-state" class="empty-state">Checking invoice API...</div>
+      <div id="invoice-list" class="invoice-list" hidden></div>
+    </section>
+
+    <section class="panel">
+      <p class="eyebrow">Boundaries</p>
+      <ul class="boundary-list">
+        <li>Live Stripe Checkout links are created only by admins from approved invoice snapshots.</li>
+        <li>No Mercury invoice creation, Mercury sending, Gmail sending, refunds, customer changes, or bank/card actions.</li>
+        <li>Client sends and Stripe configuration changes remain separate approval-gated actions.</li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="/app.js?v=20260530a" type="module"></script>
+</body>
+</html>

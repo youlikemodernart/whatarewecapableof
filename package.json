@@ -2,7 +2,19 @@
   "private": true,
   "scripts": {
     "scan:assets": "node scripts/scan-assets.mjs",
-    "check:type-hierarchy": "node scripts/check-type-hierarchy.mjs"
+    "check:type-hierarchy": "node scripts/check-type-hierarchy.mjs",
+    "invoices": "cd apps/fin && vercel dev --listen 3187 --yes",
+    "invoices:smoke": "cd apps/fin && npm run smoke",
+    "finance": "node --disable-warning=ExperimentalWarning scripts/finance-dashboard.mjs",
+    "finance:smoke": "node --disable-warning=ExperimentalWarning scripts/finance-dashboard.mjs --smoke",
+    "finance:export-hosted-summary": "node scripts/fin-finance-export-hosted-summary.mjs",
+    "fin:finance-refresh": "node scripts/fin-finance-refresh.mjs",
+    "mercury": "node scripts/mercury-finance.mjs",
+    "mail": "node scripts/gmail-monitor.mjs",
+    "mail:draft": "node scripts/gmail-draft.mjs",
+    "sheet": "node scripts/sheets-read.mjs",
+    "fin": "cd apps/fin && vercel dev --listen 3187 --yes",
+    "fin:smoke": "cd apps/fin && npm run smoke"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.52.0",

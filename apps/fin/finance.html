@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Finance dashboard | Fin</title>
+  <link rel="stylesheet" href="/styles.css?v=20260530a">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-bar">
+      <a class="site-brand" href="/">Fin</a>
+      <nav class="site-nav" aria-label="Fin navigation">
+        <a href="/">Home</a>
+        <a href="/invoices">Invoices</a>
+        <a aria-current="page" href="/finance">Finance</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page page-wide finance-dashboard">
+    <header class="page-head finance-head">
+      <div>
+        <h1>Finance dashboard</h1>
+        <p class="page-note">Hosted version of the WAWCO finance dashboard. It is protected by Google login and currently reads hosted Fin invoice records plus approved hosted summary data only.</p>
+      </div>
+      <div class="finance-controls" id="month-control" hidden>
+        <label for="month-select">Month</label>
+        <select id="month-select"></select>
+      </div>
+    </header>
+
+    <section class="panel" id="signin-panel" hidden>
+      <p class="eyebrow">Team login</p>
+      <h2>Sign in to see finance metrics</h2>
+      <p>This dashboard is private to allowlisted WAWCO accounts.</p>
+      <div class="actions">
+        <a class="button" href="/api/login/google">Sign in with Google</a>
+      </div>
+      <p class="help" id="signin-help"></p>
+    </section>
+
+    <section id="dashboard-panel" class="dash" hidden>
+      <div class="dash-toolbar dash-full">
+        <p class="help" id="dashboard-state">Checking finance summary...</p>
+        <button type="button" class="secondary" id="refresh-summary">Refresh</button>
+      </div>
+
+      <article class="dash-section dash-full finance-import-panel" id="finance-import-panel" hidden>
+        <div class="finance-section-head">
+          <div>
+            <p class="eyebrow">Admin import</p>
+            <h2>Derived finance summary import</h2>
+          </div>
+          <p>Upload only a hosted-safe derived summary JSON. Raw `.finance/`, Mercury, Stripe, bank, customer, and card exports stay local.</p>
+        </div>
+        <div class="import-grid">
+          <label class="file-action import-file-action" for="finance-import-file">
+            <span>Choose derived JSON</span>
+            <input id="finance-import-file" type="file" accept="application/json,.json">
+          </label>
+          <div class="import-preview" id="finance-import-preview">No derived summary selected.</div>
+        </div>
+        <div class="actions">
+          <button type="button" id="finance-import-submit" disabled>Import derived summary</button>
+          <button type="button" class="secondary" id="finance-import-refresh">Refresh imports</button>
+        </div>
+        <div class="finance-stack" id="finance-import-list"></div>
+      </article>
+
+      <section class="dash-metrics" id="metrics" aria-label="Finance metrics"></section>
+
+      <article class="dash-section">
+        <div class="finance-section-head">
+          <div>
+            <p class="eyebrow">Recurring stack</p>
+            <h2>Recurring stack forecast</h2>
+          </div>
+          <p>Manual recurring costs and future estimates when an approved hosted summary is available.</p>
+        </div>
+        <div class="finance-table-wrap">
+          <table class="finance-data-table">
+            <thead>
+              <tr>
+                <th>Service</th>
+                <th>Plan</th>
+                <th class="num">Monthly</th>
+                <th>Status</th>
+                <th>Next</th>
+              </tr>
+            </thead>
+            <tbody id="recurring-rows"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="dash-section">
+        <div class="finance-section-head">
+          <div>
+            <p class="eyebrow">Money out</p>
+            <h2>Money out</h2>
+          </div>
+          <p>Top counterparties in the selected month.</p>
+        </div>
+        <div id="spend-bars" class="finance-bars"></div>
+      </article>
+
+      <article class="dash-section">
+        <div class="finance-section-head">
+          <div>
+            <p class="eyebrow">Cards</p>
+            <h2>Active Mercury cards</h2>
+          </div>
+          <p>Read-only card inventory after approved hosted summary import.</p>
+        </div>
+        <div class="finance-table-wrap">
+          <table class="finance-data-table">
+            <thead>
+              <tr>
+                <th>Card</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Expected</th>
+              </tr>
+            </thead>
+            <tbody id="card-rows"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="dash-section">
+        <div class="finance-section-head">
+          <div>
+            <p class="eyebrow">Cards</p>
+            <h2>Card spend</h2>
+          </div>
+          <p>Selected-month transactions grouped by card payment method.</p>
+        </div>
+        <div id="card-spend-bars" class="finance-bars"></div>
+      </article>
+
+      <article class="dash-section">
+        <div class="finance-section-head">
+          <div>
+            <p class="eyebrow">Card expenses</p>
+            <h2>Observed card expenses</h2>
+          </div>
+          <p>Vendor charges only. Mercury Credit repayment movements are excluded to avoid double counting.</p>
+        </div>
+        <div class="finance-table-wrap">
+          <table class="finance-data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Merchant</th>
+                <th>Category</th>
+                <th class="num">Amount</th>
+                <th>Funding signal</th>
+              </tr>
+            </thead>
+            <tbody id="observed-expense-rows"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="dash-section">
+        <div class="finance-section-head">
+          <div>
+            <p class="eyebrow">Review</p>
+            <h2>Personal funding signals</h2>
+          </div>
+          <p>Nearby Ally/Allied transfers that may explain Noah-funded card batches.</p>
+        </div>
+        <div class="finance-table-wrap">
+          <table class="finance-data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Batch</th>
+                <th class="num">Amount</th>
+                <th>Match</th>
+              </tr>
+            </thead>
+            <tbody id="funding-batch-rows"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="dash-section">
+        <div class="finance-section-head">
+          <div>
+            <p class="eyebrow">Money in</p>
+            <h2>Money in and invoices</h2>
+          </div>
+          <p>Mercury invoice state plus hosted Fin invoice records.</p>
+        </div>
+        <div id="invoice-blocks" class="finance-mini-grid"></div>
+      </article>
+
+      <article class="dash-section">
+        <div class="finance-section-head">
+          <div>
+            <p class="eyebrow">Review</p>
+            <h2>Review queue</h2>
+          </div>
+          <p>Items that need confirmation before the dashboard can forecast cleanly.</p>
+        </div>
+        <div id="exceptions" class="finance-stack"></div>
+      </article>
+
+      <article class="dash-section dash-full">
+        <div class="finance-section-head">
+          <div>
+            <p class="eyebrow">Transactions</p>
+            <h2>Recent Mercury transactions</h2>
+          </div>
+          <p>Private transaction rows appear only after an approved hosted summary path exists.</p>
+        </div>
+        <div class="finance-table-wrap">
+          <table class="finance-data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Counterparty</th>
+                <th>Category</th>
+                <th>Kind</th>
+                <th>Card</th>
+                <th class="num">Amount</th>
+              </tr>
+            </thead>
+            <tbody id="transaction-rows"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="dash-section dash-full">
+        <div class="finance-section-head">
+          <div>
+            <p class="eyebrow">Receivables</p>
+            <h2>Hosted invoice operations</h2>
+          </div>
+          <p>Live Fin invoice records, excluding private-payee drafts from WAWCO totals.</p>
+        </div>
+        <div id="hosted-invoice-queues" class="finance-mini-grid"></div>
+        <div class="finance-table-wrap finance-table-spaced">
+          <table class="finance-data-table">
+            <thead>
+              <tr>
+                <th>Invoice</th>
+                <th>Client</th>
+                <th>Status</th>
+                <th>Payment</th>
+                <th>Due</th>
+                <th class="num">Amount</th>
+              </tr>
+            </thead>
+            <tbody id="hosted-invoice-rows"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="dash-section dash-full">
+        <div class="finance-section-head">
+          <div>
+            <p class="eyebrow">Sources</p>
+            <h2>Sources</h2>
+          </div>
+          <p>Live Fin keeps source boundaries explicit.</p>
+        </div>
+        <dl id="sources" class="finance-sources"></dl>
+      </article>
+    </section>
+
+    <section class="panel">
+      <p class="eyebrow">Boundary</p>
+      <ul class="boundary-list">
+        <li>This page is the live Fin home for the local finance dashboard feature model.</li>
+        <li>The hosted dashboard reads Fin invoices and approved derived finance summaries. It does not read raw `.finance/` files from Vercel.</li>
+        <li>Stripe Checkout links are created only from the Invoice Studio admin action. Client sends, refunds, customer changes, Mercury/Gmail/bank/card writes, and transaction-category writes require separate approval gates.</li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="/finance.js?v=20260530a" type="module"></script>
+</body>
+</html>

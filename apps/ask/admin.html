@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Ask admin</title>
+  <link rel="stylesheet" href="hosted.css">
+  <script defer src="admin.js"></script>
+</head>
+<body>
+  <main class="admin-shell">
+    <header class="topline">
+      <div>
+        <p class="brand">Ask admin</p>
+        <h1>Response review</h1>
+        <p class="helper">Review answers before anything becomes a workboard update, proposal packet, or external action.</p>
+      </div>
+      <nav><a class="button secondary" href="/api/logout">Sign out</a></nav>
+    </header>
+
+    <section id="signin" class="card stack hidden">
+      <h2>Sign in required</h2>
+      <p class="context" id="signinHelp">Google OAuth is not configured yet.</p>
+      <p><a class="button" href="/api/login/google">Sign in with Google</a></p>
+    </section>
+
+    <section id="adminApp" class="hidden">
+      <div class="stat-grid" id="stats"></div>
+      <div class="grid">
+        <section class="card">
+          <h2>Responses</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Respondent</th><th>Status</th><th>Follow-up</th><th>Submitted</th><th></th></tr></thead>
+              <tbody id="responseRows"></tbody>
+            </table>
+          </div>
+        </section>
+        <aside class="card stack">
+          <div>
+            <h2>Markdown export</h2>
+            <p class="context">Export is review evidence only. It does not send, file, publish, or mutate another system.</p>
+          </div>
+          <pre id="markdownPreview">Select a response.</pre>
+        </aside>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

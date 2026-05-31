@@ -1,0 +1,19 @@
+.vercel
+node_modules
+.env
+.env.*
+.DS_Store
+
+# Local prototype and planning artifacts should not be served by the hosted app.
+index.html
+app.js
+styles.css
+sample-deck.js
+hosted-mvp-notes.md
+
+# Local-only support files. The hosted function bundle uses api/_seed_deck.js.
+data/
+migrations/
+scripts/
+*.md
+*.sql

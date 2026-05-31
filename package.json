@@ -14,7 +14,9 @@
     "mail:draft": "node scripts/gmail-draft.mjs",
     "sheet": "node scripts/sheets-read.mjs",
     "fin": "cd apps/fin && vercel dev --listen 3187 --yes",
-    "fin:smoke": "cd apps/fin && npm run smoke"
+    "fin:smoke": "cd apps/fin && npm run smoke",
+    "ask": "cd apps/ask && vercel dev --listen 3197 --yes",
+    "ask:smoke": "cd apps/ask && npm run smoke"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.52.0",

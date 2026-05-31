@@ -9,6 +9,9 @@ let schemaReady = false;
 let memoryState = null;
 
 const QUESTION_TYPES = new Set(['identity', 'short_text', 'long_text', 'multi_choice', 'single_choice', 'yes_no', 'approval_checkbox']);
+const DECK_SCHEMA_VERSION = 'ask.deck.v0';
+const DECK_STATUSES = new Set(['draft', 'published', 'closed', 'archived']);
+const DECK_SENSITIVITIES = new Set(['low', 'medium', 'high']);
 
 function env(name, fallback = '') {
   return String(process.env[name] ?? fallback).trim();
@@ -42,6 +45,39 @@ function hmac(value, secret = linkSecret()) {
 
 function sha256(value) {
   return crypto.createHash('sha256').update(String(value)).digest('hex');
+}
+
+function encryptionKey() {
+  return crypto.createHash('sha256').update(linkSecret()).digest();
+}
+
+function encryptSlug(slug) {
+  const clean = cleanSlug(slug);
+  const iv = crypto.randomBytes(12);
+  const cipher = crypto.createCipheriv('aes-256-gcm', encryptionKey(), iv);
+  const encrypted = Buffer.concat([cipher.update(clean, 'utf8'), cipher.final()]);
+  const tag = cipher.getAuthTag();
+  return `v1.${iv.toString('base64url')}.${tag.toString('base64url')}.${encrypted.toString('base64url')}`;
+}
+
+function decryptSlug(value) {
+  const token = String(value || '');
+  if (!token) return '';
+  const parts = token.split('.');
+  if (parts.length !== 4 || parts[0] !== 'v1') return '';
+  try {
+    const decipher = crypto.createDecipheriv('aes-256-gcm', encryptionKey(), Buffer.from(parts[1], 'base64url'));
+    decipher.setAuthTag(Buffer.from(parts[2], 'base64url'));
+    const decrypted = Buffer.concat([decipher.update(Buffer.from(parts[3], 'base64url')), decipher.final()]).toString('utf8');
+    return cleanSlug(decrypted);
+  } catch {
+    return '';
+  }
+}
+
+function publicUrlForSlug(slug, baseUrl = '') {
+  if (!slug || !baseUrl) return '';
+  return `${String(baseUrl).replace(/\/$/, '')}/respond?slug=${encodeURIComponent(slug)}`;
 }
 
 function stableJson(value) {
@@ -93,15 +129,20 @@ function cleanEmail(value) {
 
 function publicDeckPayload(record, includeQuestions = false) {
   const schema = record.schemaJson;
+  const welcome = schema.welcome || {};
   return {
     id: record.deckId,
     versionId: record.deckVersionId,
-    title: record.title,
-    clientLabel: record.clientLabel,
+    title: includeQuestions ? record.title : 'Private questions',
+    clientLabel: includeQuestions ? record.clientLabel : 'Secure response link',
     status: record.status,
-    sensitivity: record.sensitivity,
-    estimatedMinutes: schema.estimatedMinutes || 4,
-    welcome: schema.welcome || {},
+    sensitivity: includeQuestions ? record.sensitivity : '',
+    estimatedMinutes: includeQuestions ? schema.estimatedMinutes || 4 : undefined,
+    welcome: includeQuestions ? welcome : {
+      title: 'Enter passcode',
+      body: '',
+      privacy: welcome.privacy || 'This question set needs a passcode before answers can be opened.',
+    },
     passcodeRequired: Boolean(record.passcodeRequired),
     questions: includeQuestions ? schema.questions : [],
   };
@@ -125,8 +166,10 @@ function normalizeSeed() {
     passcodeSalt: salt,
     passcodeHash: passcodeHash(seed.seedPasscode, salt),
     publicSlugHash: slugHash(seed.seedSlug),
+    publicSlugCiphertext: encryptSlug(seed.seedSlug),
+    publicSlug: seed.seedSlug,
     schemaJson: {
-      schemaVersion: 'ask.deck.v0',
+      schemaVersion: DECK_SCHEMA_VERSION,
       title: deck.title,
       clientLabel: deck.clientLabel,
       estimatedMinutes: deck.estimatedMinutes,
@@ -141,15 +184,16 @@ function normalizeSeed() {
 
 function memory() {
   const deck = normalizeSeed();
-  let persisted = { responses: [], events: [] };
+  let persisted = { decks: [], responses: [], events: [] };
   try {
     persisted = JSON.parse(fs.readFileSync(memoryFilePath(), 'utf8'));
   } catch {
-    persisted = { responses: [], events: [] };
+    persisted = { decks: [], responses: [], events: [] };
   }
+  const deckRecords = [deck, ...(persisted.decks || []).filter((candidate) => candidate?.deckId !== deck.deckId)];
   memoryState = {
-    decks: new Map([[deck.publicSlugHash, deck]]),
-    decksById: new Map([[deck.deckId, deck]]),
+    decks: new Map(deckRecords.map((record) => [record.publicSlugHash, record])),
+    decksById: new Map(deckRecords.map((record) => [record.deckId, record])),
     responses: new Map((persisted.responses || []).map((response) => [response.id, response])),
     events: persisted.events || [],
   };
@@ -159,6 +203,7 @@ function memory() {
 function persistMemory(state = memoryState) {
   if (!state) return;
   fs.writeFileSync(memoryFilePath(), JSON.stringify({
+    decks: Array.from(state.decksById.values()),
     responses: Array.from(state.responses.values()),
     events: state.events || [],
   }, null, 2));
@@ -187,6 +232,7 @@ async function ensureSchema() {
     status TEXT NOT NULL DEFAULT 'draft',
     sensitivity TEXT NOT NULL DEFAULT 'medium',
     public_slug_hash TEXT NOT NULL UNIQUE,
+    public_slug_ciphertext TEXT NOT NULL DEFAULT '',
     passcode_required BOOLEAN NOT NULL DEFAULT TRUE,
     passcode_salt TEXT NOT NULL DEFAULT '',
     passcode_hash TEXT NOT NULL DEFAULT '',
@@ -198,6 +244,7 @@ async function ensureSchema() {
     CHECK (status IN ('draft', 'published', 'closed', 'archived')),
     CHECK (sensitivity IN ('low', 'medium', 'high'))
   )`;
+  await db`ALTER TABLE ask_decks ADD COLUMN IF NOT EXISTS public_slug_ciphertext TEXT NOT NULL DEFAULT ''`;
   await db`CREATE TABLE IF NOT EXISTS ask_deck_versions (
     id TEXT PRIMARY KEY,
     deck_id TEXT NOT NULL REFERENCES ask_decks(id),
@@ -282,8 +329,8 @@ async function seedIfEmpty() {
   const normalized = normalizeSeed();
   const existing = await db`SELECT id FROM ask_decks WHERE public_slug_hash = ${normalized.publicSlugHash} AND deleted_at IS NULL LIMIT 1`;
   if (existing.length) return;
-  await db`INSERT INTO ask_decks (id, title, client_label, status, sensitivity, public_slug_hash, passcode_required, passcode_salt, passcode_hash)
-    VALUES (${normalized.deckId}, ${normalized.title}, ${normalized.clientLabel}, ${normalized.status}, ${normalized.sensitivity}, ${normalized.publicSlugHash}, ${normalized.passcodeRequired}, ${normalized.passcodeSalt}, ${normalized.passcodeHash})`;
+  await db`INSERT INTO ask_decks (id, title, client_label, status, sensitivity, public_slug_hash, public_slug_ciphertext, passcode_required, passcode_salt, passcode_hash)
+    VALUES (${normalized.deckId}, ${normalized.title}, ${normalized.clientLabel}, ${normalized.status}, ${normalized.sensitivity}, ${normalized.publicSlugHash}, ${normalized.publicSlugCiphertext}, ${normalized.passcodeRequired}, ${normalized.passcodeSalt}, ${normalized.passcodeHash})`;
   await db`INSERT INTO ask_deck_versions (id, deck_id, version_label, schema_json, schema_sha256, published_at)
     VALUES (${normalized.deckVersionId}, ${normalized.deckId}, 'v1', ${JSON.stringify(normalized.schemaJson)}::jsonb, ${normalized.schemaSha256}, now())`;
   await db`INSERT INTO ask_deck_events (deck_id, event_type, summary, metadata)
@@ -293,7 +340,10 @@ async function seedIfEmpty() {
 async function deckRecordBySlug(slug) {
   const hash = slugHash(slug);
   if (storageConfig().mode === 'memory') {
-    return memory().decks.get(hash) || null;
+    const record = memory().decks.get(hash) || null;
+    if (!record || record.status !== 'published') return null;
+    if (record.expiresAt && new Date(record.expiresAt).getTime() <= Date.now()) return null;
+    return record;
   }
   await seedIfEmpty();
   const db = sql();
@@ -328,6 +378,265 @@ async function publicDeck(slug, includeQuestions = false) {
   const record = await deckRecordBySlug(slug);
   if (!record) throw makeHttpError(404, 'Question set not found.');
   return publicDeckPayload(record, includeQuestions);
+}
+
+function cleanRef(value, label = 'Reference') {
+  const ref = cleanSingleLine(value, 80).toLowerCase();
+  if (!/^[a-z0-9][a-z0-9_-]{1,79}$/.test(ref)) throw makeHttpError(400, `${label} must use lowercase letters, numbers, dashes, or underscores.`);
+  return ref;
+}
+
+function cleanBoolean(value, fallback = false) {
+  return typeof value === 'boolean' ? value : fallback;
+}
+
+function rejectRawSourceKeys(input) {
+  const blocked = new Set(['rawSource', 'rawSources', 'sourceText', 'sourceHtml', 'emailBody', 'emails', 'messages', 'slackMessages', 'transcript', 'credentials', 'secret', 'secrets']);
+  for (const key of Object.keys(input || {})) {
+    if (blocked.has(key)) throw makeHttpError(400, `Import field ${key} is not allowed. Keep raw source material out of Ask deck packets.`);
+  }
+}
+
+function normalizeWelcome(value = {}) {
+  return {
+    title: cleanSingleLine(value.title, 160),
+    body: cleanText(value.body, 1200),
+    privacy: cleanText(value.privacy, 1200),
+  };
+}
+
+function normalizeChoice(input, index) {
+  const ref = cleanRef(input?.ref || `choice-${index + 1}`, 'Choice reference');
+  return {
+    ref,
+    label: cleanSingleLine(input?.label, 180) || ref,
+    description: cleanText(input?.description, 600),
+    isRecommended: cleanBoolean(input?.isRecommended),
+    createsFollowup: cleanBoolean(input?.createsFollowup),
+    createsBlocker: cleanBoolean(input?.createsBlocker),
+    isNotSure: cleanBoolean(input?.isNotSure),
+    requiresReview: cleanBoolean(input?.requiresReview),
+  };
+}
+
+function normalizeQuestion(input, index) {
+  const type = cleanSingleLine(input?.type, 80);
+  if (!QUESTION_TYPES.has(type)) throw makeHttpError(400, `Question ${index + 1} has an unsupported type.`);
+  const ref = cleanRef(input?.ref || `question-${index + 1}`, 'Question reference');
+  const question = {
+    ref,
+    type,
+    section: cleanSingleLine(input?.section, 120),
+    prompt: cleanText(input?.prompt, 1200),
+    contextText: cleanText(input?.contextText, 1200),
+    recommendationRationale: cleanText(input?.recommendationRationale, 1200),
+    required: input?.required !== false,
+  };
+  if (!question.prompt) throw makeHttpError(400, `Question ${index + 1} is missing a prompt.`);
+  if (type === 'identity') {
+    const labels = new Map((Array.isArray(input?.fields) ? input.fields : []).map((field) => [String(field?.key || ''), field]));
+    question.fields = [
+      { key: 'name', label: cleanSingleLine(labels.get('name')?.label, 120) || 'Name', autocomplete: 'name' },
+      { key: 'email', label: cleanSingleLine(labels.get('email')?.label, 120) || 'Email', autocomplete: 'email' },
+      { key: 'role', label: cleanSingleLine(labels.get('role')?.label, 120) || 'Role', autocomplete: 'organization-title' },
+    ];
+  }
+  if (type === 'short_text' || type === 'long_text') {
+    question.placeholder = cleanSingleLine(input?.placeholder, 200);
+  }
+  if (type === 'multi_choice' || type === 'single_choice' || type === 'yes_no') {
+    const rawChoices = Array.isArray(input?.choices) && input.choices.length
+      ? input.choices
+      : type === 'yes_no'
+        ? [{ ref: 'yes', label: 'Yes' }, { ref: 'no', label: 'No' }]
+        : [];
+    if (!rawChoices.length) throw makeHttpError(400, `Question ${ref} needs choices.`);
+    if (rawChoices.length > 24) throw makeHttpError(400, `Question ${ref} has too many choices.`);
+    const seen = new Set();
+    question.choices = rawChoices.map(normalizeChoice).map((choice) => {
+      if (seen.has(choice.ref)) throw makeHttpError(400, `Question ${ref} has duplicate choice reference ${choice.ref}.`);
+      seen.add(choice.ref);
+      return choice;
+    });
+  }
+  if (type === 'approval_checkbox') {
+    question.approvalText = cleanText(input?.approvalText, 1000) || 'I approve this path.';
+  }
+  return question;
+}
+
+function normalizeDeckImport(input) {
+  const source = input?.deck && typeof input.deck === 'object' ? input.deck : input;
+  rejectRawSourceKeys(source);
+  if (!source || typeof source !== 'object' || Array.isArray(source)) throw makeHttpError(400, 'Deck import must be a JSON object.');
+  const schemaVersion = cleanSingleLine(source.schemaVersion, 40);
+  if (schemaVersion !== DECK_SCHEMA_VERSION) throw makeHttpError(400, `Deck import must use ${DECK_SCHEMA_VERSION}.`);
+  const title = cleanSingleLine(source.title, 180);
+  const clientLabel = cleanSingleLine(source.clientLabel, 180);
+  if (!title) throw makeHttpError(400, 'Deck title is required.');
+  if (!clientLabel) throw makeHttpError(400, 'Client label is required.');
+  const status = cleanSingleLine(source.status || 'published', 40);
+  if (!DECK_STATUSES.has(status) || status === 'archived') throw makeHttpError(400, 'Deck status must be draft, published, or closed.');
+  const sensitivity = cleanSingleLine(source.sensitivity || 'medium', 40);
+  if (!DECK_SENSITIVITIES.has(sensitivity)) throw makeHttpError(400, 'Deck sensitivity must be low, medium, or high.');
+  const questions = Array.isArray(source.questions) ? source.questions : [];
+  if (!questions.length) throw makeHttpError(400, 'Deck import must include at least one question.');
+  if (questions.length > 60) throw makeHttpError(400, 'Deck import has too many questions.');
+  const seen = new Set();
+  const normalizedQuestions = questions.map(normalizeQuestion).map((question) => {
+    if (seen.has(question.ref)) throw makeHttpError(400, `Duplicate question reference ${question.ref}.`);
+    seen.add(question.ref);
+    return question;
+  });
+  const estimatedMinutes = Number(source.estimatedMinutes || Math.max(2, Math.ceil(normalizedQuestions.length / 2)));
+  if (source.passcodeRequired === false) throw makeHttpError(400, 'Imported decks must require a passcode.');
+  return {
+    schemaVersion: DECK_SCHEMA_VERSION,
+    title,
+    clientLabel,
+    status,
+    sensitivity,
+    estimatedMinutes: Number.isFinite(estimatedMinutes) ? Math.min(Math.max(Math.round(estimatedMinutes), 1), 30) : 4,
+    welcome: normalizeWelcome(source.welcome || {}),
+    sourceLabel: cleanSingleLine(source.sourceLabel, 180),
+    sourceSummary: cleanText(source.sourceSummary, 1200),
+    passcodeRequired: true,
+    questions: normalizedQuestions,
+  };
+}
+
+function randomPublicSlug() {
+  return `ask_${crypto.randomBytes(18).toString('base64url')}`;
+}
+
+function randomPasscode() {
+  return crypto.randomBytes(12).toString('base64url');
+}
+
+function deckAdminSummary(record, { baseUrl = '', responseCount = 0 } = {}) {
+  const publicSlug = record.publicSlug || decryptSlug(record.publicSlugCiphertext);
+  return {
+    id: record.deckId,
+    versionId: record.deckVersionId,
+    title: record.title,
+    clientLabel: record.clientLabel,
+    status: record.status,
+    sensitivity: record.sensitivity,
+    passcodeRequired: Boolean(record.passcodeRequired),
+    publicSlug: record.status === 'published' ? publicSlug || '' : '',
+    publicUrl: record.status === 'published' ? publicUrlForSlug(publicSlug, baseUrl) : '',
+    responseCount,
+    createdAt: record.createdAt,
+    updatedAt: record.updatedAt,
+  };
+}
+
+async function createDeckFromImport({ deckInput, actorUserId = '', baseUrl = '' }) {
+  const normalized = normalizeDeckImport(deckInput);
+  const publicSlug = randomPublicSlug();
+  const passcode = normalized.passcodeRequired ? randomPasscode() : '';
+  const salt = hmac(`deck-passcode-salt:${publicSlug}:${Date.now()}:${crypto.randomBytes(8).toString('hex')}`).slice(0, 32);
+  const deckId = id('ask_deck');
+  const deckVersionId = id('ask_deck_version');
+  const now = new Date().toISOString();
+  const schemaJson = {
+    schemaVersion: DECK_SCHEMA_VERSION,
+    title: normalized.title,
+    clientLabel: normalized.clientLabel,
+    estimatedMinutes: normalized.estimatedMinutes,
+    welcome: normalized.welcome,
+    sourceLabel: normalized.sourceLabel,
+    sourceSummary: normalized.sourceSummary,
+    questions: normalized.questions,
+  };
+  const record = {
+    deckId,
+    deckVersionId,
+    title: normalized.title,
+    clientLabel: normalized.clientLabel,
+    status: normalized.status,
+    sensitivity: normalized.sensitivity,
+    passcodeRequired: normalized.passcodeRequired,
+    passcodeSalt: salt,
+    passcodeHash: passcode ? passcodeHash(passcode, salt) : '',
+    publicSlugHash: slugHash(publicSlug),
+    publicSlugCiphertext: encryptSlug(publicSlug),
+    publicSlug,
+    schemaJson,
+    schemaSha256: sha256(stableJson(schemaJson)),
+    createdAt: now,
+    updatedAt: now,
+  };
+
+  if (storageConfig().mode === 'memory') {
+    const state = memory();
+    state.decks.set(record.publicSlugHash, record);
+    state.decksById.set(record.deckId, record);
+    state.events.push({ deckId, actorUserId, eventType: 'imported', createdAt: now, metadata: { sourceLabel: normalized.sourceLabel } });
+    persistMemory(state);
+  } else {
+    await ensureSchema();
+    const db = sql();
+    await db`INSERT INTO ask_decks (id, title, client_label, status, sensitivity, public_slug_hash, public_slug_ciphertext, passcode_required, passcode_salt, passcode_hash)
+      VALUES (${record.deckId}, ${record.title}, ${record.clientLabel}, 'draft', ${record.sensitivity}, ${record.publicSlugHash}, ${record.publicSlugCiphertext}, ${record.passcodeRequired}, ${record.passcodeSalt}, ${record.passcodeHash})`;
+    await db`INSERT INTO ask_deck_versions (id, deck_id, version_label, schema_json, schema_sha256, published_at)
+      VALUES (${record.deckVersionId}, ${record.deckId}, 'v1', ${JSON.stringify(record.schemaJson)}::jsonb, ${record.schemaSha256}, ${record.status === 'published' ? new Date().toISOString() : null})`;
+    await db`UPDATE ask_decks SET status = ${record.status}, updated_at = now() WHERE id = ${record.deckId}`;
+    await db`INSERT INTO ask_deck_events (deck_id, event_type, summary, metadata)
+      VALUES (${record.deckId}, 'imported', 'Imported deck from ask.deck.v0 packet.', ${JSON.stringify({ actorUserId, sourceLabel: normalized.sourceLabel, schemaSha256: record.schemaSha256 })}::jsonb)`;
+  }
+
+  return {
+    ok: true,
+    deck: deckAdminSummary(record, { baseUrl }),
+    secret: {
+      publicSlug: normalized.status === 'published' ? publicSlug : '',
+      publicUrl: normalized.status === 'published' ? publicUrlForSlug(publicSlug, baseUrl) : '',
+      passcode,
+      passcodeRequired: normalized.passcodeRequired,
+    },
+  };
+}
+
+async function listDecks({ baseUrl = '' } = {}) {
+  if (storageConfig().mode === 'memory') {
+    const state = memory();
+    const responseCounts = new Map();
+    for (const response of state.responses.values()) responseCounts.set(response.deckId, (responseCounts.get(response.deckId) || 0) + 1);
+    return Array.from(state.decksById.values())
+      .map((deck) => deckAdminSummary(deck, { baseUrl, responseCount: responseCounts.get(deck.deckId) || 0 }))
+      .sort((a, b) => String(b.updatedAt || '').localeCompare(String(a.updatedAt || '')));
+  }
+  await ensureSchema();
+  await seedIfEmpty();
+  const db = sql();
+  const rows = await db`SELECT d.id AS deck_id, d.title, d.client_label, d.status, d.sensitivity, d.passcode_required,
+      d.public_slug_ciphertext, d.created_at, d.updated_at,
+      latest.id AS deck_version_id,
+      COALESCE(response_counts.response_count, 0)::int AS response_count
+    FROM ask_decks d
+    LEFT JOIN LATERAL (
+      SELECT id FROM ask_deck_versions v WHERE v.deck_id = d.id ORDER BY v.published_at DESC NULLS LAST, v.created_at DESC LIMIT 1
+    ) latest ON TRUE
+    LEFT JOIN (
+      SELECT deck_id, count(*) AS response_count FROM ask_responses GROUP BY deck_id
+    ) response_counts ON response_counts.deck_id = d.id
+    WHERE d.deleted_at IS NULL
+      AND latest.id IS NOT NULL
+    ORDER BY d.updated_at DESC
+    LIMIT 200`;
+  return rows.map((row) => deckAdminSummary({
+    deckId: row.deck_id,
+    deckVersionId: row.deck_version_id,
+    title: row.title,
+    clientLabel: row.client_label,
+    status: row.status,
+    sensitivity: row.sensitivity,
+    passcodeRequired: row.passcode_required,
+    publicSlugCiphertext: row.public_slug_ciphertext,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  }, { baseUrl, responseCount: row.response_count }));
 }
 
 function questionMap(deckSchema) {
@@ -680,6 +989,9 @@ module.exports = {
   publicDeck,
   startResponse,
   submitResponse,
+  normalizeDeckImport,
+  createDeckFromImport,
+  listDecks,
   listResponses,
   getResponse,
   responseMarkdown,

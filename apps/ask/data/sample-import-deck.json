@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "ask.deck.v0",
+  "title": "Sample planning questions",
+  "clientLabel": "Sample Company",
+  "status": "published",
+  "sensitivity": "medium",
+  "estimatedMinutes": 3,
+  "sourceLabel": "Local smoke fixture",
+  "sourceSummary": "Sanitized sample packet for testing deck import only.",
+  "welcome": {
+    "title": "A few questions before we continue",
+    "body": "Please answer what you can. It is fine to say when something needs follow-up.",
+    "privacy": "Only WAWCO can review these answers."
+  },
+  "questions": [
+    {
+      "ref": "respondent-identity",
+      "type": "identity",
+      "section": "About you",
+      "prompt": "Who is filling this out?",
+      "required": true
+    },
+    {
+      "ref": "planning-priority",
+      "type": "single_choice",
+      "section": "Priority",
+      "prompt": "Which path should we prioritize first?",
+      "contextText": "Choose the answer that best matches the next useful step.",
+      "recommendationRationale": "If you are unsure, choose review first so we can narrow the decision together.",
+      "required": true,
+      "choices": [
+        { "ref": "prepare-draft", "label": "Prepare a first draft", "isRecommended": true },
+        { "ref": "review-first", "label": "Review source material first", "requiresReview": true },
+        { "ref": "not-sure", "label": "Not sure", "isNotSure": true, "createsFollowup": true }
+      ]
+    },
+    {
+      "ref": "extra-context",
+      "type": "long_text",
+      "section": "Context",
+      "prompt": "Is there anything else we should know before continuing?",
+      "required": false
+    },
+    {
+      "ref": "approval",
+      "type": "approval_checkbox",
+      "section": "Approval",
+      "prompt": "Can WAWCO use these answers for internal planning?",
+      "approvalText": "Yes, WAWCO can use these answers for internal review and planning.",
+      "required": true
+    }
+  ]
+}

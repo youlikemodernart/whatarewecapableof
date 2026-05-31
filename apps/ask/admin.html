@@ -27,6 +27,41 @@
 
     <section id="adminApp" class="hidden">
       <div class="stat-grid" id="stats"></div>
+      <div class="grid deck-grid">
+        <section class="card stack">
+          <div>
+            <h2>Question sets</h2>
+            <p class="context">Import AI-generated `ask.deck.v0` JSON. Sending the link to a client remains a separate approval step.</p>
+          </div>
+          <form id="importForm" class="stack">
+            <label for="importJson">Deck JSON</label>
+            <textarea id="importJson" placeholder='{"schemaVersion":"ask.deck.v0", ...}'></textarea>
+            <div class="actions"><button type="submit">Import deck</button></div>
+          </form>
+          <div id="importResult" class="notice hidden"></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Deck</th><th>Status</th><th>Responses</th><th>Respondent link</th></tr></thead>
+              <tbody id="deckRows"></tbody>
+            </table>
+          </div>
+        </section>
+        <aside class="card stack">
+          <div>
+            <h2>Import contract</h2>
+            <p class="context">Use sanitized question packets only. Do not paste raw email, Slack, transcripts, credentials, or client source records.</p>
+          </div>
+          <pre>{
+  "schemaVersion": "ask.deck.v0",
+  "title": "Question set title",
+  "clientLabel": "Client label",
+  "status": "published",
+  "sensitivity": "medium",
+  "welcome": { "title": "...", "body": "...", "privacy": "..." },
+  "questions": []
+}</pre>
+        </aside>
+      </div>
       <div class="grid">
         <section class="card">
           <h2>Responses</h2>

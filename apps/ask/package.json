@@ -4,7 +4,8 @@
   "version": "0.1.0",
   "scripts": {
     "smoke": "node scripts/smoke.mjs",
-    "check": "node --check api/_auth.js && node --check api/_db.js && node --check api/_http.js && node --check api/_rate_limit.js && node --check api/_seed_deck.js && node --check api/public/deck.js && node --check api/public/start.js && node --check api/public/submit.js && node --check api/admin/responses.js && node --check api/admin/export.js && node --check respond.js && node --check admin.js"
+    "import:deck": "node scripts/import-deck.mjs",
+    "check": "node --check api/_auth.js && node --check api/_db.js && node --check api/_http.js && node --check api/_rate_limit.js && node --check api/_seed_deck.js && node --check api/public/deck.js && node --check api/public/start.js && node --check api/public/submit.js && node --check api/admin/decks.js && node --check api/admin/responses.js && node --check api/admin/export.js && node --check respond.js && node --check admin.js && node --check scripts/import-deck.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0"

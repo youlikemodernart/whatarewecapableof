@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS ask_decks (
   status TEXT NOT NULL DEFAULT 'draft',
   sensitivity TEXT NOT NULL DEFAULT 'medium',
   public_slug_hash TEXT NOT NULL UNIQUE,
+  public_slug_ciphertext TEXT NOT NULL DEFAULT '',
   passcode_required BOOLEAN NOT NULL DEFAULT TRUE,
   passcode_salt TEXT NOT NULL DEFAULT '',
   passcode_hash TEXT NOT NULL DEFAULT '',

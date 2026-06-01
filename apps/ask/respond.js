@@ -96,17 +96,24 @@
     els.nextButton.textContent = index === deck.questions.length - 1 ? 'Submit' : 'Next';
     els.questionError.textContent = '';
 
-    let body = `<p class="brand">${escapeHtml(q.section || deck.clientLabel || 'Question')} ${index + 1} of ${deck.questions.length}</p>`;
+    let body = `<p class="qmeta">Question ${index + 1} of ${deck.questions.length}</p>`;
     body += `<h1>${escapeHtml(q.prompt)}</h1>`;
     if (q.contextText) body += `<p class="context">${escapeHtml(q.contextText)}</p>`;
     if (q.recommendationRationale) body += `<p class="reason">Suggested: ${escapeHtml(q.recommendationRationale)}</p>`;
 
     const saved = valueFor(q);
+    const choiceRow = (choice, type, checked) => {
+      const desc = choice.description ? `<span class="desc">${escapeHtml(choice.description)}</span>` : '';
+      const suggested = choice.isRecommended ? '<span class="suggested">Suggested</span>' : '';
+      return `<label class="choice"><span class="opt"><input type="${type}" name="choice" value="${escapeHtml(choice.ref)}" ${checked ? 'checked' : ''}> <strong>${escapeHtml(choice.label)}</strong></span>${desc}${suggested}</label>`;
+    };
+
     if (q.type === 'identity') {
       const value = saved || {};
       body += ['name', 'email', 'role'].map((key) => {
         const field = (q.fields || []).find((candidate) => candidate.key === key) || { key, label: key };
-        return `<div class="field"><label for="${key}">${escapeHtml(field.label)}</label><input id="${key}" data-field="${key}" autocomplete="${escapeHtml(field.autocomplete || '')}" value="${escapeHtml(value[key] || '')}"></div>`;
+        const type = key === 'email' ? 'email' : 'text';
+        return `<div class="field"><label for="${key}">${escapeHtml(field.label)}</label><input id="${key}" type="${type}" data-field="${key}" autocomplete="${escapeHtml(field.autocomplete || '')}" value="${escapeHtml(value[key] || '')}"></div>`;
       }).join('');
     } else if (q.type === 'short_text') {
       body += `<div class="field"><label for="answer">Answer</label><input id="answer" value="${escapeHtml(saved || '')}" placeholder="${escapeHtml(q.placeholder || '')}"></div>`;
@@ -114,11 +121,11 @@
       body += `<div class="field"><label for="answer">Answer</label><textarea id="answer" placeholder="${escapeHtml(q.placeholder || '')}">${escapeHtml(saved || '')}</textarea></div>`;
     } else if (q.type === 'multi_choice') {
       const selected = Array.isArray(saved) ? saved : [];
-      body += choicesFor(q).map((choice) => `<label class="choice ${choice.isRecommended ? 'recommended' : ''}"><span><input type="checkbox" name="choice" value="${escapeHtml(choice.ref)}" ${selected.includes(choice.ref) ? 'checked' : ''}> <strong>${escapeHtml(choice.label)}</strong></span>${choice.description ? `<span>${escapeHtml(choice.description)}</span>` : ''}</label>`).join('');
+      body += `<div class="choices">${choicesFor(q).map((choice) => choiceRow(choice, 'checkbox', selected.includes(choice.ref))).join('')}</div>`;
     } else if (q.type === 'single_choice' || q.type === 'yes_no') {
-      body += choicesFor(q).map((choice) => `<label class="choice ${choice.isRecommended ? 'recommended' : ''}"><span><input type="radio" name="choice" value="${escapeHtml(choice.ref)}" ${saved === choice.ref ? 'checked' : ''}> <strong>${escapeHtml(choice.label)}</strong></span>${choice.description ? `<span>${escapeHtml(choice.description)}</span>` : ''}</label>`).join('');
+      body += `<div class="choices">${choicesFor(q).map((choice) => choiceRow(choice, 'radio', saved === choice.ref)).join('')}</div>`;
     } else if (q.type === 'approval_checkbox') {
-      body += `<label class="choice recommended"><span><input type="checkbox" id="approval" ${saved === true ? 'checked' : ''}> <strong>${escapeHtml(q.approvalText || 'I approve.')}</strong></span></label>`;
+      body += `<div class="choices"><label class="choice"><span class="opt"><input type="checkbox" id="approval" ${saved === true ? 'checked' : ''}> <strong>${escapeHtml(q.approvalText || 'I approve.')}</strong></span></label></div>`;
     }
     els.questionCard.innerHTML = body;
   }

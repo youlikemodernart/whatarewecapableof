@@ -15,21 +15,21 @@
       <p class="helper" id="saveState">Private link</p>
     </header>
 
-    <section id="loading" class="card stack">
+    <section id="loading" class="stack">
       <h1>Loading questions</h1>
       <p class="context">If this takes more than a few seconds, ask us for a fresh link.</p>
     </section>
 
-    <section id="passcodeView" class="card stack hidden">
+    <section id="passcodeView" class="stack hidden">
       <div>
-        <p class="brand" id="passcodeClient">Client questions</p>
+        <p class="qmeta" id="passcodeClient">Secure response link</p>
         <h1 id="passcodeTitle">Enter passcode</h1>
         <p class="context" id="passcodeBody">This question set needs a passcode before answers can be opened.</p>
       </div>
       <form id="passcodeForm" class="stack">
         <div class="field">
           <label for="passcode">Passcode</label>
-          <input id="passcode" name="passcode" autocomplete="one-time-code" required>
+          <input id="passcode" name="passcode" inputmode="text" autocomplete="one-time-code" autocapitalize="off" autocorrect="off" required>
         </div>
         <button type="submit">Open questions</button>
         <p class="error" id="passcodeError" role="alert"></p>
@@ -38,7 +38,7 @@
 
     <section id="questionView" class="hidden">
       <div class="progress" aria-hidden="true"><div id="progressBar"></div></div>
-      <article class="card stack" id="questionCard" aria-live="polite"></article>
+      <article id="questionCard" aria-live="polite"></article>
       <p class="error" id="questionError" role="alert"></p>
       <div class="actions">
         <button type="button" class="secondary" id="backButton">Back</button>
@@ -46,9 +46,9 @@
       </div>
     </section>
 
-    <section id="doneView" class="card stack hidden">
+    <section id="doneView" class="stack hidden">
       <h1>Thanks. We have your answers.</h1>
-      <p class="context">We will review them before anything official is prepared, sent, filed, or paid.</p>
+      <p class="context">We will review them before anything official is prepared, sent, filed, or paid. You can close this page.</p>
     </section>
   </main>
 </body>

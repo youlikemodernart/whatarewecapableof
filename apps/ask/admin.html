@@ -10,48 +10,37 @@
 </head>
 <body>
   <main class="admin-shell">
-    <header class="topline">
-      <div>
-        <p class="brand">Ask admin</p>
-        <h1>Response review</h1>
-        <p class="helper">Review answers before anything becomes a workboard update, proposal packet, or external action.</p>
-      </div>
-      <nav><a class="button secondary" href="/api/logout">Sign out</a></nav>
-    </header>
-
-    <section id="signin" class="card stack hidden">
-      <h2>Sign in required</h2>
-      <p class="context" id="signinHelp">Google OAuth is not configured yet.</p>
+    <section id="signin" class="signin hidden">
+      <p class="brand">Ask · Admin</p>
+      <h1>Sign in to review answers</h1>
+      <p class="context" id="signinHelp">Google sign-in for WAWCO admins.</p>
       <p><a class="button" href="/api/login/google">Sign in with Google</a></p>
     </section>
 
     <section id="adminApp" class="hidden">
-      <div class="stat-grid" id="stats"></div>
-      <div class="grid deck-grid">
-        <section class="card stack">
-          <div>
-            <h2>Question sets</h2>
-            <p class="context">Import AI-generated `ask.deck.v0` JSON. Sending the link to a client remains a separate approval step.</p>
-          </div>
-          <form id="importForm" class="stack">
-            <label for="importJson">Deck JSON</label>
-            <textarea id="importJson" placeholder='{"schemaVersion":"ask.deck.v0", ...}'></textarea>
-            <div class="actions"><button type="submit">Import deck</button></div>
-          </form>
-          <div id="importResult" class="notice hidden"></div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Deck</th><th>Status</th><th>Responses</th><th>Respondent link</th></tr></thead>
-              <tbody id="deckRows"></tbody>
-            </table>
-          </div>
-        </section>
-        <aside class="card stack">
-          <div>
-            <h2>Import contract</h2>
-            <p class="context">Use sanitized question packets only. Do not paste raw email, Slack, transcripts, credentials, or client source records.</p>
-          </div>
-          <pre>{
+      <header class="topline admin-top">
+        <p class="brand">Ask · Admin</p>
+        <p class="admin-id"><span id="adminWho"></span><a href="/api/logout">Sign out</a></p>
+      </header>
+
+      <div class="stat-row" id="stats"></div>
+
+      <section class="block">
+        <h2>Question sets</h2>
+        <details class="import">
+          <summary>Import a question set</summary>
+          <div class="import-body">
+            <p class="context">Paste AI-generated <code>ask.deck.v0</code> JSON. Sending the link to a client stays a separate approval step.</p>
+            <form id="importForm">
+              <label for="importJson" class="visually-hidden">Deck JSON</label>
+              <textarea id="importJson" placeholder='{"schemaVersion":"ask.deck.v0", ...}'></textarea>
+              <div class="actions"><button type="submit">Import deck</button></div>
+            </form>
+            <div id="importResult" class="notice hidden"></div>
+            <details class="contract">
+              <summary>Import contract and boundaries</summary>
+              <p class="context">Use sanitized question packets only. Do not paste raw email, Slack, transcripts, credentials, or client source records.</p>
+              <pre>{
   "schemaVersion": "ask.deck.v0",
   "title": "Question set title",
   "clientLabel": "Client label",
@@ -60,26 +49,31 @@
   "welcome": { "title": "...", "body": "...", "privacy": "..." },
   "questions": []
 }</pre>
-        </aside>
-      </div>
-      <div class="grid">
-        <section class="card">
-          <h2>Responses</h2>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Respondent</th><th>Status</th><th>Follow-up</th><th>Submitted</th><th></th></tr></thead>
-              <tbody id="responseRows"></tbody>
-            </table>
+            </details>
           </div>
-        </section>
-        <aside class="card stack">
-          <div>
-            <h2>Markdown export</h2>
-            <p class="context">Export is review evidence only. It does not send, file, publish, or mutate another system.</p>
-          </div>
-          <pre id="markdownPreview">Select a response.</pre>
-        </aside>
-      </div>
+        </details>
+        <div class="rowwrap" style="--cols: 2.4fr .8fr .7fr 1.2fr">
+          <div class="rowhead"><span>Deck</span><span>Status</span><span>Responses</span><span>Respondent link</span></div>
+          <ul class="rowlist" id="deckRows"></ul>
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>Responses</h2>
+        <div class="rowwrap" style="--cols: 2fr .8fr 1fr 1.2fr auto">
+          <div class="rowhead"><span>Respondent</span><span>Status</span><span>Follow-up</span><span>Submitted</span><span></span></div>
+          <ul class="rowlist" id="responseRows"></ul>
+        </div>
+      </section>
+
+      <section class="block">
+        <div class="export-head">
+          <h3>Response summary</h3>
+          <button type="button" class="secondary copy" id="copyExport" hidden>Copy</button>
+        </div>
+        <p class="context">Export is review evidence only. It does not send, file, publish, or change another system.</p>
+        <pre id="markdownPreview">Select a response to preview its summary.</pre>
+      </section>
     </section>
   </main>
 </body>

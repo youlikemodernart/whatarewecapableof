@@ -3,6 +3,7 @@
     signin: document.getElementById('signin'),
     signinHelp: document.getElementById('signinHelp'),
     adminApp: document.getElementById('adminApp'),
+    adminWho: document.getElementById('adminWho'),
     stats: document.getElementById('stats'),
     deckRows: document.getElementById('deckRows'),
     importForm: document.getElementById('importForm'),
@@ -10,10 +11,18 @@
     importResult: document.getElementById('importResult'),
     responseRows: document.getElementById('responseRows'),
     markdownPreview: document.getElementById('markdownPreview'),
+    copyExport: document.getElementById('copyExport'),
   };
 
   function escapeHtml(value) {
     return String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+  }
+
+  function formatDate(value) {
+    if (!value) return '—';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return escapeHtml(value);
+    return date.toLocaleString(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
   }
 
   function cookieValue(name) {
@@ -37,7 +46,9 @@
   function showSignin(session) {
     els.signin.classList.remove('hidden');
     els.adminApp.classList.add('hidden');
-    els.signinHelp.textContent = session?.auth?.configured ? `Allowed domain: ${session.auth.allowedDomain}` : 'Google OAuth is not configured yet.';
+    els.signinHelp.textContent = session?.auth?.configured
+      ? `Use a WAWCO Google account (${session.auth.allowedDomain}).`
+      : 'Google sign-in is not configured yet.';
   }
 
   function renderStats(responses, decks) {
@@ -51,48 +62,63 @@
   }
 
   function renderDeckRows(decks) {
-    els.deckRows.innerHTML = decks.map((deck) => `
-      <tr>
-        <td><strong>${escapeHtml(deck.title)}</strong><br><span class="helper">${escapeHtml(deck.clientLabel)} · ${escapeHtml(deck.sensitivity)}</span></td>
-        <td>${escapeHtml(deck.status)}</td>
-        <td>${escapeHtml(deck.responseCount || 0)}</td>
-        <td>${deck.publicUrl ? `<a href="${escapeHtml(deck.publicUrl)}" target="_blank" rel="noreferrer">Open</a><br><span class="helper">${escapeHtml(deck.publicSlug)}</span>` : '<span class="helper">Link unavailable</span>'}</td>
-      </tr>
-    `).join('') || '<tr><td colspan="4">No question sets yet.</td></tr>';
+    els.deckRows.innerHTML = decks.map((deck) => {
+      const link = deck.publicUrl
+        ? `<a href="${escapeHtml(deck.publicUrl)}" target="_blank" rel="noreferrer">Open link</a><span class="sub">${escapeHtml(deck.publicSlug || '')}</span>`
+        : '<span class="sub">Link unavailable</span>';
+      return `<li class="row">
+        <div class="cell"><span class="k">Deck</span><span class="v"><strong>${escapeHtml(deck.title)}</strong><span class="sub">${escapeHtml(deck.clientLabel)} · ${escapeHtml(deck.sensitivity)}</span></span></div>
+        <div class="cell"><span class="k">Status</span><span class="v">${escapeHtml(deck.status)}</span></div>
+        <div class="cell"><span class="k">Responses</span><span class="v">${escapeHtml(deck.responseCount || 0)}</span></div>
+        <div class="cell"><span class="k">Respondent link</span><span class="v">${link}</span></div>
+      </li>`;
+    }).join('') || '<li class="empty">No question sets yet. Import one above.</li>';
   }
 
   function renderRows(responses) {
     els.responseRows.innerHTML = responses.map((response) => `
-      <tr>
-        <td><strong>${escapeHtml(response.respondentName || 'Unknown')}</strong><br><span class="helper">${escapeHtml(response.respondentEmail || '')}</span></td>
-        <td>${escapeHtml(response.status)}</td>
-        <td>${escapeHtml(response.followupCount || 0)}</td>
-        <td>${escapeHtml(response.submittedAt || response.updatedAt || '')}</td>
-        <td><button type="button" class="secondary" data-export="${escapeHtml(response.id)}">Export</button></td>
-      </tr>
-    `).join('') || '<tr><td colspan="5">No responses yet.</td></tr>';
+      <li class="row">
+        <div class="cell"><span class="k">Respondent</span><span class="v"><strong>${escapeHtml(response.respondentName || 'Unknown')}</strong><span class="sub">${escapeHtml(response.respondentEmail || '')}</span></span></div>
+        <div class="cell"><span class="k">Status</span><span class="v">${escapeHtml(response.status)}</span></div>
+        <div class="cell"><span class="k">Follow-up</span><span class="v">${escapeHtml(response.followupCount || 0)}</span></div>
+        <div class="cell"><span class="k">Submitted</span><span class="v">${escapeHtml(formatDate(response.submittedAt || response.updatedAt || ''))}</span></div>
+        <div class="cell"><span class="k">Summary</span><span class="v"><button type="button" class="secondary" data-export="${escapeHtml(response.id)}">Export</button></span></div>
+      </li>`).join('') || '<li class="empty">No responses yet.</li>';
   }
 
   async function loadExport(id) {
-    els.markdownPreview.textContent = 'Loading export...';
+    els.markdownPreview.textContent = 'Loading summary…';
+    els.copyExport.hidden = true;
     try {
       els.markdownPreview.textContent = await request(`/api/admin/export?id=${encodeURIComponent(id)}`);
+      els.copyExport.hidden = false;
+      els.copyExport.textContent = 'Copy';
     } catch (error) {
       els.markdownPreview.textContent = error.message;
+    }
+  }
+
+  async function copyExport() {
+    try {
+      await navigator.clipboard.writeText(els.markdownPreview.textContent);
+      els.copyExport.textContent = 'Copied';
+      setTimeout(() => { els.copyExport.textContent = 'Copy'; }, 1500);
+    } catch {
+      els.copyExport.textContent = 'Copy failed';
     }
   }
 
   async function importDeck(event) {
     event.preventDefault();
     els.importResult.classList.remove('hidden');
-    els.importResult.textContent = 'Importing deck...';
+    els.importResult.textContent = 'Importing deck…';
     try {
       const parsed = JSON.parse(els.importJson.value || '{}');
       const result = await request('/api/admin/decks', { method: 'POST', body: JSON.stringify(parsed) });
       const linkHtml = result.secret.publicUrl
         ? `Link: <a href="${escapeHtml(result.secret.publicUrl)}" target="_blank" rel="noreferrer">${escapeHtml(result.secret.publicUrl)}</a><br>`
         : 'No respondent link is active until this deck is published.<br>';
-      els.importResult.innerHTML = `Imported <strong>${escapeHtml(result.deck.title)}</strong>.<br>${linkHtml}${result.secret.passcodeRequired ? `Passcode: <code>${escapeHtml(result.secret.passcode)}</code><br>` : ''}<span class="helper">Copy this passcode now. Client send remains a separate approval step.</span>`;
+      els.importResult.innerHTML = `Imported <strong>${escapeHtml(result.deck.title)}</strong>.<br>${linkHtml}${result.secret.passcodeRequired ? `Passcode: <code>${escapeHtml(result.secret.passcode)}</code><br>` : ''}<span class="helper">Copy this passcode now. Sending the link to a client stays a separate approval step.</span>`;
       els.importJson.value = '';
       await loadAdminData();
     } catch (error) {
@@ -119,7 +145,9 @@
     try {
       els.signin.classList.add('hidden');
       els.adminApp.classList.remove('hidden');
+      if (els.adminWho) els.adminWho.textContent = `${session.user.email} · `;
       els.importForm.addEventListener('submit', importDeck);
+      els.copyExport.addEventListener('click', copyExport);
       await loadAdminData();
       els.responseRows.addEventListener('click', (event) => {
         const button = event.target.closest('[data-export]');

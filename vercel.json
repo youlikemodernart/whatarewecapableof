@@ -4,6 +4,38 @@
       "includeFiles": "PROPOSALS.md"
     }
   },
+  "redirects": [
+    {
+      "source": "/dream",
+      "destination": "https://dream.noahglynn.com/",
+      "permanent": false
+    },
+    {
+      "source": "/dream/",
+      "destination": "https://dream.noahglynn.com/",
+      "permanent": false
+    },
+    {
+      "source": "/dream/index.html",
+      "destination": "https://dream.noahglynn.com/",
+      "permanent": false
+    },
+    {
+      "source": "/dream/about",
+      "destination": "https://dream.noahglynn.com/about",
+      "permanent": false
+    },
+    {
+      "source": "/dream/about/",
+      "destination": "https://dream.noahglynn.com/about",
+      "permanent": false
+    },
+    {
+      "source": "/dream/about/index.html",
+      "destination": "https://dream.noahglynn.com/about",
+      "permanent": false
+    }
+  ],
   "routes": [
     { "src": "/\\.pi(?:/.*)?", "status": 404, "dest": "/404.html" },
     { "src": "/\\.finance(?:/.*)?", "status": 404, "dest": "/404.html" },

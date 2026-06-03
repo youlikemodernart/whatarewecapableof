@@ -1,0 +1,106 @@
+/* ============================================================
+   whatarewecapableof — System Minimalism site system (2026-06-03).
+   All-system type, near-black on white, gray as information,
+   real editorial hierarchy, structural whitespace. No accent
+   color yet (reserved). Craft: kerning, ligatures, text-wrap.
+   Scope: the public pages (home, /how-we-work, /question).
+   The old /css system stays for the proposal pages (phase 2).
+   ============================================================ */
+
+:root {
+  --ink: #1a1a1a;
+  --ink-2: #44474a;
+  --ink-3: #80858a;
+  --rule: #e6e6e3;
+  --bg: #ffffff;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 18px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern" 1, "liga" 1;
+}
+@media (max-width: 600px) { body { font-size: 17px; } }
+
+em { font-style: italic; }
+
+.page { max-width: 720px; margin: 0 auto; padding: 28px 24px 96px; }
+
+/* header / footer */
+.site-header {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+  padding-bottom: 16px; border-bottom: 1px solid var(--rule);
+  margin-bottom: clamp(48px, 9vh, 96px); font-size: 14px;
+}
+.site-header a { color: var(--ink); text-decoration: none; }
+.site-header .mark { font-weight: 500; }
+.site-header .mail { color: var(--ink-3); }
+.site-header .mail:hover { color: var(--ink); }
+
+.site-footer {
+  margin-top: clamp(64px, 10vh, 104px); padding-top: 20px; border-top: 1px solid var(--rule);
+  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  font-size: 14px; color: var(--ink-3);
+}
+.site-footer a { color: var(--ink-3); text-decoration: none; }
+.site-footer a:hover { color: var(--ink); }
+
+/* shared prose */
+p { margin: 0 0 1em; max-width: 60ch; text-wrap: pretty; }
+p:last-child { margin-bottom: 0; }
+section { margin-top: clamp(56px, 9vh, 92px); }
+h2 { font-size: 23px; line-height: 1.2; letter-spacing: -0.01em; font-weight: 600; margin: 0 0 20px; }
+
+/* ===== home ===== */
+.page-home .page {
+  min-height: 100vh; display: flex; flex-direction: column;
+  padding-top: clamp(64px, 12vh, 132px); max-width: 760px;
+}
+.home-lede { flex: 1; }
+.home-q {
+  font-size: clamp(40px, 7.5vw, 68px); line-height: 1.04; letter-spacing: -0.022em;
+  font-weight: 600; margin: 0; max-width: 14ch; text-wrap: balance;
+}
+.home-offer {
+  font-size: clamp(20px, 2.6vw, 27px); line-height: 1.28; letter-spacing: -0.01em; font-weight: 400;
+  max-width: 28ch; margin: clamp(28px, 4vh, 44px) 0 0; text-wrap: balance;
+}
+.home-support { font-size: 18px; color: var(--ink-2); max-width: 54ch; margin: 24px 0 0; text-wrap: pretty; }
+.home-actions { margin-top: clamp(36px, 6vh, 64px); display: flex; gap: 28px; align-items: baseline; flex-wrap: wrap; }
+.home-actions a { color: var(--ink); text-decoration: none; font-size: 18px; border-bottom: 1px solid var(--ink); padding-bottom: 2px; }
+.home-actions a:hover { border-bottom-width: 2px; }
+@media (max-width: 640px) { .home-q { letter-spacing: -0.015em; } }
+
+/* ===== offer (/how-we-work) ===== */
+.lead { font-size: clamp(26px, 3.8vw, 40px); line-height: 1.16; letter-spacing: -0.015em; font-weight: 500; margin: 0; max-width: 22ch; text-wrap: balance; }
+.sub { font-size: 19px; color: var(--ink-2); max-width: 54ch; margin: 22px 0 0; text-wrap: pretty; }
+.section-lead { margin-bottom: 28px; }
+.steps { display: grid; gap: clamp(28px, 4vh, 40px); }
+.step { display: grid; grid-template-columns: 40px 1fr; gap: 4px 16px; align-items: start; }
+.step .n { font-size: 18px; font-weight: 500; color: var(--ink-3); padding-top: 2px; }
+.step h3 { font-size: 19px; font-weight: 600; margin: 0 0 6px; }
+.step p { margin: 0; max-width: 52ch; }
+.guarantees { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+.guarantees li { max-width: 60ch; padding-left: 18px; position: relative; }
+.guarantees li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 7px; height: 1px; background: var(--ink); }
+.refuse { margin-top: 24px; color: var(--ink-2); }
+.faq { display: grid; gap: 26px; }
+.faq h3 { font-size: 18px; font-weight: 600; margin: 0 0 6px; }
+.faq p { color: var(--ink-2); margin: 0; }
+.leave { font-size: 21px; line-height: 1.4; max-width: 40ch; font-weight: 500; text-wrap: balance; }
+@media (max-width: 600px) { .step { grid-template-columns: 32px 1fr; } }
+
+/* ===== question ===== */
+.q-h1 { font-size: clamp(38px, 6.5vw, 60px); line-height: 1.05; letter-spacing: -0.02em; font-weight: 600; margin: 0 0 clamp(28px, 4vh, 44px); max-width: 14ch; text-wrap: balance; }
+.q-lead { font-size: 21px; line-height: 1.5; max-width: 56ch; margin: 0 0 1em; text-wrap: pretty; }
+.stack > p { color: var(--ink-2); }
+.stack > p:first-child { color: var(--ink); }

@@ -13,6 +13,9 @@
     { "src": "/design(?:/.*)?", "status": 404, "dest": "/404.html" },
     { "src": "/scripts(?:/.*)?", "status": 404, "dest": "/404.html" },
     { "src": "/tools(?:/.*)?", "status": 404, "dest": "/404.html" },
+    { "src": "/apps/fin(?:/.*)?", "status": 404, "dest": "/404.html" },
+    { "src": "/proposals/_template(?:/.*)?", "status": 404, "dest": "/404.html" },
+    { "src": "/proposals/sales-school/diagrams/toolchain(?:/.*)?", "status": 404, "dest": "/404.html" },
     { "handle": "filesystem" }
   ]
 }

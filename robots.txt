@@ -1,3 +1,15 @@
+# Crawl posture: allow only the homepage and the Pinterest API policy pages.
+# Everything else (proposals, client tools, internal surfaces, booking, ethos)
+# is direct-link only. New pages are disallowed by default until reviewed.
 User-agent: *
-Disallow: /proposals/
-Disallow: /tracker/
+Allow: /$
+Allow: /pinterest/privacy
+Allow: /pinterest/terms
+# Static assets the allowed pages need to render and unfurl link previews
+Allow: /css/
+Allow: /js/
+Allow: /og.png
+Allow: /favicon.svg
+Allow: /favicon.png
+Allow: /apple-touch-icon.png
+Disallow: /

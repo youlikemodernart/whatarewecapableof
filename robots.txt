@@ -3,6 +3,7 @@
 # is direct-link only. New pages are disallowed by default until reviewed.
 User-agent: *
 Allow: /$
+Allow: /how-we-work
 Allow: /pinterest/privacy
 Allow: /pinterest/terms
 # Static assets the allowed pages need to render and unfurl link previews

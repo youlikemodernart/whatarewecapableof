@@ -19,7 +19,6 @@
     "ask:smoke": "cd apps/ask && npm run smoke"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.52.0",
     "googleapis": "^171.4.0"
   }
 }

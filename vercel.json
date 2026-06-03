@@ -5,8 +5,6 @@
     }
   },
   "routes": [
-    { "src": "/dream/about(?:/index\\.html)?/?$", "status": 307, "headers": { "Location": "https://dream.noahglynn.com/about" } },
-    { "src": "/dream(?:/index\\.html)?/?$", "status": 307, "headers": { "Location": "https://dream.noahglynn.com/" } },
     { "src": "/\\.pi(?:/.*)?", "status": 404, "dest": "/404.html" },
     { "src": "/\\.finance(?:/.*)?", "status": 404, "dest": "/404.html" },
     { "src": "/.*\\.md", "status": 404, "dest": "/404.html" },

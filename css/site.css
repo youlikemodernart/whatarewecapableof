@@ -81,7 +81,28 @@ h2 { font-size: 23px; line-height: 1.2; letter-spacing: -0.01em; font-weight: 60
 .home-actions { margin-top: clamp(36px, 6vh, 64px); display: flex; gap: 28px; align-items: baseline; flex-wrap: wrap; }
 .home-actions a { color: var(--ink); text-decoration: none; font-size: 18px; border-bottom: 1px solid var(--ink); padding-bottom: 2px; }
 .home-actions a:hover { border-bottom-width: 2px; }
-@media (max-width: 640px) { .home-q { letter-spacing: -0.015em; } }
+/* ===== mobile reflow — DEFAULT POSTURE for the site.css template (home / how-we-work / question) =====
+   Narrow viewports: compress hierarchy contrast, tighten leading on the short measure, keep a
+   consistent vertical rhythm, let content flow (no forced-bottom footer), and give real tap targets. */
+@media (max-width: 600px) {
+  /* frame */
+  .page { padding-bottom: 48px; }
+  .page-home .page { padding-top: 44px; min-height: auto; }
+  .page-home .home-lede { flex: none; }
+  /* apparatus rhythm + no awkward header wrap */
+  .site-header { font-size: 13px; margin-bottom: 36px; flex-wrap: wrap; row-gap: 4px; }
+  .site-header .mark { white-space: nowrap; }
+  .site-footer { margin-top: 48px; }
+  section { margin-top: 48px; }
+  /* leading on the short measure */
+  .sub, .home-support, .q-lead, .stack > p { line-height: 1.5; }
+  /* home hierarchy */
+  .home-q { letter-spacing: -0.015em; }
+  .home-offer { font-size: 19px; line-height: 1.3; margin-top: 22px; }
+  .home-support { font-size: 16px; margin-top: 14px; }
+  .home-actions { margin-top: 32px; gap: 6px 24px; }
+  .home-actions a { font-size: 17px; padding: 11px 0 3px; }
+}
 
 /* ===== offer (/how-we-work) ===== */
 .lead { font-size: clamp(26px, 3.8vw, 40px); line-height: 1.16; letter-spacing: -0.015em; font-weight: 500; margin: 0; max-width: 22ch; text-wrap: balance; }

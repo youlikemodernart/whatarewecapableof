@@ -1,0 +1,31 @@
+/* ============================================================
+   Homepage image strip — fixed even slivers; the full image
+   reveals on top (at its sliver, no resize, no transition).
+   Desktop: reveal on hover. Mobile: auto-cycle front→back while
+   in view. Settings locked 2026-06-03 (even / at-sliver / 180 /
+   no seam / no shadow / no dim / no captions).
+   ============================================================ */
+.home-strip-wrap{ margin-top: clamp(40px, 7vh, 76px); }
+.home-strip{
+  display:flex; gap:0; height:240px; width:100%; position:relative;  /* desktop — Noah's value */
+}
+.hs-panel{
+  flex:1 1 0; min-width:0; height:100%; position:relative;
+  background:#0d0d0d; border-radius:1px;
+}
+.hs-panel .hs-slice{
+  width:100%; height:100%; object-fit:cover; object-position:center;
+  display:block; border-radius:1px; -webkit-user-drag:none; user-select:none;
+}
+/* full image overlay — hidden until revealed, shown on top instantly */
+.hs-panel .hs-full{
+  position:absolute; top:0; height:100%; display:none; object-fit:cover;
+  border-radius:1px; -webkit-user-drag:none; pointer-events:none;
+}
+.hs-panel.is-open{ z-index:5; }
+.hs-panel.is-open .hs-full{ display:block; }
+
+@media (max-width:600px){
+  .home-strip-wrap{ margin-top:36px; }
+  .home-strip{ height:180px; }   /* mobile — Noah's value */
+}

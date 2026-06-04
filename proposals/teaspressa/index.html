@@ -1,592 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#ffffff">
-<title>Teaspressa</title>
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="icon" type="image/png" href="/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/tokens.css">
-<link rel="stylesheet" href="/css/base.css">
-<link rel="stylesheet" href="/css/typography.css">
-<link rel="stylesheet" href="/css/layout.css">
-<link rel="stylesheet" href="/css/components.css">
-<link rel="stylesheet" href="/css/proposal-media.css?v=rules-20260427">
-<style>
-  html {
-    overflow-x: clip;
-  }
-
-  .page-proposal {
-    --proposal-header-height: calc(var(--space-1) + var(--space-0-5));
-    min-height: 100svh;
-    display: flex;
-    flex-direction: column;
-    padding: 0 var(--margin-inline) var(--margin-block);
-  }
-
-  .page-proposal main {
-    flex: 1;
-    max-width: var(--content-width-prose);
-    padding-top: var(--space-1);
-  }
-
-  .proposal-header {
-    min-height: var(--proposal-header-height);
-    display: flex;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    background: var(--color-bg);
-    margin-inline: calc(-1 * var(--margin-inline));
-    padding-inline: var(--margin-inline);
-  }
-
-  .proposal-home {
-    letter-spacing: -0.02em;
-    text-decoration: none;
-    color: inherit;
-  }
-
-  .proposal-meta {
-    font-family: var(--font-mono);
-    font-size: var(--size-xs);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-caps);
-    color: var(--color-text);
-    opacity: 0.4;
-  }
-
-  .proposal-title {
-    font-family: var(--font-serif);
-    font-weight: 400;
-    font-size: var(--size-m);
-    margin-top: var(--space-1);
-    max-width: 52ch;
-  }
-
-  .proposal-guide {
-    font-size: var(--size-m);
-    max-width: 52ch;
-  }
-
-  .proposal-guide strong {
-    font-weight: 700;
-  }
-
-  .tabs {
-    display: flex;
-    gap: var(--space-2);
-    padding: var(--space-0-5) 0;
-    position: sticky;
-    top: var(--proposal-header-height);
-    background: var(--color-bg);
-    z-index: 15;
-  }
-
-  .tabs::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: calc(-1 * var(--margin-inline));
-    width: 100vw;
-    height: 1px;
-    background: var(--color-text);
-  }
-
-  .tab {
-    font-family: var(--font-mono);
-    font-size: var(--size-s);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-caps);
-    text-decoration: none;
-    cursor: pointer;
-    color: var(--color-text);
-    opacity: 0.4;
-    border: none;
-    background: none;
-    padding: 0;
-    transition: opacity var(--transition-default);
-  }
-
-  .tab:hover { text-decoration: none; }
-
-  .tab:hover { opacity: 0.7; }
-  .tab.active { opacity: 1; }
-
-  .tab-content {
-    padding-top: var(--space-2);
-  }
-
-  .tab-content-full {
-    padding-top: var(--space-2);
-  }
-
-  .tabbed .tab-content {
-    display: none;
-    padding-top: var(--space-2);
-  }
-  .tabbed .tab-content.active { display: block; }
-
-  .tabbed .tab-content-full {
-    display: none;
-    min-height: calc(100svh - 4rem);
-    flex-direction: column;
-    justify-content: center;
-  }
-  .tabbed .tab-content-full.active { display: flex; }
-
-  .section-heading {
-    font-family: var(--font-mono);
-    font-size: var(--size-s);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-caps);
-    margin-top: var(--space-4);
-    margin-bottom: var(--space-1);
-    padding-top: var(--space-1);
-    border-top: 1px solid rgba(0,0,0,0.15);
-  }
-
-  .section-heading:first-child {
-    margin-top: 0;
-    padding-top: 0;
-    border-top: none;
-  }
-
-  .finding {
-    margin-bottom: var(--space-3);
-  }
-
-  .finding-label {
-    font-family: var(--font-mono);
-    font-size: var(--size-xs);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-caps);
-    opacity: 0.4;
-    margin-bottom: calc(var(--space-0-5) * 0.5);
-  }
-
-  .finding p:last-child {
-    margin-bottom: 0;
-  }
-
-  .evidence {
-    font-family: var(--font-mono);
-    font-size: var(--size-xs);
-    opacity: 0.35;
-    margin-top: calc(var(--space-0-5));
-  }
-
-  .stat-row {
-    display: flex;
-    gap: var(--space-2);
-    flex-wrap: wrap;
-    margin: var(--space-1) 0 var(--space-2);
-  }
-
-  .stat-item {
-    font-family: var(--font-mono);
-    font-size: var(--size-xs);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-caps);
-  }
-
-  .stat-item strong {
-    font-weight: 400;
-    font-family: var(--font-serif);
-    font-size: var(--size-m);
-    text-transform: none;
-    letter-spacing: 0;
-    display: block;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: var(--space-1) 0;
-    font-size: var(--size-m);
-    table-layout: fixed;
-    word-wrap: break-word;
-  }
-
-  th {
-    text-align: left;
-    font-family: var(--font-mono);
-    font-size: var(--size-xs);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-caps);
-    font-weight: 400;
-    opacity: 0.4;
-    padding: var(--space-0-5) 0;
-    border-bottom: 1px solid var(--color-text);
-  }
-
-  td {
-    padding: var(--space-0-5) 0;
-    border-bottom: 1px solid rgba(0,0,0,0.08);
-    vertical-align: top;
-    font-family: var(--font-serif);
-  }
-
-  th + th, td + td {
-    padding-left: var(--space-1);
-  }
-
-  .scope-phase {
-    margin-bottom: var(--space-3);
-  }
-
-  .scope-phase .phase-label {
-    font-family: var(--font-mono);
-    font-size: var(--size-xs);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-caps);
-    opacity: 0.4;
-    margin-bottom: calc(var(--space-0-5) * 0.5);
-  }
-
-  .scope-phase h3 {
-    font-family: var(--font-serif);
-    font-weight: 600;
-    font-size: var(--size-m);
-    margin-bottom: var(--space-0-5);
-  }
-
-  .scope-phase ul {
-    margin: var(--space-0-5) 0 0;
-    padding-left: 1.25rem;
-    list-style: none;
-  }
-
-  .scope-phase li {
-    font-size: var(--size-m);
-    margin-bottom: var(--space-0-5);
-    position: relative;
-  }
-
-  .scope-phase li::before {
-    content: "";
-    position: absolute;
-    left: -1rem;
-    top: 0.55em;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: var(--color-text);
-    opacity: 0.25;
-  }
-
-  .closing {
-    margin-top: var(--space-3);
-    padding-top: var(--space-2);
-    border-top: 1px solid var(--color-text);
-  }
-
-  .closing p:last-of-type {
-    margin-top: var(--space-1);
-  }
-
-  .page-proposal footer {
-    margin-top: var(--space-4);
-    padding-top: var(--space-1);
-    border-top: 1px solid rgba(0,0,0,0.08);
-  }
-
-  @media (max-width: 767px) {
-    :root {
-      --margin-inline: var(--space-1);
-    }
-    .stat-row {
-      flex-direction: column;
-      gap: var(--space-0-5);
-    }
-    .tabs {
-      gap: var(--space-1);
-    }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Teaspressa | What are we capable of?</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="stylesheet" href="/css/site.css">
+  <link rel="stylesheet" href="/css/proposal.css">
 </head>
 <body class="page-proposal">
-
-<header class="proposal-header">
-  <a href="/" class="proposal-home">What are we capable of?</a>
-</header>
-
-<main>
-
-<div class="proposal-meta">Prepared for Teaspressa / April 2026</div>
-
-<p class="proposal-title" style="margin-top: var(--space-1);">We spent time with Teaspressa's public-facing infrastructure: the DTC store, the wholesale store, the content, the analytics, the DNS records, and the technology connecting them. This is what we found, what it might mean, and what we'd want to learn more about.</p>
-
-<p class="proposal-guide" style="margin-top: var(--space-1);"><strong>Summary</strong> is what we noticed. <strong>Research</strong> is the evidence behind each observation and the methodology that produced it. <strong>Scope</strong> is where we see potential space, and the questions we'd want to explore together.</p>
-
-<nav class="tabs" aria-label="Sections">
-  <a class="tab active" href="#summary">Summary</a>
-  <a class="tab" href="#research">Research</a>
-  <a class="tab" href="#scope">Scope</a>
-  <a class="tab" href="#question">?</a>
-</nav>
-
-<!-- ===== SUMMARY ===== -->
-<div id="summary" class="tab-content active">
-
-<p>Teaspressa is a Phoenix-based CPG brand. Allison DeVane founded it in 2015, owns 100% of the company, and manufactures the products in-house. The Luxe Mixer Cubes (flavored sugar cubes for cocktails, lattes, and mimosas) are the main product. She appeared on Shark Tank early on, closed physical retail locations during COVID, and pivoted to wholesale. The collabs page states the business generates over seven figures through 13,000+ retail accounts.</p>
-
-<p>We looked at the publicly visible pieces. Five observations seemed worth flagging.</p>
-
-<div class="stat-row">
-  <div class="stat-item"><strong>13,000+</strong> Retail accounts</div>
-  <div class="stat-item"><strong>152</strong> Products</div>
-  <div class="stat-item"><strong>100+</strong> Collections</div>
-  <div class="stat-item"><strong>31K</strong> Instagram followers</div>
-  <div class="stat-item"><strong>3,777</strong> Instagram posts</div>
-  <div class="stat-item"><strong>11 yrs</strong> Operating</div>
-</div>
-
-<div class="section-heading">Findings</div>
-
-<div class="finding">
-  <div class="finding-label">01</div>
-  <p>The wholesale operation serves 13,000+ retail accounts through a separate Shopify store at wholesale.teaspressa.com. Pricing is login-gated. Products are displayed in case packs. There's a blog coaching retailers on seasonal merchandising, and a "Sip & Shop Demo Package" at $120-$130 for in-store demos. What we didn't find: a digital line sheet, a reorder system, account-level tracking, or a way for a buyer to browse after a trade show without logging into a second e-commerce store.</p>
-  <div class="evidence">wholesale.teaspressa.com product catalog, login-gated pricing, DNS subdomain analysis</div>
-</div>
-
-<figure class="proposal-media">
-  <img src="/proposals/teaspressa/img/ts-02-wholesale-guide.jpg" alt="Hand reaching toward Teaspressa mixer cubes in a bowl beside apples and a bottle." width="1500" height="844" loading="lazy" decoding="async">
-</figure>
-
-<div class="finding">
-  <div class="finding-label">02</div>
-  <p>The DTC site runs six analytics and marketing tools: GA4 (G-MY5C4WWCLQ), Hotjar (5041504), Microsoft Clarity (rx17nkfzlk), Facebook Pixel (805449808864249), Klaviyo (UYrTva), and Postscript (7548). Each one drops its own tracking script directly into the page. There's no Google Tag Manager connecting them, no shared data layer, and no unified event model. Six tools collecting data independently means six partial views of the same customer.</p>
-  <div class="evidence">Homepage source code analysis</div>
-</div>
-
-<div class="finding">
-  <div class="finding-label">03</div>
-  <p>Shopify's subscription capability is enabled. A "Tea Subscription" collection exists. A subscription page exists. But the subscription page is empty. No product shows "subscribe and save" pricing. No landing page explains what subscribers receive. The seasonal flavor rotation would be a natural subscription driver: new flavors first, before they sell out.</p>
-  <div class="evidence">Apple Pay config ("supportsSubscriptions": true), /collections/teaspressa-tea-subscription, /pages/tea-subscribe-page (empty)</div>
-</div>
-
-<figure class="proposal-media">
-  <img src="/proposals/teaspressa/img/ts-04-seasonal-campaign.jpg" alt="Flowers and candles in a dark red room from a Teaspressa seasonal campaign." width="1800" height="1012" loading="lazy" decoding="async">
-</figure>
-
-<div class="finding">
-  <div class="finding-label">04</div>
-  <p>The TikTok account has 475 published videos and 5,181 followers. That's roughly 11 followers per video. The product is visually strong: a sugar cube dissolving into a cocktail photographs and films well. The volume suggests real production effort. The follower-to-content ratio suggests the content strategy, hook structure, or targeting isn't connecting with the platform's audience.</p>
-  <div class="evidence">TikTok @teaspressa profile metadata (followerCount: 5181, videoCount: 475, heartCount: 19600)</div>
-</div>
-
-<div class="finding">
-  <div class="finding-label">05</div>
-  <p>The Wedding Shop page describes custom Champagne Kits and ends with a contact form. The corporate gifting page follows a similar pattern. Both are customization-driven verticals with larger order values and repeat buyers (corporate accounts reorder annually; brides refer other brides). Both currently require manual quoting for every inquiry.</p>
-  <div class="evidence">/pages/the-wedding-shop, /pages/corporate-gifting</div>
-</div>
-
-<div class="section-heading">What's working</div>
-
-<p>The product merchandising is sophisticated: 100+ collections organized by drink type, format, flavor profile, base spirit, caffeine level, occasion, and price point. Seasonal rotation keeps the catalog fresh. Product-specific landing page subdomains (champagnekit.teaspressa.com, mimosakit.teaspressa.com, drink.teaspressa.com) suggest campaign-level marketing with QR codes on packaging. The wholesale blog coaching retailers on seasonal prep is a differentiator most CPG brands at this scale don't offer. Premium partnerships include NetJets x Monaco Grand Prix and a Greenwood Brewery collaboration.</p>
-
-<figure class="proposal-media">
-  <img src="/proposals/teaspressa/img/ts-07-valentines-retail-guide.jpg" alt="Teaspressa products, champagne, flowers, and a cocktail arranged in a gift basket." width="1778" height="1000" loading="lazy" decoding="async">
-</figure>
-
-<div class="section-heading">What we'd want to learn</div>
-
-<p>These observations come from the outside. We can see the storefront, the source code, the DNS records, and the public content. We can't see the GA4 dashboard, the Klaviyo engagement data, the wholesale account activity, or the trade show follow-up process. The patterns above are specific enough to be useful, and general enough that the real picture could look different once those internal layers are visible. A conversation with Allison would sharpen them considerably.</p>
-
-</div>
-
-<!-- ===== RESEARCH ===== -->
-<div id="research" class="tab-content">
-
-<div class="section-heading">Company</div>
-
-<p>Teaspressa was founded in January 2015 in Phoenix, AZ. Allison DeVane is the sole owner. She invented a patented tea process that brews like espresso (the origin product), then created the Luxe Mixer Cube format, which became the primary revenue driver. Products are manufactured in-house in Phoenix. The about page describes her as an inventor and scientist. She is a Tory Burch Fellow and a Titan 100 CEO.</p>
-
-<p>The origin story: selling tea from a laundry cart in downtown Phoenix, landing a Shark Tank appearance shortly after, opening a retail store, closing retail during COVID, and pivoting to wholesale-first distribution. The collabs page states the business has grown to over seven figures with 13,000+ retailers.</p>
-
-<div class="section-heading">Product catalog</div>
-
-<table>
-  <tr><th>Category</th><th>Examples</th><th>Price</th></tr>
-  <tr><td>Mixer Cube (Mini)</td><td>Rose, Vanilla Bean, Salted Caramel</td><td>$9 / 6 cubes</td></tr>
-  <tr><td>Mixer Cube (Stick)</td><td>Rose, Espresso Martini</td><td>$17 / 12 cubes</td></tr>
-  <tr><td>Mixer Cube (Cube)</td><td>Rose Barista Cube</td><td>$32 / 27 cubes</td></tr>
-  <tr><td>Mixer Cube (Tallboy)</td><td>Vanilla Bean, Old Fashioned, Espresso Martini</td><td>$18</td></tr>
-  <tr><td>Mixer Kits</td><td>Passport to Cocktail, Harvest Mimosa</td><td>$28-$30</td></tr>
-  <tr><td>Patented Tea</td><td>Manhattan Black, Cape Town, Green Gold, Charles Grey</td><td>Jars + pouches</td></tr>
-  <tr><td>Glassware</td><td>Alouette Stemware, Aura Stemware, Cloud Cups</td><td>Varies</td></tr>
-  <tr><td>Accessories</td><td>Tea Scoop, Bar Spoon, Jigger, Muddler</td><td>$5-$15</td></tr>
-</table>
-
-<p>152 products in the sitemap. Seasonal collections rotate actively: Holiday, Apres Ski, Fireside, Pumpkin Spice, Summer, and the current "Moments" collection. GTINs are assigned (e.g., 858798007981 on Vanilla Bean Tallboy, SKU TB002).</p>
-
-<figure class="proposal-media">
-  <img src="/proposals/teaspressa/img/ts-11-wholesale-product-collage.jpg" alt="A grid of Teaspressa wholesale product images grouped by product family." width="3000" height="1600" loading="lazy" decoding="async">
-</figure>
-
-<div class="section-heading">Wholesale</div>
-
-<p>A separate Shopify store runs at wholesale.teaspressa.com (teaspressawholesale.myshopify.com), using a different theme ("Moments 2.0"). Pricing requires login. Visible wholesale case-pack pricing from the product API:</p>
-
-<table>
-  <tr><th>Product</th><th>Wholesale</th><th>Retail</th></tr>
-  <tr><td>London Fog Cube, case of 12</td><td>$54 ($4.50/unit)</td><td>$9/mini</td></tr>
-  <tr><td>Mimosa Trio, case of 6</td><td>$90 ($15/unit)</td><td>$28-30/kit</td></tr>
-  <tr><td>Sip & Shop Demo Package</td><td>$120-$130</td><td>N/A</td></tr>
-  <tr><td>Bridal Bar Pack (bulk bag)</td><td>$28</td><td>Custom</td></tr>
-</table>
-
-<p>The wholesale site's description: "We design products that elevate retail spaces. Distinctive, beautifully packaged, and made to be picked up, gifted, and remembered." The wholesale blog publishes retailer-coaching content on seasonal merchandising and retail strategy.</p>
-
-<div class="section-heading">Technology</div>
-
-<table>
-  <tr><th>Layer</th><th>Tool</th><th>Detail</th></tr>
-  <tr><td>E-commerce (DTC)</td><td>Shopify</td><td>Shop ID 7797937, custom theme</td></tr>
-  <tr><td>E-commerce (B2B)</td><td>Shopify (separate)</td><td>Login-gated pricing</td></tr>
-  <tr><td>Analytics</td><td>GA4</td><td>G-MY5C4WWCLQ, no GTM</td></tr>
-  <tr><td>Heatmaps</td><td>Hotjar + Clarity</td><td>Both running simultaneously</td></tr>
-  <tr><td>Paid media</td><td>Facebook Pixel</td><td>No TikTok, Pinterest, or Google Ads pixels</td></tr>
-  <tr><td>Email</td><td>Klaviyo</td><td>3 verification strings in DNS</td></tr>
-  <tr><td>SMS</td><td>Postscript</td><td>Shop ID 7548</td></tr>
-  <tr><td>Reviews</td><td>Judge.me + Stamped.io</td><td>Both loaded; possible migration</td></tr>
-  <tr><td>Video</td><td>GoTolstoy</td><td>Shoppable video widget</td></tr>
-  <tr><td>Loyalty</td><td>LoyalTEA</td><td>Points-based, 1-year expiry</td></tr>
-  <tr><td>Email hosting</td><td>Google Workspace</td><td>MX: aspmx.l.google.com</td></tr>
-</table>
-
-<p>DNS TXT records contain 4 Google site verification codes, 3 Klaviyo verification strings, a Microsoft verification (MS=7306520), and a Facebook domain verification. Multiple records for the same service typically indicate agency turnover or staff changes without cleanup.</p>
-
-<div class="section-heading">Content and social</div>
-
-<p>The blog ("C'est La Tea Blog") has 133+ posts across four categories. Most recent update: April 13, 2026. Early content (2016-2018) featured interview series, community spotlights, and DIY tutorials. Recent content is primarily seasonal recipes and gift guides.</p>
-
-<table>
-  <tr><th>Platform</th><th>Handle</th><th>Followers</th><th>Signal</th></tr>
-  <tr><td>Instagram</td><td>@teaspressa</td><td>31K</td><td>3,777 posts. Strongest channel. Bio: "The Original Luxe Mixer Cube"</td></tr>
-  <tr><td>TikTok</td><td>@teaspressa</td><td>5,181</td><td>475 videos, 19,600 total likes</td></tr>
-  <tr><td>LinkedIn</td><td>Teaspressa</td><td>723</td><td>~12 employees listed</td></tr>
-  <tr><td>Pinterest</td><td>/teaspressa/</td><td>517</td><td>Used partly as internal mood board (boards: "LILYS IDEAS", "Campaign Design Ideas")</td></tr>
-  <tr><td>Facebook</td><td>Teaspressa</td><td>Low</td><td>"3 talking about this." Dormant</td></tr>
-</table>
-
-<div class="section-heading">Subdomains</div>
-
-<p>SSL certificate analysis (crt.sh) reveals six subdomains: teaspressa.com, www, wholesale.teaspressa.com (B2B store), account.teaspressa.com (customer accounts), champagnekit.teaspressa.com, mimosakit.teaspressa.com, and drink.teaspressa.com. The last three are product-specific landing pages, likely used for QR codes on packaging or social campaign targeting.</p>
-
-<div class="section-heading">Structured data</div>
-
-<p>JSON-LD Organization schema is present site-wide with social links (four of eight sameAs entries are empty strings). Product schema is present on product pages with brand, category, GTIN, and offers. The Organization schema uses https://schema.org; the Product schema uses http://schema.org (mixed protocols, both valid but inconsistent).</p>
-
-<div class="section-heading">What we don't know</div>
-
-<p>Instagram engagement rate (follower count is 31K, but we can't see per-post engagement without an account). Percentage of the 13,000 accounts that are active in a given year. Annual trade show budget and number of shows. Current follow-up process after a show. Whether the subscription model was tried and abandoned, or never launched. Who manages Shopify day-to-day. Whether the dual review platform situation is a migration in progress. GA4 data on traffic, conversion, and channel performance. Whether Teaspressa is listed on Faire or other wholesale marketplaces. Packaging breakage rate in shipping.</p>
-
-</div>
-
-<!-- ===== SCOPE ===== -->
-<div id="scope" class="tab-content">
-
-<p>The observations in this report come from publicly visible data. They suggest specific areas worth exploring, but the right priorities depend on context we don't have: internal metrics, trade show economics, team capacity, and what Allison is already planning. What follows is where the patterns point, not a prescription.</p>
-
-<div class="scope-phase">
-  <div class="phase-label">Area 1</div>
-  <h3>Wholesale buyer tools</h3>
-  <p>13,000 retail accounts ordering through a login-gated Shopify store. If even a fraction of those accounts are lapsed or underactive, the simplest leverage might be making it easier to reorder: a digital line sheet that a buyer can browse on a phone after a trade show, seasonal collection previews, and a follow-up path that doesn't require navigating a separate e-commerce store. Whether that's the right priority depends on what the wholesale account data shows: how many accounts are active, what the reorder rate looks like, and how follow-up works after a show.</p>
-</div>
-
-<div class="scope-phase">
-  <div class="phase-label">Area 2</div>
-  <h3>Recurring revenue from a consumable product</h3>
-  <p>The subscription infrastructure is partially built. Shopify has it enabled. A collection and a page exist. If Allison tried subscriptions before and moved on, there's probably a reason. If she hasn't tried them, the seasonal rotation creates a natural subscription story: new flavors before they hit shelves. The wedding and corporate verticals could also benefit from less friction in the quoting process. Whether any of this is worth building depends on the DTC reorder rate and how much of the current revenue these verticals represent.</p>
-</div>
-
-<div class="scope-phase">
-  <div class="phase-label">Area 3</div>
-  <h3>Connected measurement</h3>
-  <p>Six analytics and marketing tools running independently. No container connecting them. DNS records showing signs of accumulation over time. These are the kinds of patterns that make it hard to answer "what's working" with confidence. A unified tracking layer (Google Tag Manager, shared data layer, consolidated events) would give whoever manages marketing a single view of customer behavior. Whether that's urgent depends on how much the team currently relies on data for decisions versus intuition and relationship.</p>
-</div>
-
-<div class="section-heading">What a conversation would look like</div>
-
-<p>We'd want to understand the wholesale operation from the inside: how buyers currently find and reorder products, what happens after a trade show, what the active-account percentage looks like, and where Allison feels the friction. We'd want to see the GA4 and Klaviyo data to understand DTC traffic, conversion, and retention patterns. And we'd want to know what she's already tried and what she's planning, so anything we suggest builds on momentum rather than cutting across it.</p>
-
-<p>The research here is the starting point. A conversation with Allison would turn these observations into a clearer picture of where the highest-leverage work actually sits.</p>
-
-</div>
-
-<!-- ===== ? ===== -->
-<div id="question" class="tab-content-full">
-
-<div>
-  <p class="proposal-title">What are <strong style="font-weight: 700;">we</strong> capable of?</p>
-  <p class="proposal-title" style="margin-top: var(--space-1);">Let's find out.</p>
-  <p class="mono size-s" style="margin-top: var(--space-1);"><a class="cta-link" href="/book">Book a call</a></p>
-</div>
-
-</div>
-
-</main>
-
-<footer>
-  <span class="proposal-meta">Research conducted April 22, 2026. All findings from publicly available sources.</span>
-</footer>
-
-<script>
-(function() {
-  var container = document.querySelector('main');
-  var tabsNav = document.querySelector('.tabs');
-  var header = document.querySelector('.proposal-header');
-  var tabs = document.querySelectorAll('.tab');
-  var panels = document.querySelectorAll('.tab-content, .tab-content-full');
-
-  container.classList.add('tabbed');
-
-  function stickyOffset() {
-    var headerHeight = header ? header.getBoundingClientRect().height : 0;
-    var tabsHeight = tabsNav ? tabsNav.getBoundingClientRect().height : 0;
-    return headerHeight + tabsHeight;
-  }
-
-  function scrollPanelToTop(panel) {
-    var top = panel.getBoundingClientRect().top + window.scrollY - stickyOffset();
-    var scrollTarget = Math.max(0, Math.round(top));
-    var root = document.documentElement;
-    var previousScrollBehavior = root.style.scrollBehavior;
-
-    root.style.scrollBehavior = 'auto';
-    window.scrollTo(0, scrollTarget);
-    root.style.scrollBehavior = previousScrollBehavior;
-  }
-
-  function activateTab(tab) {
-    var id = tab.getAttribute('href').slice(1);
-    var panel = document.getElementById(id);
-    if (!panel) return;
-
-    panels.forEach(function(el) { el.classList.remove('active'); });
-    tabs.forEach(function(t) { t.classList.remove('active'); });
-    panel.classList.add('active');
-    tab.classList.add('active');
-    scrollPanelToTop(panel);
-  }
-
-  tabs.forEach(function(tab) {
-    tab.addEventListener('click', function(e) {
-      e.preventDefault();
-      activateTab(this);
-    });
-  });
-})();
-</script>
-
+  <main class="page">
+    <header class="site-header">
+      <a class="mark" href="/">What are we capable of?</a>
+      <a class="mail" href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a>
+    </header>
+
+    <p class="p-meta">Prepared for Teaspressa · April 2026</p>
+    <h1 class="p-title">What Teaspressa's public infrastructure is already&nbsp;showing.</h1>
+    <p class="p-lede">We spent time with Teaspressa's public-facing infrastructure: the DTC store, the wholesale store, the content, the analytics, the DNS records, and the technology connecting them. This is what we found, what it might mean, and what we'd want to learn more about.</p>
+
+    <section>
+      <p class="eyebrow">Summary</p>
+      <p>Teaspressa is a Phoenix-based CPG brand. Allison DeVane founded it in 2015, owns 100% of the company, and manufactures the products in-house. The Luxe Mixer Cubes, flavored sugar cubes for cocktails, lattes, and mimosas, are the main product. She appeared on Shark Tank early on, closed physical retail locations during COVID, and pivoted to wholesale. The collabs page states the business generates over seven figures through 13,000+ retail accounts.</p>
+      <p>We looked at the publicly visible pieces. Five observations seemed worth flagging.</p>
+
+      <div class="stats" style="margin-top: 36px;">
+        <div class="stat"><div class="num">13,000+</div><div class="label">retail accounts</div></div>
+        <div class="stat"><div class="num">152</div><div class="label">products</div></div>
+        <div class="stat"><div class="num">100+</div><div class="label">collections</div></div>
+        <div class="stat"><div class="num">31K</div><div class="label">Instagram followers</div></div>
+        <div class="stat"><div class="num">3,777</div><div class="label">Instagram posts</div></div>
+        <div class="stat"><div class="num">11 yrs</div><div class="label">operating</div></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Findings</h2>
+      <div class="finding">
+        <div class="n">01</div>
+        <div><p>The wholesale operation serves 13,000+ retail accounts through a separate Shopify store at wholesale.teaspressa.com. Pricing is login-gated. Products are displayed in case packs. There's a blog coaching retailers on seasonal merchandising, and a "Sip & Shop Demo Package" at $120-$130 for in-store demos. What we didn't find: a digital line sheet, a reorder system, account-level tracking, or a way for a buyer to browse after a trade show without logging into a second e-commerce store.</p></div>
+      </div>
+
+      <figure class="p-media">
+        <img src="/proposals/teaspressa/img/ts-02-wholesale-guide.jpg" alt="Hand reaching toward Teaspressa mixer cubes in a bowl beside apples and a bottle." width="1500" height="844" loading="lazy">
+      </figure>
+
+      <div class="finding">
+        <div class="n">02</div>
+        <div><p>The DTC site runs six analytics and marketing tools: GA4 (G-MY5C4WWCLQ), Hotjar (5041504), Microsoft Clarity (rx17nkfzlk), Facebook Pixel (805449808864249), Klaviyo (UYrTva), and Postscript (7548). Each one drops its own tracking script directly into the page. There's no Google Tag Manager connecting them, no shared data layer, and no unified event model. Six tools collecting data independently means six partial views of the same customer.</p></div>
+      </div>
+
+      <div class="finding">
+        <div class="n">03</div>
+        <div><p>Shopify's subscription capability is enabled. A "Tea Subscription" collection exists. A subscription page exists. But the subscription page is empty. No product shows "subscribe and save" pricing. No landing page explains what subscribers receive. The seasonal flavor rotation would be a natural subscription driver: new flavors first, before they sell out.</p></div>
+      </div>
+
+      <figure class="p-media">
+        <img src="/proposals/teaspressa/img/ts-04-seasonal-campaign.jpg" alt="Flowers and candles in a dark red room from a Teaspressa seasonal campaign." width="1800" height="1012" loading="lazy">
+      </figure>
+
+      <div class="finding">
+        <div class="n">04</div>
+        <div><p>The TikTok account has 475 published videos and 5,181 followers. That's roughly 11 followers per video. The product is visually strong: a sugar cube dissolving into a cocktail photographs and films well. The volume suggests real production effort. The follower-to-content ratio suggests the content strategy, hook structure, or targeting isn't connecting with the platform's audience.</p></div>
+      </div>
+
+      <div class="finding">
+        <div class="n">05</div>
+        <div><p>The Wedding Shop page describes custom Champagne Kits and ends with a contact form. The corporate gifting page follows a similar pattern. Both are customization-driven verticals with larger order values and repeat buyers: corporate accounts reorder annually; brides refer other brides. Both currently require manual quoting for every inquiry.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>What's working</h2>
+      <p>The product merchandising is sophisticated: 100+ collections organized by drink type, format, flavor profile, base spirit, caffeine level, occasion, and price point. Seasonal rotation keeps the catalog fresh. Product-specific landing page subdomains, including champagnekit.teaspressa.com, mimosakit.teaspressa.com, and drink.teaspressa.com, suggest campaign-level marketing with QR codes on packaging. The wholesale blog coaching retailers on seasonal prep is a differentiator most CPG brands at this scale don't offer. Premium partnerships include NetJets x Monaco Grand Prix and a Greenwood Brewery collaboration.</p>
+
+      <figure class="p-media">
+        <img src="/proposals/teaspressa/img/ts-07-valentines-retail-guide.jpg" alt="Teaspressa products, champagne, flowers, and a cocktail arranged in a gift basket." width="1778" height="1000" loading="lazy">
+      </figure>
+    </section>
+
+    <section>
+      <h2>What we'd want to learn</h2>
+      <p>These observations come from the outside. We can see the storefront, the source code, the DNS records, and the public content. We can't see the GA4 dashboard, the Klaviyo engagement data, the wholesale account activity, or the trade show follow-up process. The patterns above are specific enough to be useful, and general enough that the real picture could look different once those internal layers are visible. A conversation with Allison would sharpen them considerably.</p>
+    </section>
+
+    <section>
+      <p class="eyebrow">Research</p>
+      <h2>Company</h2>
+      <p>Teaspressa was founded in January 2015 in Phoenix, AZ. Allison DeVane is the sole owner. She invented a patented tea process that brews like espresso, the origin product, then created the Luxe Mixer Cube format, which became the primary revenue driver. Products are manufactured in-house in Phoenix. The about page describes her as an inventor and scientist. She is a Tory Burch Fellow and a Titan 100 CEO.</p>
+      <p>The origin story: selling tea from a laundry cart in downtown Phoenix, landing a Shark Tank appearance shortly after, opening a retail store, closing retail during COVID, and pivoting to wholesale-first distribution. The collabs page states the business has grown to over seven figures with 13,000+ retailers.</p>
+    </section>
+
+    <section>
+      <h2>Product catalog</h2>
+      <table class="p-table">
+        <thead><tr><th>Category</th><th>Examples</th><th>Price</th></tr></thead>
+        <tbody>
+          <tr><td class="lead-cell">Mixer Cube (Mini)</td><td>Rose, Vanilla Bean, Salted Caramel</td><td>$9 / 6 cubes</td></tr>
+          <tr><td class="lead-cell">Mixer Cube (Stick)</td><td>Rose, Espresso Martini</td><td>$17 / 12 cubes</td></tr>
+          <tr><td class="lead-cell">Mixer Cube (Cube)</td><td>Rose Barista Cube</td><td>$32 / 27 cubes</td></tr>
+          <tr><td class="lead-cell">Mixer Cube (Tallboy)</td><td>Vanilla Bean, Old Fashioned, Espresso Martini</td><td>$18</td></tr>
+          <tr><td class="lead-cell">Mixer Kits</td><td>Passport to Cocktail, Harvest Mimosa</td><td>$28-$30</td></tr>
+          <tr><td class="lead-cell">Patented Tea</td><td>Manhattan Black, Cape Town, Green Gold, Charles Grey</td><td>Jars + pouches</td></tr>
+          <tr><td class="lead-cell">Glassware</td><td>Alouette Stemware, Aura Stemware, Cloud Cups</td><td>Varies</td></tr>
+          <tr><td class="lead-cell">Accessories</td><td>Tea Scoop, Bar Spoon, Jigger, Muddler</td><td>$5-$15</td></tr>
+        </tbody>
+      </table>
+      <p>152 products in the sitemap. Seasonal collections rotate actively: Holiday, Apres Ski, Fireside, Pumpkin Spice, Summer, and the current "Moments" collection. GTINs are assigned, including 858798007981 on Vanilla Bean Tallboy, SKU TB002.</p>
+
+      <figure class="p-media">
+        <img src="/proposals/teaspressa/img/ts-11-wholesale-product-collage.jpg" alt="A grid of Teaspressa wholesale product images grouped by product family." width="3000" height="1600" loading="lazy">
+      </figure>
+    </section>
+
+    <section>
+      <h2>Wholesale</h2>
+      <p>A separate Shopify store runs at wholesale.teaspressa.com (teaspressawholesale.myshopify.com), using a different theme, "Moments 2.0." Pricing requires login. Visible wholesale case-pack pricing from the product API:</p>
+      <table class="p-table">
+        <thead><tr><th>Product</th><th>Wholesale</th><th>Retail</th></tr></thead>
+        <tbody>
+          <tr><td class="lead-cell">London Fog Cube, case of 12</td><td>$54 ($4.50/unit)</td><td>$9/mini</td></tr>
+          <tr><td class="lead-cell">Mimosa Trio, case of 6</td><td>$90 ($15/unit)</td><td>$28-$30/kit</td></tr>
+          <tr><td class="lead-cell">Sip & Shop Demo Package</td><td>$120-$130</td><td>N/A</td></tr>
+          <tr><td class="lead-cell">Bridal Bar Pack (bulk bag)</td><td>$28</td><td>Custom</td></tr>
+        </tbody>
+      </table>
+      <p>The wholesale site's description: "We design products that elevate retail spaces. Distinctive, beautifully packaged, and made to be picked up, gifted, and remembered." The wholesale blog publishes retailer-coaching content on seasonal merchandising and retail strategy.</p>
+    </section>
+
+    <section>
+      <h2>Technology</h2>
+      <table class="p-table">
+        <thead><tr><th>Layer</th><th>Tool</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td class="lead-cell">E-commerce (DTC)</td><td>Shopify</td><td>Shop ID 7797937, custom theme</td></tr>
+          <tr><td class="lead-cell">E-commerce (B2B)</td><td>Shopify (separate)</td><td>Login-gated pricing</td></tr>
+          <tr><td class="lead-cell">Analytics</td><td>GA4</td><td>G-MY5C4WWCLQ, no GTM</td></tr>
+          <tr><td class="lead-cell">Heatmaps</td><td>Hotjar + Clarity</td><td>Both running simultaneously</td></tr>
+          <tr><td class="lead-cell">Paid media</td><td>Facebook Pixel</td><td>No TikTok, Pinterest, or Google Ads pixels</td></tr>
+          <tr><td class="lead-cell">Email</td><td>Klaviyo</td><td>3 verification strings in DNS</td></tr>
+          <tr><td class="lead-cell">SMS</td><td>Postscript</td><td>Shop ID 7548</td></tr>
+          <tr><td class="lead-cell">Reviews</td><td>Judge.me + Stamped.io</td><td>Both loaded; possible migration</td></tr>
+          <tr><td class="lead-cell">Video</td><td>GoTolstoy</td><td>Shoppable video widget</td></tr>
+          <tr><td class="lead-cell">Loyalty</td><td>LoyalTEA</td><td>Points-based, 1-year expiry</td></tr>
+          <tr><td class="lead-cell">Email hosting</td><td>Google Workspace</td><td>MX: aspmx.l.google.com</td></tr>
+        </tbody>
+      </table>
+      <p>DNS TXT records contain 4 Google site verification codes, 3 Klaviyo verification strings, a Microsoft verification (MS=7306520), and a Facebook domain verification. Multiple records for the same service typically indicate agency turnover or staff changes without cleanup.</p>
+    </section>
+
+    <section>
+      <h2>Content and social</h2>
+      <p>The blog, "C'est La Tea Blog," has 133+ posts across four categories. Most recent update: April 13, 2026. Early content from 2016-2018 featured interview series, community spotlights, and DIY tutorials. Recent content is primarily seasonal recipes and gift guides.</p>
+      <table class="p-table">
+        <thead><tr><th>Platform</th><th>Handle</th><th>Followers</th><th>Signal</th></tr></thead>
+        <tbody>
+          <tr><td class="lead-cell">Instagram</td><td>@teaspressa</td><td>31K</td><td>3,777 posts. Strongest channel. Bio: "The Original Luxe Mixer Cube."</td></tr>
+          <tr><td class="lead-cell">TikTok</td><td>@teaspressa</td><td>5,181</td><td>475 videos, 19,600 total likes</td></tr>
+          <tr><td class="lead-cell">LinkedIn</td><td>Teaspressa</td><td>723</td><td>~12 employees listed</td></tr>
+          <tr><td class="lead-cell">Pinterest</td><td>/teaspressa/</td><td>517</td><td>Used partly as internal mood board (boards: "LILYS IDEAS", "Campaign Design Ideas")</td></tr>
+          <tr><td class="lead-cell">Facebook</td><td>Teaspressa</td><td>Low</td><td>"3 talking about this." Dormant</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Subdomains</h2>
+      <p>SSL certificate analysis (crt.sh) reveals six subdomains: teaspressa.com, www, wholesale.teaspressa.com (B2B store), account.teaspressa.com (customer accounts), champagnekit.teaspressa.com, mimosakit.teaspressa.com, and drink.teaspressa.com. The last three are product-specific landing pages, likely used for QR codes on packaging or social campaign targeting.</p>
+    </section>
+
+    <section>
+      <h2>Structured data</h2>
+      <p>JSON-LD Organization schema is present site-wide with social links; four of eight sameAs entries are empty strings. Product schema is present on product pages with brand, category, GTIN, and offers. The Organization schema uses https://schema.org. The Product schema uses http://schema.org. Both are valid, but the protocols are inconsistent.</p>
+    </section>
+
+    <section>
+      <h2>What we don't know</h2>
+      <p>Instagram engagement rate, because follower count is 31K, but we can't see per-post engagement without an account. Percentage of the 13,000 accounts that are active in a given year. Annual trade show budget and number of shows. Current follow-up process after a show. Whether the subscription model was tried and abandoned, or never launched. Who manages Shopify day-to-day. Whether the dual review platform situation is a migration in progress. GA4 data on traffic, conversion, and channel performance. Whether Teaspressa is listed on Faire or other wholesale marketplaces. Packaging breakage rate in shipping.</p>
+    </section>
+
+    <section>
+      <p class="eyebrow">Scope</p>
+      <h2>Where the patterns point</h2>
+      <p>The observations in this report come from publicly visible data. They suggest specific areas worth exploring, but the right priorities depend on context we don't have: internal metrics, trade show economics, team capacity, and what Allison is already planning. What follows is where the patterns point, not a prescription.</p>
+
+      <div class="layer"><div class="label">Area 1</div><div><h3>Wholesale buyer tools</h3><p>13,000 retail accounts ordering through a login-gated Shopify store. If even a fraction of those accounts are lapsed or underactive, the simplest leverage might be making it easier to reorder: a digital line sheet that a buyer can browse on a phone after a trade show, seasonal collection previews, and a follow-up path that doesn't require navigating a separate e-commerce store. Whether that's the right priority depends on what the wholesale account data shows: how many accounts are active, what the reorder rate looks like, and how follow-up works after a show.</p></div></div>
+      <div class="layer"><div class="label">Area 2</div><div><h3>Recurring revenue from consumables</h3><p>The subscription infrastructure is partially built. Shopify has it enabled. A collection and a page exist. If Allison tried subscriptions before and moved on, there's probably a reason. If she hasn't tried them, the seasonal rotation creates a natural subscription story: new flavors before they hit shelves. The wedding and corporate verticals could also benefit from less friction in the quoting process. Whether any of this is worth building depends on the DTC reorder rate and how much of the current revenue these verticals represent.</p></div></div>
+      <div class="layer"><div class="label">Area 3</div><div><h3>Connected measurement</h3><p>Six analytics and marketing tools running independently. No container connecting them. DNS records showing signs of accumulation over time. These are the kinds of patterns that make it hard to answer "what's working" with confidence. A unified tracking layer, Google Tag Manager, shared data layer, and consolidated events, would give whoever manages marketing a single view of customer behavior. Whether that's urgent depends on how much the team currently relies on data for decisions versus intuition and relationship.</p></div></div>
+    </section>
+
+    <section>
+      <h2>The first conversation</h2>
+      <p>We'd want to understand the wholesale operation from the inside: how buyers currently find and reorder products, what happens after a trade show, what the active-account percentage looks like, and where Allison feels the friction. We'd want to see the GA4 and Klaviyo data to understand DTC traffic, conversion, and retention patterns. And we'd want to know what she's already tried and what she's planning, so anything we suggest builds on momentum rather than cutting across it.</p>
+      <p>The research here is the starting point. A conversation with Allison would turn these observations into a clearer picture of where the highest-leverage work sits.</p>
+    </section>
+
+    <section>
+      <p class="eyebrow">The next conversation</p>
+      <p class="close-line">What are we capable of? Let's find out.</p>
+      <p class="cta"><a href="/book">Book a call</a></p>
+    </section>
+
+    <footer class="site-footer">
+      <a href="/">What are we capable of?</a>
+      <span>Research conducted April 22, 2026. All findings from publicly available sources.</span>
+    </footer>
+  </main>
 </body>
 </html>

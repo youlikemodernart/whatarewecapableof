@@ -1,0 +1,72 @@
+/* ============================================================
+   WAWCO proposal layer on System Minimalism (phase 2).
+   Loads AFTER css/site.css (which supplies tokens + base body,
+   p, section, h2, header, footer, focus). This file adds the
+   proposal blocks: meta, title, lede, media, findings, layers,
+   tables, the process timeline, stat fields, and the close.
+   Single-scroll editorial; no tabs.
+   ============================================================ */
+
+.page-proposal .page { max-width: 760px; }
+
+/* meta + title + lede */
+.p-meta { font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 18px; }
+.p-title { font-size: clamp(30px, 4.6vw, 46px); line-height: 1.1; letter-spacing: -0.018em; font-weight: 600; margin: 0; max-width: 20ch; text-wrap: balance; }
+.p-lede { font-size: 20px; line-height: 1.5; color: var(--ink-2); max-width: 58ch; margin: 24px 0 0; text-wrap: pretty; }
+.eyebrow { font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 10px; }
+
+/* image media plate (atmosphere / evidence) */
+.p-media { margin: clamp(36px, 6vh, 64px) 0; }
+.p-media img { display: block; width: 100%; height: auto; }
+.p-media figcaption { font-size: 13px; color: var(--ink-3); margin-top: 10px; }
+
+/* findings: number + prose */
+.finding { display: grid; grid-template-columns: 40px 1fr; gap: 4px 16px; margin-bottom: clamp(28px, 4vh, 40px); }
+.finding:last-child { margin-bottom: 0; }
+.finding .n { font-size: 18px; font-weight: 500; color: var(--ink-3); padding-top: 2px; }
+.finding > div > p, .finding > p { margin: 0; max-width: 58ch; }
+.finding h3 { font-size: 19px; font-weight: 600; margin: 0 0 8px; }
+
+/* layers / scope phases: label + heading + prose */
+.layer { display: grid; grid-template-columns: 96px 1fr; gap: 8px 20px; padding: 22px 0; border-top: 1px solid var(--rule); }
+.layer:last-of-type { border-bottom: 1px solid var(--rule); }
+.layer .label { font-size: 14px; color: var(--ink-3); padding-top: 3px; }
+.layer h3 { font-size: 19px; font-weight: 600; margin: 0 0 6px; }
+.layer p { margin: 0 0 0.5em; max-width: 54ch; }
+.layer .deliv { font-size: 14px; color: var(--ink-2); }
+
+/* tables: quiet editorial */
+.p-table { width: 100%; border-collapse: collapse; margin: 8px 0 0; font-size: 16px; }
+.p-table th { text-align: left; font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; padding: 0 18px 10px 0; vertical-align: bottom; border-bottom: 1px solid var(--ink); }
+.p-table td { text-align: left; padding: 14px 18px 14px 0; vertical-align: top; border-bottom: 1px solid var(--rule); }
+.p-table td:last-child, .p-table th:last-child { padding-right: 0; }
+.p-table td.lead-cell { font-weight: 600; color: var(--ink); }
+
+/* process timeline (clean: dot + hairline rail) */
+.timeline { border-top: 1px solid var(--ink); padding-top: 20px; }
+.t-step { display: grid; grid-template-columns: 24px 1fr; gap: 0 16px; padding-bottom: clamp(24px, 4vh, 36px); }
+.t-step:last-child { padding-bottom: 0; }
+.t-rail { display: flex; flex-direction: column; align-items: center; padding-top: 4px; }
+.t-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ink); flex-shrink: 0; }
+.t-line { width: 1px; flex: 1; background: var(--ink); opacity: 0.16; margin-top: 8px; }
+.t-when { font-size: 13px; letter-spacing: 0.03em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 4px; }
+.t-title { font-size: 19px; font-weight: 600; margin: 0 0 6px; }
+.t-step p { margin: 0; max-width: 56ch; }
+
+/* stat field */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 22px 24px; border-top: 1px solid var(--rule); padding-top: 20px; }
+.stat .num { font-size: 28px; line-height: 1.1; letter-spacing: -0.01em; }
+.stat .label { font-size: 13px; color: var(--ink-3); margin-top: 4px; max-width: 22ch; }
+
+/* close */
+.close-line { font-size: 22px; line-height: 1.35; font-weight: 500; max-width: 36ch; text-wrap: balance; }
+.cta { margin-top: 28px; }
+.cta a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--ink); padding-bottom: 2px; font-size: 18px; }
+.cta a:hover { border-bottom-width: 2px; }
+
+@media (max-width: 640px) {
+  .finding { grid-template-columns: 32px 1fr; }
+  .layer { grid-template-columns: 1fr; gap: 6px; }
+  .p-table { font-size: 15px; }
+  .p-table th, .p-table td { padding-right: 12px; }
+}

@@ -1,706 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#ffffff">
-<title>Eidi Properties</title>
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="icon" type="image/png" href="/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/tokens.css">
-<link rel="stylesheet" href="/css/base.css">
-<link rel="stylesheet" href="/css/typography.css">
-<link rel="stylesheet" href="/css/layout.css">
-<link rel="stylesheet" href="/css/components.css">
-<link rel="stylesheet" href="/css/proposal-media.css?v=rules-20260427">
-<style>
-  html {
-    overflow-x: clip;
-  }
-
-  .page-proposal {
-    --proposal-header-height: calc(var(--space-1) + var(--space-0-5));
-    min-height: 100svh;
-    display: flex;
-    flex-direction: column;
-    padding: 0 var(--margin-inline) var(--margin-block);
-  }
-
-  .page-proposal main {
-    flex: 1;
-    max-width: var(--content-width-prose);
-    padding-top: var(--space-1);
-  }
-
-  .proposal-header {
-    min-height: var(--proposal-header-height);
-    display: flex;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    background: var(--color-bg);
-    margin-inline: calc(-1 * var(--margin-inline));
-    padding-inline: var(--margin-inline);
-  }
-
-  .proposal-home {
-    letter-spacing: -0.02em;
-    text-decoration: none;
-    color: inherit;
-  }
-
-  .proposal-meta {
-    font-family: var(--font-mono);
-    font-size: var(--size-xs);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-caps);
-    color: var(--color-text);
-    opacity: 0.4;
-  }
-
-  .proposal-title {
-    font-family: var(--font-serif);
-    font-weight: 400;
-    font-size: var(--size-m);
-    margin-top: var(--space-1);
-    max-width: 52ch;
-  }
-
-  .proposal-guide {
-    font-size: var(--size-m);
-    max-width: 52ch;
-  }
-
-  .proposal-guide strong {
-    font-weight: 700;
-  }
-
-  .tab-content > p,
-  .finding p,
-  .scope-phase p,
-  .closing p {
-    max-width: 52ch;
-  }
-
-  .tabs {
-    display: flex;
-    gap: var(--space-2);
-    padding: var(--space-0-5) 0;
-    position: sticky;
-    top: var(--proposal-header-height);
-    background: var(--color-bg);
-    z-index: 15;
-  }
-
-  .tabs::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: calc(-1 * var(--margin-inline));
-    width: 100vw;
-    height: 1px;
-    background: var(--color-text);
-  }
-
-  .tab {
-    font-family: var(--font-mono);
-    font-size: var(--size-s);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-caps);
-    text-decoration: none;
-    cursor: pointer;
-    color: var(--color-text);
-    opacity: 0.4;
-    border: none;
-    background: none;
-    padding: 0;
-    transition: opacity var(--transition-default);
-  }
-
-  .tab:hover { text-decoration: none; opacity: 0.7; }
-  .tab.active { opacity: 1; }
-
-  .tab-content {
-    padding-top: var(--space-2);
-  }
-
-  .tabbed .tab-content {
-    display: none;
-    padding-top: var(--space-2);
-  }
-  .tabbed .tab-content.active { display: block; }
-
-  .section-heading {
-    font-family: var(--font-mono);
-    font-size: var(--size-s);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-caps);
-    margin-top: var(--space-4);
-    margin-bottom: var(--space-1);
-    padding-top: var(--space-1);
-    border-top: 1px solid rgba(0,0,0,0.15);
-  }
-
-  .section-heading:first-child {
-    margin-top: 0;
-    padding-top: 0;
-    border-top: none;
-  }
-
-  .section-heading.section-heading--ruled {
-    margin-top: var(--space-4);
-    padding-top: var(--space-2);
-    border-top: 1px solid var(--color-text);
-  }
-
-  .scope-phase {
-    margin-bottom: var(--space-3);
-  }
-
-  .scope-phase .phase-label {
-    font-family: var(--font-mono);
-    font-size: var(--size-xs);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-caps);
-    opacity: 0.4;
-    margin-bottom: calc(var(--space-0-5) * 0.5);
-  }
-
-  .scope-phase h3 {
-    font-family: var(--font-serif);
-    font-weight: 600;
-    font-size: var(--size-m);
-    margin-bottom: var(--space-0-5);
-  }
-
-  .scope-phase ul,
-  .scope-phase ol {
-    margin: var(--space-0-5) 0 0;
-    padding-left: 1.25rem;
-    list-style: none;
-  }
-
-  .scope-phase li {
-    font-size: var(--size-m);
-    margin-bottom: var(--space-0-5);
-    position: relative;
-  }
-
-  .scope-phase li::before {
-    content: "";
-    position: absolute;
-    left: -1rem;
-    top: 0.55em;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: var(--color-text);
-    opacity: 0.25;
-  }
-
-  .scope-phase ol {
-    counter-reset: phase-step;
-  }
-
-  .scope-phase ol li::before {
-    counter-increment: phase-step;
-    content: counter(phase-step);
-    left: -1.25rem;
-    top: 0;
-    width: auto;
-    height: auto;
-    border-radius: 0;
-    background: none;
-    font-family: var(--font-mono);
-    font-size: var(--size-xs);
-    letter-spacing: var(--tracking-caps);
-    opacity: 0.45;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: var(--space-1) 0;
-    font-size: var(--size-m);
-    table-layout: fixed;
-    word-wrap: break-word;
-  }
-
-  th {
-    text-align: left;
-    font-family: var(--font-mono);
-    font-size: var(--size-xs);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-caps);
-    font-weight: 400;
-    opacity: 0.4;
-    padding: var(--space-0-5) 0;
-    border-bottom: 1px solid var(--color-text);
-  }
-
-  td {
-    padding: var(--space-0-5) 0;
-    border-bottom: 1px solid rgba(0,0,0,0.08);
-    vertical-align: top;
-    font-family: var(--font-serif);
-  }
-
-  th + th, td + td {
-    padding-left: var(--space-1);
-  }
-
-  .closing {
-    margin-top: var(--space-3);
-    padding-top: var(--space-2);
-    border-top: 1px solid var(--color-text);
-  }
-
-  .closing p:last-of-type {
-    margin-top: var(--space-1);
-  }
-
-  .page-proposal footer {
-    margin-top: var(--space-4);
-    padding-top: var(--space-1);
-    border-top: 1px solid rgba(0,0,0,0.08);
-  }
-
-  @media (max-width: 767px) {
-    :root {
-      --margin-inline: var(--space-1);
-    }
-    .tabs {
-      gap: var(--space-1);
-    }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Eidi Properties | What are we capable of?</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="stylesheet" href="/css/site.css">
+  <link rel="stylesheet" href="/css/proposal.css">
 </head>
 <body class="page-proposal">
-
-<header class="proposal-header">
-  <a href="/" class="proposal-home">What are we capable of?</a>
-</header>
-
-<main>
-
-<div class="proposal-meta">Prepared for Eidi Properties / May 2026</div>
-
-<p class="proposal-title" style="margin-top: var(--space-1);">After our first conversation, internal AI operations looks like the strongest first lane for Eidi. This page collects a reading packet and a practical agenda for the next call. It stops at reading and scoping; any access, data sharing, or prototype work waits for Eidi&apos;s explicit approval.</p>
-
-<p class="proposal-guide" style="margin-top: var(--space-1);"><strong>Summary</strong> is the current read and the pilot menu. <strong>Reading</strong> is the longer packet on internal AI operating systems, source of truth, context management, and data safety. <strong>Next Steps</strong> is what to prepare before the next call.</p>
-
-<nav class="tabs" aria-label="Sections">
-  <a class="tab active" href="#summary">Summary</a>
-  <a class="tab" href="#reading">Reading</a>
-  <a class="tab" href="#next-steps">Next Steps</a>
-</nav>
-
-<!-- ===== SUMMARY ===== -->
-<div id="summary" class="tab-content active">
-
-<div class="section-heading">Current read</div>
-
-<p>The first conversation covered several possible directions: internal operating systems, deal sourcing, underwriting, lease analysis, accounting-adjacent tracking, and internal communication. The strongest first lane appears to be internal AI operations. The website, payment surface, and public property data can stay in the background unless Eidi raises them. Yardi can remain the accounting backbone; the first useful work would improve the workflows around it rather than touch it directly.</p>
-
-<div class="section-heading">Why internal AI operations leads</div>
-
-<p>Eidi described operating knowledge spread across Yardi, spreadsheets, manuals, meetings, personal notes, and individual memory. The near-term value is choosing one workflow, mapping where its data lives, and producing a read-only output the team can judge inside two to four weeks. Eidi has explored AI support before and still wants practical implementation. A small, controlled pilot is the safest path to that.</p>
-
-<div class="section-heading">Pilot menu</div>
-
-<p>Each option below could be a first pilot. None require credentials or sensitive documents before the scoping call. The next call is where one of these gets picked.</p>
-
-<div class="scope-phase">
-  <div class="phase-label">Option 1</div>
-  <h3>Source-of-truth mapping for one workflow</h3>
-  <p>Map one important workflow from source artifacts to outputs. Show where data lives, who updates it, who relies on it, and where errors enter. First output: a one-page current-state map with data owners, risk notes, and a small prototype recommendation.</p>
-</div>
-
-<div class="scope-phase">
-  <div class="phase-label">Option 2</div>
-  <h3>Deal-sourcing triage</h3>
-  <p>Read approved opportunity materials and rank them against criteria Eidi confirms for the pilot. The first version can work from manually supplied sample packets or public listings. Broker websites, paid platforms, and login-gated sources wait for terms review and explicit approval. First output: a ranked list of opportunities with evidence, missing fields, and questions for human review.</p>
-</div>
-
-<div class="scope-phase">
-  <div class="phase-label">Option 3</div>
-  <h3>Lease analysis assistant</h3>
-  <p>Extract key terms, renewal dates, options, obligations, risk flags, and follow-up questions from approved sample leases. The first version should use redacted samples or synthetic documents until the approval path is clear. First output: a structured lease summary with source references and human-review flags.</p>
-</div>
-
-<div class="scope-phase">
-  <div class="phase-label">Option 4</div>
-  <h3>Underwriting support</h3>
-  <p>Help extract assumptions, compare deal packets, identify missing fields, or prepare first-pass questions for review. The system should follow Eidi&apos;s existing underwriting logic. First output: a sample underwriting intake sheet populated from approved documents, with uncertain fields marked for review.</p>
-</div>
-
-<div class="scope-phase">
-  <div class="phase-label">Option 5</div>
-  <h3>Yardi-adjacent reporting</h3>
-  <p>Work from approved exports to produce summaries, exception lists, or follow-up questions. Direct Yardi access waits until the team decides whether it is necessary and safe. First output: a read-only report explainer or exception summary from a sample export.</p>
-</div>
-
-<div class="scope-phase">
-  <div class="phase-label">Option 6</div>
-  <h3>Internal knowledge base</h3>
-  <p>Answer recurring staff questions from approved manuals, procedures, checklists, and meeting notes. Each answer cites the source it used. First output: a small searchable packet for one procedure area, with citations and an owner for updates.</p>
-</div>
-
-<div class="scope-phase">
-  <div class="phase-label">Option 7</div>
-  <h3>Public property inventory cleanup</h3>
-  <p>Reconcile website listings, available spaces, land listings, suite sizes, leasing contacts, and property descriptions against an approved internal source. Useful as a later workstream; the meeting put internal operations first. First output: a confirmation worksheet separating current, stale, missing, and uncertain public property facts.</p>
-</div>
-
-<div class="section-heading">What this page is not</div>
-
-<p>This is a reading packet and an agenda for the next call. It is not a final scope, a price, or a commitment. No data has been shared, no access has been requested, and no prototype has been built. Anything beyond reading and scoping waits for Eidi&apos;s explicit approval.</p>
-
-</div>
-
-<!-- ===== READING ===== -->
-<div id="reading" class="tab-content">
-
-<div class="section-heading">What an internal AI operating system means</div>
-
-<p>An internal AI operating system is a controlled way for a company to use AI inside its existing work. It can retrieve approved information, summarize files, compare options, draft follow-up materials, extract fields, rank opportunities, and route questions to the right person.</p>
-
-<p>The first version should fit the way Eidi already works. Yardi can remain the accounting backbone. Existing spreadsheets, manuals, notes, meetings, emails, and deal materials can become inputs where appropriate. The system should help around those sources before anyone considers replacing a core tool.</p>
-
-<p>A good first system is narrow:</p>
-
-<div class="scope-phase">
-  <ul>
-    <li>One workflow.</li>
-    <li>One responsible owner.</li>
-    <li>One clear input source.</li>
-    <li>One output the team can judge.</li>
-    <li>One approval rule before anything external happens.</li>
-  </ul>
-</div>
-
-<p>That shape keeps the first project practical. It also creates proof. If a small workflow saves time, reduces repeated work, or makes a decision clearer, the next workflow becomes easier to choose.</p>
-
-<div class="section-heading">Why source of truth comes first</div>
-
-<p>AI work gets stronger when the business knows which source owns each fact. A source of truth is the maintained place where a specific kind of information is updated, trusted, and reviewed.</p>
-
-<table>
-  <thead>
-    <tr>
-      <th scope="col">Information type</th>
-      <th scope="col">Possible source of truth</th>
-      <th scope="col">Common downstream uses</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Tenant and accounting records</td>
-      <td>Yardi or approved export</td>
-      <td>Reports, exceptions, collections review, finance questions</td>
-    </tr>
-    <tr>
-      <td>Property availability</td>
-      <td>Internal property spreadsheet or approved database</td>
-      <td>Website, broker follow-up, leasing sheets, internal status</td>
-    </tr>
-    <tr>
-      <td>Deal criteria</td>
-      <td>Investment memo, underwriting template, or criteria sheet</td>
-      <td>Deal ranking, broker email review, acquisition triage</td>
-    </tr>
-    <tr>
-      <td>Lease terms</td>
-      <td>Lease files plus extracted summary table</td>
-      <td>Renewal tracking, obligation review, clause questions</td>
-    </tr>
-    <tr>
-      <td>Internal procedures</td>
-      <td>Manuals or approved knowledge base</td>
-      <td>Staff questions, onboarding, recurring task support</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>Without a source of truth, automation can still produce output, but the team spends time checking which version is right. With a source of truth, an AI system can work from the right facts and explain where each answer came from.</p>
-
-<p>A useful discovery exercise is to pick one workflow and answer five questions:</p>
-
-<div class="scope-phase">
-  <ol>
-    <li>Where does this information live today?</li>
-    <li>Who updates it?</li>
-    <li>Who relies on it?</li>
-    <li>What happens when it is outdated or missing?</li>
-    <li>What output would become easier if this information were clean?</li>
-  </ol>
-</div>
-
-<div class="section-heading">Context management</div>
-
-<p>AI systems perform better when they receive the right context for the task. Context includes instructions, approved files, examples, tools, constraints, and success criteria.</p>
-
-<p>A broad prompt creates broad output. A narrow prompt with the right source packet creates work the team can review.</p>
-
-<p>A practical AI workflow usually needs:</p>
-
-<div class="scope-phase">
-  <ul>
-    <li>A specific task. "Rank these five deals against our criteria" is stronger than "help us find deals."</li>
-    <li>Approved sources. The files, exports, pages, or notes the system can use.</li>
-    <li>A rule for uncertainty. When the system should ask a question or mark a field unknown.</li>
-    <li>A human review step. Who checks the output before it affects a decision or leaves the company.</li>
-    <li>A record of evidence. Links, file names, timestamps, or row numbers that show where the answer came from.</li>
-  </ul>
-</div>
-
-<p>This is the part that separates controlled internal tooling from casual AI use. The model matters, but the surrounding system matters more: what it can see, what it can do, what it must avoid, and who approves the result.</p>
-
-<div class="section-heading">How to choose the first pilot</div>
-
-<p>The first pilot should be small enough to prove value in one to two weeks. It should use safe data, avoid production-system changes, and create an output the team already understands.</p>
-
-<p>Score each candidate from 1 to 5 on the criteria below.</p>
-
-<table>
-  <thead>
-    <tr>
-      <th scope="col">Criterion</th>
-      <th scope="col">Question</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Frequency</td>
-      <td>How often does this work happen?</td>
-    </tr>
-    <tr>
-      <td>Pain</td>
-      <td>How much time, frustration, or risk does it create?</td>
-    </tr>
-    <tr>
-      <td>Data readiness</td>
-      <td>Can we get safe sample inputs quickly?</td>
-    </tr>
-    <tr>
-      <td>Risk</td>
-      <td>How sensitive is the data or action?</td>
-    </tr>
-    <tr>
-      <td>Measurable output</td>
-      <td>Can the team judge success within two to four weeks?</td>
-    </tr>
-    <tr>
-      <td>Owner clarity</td>
-      <td>Is there one person who can approve, test, and give feedback?</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>A strong first pilot has high frequency, high pain, available sample data, low operational risk, and a clear owner.</p>
-
-<div class="section-heading">Data safety before access</div>
-
-<p>The first project should classify data before requesting files or credentials. Commercial real estate workflows can touch leases, rent rolls, accounting records, tenant information, payment data, broker communications, and acquisition pipeline details. Those categories need explicit handling rules.</p>
-
-<table>
-  <thead>
-    <tr>
-      <th scope="col">Class</th>
-      <th scope="col">Examples</th>
-      <th scope="col">Starting rule</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Public</td>
-      <td>Website pages, public listings, public articles</td>
-      <td>Safe for research and examples</td>
-    </tr>
-    <tr>
-      <td>Internal non-sensitive</td>
-      <td>Process manuals, blank templates, non-confidential checklists</td>
-      <td>Safe after Eidi approval</td>
-    </tr>
-    <tr>
-      <td>Confidential</td>
-      <td>Leases, deal packets, tenant contacts, broker emails, underwriting files</td>
-      <td>Use only with explicit approval and a defined purpose</td>
-    </tr>
-    <tr>
-      <td>Financial or accounting</td>
-      <td>Yardi exports, rent rolls, balances, payment status</td>
-      <td>Finance approval required</td>
-    </tr>
-    <tr>
-      <td>Payment-adjacent</td>
-      <td>Payment forms, card data, processor settings</td>
-      <td>Avoid in first pilot unless explicitly scoped</td>
-    </tr>
-    <tr>
-      <td>Off limits</td>
-      <td>Anything Eidi marks private, privileged, contractual, or regulated</td>
-      <td>Exclude from prototype</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>For each data class, the team chooses one handling mode:</p>
-
-<div class="scope-phase">
-  <ol>
-    <li>Public-only research.</li>
-    <li>Redacted sample files.</li>
-    <li>Synthetic examples that imitate the structure without real client data.</li>
-    <li>Local-only processing.</li>
-    <li>Approved external model use.</li>
-    <li>No AI processing.</li>
-  </ol>
-</div>
-
-<p>The right mode can vary by workflow. A public property cleanup may be safe with public pages and client confirmation. A lease or Yardi pilot needs a tighter approval path.</p>
-
-<p>Email needs its own approval rule. Reading email, drafting replies, and sending messages are separate actions. A prototype can discuss the workflow before any message is shared, drafted, or sent. External model uploads also need explicit approval by data class. Public pages are different from leases, rent rolls, accounting exports, broker communications, and tenant records.</p>
-
-</div>
-
-<!-- ===== NEXT STEPS ===== -->
-<div id="next-steps" class="tab-content">
-
-<div class="section-heading">Agenda for the next call</div>
-
-<p>A practical 30 to 45 minutes. The goal is to leave the call with one chosen workflow, a clear approval path, and a defined first output.</p>
-
-<div class="scope-phase">
-  <ol>
-    <li>Review the pilot menu.</li>
-    <li>Score the top two or three candidates against the criteria.</li>
-    <li>Pick one workflow.</li>
-    <li>Identify safe sample inputs.</li>
-    <li>Name the workflow owner and the approvers for any data the pilot would touch.</li>
-    <li>Define what the first output should be and how the team will judge it.</li>
-    <li>Decide whether the first prototype can be built without credentials.</li>
-  </ol>
-</div>
-
-<div class="section-heading">What Eidi should prepare</div>
-
-<div class="scope-phase">
-  <ul>
-    <li>The top two workflows from the pilot menu, with the person who owns each.</li>
-    <li>A rough sense of where the data for those workflows lives today.</li>
-    <li>Which parts of that data are safe to discuss and which are off limits.</li>
-    <li>One example of the output the team currently creates by hand for that workflow.</li>
-    <li>A view on what a useful two-to-four-week proof would look like.</li>
-  </ul>
-</div>
-
-<div class="section-heading">What Noah does not need yet</div>
-
-<div class="scope-phase">
-  <ul>
-    <li>Credentials for Yardi, email, or any internal system.</li>
-    <li>Confidential documents.</li>
-    <li>Lease, rent roll, accounting, broker, or tenant records.</li>
-    <li>Vendor or platform approvals.</li>
-    <li>Decisions about scope, price, or contract.</li>
-  </ul>
-</div>
-
-<div class="section-heading">Approval and data boundaries</div>
-
-<div class="scope-phase">
-  <ul>
-    <li>Any work touching leases, rent rolls, Yardi exports, accounting records, tenant data, broker communications, or payment data requires explicit approval from Eidi.</li>
-    <li>Scraping broker websites or third-party listing platforms waits for terms review and explicit approval.</li>
-    <li>External model use needs approval by data class. Public pages, leases, rent rolls, accounting exports, broker communications, and tenant records each get a separate decision.</li>
-    <li>Email reading, drafting, and sending are separate actions. Each one needs its own approval before any prototype touches it.</li>
-    <li>Any output stays with Eidi before it leaves the company.</li>
-  </ul>
-</div>
-
-<div class="section-heading">What a first read-only pilot could produce</div>
-
-<p>Depending on which workflow gets chosen, a first read-only pilot in two to four weeks could deliver one of the following:</p>
-
-<div class="scope-phase">
-  <ul>
-    <li>A one-page current-state map for one workflow, with data owners, risk notes, and a small prototype recommendation.</li>
-    <li>A ranked list of sample opportunities against Eidi&apos;s criteria, with evidence and questions for human review.</li>
-    <li>A structured summary of a small set of sample leases, with source references and review flags.</li>
-    <li>A read-only explainer or exception summary from one approved sample export.</li>
-    <li>A small searchable packet for one procedure area, with citations and an owner for updates.</li>
-    <li>A confirmation worksheet separating current, stale, missing, and uncertain public property facts.</li>
-  </ul>
-</div>
-
-<p>In each case, the output stays with Eidi. The team judges whether the work is accurate, useful, and safe before any next step is discussed.</p>
-
-<div class="closing">
-  <p>The next call can stay practical. The work is to pick one workflow, agree on safe sample inputs, name the approvers, and define the first useful output.</p>
-  <p>From there, a small read-only pilot can move quickly without needing credentials or sensitive documents on day one.</p>
-</div>
-
-</div>
-
-</main>
-
-<footer>
-  <span class="proposal-meta">Prepared by Noah / May 2026. No private documents or credentials were used to prepare this page.</span>
-</footer>
-
-<script>
-(function() {
-  var container = document.querySelector('main');
-  var tabsNav = document.querySelector('.tabs');
-  var header = document.querySelector('.proposal-header');
-  var tabs = document.querySelectorAll('.tab');
-  var panels = document.querySelectorAll('.tab-content');
-
-  container.classList.add('tabbed');
-
-  function stickyOffset() {
-    var headerHeight = header ? header.getBoundingClientRect().height : 0;
-    var tabsHeight = tabsNav ? tabsNav.getBoundingClientRect().height : 0;
-    return headerHeight + tabsHeight;
-  }
-
-  function scrollPanelToTop(panel) {
-    var top = panel.getBoundingClientRect().top + window.scrollY - stickyOffset();
-    var scrollTarget = Math.max(0, Math.round(top));
-    var root = document.documentElement;
-    var previousScrollBehavior = root.style.scrollBehavior;
-
-    root.style.scrollBehavior = 'auto';
-    window.scrollTo(0, scrollTarget);
-    root.style.scrollBehavior = previousScrollBehavior;
-  }
-
-  function activateTab(tab) {
-    var id = tab.getAttribute('href').slice(1);
-    var panel = document.getElementById(id);
-    if (!panel) return;
-
-    panels.forEach(function(el) { el.classList.remove('active'); });
-    tabs.forEach(function(t) { t.classList.remove('active'); });
-    panel.classList.add('active');
-    tab.classList.add('active');
-    scrollPanelToTop(panel);
-  }
-
-  tabs.forEach(function(tab) {
-    tab.addEventListener('click', function(e) {
-      e.preventDefault();
-      activateTab(this);
-    });
-  });
-})();
-</script>
-
+  <main class="page" id="main">
+    <header class="site-header">
+      <a class="mark" href="/">What are we capable of?</a>
+      <a class="mail" href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a>
+    </header>
+
+    <p class="p-meta">Prepared for Eidi Properties · May 2026</p>
+    <h1 class="p-title">An internal AI operations agenda for&nbsp;Eidi.</h1>
+    <p class="p-lede">A reading packet and practical next-call agenda: pilot menu, source-of-truth framing, context management, data safety, and first read-only outputs.</p>
+
+    <section>
+      <p class="eyebrow">Summary</p>
+      <h2>Current read</h2>
+      <p>The first conversation covered several possible directions: internal operating systems, deal sourcing, underwriting, lease analysis, accounting-adjacent tracking, and internal communication. The strongest first lane appears to be internal AI operations. The website, payment surface, and public property data can stay in the background unless Eidi raises them. Yardi can remain the accounting backbone; the first useful work would improve the workflows around it rather than touch it directly.</p>
+    </section>
+
+    <section>
+      <h2>Why internal AI operations leads</h2>
+      <p>Eidi described operating knowledge spread across Yardi, spreadsheets, manuals, meetings, personal notes, and individual memory. The near-term value is choosing one workflow, mapping where its data lives, and producing a read-only output the team can judge inside two to four weeks. Eidi has explored AI support before and still wants practical implementation. A small, controlled pilot is the safest path to that.</p>
+    </section>
+
+    <section>
+      <h2>Pilot menu</h2>
+      <p>Each option below could be a first pilot. None require credentials or sensitive documents before the scoping call. The next call is where one of these gets picked.</p>
+      <div class="layer"><div class="label">Option 1</div><div><h3>Map one workflow</h3><p>Map one important workflow from source artifacts to outputs. Show where data lives, who updates it, who relies on it, and where errors enter. First output: a one-page current-state map with data owners, risk notes, and a small prototype recommendation.</p></div></div>
+      <div class="layer"><div class="label">Option 2</div><div><h3>Deal-sourcing triage</h3><p>Read approved opportunity materials and rank them against criteria Eidi confirms for the pilot. The first version can work from manually supplied sample packets or public listings. Broker websites, paid platforms, and login-gated sources wait for terms review and explicit approval. First output: a ranked list of opportunities with evidence, missing fields, and questions for human review.</p></div></div>
+      <div class="layer"><div class="label">Option 3</div><div><h3>Lease analysis assistant</h3><p>Extract key terms, renewal dates, options, obligations, risk flags, and follow-up questions from approved sample leases. The first version should use redacted samples or synthetic documents until the approval path is clear. First output: a structured lease summary with source references and human-review flags.</p></div></div>
+      <div class="layer"><div class="label">Option 4</div><div><h3>Underwriting support</h3><p>Help extract assumptions, compare deal packets, identify missing fields, or prepare first-pass questions for review. The system should follow Eidi's existing underwriting logic. First output: a sample underwriting intake sheet populated from approved documents, with uncertain fields marked for review.</p></div></div>
+      <div class="layer"><div class="label">Option 5</div><div><h3>Yardi-adjacent reporting</h3><p>Work from approved exports to produce summaries, exception lists, or follow-up questions. Direct Yardi access waits until the team decides whether it is necessary and safe. First output: a read-only report explainer or exception summary from a sample export.</p></div></div>
+      <div class="layer"><div class="label">Option 6</div><div><h3>Internal knowledge base</h3><p>Answer recurring staff questions from approved manuals, procedures, checklists, and meeting notes. Each answer cites the source it used. First output: a small searchable packet for one procedure area, with citations and an owner for updates.</p></div></div>
+      <div class="layer"><div class="label">Option 7</div><div><h3>Public property inventory cleanup</h3><p>Reconcile website listings, available spaces, land listings, suite sizes, leasing contacts, and property descriptions against an approved internal source. Useful as a later workstream; the meeting put internal operations first. First output: a confirmation worksheet separating current, stale, missing, and uncertain public property facts.</p></div></div>
+    </section>
+
+    <section>
+      <h2>What this page is</h2>
+      <p>This is a reading packet and an agenda for the next call. It is a starting point for scoping, not a final scope, a price, or a commitment. No data has been shared, no access has been requested, and no prototype has been built. Anything beyond reading and scoping waits for Eidi's explicit approval.</p>
+    </section>
+
+    <section>
+      <p class="eyebrow">Reading</p>
+      <h2>What an internal AI operating system means</h2>
+      <p>An internal AI operating system is a controlled way for a company to use AI inside its existing work. It can retrieve approved information, summarize files, compare options, draft follow-up materials, extract fields, rank opportunities, and route questions to the right person.</p>
+      <p>The first version should fit the way Eidi already works. Yardi can remain the accounting backbone. Existing spreadsheets, manuals, notes, meetings, emails, and deal materials can become inputs where appropriate. The system should help around those sources before anyone considers replacing a core tool.</p>
+      <p>A good first system is narrow.</p>
+      <div class="finding"><div class="n">01</div><div><p>One workflow.</p></div></div>
+      <div class="finding"><div class="n">02</div><div><p>One responsible owner.</p></div></div>
+      <div class="finding"><div class="n">03</div><div><p>One clear input source.</p></div></div>
+      <div class="finding"><div class="n">04</div><div><p>One output the team can judge.</p></div></div>
+      <div class="finding"><div class="n">05</div><div><p>One approval rule before anything external happens.</p></div></div>
+      <p>That shape keeps the first project practical. It also creates proof. If a small workflow saves time, reduces repeated work, or makes a decision clearer, the next workflow becomes easier to choose.</p>
+    </section>
+
+    <section>
+      <h2>Why source of truth comes first</h2>
+      <p>AI work gets stronger when the business knows which source owns each fact. A source of truth is the maintained place where a specific kind of information is updated, trusted, and reviewed.</p>
+      <table class="p-table">
+        <thead><tr><th>Information type</th><th>Possible source of truth</th><th>Common downstream uses</th></tr></thead>
+        <tbody>
+          <tr><td class="lead-cell">Tenant and accounting records</td><td>Yardi or approved export</td><td>Reports, exceptions, collections review, finance questions.</td></tr>
+          <tr><td class="lead-cell">Property availability</td><td>Internal property spreadsheet or approved database</td><td>Website, broker follow-up, leasing sheets, internal status.</td></tr>
+          <tr><td class="lead-cell">Deal criteria</td><td>Investment memo, underwriting template, or criteria sheet</td><td>Deal ranking, broker email review, acquisition triage.</td></tr>
+          <tr><td class="lead-cell">Lease terms</td><td>Lease files plus extracted summary table</td><td>Renewal tracking, obligation review, clause questions.</td></tr>
+          <tr><td class="lead-cell">Internal procedures</td><td>Manuals or approved knowledge base</td><td>Staff questions, onboarding, recurring task support.</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top: 24px;">Without a source of truth, automation can still produce output, but the team spends time checking which version is right. With a source of truth, an AI system can work from the right facts and explain where each answer came from.</p>
+    </section>
+
+    <section>
+      <h2>Discovery questions</h2>
+      <p>A useful discovery exercise is to pick one workflow and answer five questions.</p>
+      <div class="finding"><div class="n">01</div><div><p>Identify where this information lives today inside the company.</p></div></div>
+      <div class="finding"><div class="n">02</div><div><p>Name the person or team responsible for updating it.</p></div></div>
+      <div class="finding"><div class="n">03</div><div><p>Name the teams and decisions that rely on it.</p></div></div>
+      <div class="finding"><div class="n">04</div><div><p>Describe what happens when the information is outdated, incomplete, or missing.</p></div></div>
+      <div class="finding"><div class="n">05</div><div><p>Define the output that would become easier if this information were clean.</p></div></div>
+    </section>
+
+    <section>
+      <h2>Context management</h2>
+      <p>AI systems perform better when they receive the right context for the task. Context includes instructions, approved files, examples, tools, constraints, and success criteria.</p>
+      <p>A broad prompt creates broad output. A narrow prompt with the right source packet creates work the team can review.</p>
+      <table class="p-table">
+        <thead><tr><th>Need</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td class="lead-cell">Specific task</td><td>"Rank these five deals against our criteria" is stronger than "help us find deals."</td></tr>
+          <tr><td class="lead-cell">Approved sources</td><td>The files, exports, pages, or notes the system can use.</td></tr>
+          <tr><td class="lead-cell">Uncertainty rule</td><td>When the system should ask a question or mark a field unknown.</td></tr>
+          <tr><td class="lead-cell">Human review step</td><td>Who checks the output before it affects a decision or leaves the company.</td></tr>
+          <tr><td class="lead-cell">Evidence record</td><td>Links, file names, timestamps, or row numbers that show where the answer came from.</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top: 24px;">This is the part that separates controlled internal tooling from casual AI use. The model matters, but the surrounding system matters more: what it can see, what it can do, what it must avoid, and who approves the result.</p>
+    </section>
+
+    <section>
+      <h2>How to choose the first pilot</h2>
+      <p>The first pilot should be small enough to prove value in one to two weeks. It should use safe data, avoid production-system changes, and create an output the team already understands.</p>
+      <p>Score each candidate from 1 to 5 on the criteria below.</p>
+      <table class="p-table">
+        <thead><tr><th>Criterion</th><th>Question</th></tr></thead>
+        <tbody>
+          <tr><td class="lead-cell">Frequency</td><td>How often does this work happen?</td></tr>
+          <tr><td class="lead-cell">Pain</td><td>How much time, frustration, or risk does it create?</td></tr>
+          <tr><td class="lead-cell">Data readiness</td><td>Can we get safe sample inputs quickly?</td></tr>
+          <tr><td class="lead-cell">Risk</td><td>How sensitive is the data or action?</td></tr>
+          <tr><td class="lead-cell">Measurable output</td><td>Can the team judge success within two to four weeks?</td></tr>
+          <tr><td class="lead-cell">Owner clarity</td><td>Is there one person who can approve, test, and give feedback?</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top: 24px;">A strong first pilot has high frequency, high pain, available sample data, low operational risk, and a clear owner.</p>
+    </section>
+
+    <section>
+      <h2>Data safety before access</h2>
+      <p>The first project should classify data before requesting files or credentials. Commercial real estate workflows can touch leases, rent rolls, accounting records, tenant information, payment data, broker communications, and acquisition pipeline details. Those categories need explicit handling rules.</p>
+      <table class="p-table">
+        <thead><tr><th>Class</th><th>Examples</th><th>Starting rule</th></tr></thead>
+        <tbody>
+          <tr><td class="lead-cell">Public</td><td>Website pages, public listings, public articles.</td><td>Safe for research and examples.</td></tr>
+          <tr><td class="lead-cell">Internal non-sensitive</td><td>Process manuals, blank templates, non-confidential checklists.</td><td>Safe after Eidi approval.</td></tr>
+          <tr><td class="lead-cell">Confidential</td><td>Leases, deal packets, tenant contacts, broker emails, underwriting files.</td><td>Use only with explicit approval and a defined purpose.</td></tr>
+          <tr><td class="lead-cell">Financial or accounting</td><td>Yardi exports, rent rolls, balances, payment status.</td><td>Finance approval required.</td></tr>
+          <tr><td class="lead-cell">Payment-adjacent</td><td>Payment forms, card data, processor settings.</td><td>Avoid in first pilot unless explicitly scoped.</td></tr>
+          <tr><td class="lead-cell">Off limits</td><td>Anything Eidi marks private, privileged, contractual, or regulated.</td><td>Exclude from prototype.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Handling modes</h2>
+      <p>For each data class, the team chooses one handling mode.</p>
+      <div class="finding"><div class="n">01</div><div><p>Public-only research.</p></div></div>
+      <div class="finding"><div class="n">02</div><div><p>Redacted sample files.</p></div></div>
+      <div class="finding"><div class="n">03</div><div><p>Synthetic examples that imitate the structure without real client data.</p></div></div>
+      <div class="finding"><div class="n">04</div><div><p>Local-only processing.</p></div></div>
+      <div class="finding"><div class="n">05</div><div><p>Approved external model use.</p></div></div>
+      <div class="finding"><div class="n">06</div><div><p>No AI processing.</p></div></div>
+      <p>The right mode can vary by workflow. A public property cleanup may be safe with public pages and client confirmation. A lease or Yardi pilot needs a tighter approval path.</p>
+      <p>Email needs its own approval rule. Reading email, drafting replies, and sending messages are separate actions. A prototype can discuss the workflow before any message is shared, drafted, or sent. External model uploads also need explicit approval by data class.</p>
+    </section>
+
+    <section>
+      <p class="eyebrow">Next steps</p>
+      <h2>Agenda for the next call</h2>
+      <p>A practical 30 to 45 minutes. The goal is to leave the call with one chosen workflow, a clear approval path, and a defined first output.</p>
+      <div class="timeline">
+        <div class="t-step"><div class="t-rail"><span class="t-dot"></span><span class="t-line"></span></div><div><p class="t-when">Step 1</p><p class="t-title">Review the pilot menu</p><p>Compare the options and pick the top two or three candidates.</p></div></div>
+        <div class="t-step"><div class="t-rail"><span class="t-dot"></span><span class="t-line"></span></div><div><p class="t-when">Step 2</p><p class="t-title">Score and pick</p><p>Score the top candidates against the criteria, then pick one workflow.</p></div></div>
+        <div class="t-step"><div class="t-rail"><span class="t-dot"></span><span class="t-line"></span></div><div><p class="t-when">Step 3</p><p class="t-title">Name sources and owners</p><p>Identify safe sample inputs, a workflow owner, and the approvers for any data the pilot would touch.</p></div></div>
+        <div class="t-step"><div class="t-rail"><span class="t-dot"></span></div><div><p class="t-when">Step 4</p><p class="t-title">Define the first output</p><p>Decide what the first output should be, how the team will judge it, and whether the first prototype can be built without credentials.</p></div></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>What Eidi should prepare</h2>
+      <table class="p-table">
+        <thead><tr><th>Preparation</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td class="lead-cell">Top two workflows</td><td>Pick from the pilot menu and name the person who owns each.</td></tr>
+          <tr><td class="lead-cell">Data location</td><td>Share a rough sense of where the data for those workflows lives today.</td></tr>
+          <tr><td class="lead-cell">Data boundaries</td><td>Identify which parts are safe to discuss and which are off limits.</td></tr>
+          <tr><td class="lead-cell">Current output</td><td>Bring one example of the output the team currently creates by hand.</td></tr>
+          <tr><td class="lead-cell">Proof definition</td><td>Describe what a useful two-to-four-week proof would look like.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>What Noah does not need yet</h2>
+      <table class="p-table">
+        <thead><tr><th>Item</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="lead-cell">Credentials</td><td>No Yardi, email, or internal system credentials needed.</td></tr>
+          <tr><td class="lead-cell">Confidential documents</td><td>No private documents needed before the approval path is clear.</td></tr>
+          <tr><td class="lead-cell">Sensitive records</td><td>No lease, rent roll, accounting, broker, or tenant records needed yet.</td></tr>
+          <tr><td class="lead-cell">Vendor approvals</td><td>No platform decisions needed before the first workflow is selected.</td></tr>
+          <tr><td class="lead-cell">Commercial terms</td><td>No scope, price, or contract decision needed for the reading call.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Approval and data boundaries</h2>
+      <p>Any work touching leases, rent rolls, Yardi exports, accounting records, tenant data, broker communications, or payment data requires explicit approval from Eidi. Scraping broker websites or third-party listing platforms waits for terms review and explicit approval. External model use needs approval by data class. Email reading, drafting, and sending are separate actions. Any output stays with Eidi before it leaves the company.</p>
+    </section>
+
+    <section>
+      <h2>First read-only outputs</h2>
+      <table class="p-table">
+        <thead><tr><th>Possible output</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td class="lead-cell">Workflow map</td><td>A one-page current-state map with data owners, risk notes, and a small prototype recommendation.</td></tr>
+          <tr><td class="lead-cell">Opportunity triage</td><td>A ranked list of sample opportunities against Eidi's criteria, with evidence and questions for human review.</td></tr>
+          <tr><td class="lead-cell">Lease summary</td><td>A structured summary of sample leases, with source references and review flags.</td></tr>
+          <tr><td class="lead-cell">Exception summary</td><td>A read-only explainer or exception summary from one approved sample export.</td></tr>
+          <tr><td class="lead-cell">Searchable packet</td><td>A small searchable packet for one procedure area, with citations and an owner for updates.</td></tr>
+          <tr><td class="lead-cell">Property worksheet</td><td>A confirmation worksheet separating current, stale, missing, and uncertain public property facts.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <p class="eyebrow">The next conversation</p>
+      <p class="close-line">Pick one workflow, agree on safe sample inputs, name the approvers, and define the first useful output.</p>
+      <p class="cta"><a href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a></p>
+    </section>
+
+    <footer class="site-footer">
+      <a href="/">What are we capable of?</a>
+      <span>Prepared by Noah · May 2026. No private documents or credentials were used to prepare this page.</span>
+    </footer>
+  </main>
 </body>
 </html>

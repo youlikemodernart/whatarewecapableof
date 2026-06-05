@@ -113,7 +113,9 @@ h2 { font-size: 23px; line-height: 1.2; letter-spacing: -0.01em; font-weight: 60
 .step { display: grid; grid-template-columns: 40px 1fr; gap: 4px 16px; align-items: start; }
 .step .n { font-size: 18px; font-weight: 500; color: var(--ink-3); padding-top: 2px; }
 .step h3 { font-size: 19px; font-weight: 600; margin: 0 0 6px; }
-.step p { margin: 0; max-width: 52ch; }
+.step p { margin: 0 0 0.9em; max-width: 52ch; }
+.step ul.guarantees { margin: 0 0 0.9em; }
+.step > div > :last-child { margin-bottom: 0; }
 .guarantees { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
 .guarantees li { max-width: 60ch; padding-left: 18px; position: relative; }
 .guarantees li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 7px; height: 1px; background: var(--ink); }
@@ -121,6 +123,8 @@ h2 { font-size: 23px; line-height: 1.2; letter-spacing: -0.01em; font-weight: 60
 .faq { display: grid; gap: 26px; }
 .faq h3 { font-size: 18px; font-weight: 600; margin: 0 0 6px; }
 .faq p { color: var(--ink-2); margin: 0; }
+.faq p + p { margin-top: 0.9em; }
+.faq ul.guarantees { margin-top: 0.9em; }
 .leave { font-size: 21px; line-height: 1.4; max-width: 40ch; font-weight: 500; text-wrap: balance; }
 @media (max-width: 600px) { .step { grid-template-columns: 32px 1fr; } }
 

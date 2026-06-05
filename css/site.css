@@ -74,8 +74,8 @@ h2 { font-size: 23px; line-height: 1.2; letter-spacing: -0.01em; font-weight: 60
   font-weight: 600; margin: 0; max-width: 14ch; text-wrap: balance;
 }
 .home-offer {
-  font-size: clamp(20px, 2.6vw, 27px); line-height: 1.28; letter-spacing: -0.01em; font-weight: 400;
-  max-width: 28ch; margin: clamp(28px, 4vh, 44px) 0 0; text-wrap: balance;
+  font-size: clamp(20px, 2.4vw, 24px); line-height: 1.32; letter-spacing: -0.01em; font-weight: 400;
+  max-width: 46ch; margin: clamp(28px, 4vh, 44px) 0 0; text-wrap: pretty;
 }
 .home-support { font-size: 18px; color: var(--ink-2); max-width: 54ch; margin: 24px 0 0; text-wrap: pretty; }
 .home-actions { margin-top: clamp(36px, 6vh, 64px); display: flex; gap: 28px; align-items: baseline; flex-wrap: wrap; }
@@ -106,6 +106,7 @@ h2 { font-size: 23px; line-height: 1.2; letter-spacing: -0.01em; font-weight: 60
 
 /* ===== offer (/how-we-work) ===== */
 .lead { font-size: clamp(26px, 3.8vw, 40px); line-height: 1.16; letter-spacing: -0.015em; font-weight: 500; margin: 0; max-width: 22ch; text-wrap: balance; }
+.lead + p { margin-top: clamp(20px, 3vh, 30px); }
 .sub { font-size: 19px; color: var(--ink-2); max-width: 54ch; margin: 22px 0 0; text-wrap: pretty; }
 .section-lead { margin-bottom: 28px; }
 .steps { display: grid; gap: clamp(28px, 4vh, 40px); list-style: none; margin: 0; padding: 0; }

@@ -48,10 +48,25 @@
     .page-picking .page { padding-top: 22px; }
     .internal-bar { flex-wrap: wrap; row-gap: 4px; margin-bottom: 36px; }
     .field { grid-template-columns: 1fr; gap: 6px; padding: 14px 0; }
-    .scorecards { grid-template-columns: 1fr 1fr; }
-    .table-head { align-items: start; flex-direction: column; gap: 8px; }
-    table { min-width: 820px; }
-    tbody th { width: 180px; }
+    .value { max-width: none; }
+    .scorecards { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .scorecard { padding: 14px; min-height: 108px; }
+    .scorecard strong { font-size: clamp(25px, 8vw, 32px); }
+    .table-section { margin-top: 54px; }
+    .table-head { align-items: start; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+    .table-wrap { overflow-x: visible; }
+    table { min-width: 0; font-size: 15px; line-height: 1.48; }
+    thead { display: none; }
+    tbody, tr, th, td { display: block; }
+    tbody tr { padding: 18px 0 19px; border-bottom: 1px solid var(--rule); }
+    tbody tr:first-child { padding-top: 0; }
+    tbody th,
+    tbody td { border-bottom: 0; padding: 0; }
+    tbody th { width: auto; font-size: 17px; line-height: 1.25; margin-bottom: 10px; }
+    td.score { display: inline-flex; align-items: baseline; gap: 6px; width: auto; min-height: 32px; padding: 5px 10px 6px; margin-bottom: 12px; border: 1px solid var(--rule); border-radius: 999px; text-align: left; font-size: 16px; line-height: 1; }
+    td.score::before { content: "Score"; color: var(--ink-3); font-size: 11px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; }
+    td.score + td { color: var(--ink-2); max-width: 62ch; }
+    .bottom-line { margin-top: 54px; }
     .bottom-line p { font-size: 18px; }
   }
 </style>

@@ -78,15 +78,15 @@
       <p>Georgie recommended ArtCloud because it matches what a lot of galleries at your scale use. Two things about both platforms make them weak fits for this specific goal.</p>
       <div class="finding"><div class="n">01</div><div><p>Neither has a real API. Data goes in through Excel or CSV files and comes out the same way. The AI can prepare the file, but a person still imports it. After the initial load, every update runs the same loop: export, edit, import. That is the loop this system is meant to avoid.</p></div></div>
       <div class="finding"><div class="n">02</div><div><p>Neither platform stores collector intelligence at the depth you described: relationship notes, passed-on works, fair context, and outreach timing. Connecting a Paris conversation to a piece coming back on consignment takes a data model built to your practice.</p></div></div>
-      <table class="p-table">
+      <table class="p-table p-table-stack">
         <thead><tr><th>Dimension</th><th>Artlogic</th><th>ArtCloud</th><th>Composable stack</th></tr></thead>
         <tbody>
-          <tr><td class="lead-cell">API</td><td>Excel import/export</td><td>CSV import/export</td><td>Full REST API</td></tr>
-          <tr><td class="lead-cell">Custom fields</td><td>Fixed schema, 150+ fields</td><td>Limited</td><td>Fields you define</td></tr>
-          <tr><td class="lead-cell">Cost</td><td>$530-900/mo</td><td>$440-700/mo</td><td>&lt;$200/mo</td></tr>
-          <tr><td class="lead-cell">Data portability</td><td>WeTransfer Export (paid)</td><td>CSV export</td><td>Standard schemas, one-time export</td></tr>
-          <tr><td class="lead-cell">AI integration</td><td>File preparation only</td><td>File preparation only</td><td>Real-time read/write</td></tr>
-          <tr><td class="lead-cell">Artsy sync</td><td>Built-in</td><td>Exists, less documented</td><td>Scripted via Partner API, pending confirmation</td></tr>
+          <tr><td class="lead-cell" data-label="Dimension">API</td><td data-label="Artlogic">Excel import/export</td><td data-label="ArtCloud">CSV import/export</td><td data-label="Composable stack">Full REST API</td></tr>
+          <tr><td class="lead-cell" data-label="Dimension">Custom fields</td><td data-label="Artlogic">Fixed schema, 150+ fields</td><td data-label="ArtCloud">Limited</td><td data-label="Composable stack">Fields you define</td></tr>
+          <tr><td class="lead-cell" data-label="Dimension">Cost</td><td data-label="Artlogic">$530-900/mo</td><td data-label="ArtCloud">$440-700/mo</td><td data-label="Composable stack">&lt;$200/mo</td></tr>
+          <tr><td class="lead-cell" data-label="Dimension">Data portability</td><td data-label="Artlogic">WeTransfer Export (paid)</td><td data-label="ArtCloud">CSV export</td><td data-label="Composable stack">Standard schemas, one-time export</td></tr>
+          <tr><td class="lead-cell" data-label="Dimension">AI integration</td><td data-label="Artlogic">File preparation only</td><td data-label="ArtCloud">File preparation only</td><td data-label="Composable stack">Real-time read/write</td></tr>
+          <tr><td class="lead-cell" data-label="Dimension">Artsy sync</td><td data-label="Artlogic">Built-in</td><td data-label="ArtCloud">Exists, less documented</td><td data-label="Composable stack">Scripted via Partner API, pending confirmation</td></tr>
         </tbody>
       </table>
       <p style="margin-top: 24px;">A composable stack gives you both: real APIs and a schema you control. If you ever want to migrate to Artlogic later, the data exports to their schema.</p>
@@ -141,9 +141,9 @@
 
     <section>
       <h2>Interfaces</h2>
-      <div class="finding"><div class="n" style="font-size:13px;text-transform:uppercase;letter-spacing:0.04em;">App</div><div><h3>Gallery web app</h3><p>Private app at a BELHAUS subdomain. Daily-use interface for you and Chloe. Search any artwork or collector. Log a new piece or contact in two fields the system fills out. Pull up a collector profile before a call. See what's where. Monochrome design that matches the site.</p></div></div>
-      <div class="finding"><div class="n" style="font-size:13px;text-transform:uppercase;letter-spacing:0.04em;">Airtable</div><div><h3>Back room</h3><p>Direct access to the database for power editing, bulk changes, and custom views. Useful for Chloe when she's cleaning up data in volume. Most daily work happens in the app; Airtable is the back room.</p></div></div>
-      <div class="finding"><div class="n" style="font-size:13px;text-transform:uppercase;letter-spacing:0.04em;">Catalogs</div><div><h3>Private URLs</h3><p>A page you can build in thirty seconds and share with a specific collector: "Five works I thought you'd want to see." The link shows exactly what you selected, with your commentary, at your domain. You can see when they opened it.</p></div></div>
+      <div class="finding is-labeled"><div class="n" style="font-size:13px;text-transform:uppercase;letter-spacing:0.04em;">App</div><div><h3>Gallery web app</h3><p>Private app at a BELHAUS subdomain. Daily-use interface for you and Chloe. Search any artwork or collector. Log a new piece or contact in two fields the system fills out. Pull up a collector profile before a call. See what's where. Monochrome design that matches the site.</p></div></div>
+      <div class="finding is-labeled"><div class="n" style="font-size:13px;text-transform:uppercase;letter-spacing:0.04em;">Airtable</div><div><h3>Back room</h3><p>Direct access to the database for power editing, bulk changes, and custom views. Useful for Chloe when she's cleaning up data in volume. Most daily work happens in the app; Airtable is the back room.</p></div></div>
+      <div class="finding is-labeled"><div class="n" style="font-size:13px;text-transform:uppercase;letter-spacing:0.04em;">Catalogs</div><div><h3>Private URLs</h3><p>A page you can build in thirty seconds and share with a specific collector: "Five works I thought you'd want to see." The link shows exactly what you selected, with your commentary, at your domain. You can see when they opened it.</p></div></div>
     </section>
 
     <section>

@@ -24,6 +24,8 @@
 .finding { display: grid; grid-template-columns: 40px 1fr; gap: 4px 16px; margin-bottom: clamp(28px, 4vh, 40px); }
 .finding:last-child { margin-bottom: 0; }
 .finding .n { font-size: 18px; font-weight: 500; color: var(--ink-3); padding-top: 2px; }
+.finding.is-labeled { grid-template-columns: 96px 1fr; gap: 8px 20px; }
+.finding.is-labeled .n { font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; }
 .finding > div > p, .finding > p { margin: 0; max-width: 58ch; }
 .finding h3 { font-size: 19px; font-weight: 600; margin: 0 0 8px; }
 
@@ -36,6 +38,7 @@
 .layer .deliv { font-size: 14px; color: var(--ink-2); }
 
 /* tables: quiet editorial */
+.p-table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .p-table { width: 100%; border-collapse: collapse; margin: 8px 0 0; font-size: 16px; }
 .p-table th { text-align: left; font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; padding: 0 18px 10px 0; vertical-align: bottom; border-bottom: 1px solid var(--ink); }
 .p-table td { text-align: left; padding: 14px 18px 14px 0; vertical-align: top; border-bottom: 1px solid var(--rule); }
@@ -64,9 +67,20 @@
 .cta a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--ink); padding-bottom: 2px; font-size: 18px; }
 .cta a:hover { border-bottom-width: 2px; }
 
-@media (max-width: 640px) {
+@media (max-width: 600px) {
+  .page-proposal p { line-height: 1.5; }
   .finding { grid-template-columns: 32px 1fr; }
+  .finding.is-labeled { grid-template-columns: 1fr; gap: 4px; }
+  .finding.is-labeled .n { padding-top: 0; }
   .layer { grid-template-columns: 1fr; gap: 6px; }
   .p-table { font-size: 15px; }
   .p-table th, .p-table td { padding-right: 12px; }
+  .p-table-stack thead { display: none; }
+  .p-table-stack, .p-table-stack tbody, .p-table-stack tr, .p-table-stack td { display: block; width: 100%; }
+  .p-table-stack tr { padding: 14px 0; border-bottom: 1px solid var(--rule); }
+  .p-table-stack tr:first-child { border-top: 1px solid var(--ink); }
+  .p-table-stack td { border-bottom: 0; padding: 6px 0; }
+  .p-table-stack td::before { content: attr(data-label); display: block; font-size: 12px; line-height: 1.2; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 2px; }
+  .p-table-stack td.lead-cell { padding-top: 0; margin-bottom: 6px; }
+  .p-table-stack td.lead-cell::before { display: none; }
 }

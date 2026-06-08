@@ -1,0 +1,916 @@
+{
+  "version": 1,
+  "generatedAt": "2026-06-07",
+  "source": "Curated starter registry from repo routes and read-only Vercel scope observations. Rows marked needs_review require live verification before being treated as complete inventory.",
+  "items": [
+    {
+      "id": "home",
+      "title": "Home",
+      "url": "https://whatarewecapableof.com/",
+      "path": "/",
+      "category": "page",
+      "group": "Main site",
+      "status": "active",
+      "audience": "public",
+      "auth": "public",
+      "visibility": "public",
+      "source": "repo:index.html",
+      "tags": [
+        "marketing",
+        "canonical"
+      ],
+      "description": "Primary What are we capable of? homepage.",
+      "notes": "Live verification still belongs in the deploy smoke.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "how-we-work",
+      "title": "How we work",
+      "url": "https://whatarewecapableof.com/how-we-work/",
+      "path": "/how-we-work/",
+      "category": "page",
+      "group": "Main site",
+      "status": "active",
+      "audience": "public",
+      "auth": "public",
+      "visibility": "public",
+      "source": "repo:how-we-work/index.html",
+      "tags": [
+        "marketing"
+      ],
+      "description": "Public explanation of the working model.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "work-fde",
+      "title": "FDE work page",
+      "url": "https://whatarewecapableof.com/work/fde/",
+      "path": "/work/fde/",
+      "category": "page",
+      "group": "Main site",
+      "status": "active",
+      "audience": "public",
+      "auth": "public",
+      "visibility": "public",
+      "source": "repo:work/fde/index.html",
+      "tags": [
+        "work",
+        "case-study"
+      ],
+      "description": "Public work page for FDE.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "book",
+      "title": "Book",
+      "url": "https://whatarewecapableof.com/book/",
+      "path": "/book/",
+      "category": "page",
+      "group": "Main site",
+      "status": "active",
+      "audience": "public",
+      "auth": "public",
+      "visibility": "public",
+      "source": "repo:book/index.html",
+      "tags": [
+        "booking"
+      ],
+      "description": "Booking surface found in repo route inventory.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "coach",
+      "title": "Coach",
+      "url": "https://whatarewecapableof.com/coach/",
+      "path": "/coach/",
+      "category": "page",
+      "group": "Coach",
+      "status": "active",
+      "audience": "public",
+      "auth": "public",
+      "visibility": "public",
+      "source": "repo:coach/index.html",
+      "tags": [
+        "coach"
+      ],
+      "description": "Coach route found in repo inventory.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "coach-book",
+      "title": "Coach booking",
+      "url": "https://whatarewecapableof.com/coach/book/",
+      "path": "/coach/book/",
+      "category": "page",
+      "group": "Coach",
+      "status": "active",
+      "audience": "public",
+      "auth": "public",
+      "visibility": "public",
+      "source": "repo:coach/book/index.html",
+      "tags": [
+        "coach",
+        "booking"
+      ],
+      "description": "Coach booking route found in repo inventory.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "question",
+      "title": "Question",
+      "url": "https://whatarewecapableof.com/question/",
+      "path": "/question/",
+      "category": "page",
+      "group": "Main site",
+      "status": "active",
+      "audience": "public",
+      "auth": "public",
+      "visibility": "public",
+      "source": "repo:question/index.html",
+      "tags": [
+        "intake"
+      ],
+      "description": "Question route found in repo inventory.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "sitemap",
+      "title": "Sitemap",
+      "url": "https://whatarewecapableof.com/sitemap/",
+      "path": "/sitemap/",
+      "category": "page",
+      "group": "Main site",
+      "status": "active",
+      "audience": "public",
+      "auth": "public",
+      "visibility": "public",
+      "source": "repo:sitemap/index.html",
+      "tags": [
+        "navigation"
+      ],
+      "description": "Public sitemap route.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "tracker",
+      "title": "Tracker",
+      "url": "https://whatarewecapableof.com/tracker/",
+      "path": "/tracker/",
+      "category": "tool",
+      "group": "Main site tools",
+      "status": "active",
+      "audience": "internal",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:tracker/index.html",
+      "tags": [
+        "tracker"
+      ],
+      "description": "Tracker route found in repo inventory.",
+      "notes": "Confirm whether this is still intended to be linked from the private index.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "finance-dashboard-static",
+      "title": "Finance dashboard static page",
+      "url": "https://whatarewecapableof.com/tools/finance-dashboard/",
+      "path": "/tools/finance-dashboard/",
+      "category": "tool",
+      "group": "Finance",
+      "status": "needs_review",
+      "audience": "internal",
+      "auth": "direct_link",
+      "visibility": "source_blocked",
+      "source": "repo:tools/finance-dashboard/index.html",
+      "tags": [
+        "finance"
+      ],
+      "description": "Static finance dashboard route found in repo inventory.",
+      "notes": "Root Vercel blocks /tools source paths, so deployment status needs verification. Route returned 404 on 2026-06-07; confirm before treating as active.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "brief-sophie",
+      "title": "Sophie brief",
+      "url": "https://whatarewecapableof.com/briefs/sophie/",
+      "path": "/briefs/sophie/",
+      "category": "brief",
+      "group": "Briefs",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:briefs/sophie/index.html",
+      "tags": [
+        "brief"
+      ],
+      "description": "Client brief route tracked by active Sophie workboards.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "brief-unitus",
+      "title": "Unitus brief",
+      "url": "https://whatarewecapableof.com/briefs/unitus/",
+      "path": "/briefs/unitus/",
+      "category": "brief",
+      "group": "Briefs",
+      "status": "active",
+      "audience": "internal",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:briefs/unitus/index.html",
+      "tags": [
+        "brief",
+        "unitus",
+        "meeting-prep"
+      ],
+      "description": "Internal meeting prep brief; not client-facing without review.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "proposal-belhaus",
+      "title": "Belhaus proposal",
+      "url": "https://whatarewecapableof.com/proposals/belhaus/",
+      "path": "/proposals/belhaus/",
+      "category": "proposal",
+      "group": "Proposals",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/belhaus/index.html",
+      "tags": [
+        "proposal"
+      ],
+      "description": "Client proposal route.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "proposal-belhaus-slots",
+      "title": "Belhaus slots",
+      "url": "https://whatarewecapableof.com/proposals/belhaus/slots/",
+      "path": "/proposals/belhaus/slots/",
+      "category": "proposal",
+      "group": "Proposal scheduling",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/belhaus/slots/index.html",
+      "tags": [
+        "proposal",
+        "scheduling"
+      ],
+      "description": "Proposal slots route.",
+      "lifecycle": "archived",
+      "notes": "Archived in Windex so it stays findable without crowding the active category view."
+    },
+    {
+      "id": "proposal-compassion",
+      "title": "Compassion proposal",
+      "url": "https://whatarewecapableof.com/proposals/compassion/",
+      "path": "/proposals/compassion/",
+      "category": "proposal",
+      "group": "Proposals",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/compassion/index.html",
+      "tags": [
+        "proposal"
+      ],
+      "description": "Client proposal route.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "proposal-eidi",
+      "title": "Eidi proposal",
+      "url": "https://whatarewecapableof.com/proposals/eidi/",
+      "path": "/proposals/eidi/",
+      "category": "proposal",
+      "group": "Proposals",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/eidi/index.html",
+      "tags": [
+        "proposal"
+      ],
+      "description": "Client proposal route.",
+      "lifecycle": "archived",
+      "notes": "Superseded by the Eidi deal-source-monitoring direction (eidi-scraper). Archived in Windex; page stays live."
+    },
+    {
+      "id": "proposal-eidi-phase-one",
+      "title": "Eidi phase one proposal",
+      "url": "https://whatarewecapableof.com/proposals/eidi-phase-one/",
+      "path": "/proposals/eidi-phase-one/",
+      "category": "proposal",
+      "group": "Proposals",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/eidi-phase-one/index.html",
+      "tags": [
+        "proposal"
+      ],
+      "description": "Client proposal route.",
+      "lifecycle": "archived",
+      "notes": "Superseded by the Eidi deal-source-monitoring direction (eidi-scraper). Archived in Windex; page stays live."
+    },
+    {
+      "id": "proposal-eidi-v2",
+      "title": "Eidi v2 proposal",
+      "url": "https://whatarewecapableof.com/proposals/eidi-v2/",
+      "path": "/proposals/eidi-v2/",
+      "category": "proposal",
+      "group": "Proposals",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/eidi-v2/index.html",
+      "tags": [
+        "proposal"
+      ],
+      "description": "Client proposal route.",
+      "lifecycle": "archived",
+      "notes": "Superseded by the Eidi deal-source-monitoring direction (eidi-scraper). Archived in Windex; page stays live."
+    },
+    {
+      "id": "proposal-eidi-scraper",
+      "title": "Eidi scraper proposal",
+      "url": "https://whatarewecapableof.com/proposals/eidi-scraper/",
+      "path": "/proposals/eidi-scraper/",
+      "category": "proposal",
+      "group": "Proposals",
+      "status": "needs_review",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/eidi-scraper/index.html",
+      "tags": [
+        "proposal"
+      ],
+      "description": "Client proposal route.",
+      "lifecycle": "active",
+      "notes": "Route returned 404 on 2026-06-07; confirm before treating as active."
+    },
+    {
+      "id": "proposal-fde",
+      "title": "FDE proposal",
+      "url": "https://whatarewecapableof.com/proposals/fde/",
+      "path": "/proposals/fde/",
+      "category": "proposal",
+      "group": "Proposals",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/fde/index.html",
+      "tags": [
+        "proposal"
+      ],
+      "description": "Client proposal route.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "proposal-fde-slots",
+      "title": "FDE slots",
+      "url": "https://whatarewecapableof.com/proposals/fde/slots/",
+      "path": "/proposals/fde/slots/",
+      "category": "proposal",
+      "group": "Proposal scheduling",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/fde/slots/index.html",
+      "tags": [
+        "proposal",
+        "scheduling"
+      ],
+      "description": "Proposal slots route.",
+      "lifecycle": "archived",
+      "notes": "Archived in Windex so it stays findable without crowding the active category view."
+    },
+    {
+      "id": "proposal-kaitlyn-wolfe",
+      "title": "Kaitlyn Wolfe proposal",
+      "url": "https://whatarewecapableof.com/proposals/kaitlyn-wolfe/",
+      "path": "/proposals/kaitlyn-wolfe/",
+      "category": "proposal",
+      "group": "Proposals",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/kaitlyn-wolfe/index.html",
+      "tags": [
+        "proposal"
+      ],
+      "description": "Client proposal route.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "proposal-mrt-design",
+      "title": "MRT design proposal",
+      "url": "https://whatarewecapableof.com/proposals/mrt-design/",
+      "path": "/proposals/mrt-design/",
+      "category": "proposal",
+      "group": "Proposals",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/mrt-design/index.html",
+      "tags": [
+        "proposal",
+        "design"
+      ],
+      "description": "MRT design proposal route tracked by current workboard.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "proposal-mrt-design-brain",
+      "title": "MRT design brain",
+      "url": "https://whatarewecapableof.com/proposals/mrt-design-brain/",
+      "path": "/proposals/mrt-design-brain/",
+      "category": "proposal",
+      "group": "Proposals",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/mrt-design-brain/index.html",
+      "tags": [
+        "proposal",
+        "design"
+      ],
+      "description": "Companion MRT design route found in repo inventory.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "proposal-noble",
+      "title": "Noble proposal",
+      "url": "https://whatarewecapableof.com/proposals/noble/",
+      "path": "/proposals/noble/",
+      "category": "proposal",
+      "group": "Proposals",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/noble/index.html",
+      "tags": [
+        "proposal"
+      ],
+      "description": "Client proposal route.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "proposal-opulist",
+      "title": "Opulist proposal",
+      "url": "https://whatarewecapableof.com/proposals/opulist/",
+      "path": "/proposals/opulist/",
+      "category": "proposal",
+      "group": "Proposals",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/opulist/index.html",
+      "tags": [
+        "proposal"
+      ],
+      "description": "Client proposal route.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "proposal-opulist-slots",
+      "title": "Opulist slots",
+      "url": "https://whatarewecapableof.com/proposals/opulist/slots/",
+      "path": "/proposals/opulist/slots/",
+      "category": "proposal",
+      "group": "Proposal scheduling",
+      "status": "needs_review",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/opulist/slots/index.html",
+      "tags": [
+        "proposal",
+        "scheduling"
+      ],
+      "description": "Proposal slots route.",
+      "lifecycle": "archived",
+      "notes": "Archived in Windex so it stays findable without crowding the active category view. Route returned 404 on 2026-06-07; confirm before treating as active."
+    },
+    {
+      "id": "proposal-paste",
+      "title": "Paste proposal",
+      "url": "https://whatarewecapableof.com/proposals/paste/",
+      "path": "/proposals/paste/",
+      "category": "proposal",
+      "group": "Proposals",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/paste/index.html",
+      "tags": [
+        "proposal"
+      ],
+      "description": "Client proposal route.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "proposal-sales-school",
+      "title": "Sales School proposal",
+      "url": "https://whatarewecapableof.com/proposals/sales-school/",
+      "path": "/proposals/sales-school/",
+      "category": "proposal",
+      "group": "Proposals",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/sales-school/index.html",
+      "tags": [
+        "proposal"
+      ],
+      "description": "Client proposal route.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "proposal-sales-school-slots",
+      "title": "Sales School slots",
+      "url": "https://whatarewecapableof.com/proposals/sales-school/slots/",
+      "path": "/proposals/sales-school/slots/",
+      "category": "proposal",
+      "group": "Proposal scheduling",
+      "status": "needs_review",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/sales-school/slots/index.html",
+      "tags": [
+        "proposal",
+        "scheduling"
+      ],
+      "description": "Proposal slots route.",
+      "lifecycle": "archived",
+      "notes": "Archived in Windex so it stays findable without crowding the active category view. Route returned 404 on 2026-06-07; confirm before treating as active."
+    },
+    {
+      "id": "proposal-teaspressa",
+      "title": "Teaspressa proposal",
+      "url": "https://whatarewecapableof.com/proposals/teaspressa/",
+      "path": "/proposals/teaspressa/",
+      "category": "proposal",
+      "group": "Proposals",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/teaspressa/index.html",
+      "tags": [
+        "proposal"
+      ],
+      "description": "Client proposal route.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "proposal-teaspressa-slots",
+      "title": "Teaspressa slots",
+      "url": "https://whatarewecapableof.com/proposals/teaspressa/slots/",
+      "path": "/proposals/teaspressa/slots/",
+      "category": "proposal",
+      "group": "Proposal scheduling",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/teaspressa/slots/index.html",
+      "tags": [
+        "proposal",
+        "scheduling"
+      ],
+      "description": "Proposal slots route.",
+      "lifecycle": "archived",
+      "notes": "Archived in Windex so it stays findable without crowding the active category view."
+    },
+    {
+      "id": "pinterest",
+      "title": "Pinterest app landing",
+      "url": "https://whatarewecapableof.com/pinterest/",
+      "path": "/pinterest/",
+      "category": "page",
+      "group": "Pinterest",
+      "status": "active",
+      "audience": "public",
+      "auth": "public",
+      "visibility": "public",
+      "source": "repo:pinterest/index.html",
+      "tags": [
+        "pinterest",
+        "app"
+      ],
+      "description": "Pinterest app landing route.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "pinterest-privacy",
+      "title": "Pinterest privacy",
+      "url": "https://whatarewecapableof.com/pinterest/privacy/",
+      "path": "/pinterest/privacy/",
+      "category": "compliance",
+      "group": "Pinterest",
+      "status": "active",
+      "audience": "public",
+      "auth": "public",
+      "visibility": "public",
+      "source": "repo:pinterest/privacy/index.html",
+      "tags": [
+        "pinterest",
+        "privacy"
+      ],
+      "description": "Pinterest app privacy route.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "pinterest-terms",
+      "title": "Pinterest terms",
+      "url": "https://whatarewecapableof.com/pinterest/terms/",
+      "path": "/pinterest/terms/",
+      "category": "compliance",
+      "group": "Pinterest",
+      "status": "active",
+      "audience": "public",
+      "auth": "public",
+      "visibility": "public",
+      "source": "repo:pinterest/terms/index.html",
+      "tags": [
+        "pinterest",
+        "terms"
+      ],
+      "description": "Pinterest app terms route.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "pinterest-demo",
+      "title": "Pinterest demo",
+      "url": "https://whatarewecapableof.com/pinterest/demo/",
+      "path": "/pinterest/demo/",
+      "category": "tool",
+      "group": "Pinterest",
+      "status": "active",
+      "audience": "internal",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:pinterest/demo/index.html",
+      "tags": [
+        "pinterest",
+        "demo"
+      ],
+      "description": "Pinterest demo route.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "shipstation-instructions",
+      "title": "ShipStation instructions",
+      "url": "https://whatarewecapableof.com/instructions/shipstation/",
+      "path": "/instructions/shipstation/",
+      "category": "page",
+      "group": "Instructions",
+      "status": "active",
+      "audience": "internal",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:instructions/shipstation/index.html",
+      "tags": [
+        "instructions"
+      ],
+      "description": "Instruction route found in repo inventory.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "substrate-pricing",
+      "title": "Substrate pricing app",
+      "url": "https://whatarewecapableof.com/apps/substratepricing/",
+      "path": "/apps/substratepricing/",
+      "category": "tool",
+      "group": "Apps",
+      "status": "active",
+      "audience": "internal",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:apps/substratepricing/index.html",
+      "tags": [
+        "pricing",
+        "app"
+      ],
+      "description": "Legacy app route found in repo inventory.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "substrate-pricing-triage",
+      "title": "Substrate pricing triage",
+      "url": "https://whatarewecapableof.com/apps/substratepricing-triage/",
+      "path": "/apps/substratepricing-triage/",
+      "category": "tool",
+      "group": "Apps",
+      "status": "active",
+      "audience": "internal",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:apps/substratepricing-triage/index.html",
+      "tags": [
+        "pricing",
+        "triage"
+      ],
+      "description": "Legacy app triage route found in repo inventory.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "review-substrate-semi-custom",
+      "title": "Substrate semi-custom review",
+      "url": "https://whatarewecapableof.com/review/substratesemicustom/",
+      "path": "/review/substratesemicustom/",
+      "category": "internal",
+      "group": "Reviews",
+      "status": "active",
+      "audience": "internal",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:review/substratesemicustom/index.html",
+      "tags": [
+        "review"
+      ],
+      "description": "Review route found in repo inventory.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "internal-picking-industry",
+      "title": "Picking industry internal page",
+      "url": "https://whatarewecapableof.com/internal/pickingindustry/",
+      "path": "/internal/pickingindustry/",
+      "category": "internal",
+      "group": "Internal research",
+      "status": "active",
+      "audience": "internal",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:internal/pickingindustry/index.html",
+      "tags": [
+        "research"
+      ],
+      "description": "Internal research route found in repo inventory.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "internal-system-research",
+      "title": "System research internal page",
+      "url": "https://whatarewecapableof.com/internal/systemresearch/",
+      "path": "/internal/systemresearch/",
+      "category": "internal",
+      "group": "Internal research",
+      "status": "active",
+      "audience": "internal",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:internal/systemresearch/index.html",
+      "tags": [
+        "research"
+      ],
+      "description": "Internal research route found in repo inventory.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "give-rainbow",
+      "title": "Give Rainbow",
+      "url": "https://whatarewecapableof.com/give/rainbow/",
+      "path": "/give/rainbow/",
+      "category": "page",
+      "group": "Experiments",
+      "status": "active",
+      "audience": "public",
+      "auth": "public",
+      "visibility": "public",
+      "source": "repo:give/rainbow/index.html",
+      "tags": [
+        "experiment"
+      ],
+      "description": "Route found in repo inventory.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "alt-home",
+      "title": "Alternate homepage prototype",
+      "url": "https://whatarewecapableof.com/alt/",
+      "path": "/alt/",
+      "category": "page",
+      "group": "Experiments",
+      "status": "needs_review",
+      "audience": "internal",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:alt/index.html",
+      "tags": [
+        "prototype"
+      ],
+      "description": "Alternate homepage route found in dirty-tree inventory.",
+      "lifecycle": "archived",
+      "notes": "Archived in Windex so it stays findable without crowding the active category view. Route returned 404 on 2026-06-07; confirm before treating as active."
+    },
+    {
+      "id": "fin-subdomain",
+      "title": "Fin",
+      "url": "https://fin.whatarewecapableof.com/",
+      "path": "fin.whatarewecapableof.com",
+      "category": "subdomain",
+      "group": "Private tools",
+      "status": "active",
+      "audience": "internal",
+      "auth": "workspace_oauth",
+      "visibility": "private",
+      "source": "vercel:what-are-we-capable-of/fin",
+      "tags": [
+        "finance",
+        "oauth",
+        "vercel"
+      ],
+      "description": "Hosted invoice and finance app using Google Workspace OAuth.",
+      "notes": "Auth pattern is the model for Windex.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "ask-subdomain",
+      "title": "Ask",
+      "url": "https://ask.whatarewecapableof.com/",
+      "path": "ask.whatarewecapableof.com",
+      "category": "subdomain",
+      "group": "Private tools",
+      "status": "active",
+      "audience": "mixed",
+      "auth": "mixed",
+      "visibility": "private",
+      "source": "vercel:what-are-we-capable-of/ask",
+      "tags": [
+        "ask",
+        "oauth",
+        "vercel",
+        "transfer"
+      ],
+      "description": "Question-deck app for reviewed, private answer collection.",
+      "notes": "Transferred from Noah personal Vercel scope to the company team on 2026-06-07; root path still returns 404 while /admin, /respond, and /api/health pass.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "index-subdomain",
+      "title": "Windex",
+      "url": "https://index.whatarewecapableof.com/",
+      "path": "index.whatarewecapableof.com",
+      "category": "subdomain",
+      "group": "Private tools",
+      "status": "active",
+      "audience": "internal",
+      "auth": "workspace_oauth",
+      "visibility": "private",
+      "source": "repo:apps/index",
+      "tags": [
+        "index",
+        "oauth",
+        "vercel",
+        "windex",
+        "url-index",
+        "route-index"
+      ],
+      "description": "Private link map for live pages, tools, proposals, briefs, and subdomains.",
+      "notes": "Natural-language aliases: windex and index. URL stays index.whatarewecapableof.com.",
+      "lifecycle": "active"
+    }
+  ],
+  "organizationModel": {
+    "category": [
+      "tool",
+      "proposal",
+      "brief",
+      "page",
+      "internal",
+      "compliance",
+      "subdomain",
+      "homepage",
+      "project"
+    ],
+    "lifecycle": [
+      "active",
+      "archived",
+      "decommissioned"
+    ],
+    "notes": "Windex separates what a link is from where it sits in the workflow. Archived and decommissioned links remain in Windex; decommissioned is a cleanup prompt, not a deletion action."
+  }
+}

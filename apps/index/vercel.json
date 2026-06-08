@@ -1,0 +1,29 @@
+{
+  "cleanUrls": true,
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "no-referrer" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), payment=()" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'" },
+        { "key": "Strict-Transport-Security", "value": "max-age=31536000; includeSubDomains" },
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    }
+  ],
+  "routes": [
+    { "src": "/\\.pi(?:/.*)?", "status": 404, "dest": "/404.html" },
+    { "src": "/.*\\.md", "status": 404, "dest": "/404.html" },
+    { "src": "/.*\\.json", "status": 404, "dest": "/404.html" },
+    { "src": "/data(?:/.*)?", "status": 404, "dest": "/404.html" },
+    { "src": "/scripts(?:/.*)?", "status": 404, "dest": "/404.html" },
+    { "src": "/api/.*\\.js", "status": 404, "dest": "/404.html" },
+    { "src": "/package.json", "status": 404, "dest": "/404.html" },
+    { "src": "/vercel.json", "status": 404, "dest": "/404.html" },
+    { "handle": "filesystem" }
+  ]
+}

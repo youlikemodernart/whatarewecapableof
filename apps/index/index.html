@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Windex</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-bar">
+      <a class="site-brand" href="/" aria-label="Windex home">Windex</a>
+      <nav class="site-nav" aria-label="Session">
+        <span id="auth-badge" class="badge pending">Checking session</span>
+        <a id="logout-link" class="nav-link" href="/api/logout" hidden>Sign out</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <section id="hero" class="hero" aria-labelledby="page-title">
+      <div class="eyebrow">Private workspace</div>
+      <h1 id="page-title">The private map of everything live.</h1>
+      <p class="lede">Pages, proposals, briefs, tools, subdomains, and hosted projects. Links load only after Google Workspace sign-in.</p>
+    </section>
+
+    <section id="signin-panel" class="panel auth-panel" aria-labelledby="signin-title">
+      <div>
+        <h2 id="signin-title">Sign in required</h2>
+        <p id="signin-copy">Checking Google Workspace OAuth before loading links.</p>
+        <p id="signin-help" class="muted"></p>
+      </div>
+      <a id="signin-link" class="button" href="/api/login/google">Sign in with Google</a>
+    </section>
+
+    <section id="workspace" class="workspace" hidden>
+      <div class="toolbar panel" aria-label="Windex controls">
+        <div class="search-wrap">
+          <label for="search-input">Search</label>
+          <input id="search-input" type="search" autocomplete="off" placeholder="Search title, URL, group, tag, or note">
+        </div>
+        <div class="view-switch" role="tablist" aria-label="Windex views">
+          <button type="button" class="view-button active" data-view="overview">Overview</button>
+          <button type="button" class="view-button" data-view="ledger">Ledger</button>
+          <button type="button" class="view-button" data-view="organize">Organize</button>
+        </div>
+        <div class="filter-grid">
+          <label for="category-filter">Category
+            <select id="category-filter"></select>
+          </label>
+          <label for="lifecycle-filter">Lifecycle
+            <select id="lifecycle-filter"></select>
+          </label>
+          <label for="status-filter">Review
+            <select id="status-filter"></select>
+          </label>
+          <details class="filter-more">
+            <summary>More</summary>
+            <div class="filter-more-grid">
+              <label for="audience-filter">Audience
+                <select id="audience-filter"></select>
+              </label>
+              <label for="visibility-filter">Visibility
+                <select id="visibility-filter"></select>
+              </label>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="summary-row" aria-live="polite">
+        <p id="count-summary">Loading links...</p>
+        <p id="draft-summary" class="muted"></p>
+        <p id="updated-at" class="muted"></p>
+      </div>
+
+      <section id="error-panel" class="panel error-panel" hidden>
+        <h2>Windex error</h2>
+        <p id="error-copy"></p>
+      </section>
+
+      <section id="empty-panel" class="panel empty-panel" hidden>
+        <h2>No matching links</h2>
+        <p>Clear a filter or search for a shorter term.</p>
+      </section>
+
+      <div id="results" class="results" aria-live="polite"></div>
+
+      <section id="draft-panel" class="panel draft-panel" hidden>
+        <div>
+          <h2>Draft changes</h2>
+          <p class="muted">These edits stay in this browser until applied. Apply saves them to Windex when server persistence is configured; Copy changes for Pi exports the patch to bake into <code>apps/index/data/registry.json</code> later. Setting a row to decommissioned only flags it for later cleanup; nothing is deleted from Windex or the site.</p>
+        </div>
+        <textarea id="draft-output" readonly rows="8" aria-label="Draft registry changes"></textarea>
+        <div class="draft-actions">
+          <button id="apply-draft" type="button">Apply in Windex</button>
+          <button id="copy-draft" type="button" class="secondary">Copy changes for Pi</button>
+          <button id="reset-draft" type="button" class="secondary">Reset local draft</button>
+        </div>
+        <p id="draft-apply-status" class="muted" role="status"></p>
+      </section>
+    </section>
+  </main>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>

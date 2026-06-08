@@ -48,19 +48,29 @@ const FORBIDDEN_KEY_PATTERNS = [
   /localinvoices/i,
   /hostedinvoices/i,
 ];
+const SAFE_VALUE_SCAN_PATHS = new Set([
+  '$.sources.contentSha256',
+]);
+
 const FORBIDDEN_VALUE_PATTERNS = [
   /\.finance\//i,
   /\/Users\//,
+  /file:\/\/|~\/|\.\.?\/|\/(?:private|tmp|var|Volumes|opt|home|etc)\//i,
   /secret-token:/i,
-  /sk_live_/i,
-  /rk_live_/i,
+  /sk_(?:live|test)_/i,
+  /rk_(?:live|test)_/i,
   /\b(?:cus|acct|pi|ch|txn|bt|po|in|cs|evt|fee|pyr)_[A-Za-z0-9_]+\b/,
   /\b[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\b/i,
   /[•*]\s*\d{2,4}/,
-  /\b(?:card|visa|mastercard|amex|ending|last\s*four)\b[^\n]{0,24}\b\d{4}\b/i,
+  /^\d{4}$/,
+  /(?:\d[\s._-]?){9,}/,
+  /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i,
+  /\b(?:card|visa|mastercard|amex|ending|last\s*four|account|routing)\b[^\n]{0,32}\b\d(?:[\s._-]?\d){3,}\b/i,
   /mercury_[A-Za-z0-9]/,
+  /(?:\b(?:api[_\s-]?key|token|secret|key|password|authorization)\b|(?:api|access|refresh|session|client)[_\s-]?(?:key|token|secret))\s*[:=]\s*\S+/i,
+  /gh[pousr]_[A-Za-z0-9_]+|github_pat_[A-Za-z0-9_]+|xox[baprs]-[A-Za-z0-9-]+|ya29\.[A-Za-z0-9._-]+|AIza[0-9A-Za-z_-]{20,}/i,
   /POSTGRES_URL|DATABASE_URL|FIN_GOOGLE_CLIENT_SECRET|FIN_SESSION_SECRET/i,
-  /Bearer\s+[A-Za-z0-9._-]+/i,
+  /Bearer\s+\S+/i,
 ];
 
 function makeImportError(status, message) {
@@ -83,7 +93,7 @@ function assertNoForbiddenKeysOrValues(value, path = '$') {
     return;
   }
   if (!isPlainObject(value)) {
-    if (typeof value === 'string') {
+    if (typeof value === 'string' && !SAFE_VALUE_SCAN_PATHS.has(path)) {
       for (const pattern of FORBIDDEN_VALUE_PATTERNS) {
         if (pattern.test(value)) throw makeImportError(400, `Forbidden raw finance value at ${path}.`);
       }

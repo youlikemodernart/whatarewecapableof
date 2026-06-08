@@ -76,12 +76,29 @@ function titleCase(value, fallback = '') {
   return cleanString(value, fallback).replace(/[-_]/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
+function hasFormattedLongNumber(value) {
+  return (String(value || '').match(/(?:\d[\s._-]?){9,}/g) || []).some((match) => match.replace(/\D/g, '').length >= 9);
+}
+
+function hasSecretLikeToken(value) {
+  const label = String(value || '');
+  return /secret-token:|Bearer\s+[A-Za-z0-9._~+/=-]+|(?:\b(?:api[_\s-]?key|token|secret|key|password|authorization)\b|(?:api|access|refresh|session|client)[_\s-]?(?:key|token|secret))\s*[:=]\s*\S+|(?:sk|rk)_(?:live|test)_[A-Za-z0-9_]+|mercury_[A-Za-z0-9_]+|gh[pousr]_[A-Za-z0-9_]+|github_pat_[A-Za-z0-9_]+|xox[baprs]-[A-Za-z0-9-]+|ya29\.[A-Za-z0-9._-]+|AIza[0-9A-Za-z_-]{20,}/i.test(label);
+}
+
+function hasLocalPath(value) {
+  return /file:\/\/|~\/|\.\.?\/|\/(?:Users|private|tmp|var|Volumes|opt|home|etc)\/|\.finance\//i.test(String(value || ''));
+}
+
 function safeLabel(value, fallback = 'Unknown', max = 160) {
   const label = cleanString(value, fallback, max);
   if (/\b(?:cus|acct|pi|ch|txn|bt|po|in|cs|evt|fee|pyr)_[A-Za-z0-9_]+\b/.test(label)) return fallback;
   if (/\b[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\b/i.test(label)) return fallback;
-  if (/[•*]\s*\d{2,4}|\b(?:card|visa|mastercard|amex|ending|last\s*four)\b[^\n]{0,24}\b\d{4}\b/i.test(label)) return fallback;
-  if (/\/Users\/|\.finance\//i.test(label)) return fallback;
+  if (/^\d{4}$/.test(label)) return fallback;
+  if (/[•*]\s*\d{2,4}|\b(?:card|visa|mastercard|amex|ending|last\s*four|account|routing)\b[^\n]{0,32}\b\d(?:[\s._-]?\d){3,}\b/i.test(label)) return fallback;
+  if (/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i.test(label)) return fallback;
+  if (hasFormattedLongNumber(label)) return fallback;
+  if (hasSecretLikeToken(label)) return fallback;
+  if (hasLocalPath(label)) return fallback;
   return label;
 }
 
@@ -101,11 +118,12 @@ function safeCardLabel(card, index) {
   return `Card ${index + 1}`;
 }
 
-function sourceKinds(raw) {
+function sourceKinds(raw, options = {}) {
   const kinds = [];
   if (raw.mercury?.snapshot?.generatedAt || raw.mercury?.transactionCount || raw.mercury?.accounts?.length) kinds.push('mercury');
   if (raw.recurring?.fileExists) kinds.push('recurring');
   if (raw.metrics?.activeCardLabelCount) kinds.push('card-labels');
+  if (options.realLabels) kinds.push('real-labels');
   return kinds.length ? kinds : ['local-derived-summary'];
 }
 
@@ -144,7 +162,8 @@ function groupRows(rows = [], options = {}) {
   }));
 }
 
-function projectFinanceSummary(raw) {
+function projectFinanceSummary(raw, options = {}) {
+  const realLabels = options.realLabels === true;
   const month = monthArg(raw.month, new Date().toISOString().slice(0, 7));
   const months = [...new Set([month, ...(raw.mercury?.snapshotMonths || [])].filter((item) => /^\d{4}-\d{2}$/.test(String(item))))].sort();
   const coverage = dateCoverage(raw, month);
@@ -161,7 +180,7 @@ function projectFinanceSummary(raw) {
       coverageStart: coverage.coverageStart,
       coverageEnd: coverage.coverageEnd,
       generatedBy: 'local-finance-dashboard-export',
-      sourceKinds: sourceKinds(raw),
+      sourceKinds: sourceKinds(raw, { realLabels }),
       validatorVersion: FINANCE_IMPORT_VALIDATOR_VERSION,
     },
     metrics: {
@@ -191,7 +210,7 @@ function projectFinanceSummary(raw) {
         errors: (raw.mercury?.snapshot?.errors || []).map((_, index) => `Snapshot command ${index + 1} reported an error.`),
       },
       accounts: (raw.mercury?.accounts || []).map((account, index) => ({
-        label: safeLabel(account.type ? `${titleCase(account.type)} account` : `Cash account ${index + 1}`, `Cash account ${index + 1}`),
+        label: realLabels ? safeLabel(account.name, account.type ? `${titleCase(account.type)} account` : `Cash account ${index + 1}`) : safeLabel(account.type ? `${titleCase(account.type)} account` : `Cash account ${index + 1}`, `Cash account ${index + 1}`),
         type: safeLabel(account.type, ''),
         status: safeLabel(account.status, ''),
         availableBalanceCents: cents(account.availableBalanceCents),
@@ -209,7 +228,7 @@ function projectFinanceSummary(raw) {
       inflowCents: cents(raw.mercury?.inflowCents),
       outflowCents: cents(raw.mercury?.outflowCents),
       netCents: cents(raw.mercury?.netCents),
-      spendByCounterparty: groupRows(raw.mercury?.spendByCounterparty || [], { genericLabels: true, genericPrefix: 'Counterparty group' }),
+      spendByCounterparty: groupRows(raw.mercury?.spendByCounterparty || [], { genericLabels: !realLabels, genericPrefix: 'Counterparty group' }),
       spendByKind: groupRows(raw.mercury?.spendByKind || []),
       spendByCategory: groupRows(raw.mercury?.spendByCategory || []),
       cardSpend: groupRows((raw.mercury?.cardSpend || []).map((row, index) => ({ ...row, label: /[•*]\s*\d{2,4}|\b\d{4}\b/.test(String(row.label || '')) ? `Card ${index + 1}` : row.label }))),
@@ -226,13 +245,13 @@ function projectFinanceSummary(raw) {
       observedCardExpenses: {
         expenses: (raw.mercury?.observedCardExpenses?.expenses || []).map((expense, index) => ({
           date: isoDate(expense.date),
-          merchant: `Card expense ${index + 1}`,
+          merchant: realLabels ? safeLabel(expense.merchant || expense.counterparty, `Card expense ${index + 1}`) : `Card expense ${index + 1}`,
           category: safeLabel(expense.category, 'Uncategorized'),
           kind: safeLabel(expense.kind, ''),
           cardLabel: /[•*]\s*\d{2,4}|\b\d{4}\b/.test(String(expense.cardLabel || '')) ? `Card ${index + 1}` : safeLabel(expense.cardLabel, ''),
           amountCents: cents(expense.amountCents),
           possiblePersonalFunding: expense.possiblePersonalFunding === true,
-          fundingDetail: expense.possiblePersonalFunding ? 'Possible personal-funding signal from local derived review.' : 'No nearby personal-funding signal in local derived review.',
+          fundingDetail: realLabels ? safeLabel(expense.fundingDetail, expense.possiblePersonalFunding ? 'Possible personal-funding signal from local derived review.' : 'No nearby personal-funding signal in local derived review.', 240) : (expense.possiblePersonalFunding ? 'Possible personal-funding signal from local derived review.' : 'No nearby personal-funding signal in local derived review.'),
         })),
         batches: (raw.mercury?.observedCardExpenses?.batches || []).map((batch, index) => ({
           date: isoDate(batch.date),
@@ -243,7 +262,7 @@ function projectFinanceSummary(raw) {
         })),
         fundingTransfers: (raw.mercury?.observedCardExpenses?.fundingTransfers || []).map((transfer) => ({
           date: isoDate(transfer.date),
-          label: 'Personal funding signal',
+          label: realLabels ? safeLabel(transfer.counterparty, 'Personal funding signal') : 'Personal funding signal',
           amountCents: cents(transfer.amountCents),
         })),
         totalExpenseCents: cents(raw.mercury?.observedCardExpenses?.totalExpenseCents),
@@ -255,7 +274,7 @@ function projectFinanceSummary(raw) {
         month: monthArg(tx.month, month),
         direction: tx.direction === 'in' ? 'in' : 'out',
         amountCents: cents(tx.amountCents),
-        counterparty: `Transaction ${index + 1}`,
+        counterparty: realLabels ? safeLabel(tx.counterparty, `Transaction ${index + 1}`) : `Transaction ${index + 1}`,
         category: safeLabel(tx.category, 'Uncategorized'),
         kind: safeLabel(tx.kind, ''),
         cardLabel: /[•*]\s*\d{2,4}|\b\d{4}\b/.test(String(tx.cardLabel || '')) ? `Card ${index + 1}` : safeLabel(tx.cardLabel, ''),
@@ -347,12 +366,13 @@ function defaultOutPath(month) {
 }
 
 function writeJson(filePath, data) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, `${JSON.stringify(data, null, 2)}\n`);
+  fs.mkdirSync(path.dirname(filePath), { recursive: true, mode: 0o700 });
+  fs.writeFileSync(filePath, `${JSON.stringify(data, null, 2)}\n`, { mode: 0o600 });
+  fs.chmodSync(filePath, 0o600);
 }
 
 function printHelp() {
-  console.log(`WAWCO Fin hosted finance summary exporter\n\nUsage:\n  npm run finance:export-hosted-summary -- --fixture --month 2099-12\n  npm run finance:export-hosted-summary -- --real --month YYYY-MM\n\nOptions:\n  --fixture          Emit generic fake summary. Does not read .finance/.\n  --real             Read ignored local .finance sources and write hosted-safe derived summary. Requires current-session approval.\n  --month YYYY-MM    Select month. Defaults to latest local summary month for --real and 2099-12 for --fixture.\n  --out PATH         Output path. --real defaults to .finance/exports/.\n  --snapshot PATH    Optional Mercury snapshot directory for local summary input.\n  --recurring PATH   Optional recurring cost JSON path.\n  --card-labels PATH Optional card label JSON path.\n  --invoice-db PATH  Optional legacy invoice DB path for source parity only; uploaded summary excludes localInvoices.\n  --preview          Print compact safe preview instead of full JSON.\n  --print            Print full JSON to stdout. For --real, avoid this unless explicitly needed.\n  --help             Show this help.\n\nBoundary:\n  --real reads local ignored finance artifacts only. It does not call Mercury, Stripe, Gmail, bank, payment, customer, invoice-send, card, recipient, webhook, transaction-category, or hosted Fin APIs.\n`);
+  console.log(`WAWCO Fin hosted finance summary exporter\n\nUsage:\n  npm run finance:export-hosted-summary -- --fixture --month 2099-12\n  npm run finance:export-hosted-summary -- --real --month YYYY-MM\n\nOptions:\n  --fixture          Emit generic fake summary. Does not read .finance/.\n  --real             Read ignored local .finance sources and write hosted-safe derived summary. Requires current-session approval.\n  --month YYYY-MM    Select month. Defaults to latest local summary month for --real and 2099-12 for --fixture.\n  --out PATH         Output path. --real defaults to .finance/exports/.\n  --snapshot PATH    Optional Mercury snapshot directory for local summary input.\n  --recurring PATH   Optional recurring cost JSON path.\n  --card-labels PATH Optional card label JSON path.\n  --invoice-db PATH  Optional legacy invoice DB path for source parity only; uploaded summary excludes localInvoices.\n  --preview          Print compact safe preview instead of full JSON.\n  --print            Print full JSON to stdout. For --real, avoid this unless explicitly needed.\n  --real-labels      Preserve safe merchant, counterparty, account, funding-signal, and card-service labels instead of generic display labels. Requires explicit approval before hosted import.\n  --help             Show this help.\n\nBoundary:\n  --real reads local ignored finance artifacts only. It does not call Mercury, Stripe, Gmail, bank, payment, customer, invoice-send, card, recipient, webhook, transaction-category, or hosted Fin APIs. --real-labels still blocks raw IDs, card/account numbers, last four, emails, long numeric identifiers, local paths, and tokens.\n`);
 }
 
 async function main() {
@@ -383,7 +403,7 @@ async function main() {
       cardLabelsPath: resolveFinanceInput(args['card-labels'], '--card-labels'),
       invoiceDbPath: resolveFinanceInput(args['invoice-db'], '--invoice-db'),
     });
-    summary = projectFinanceSummary(raw);
+    summary = projectFinanceSummary(raw, { realLabels: args['real-labels'] === true });
   }
 
   if (args.preview) {

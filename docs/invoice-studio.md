@@ -75,6 +75,10 @@ Rules:
 - Existing invoices keep their assigned numbers. Updating a draft does not regenerate its number.
 - New numbers are assigned when a hosted draft is first saved.
 
+### Preferred client codes
+
+Set a short, explicit client invoice code on each client profile rather than relying on the company-name fallback. The fallback strips non-alphanumerics from the full company name and produces long prefixes (`Eidi Properties` -> `EIDIPROPERTIES`). Use short codes instead: `EIDI` for Eidi Properties, `KW` for Kaitlyn Wolfe. This is the preference whenever invoices are created in Fin, including AI-assisted creation. Because assigned numbers are immutable, a short code only changes future invoices; relabeling an already-assigned number is a direct production database edit and an approval-gated finance write.
+
 ## Boundary
 
 The hosted invoice studio creates internal WAWCO invoices and admin-created Stripe Checkout links from approved immutable invoice snapshots. The custom Fin invoice and PDF remain the invoice of record; Stripe collects payment only.

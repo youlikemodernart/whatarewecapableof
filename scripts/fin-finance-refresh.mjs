@@ -241,6 +241,7 @@ function exportRealSummary(args) {
   if (args.recurring) childArgs.push('--recurring', String(args.recurring));
   if (args['card-labels']) childArgs.push('--card-labels', String(args['card-labels']));
   if (args['invoice-db']) childArgs.push('--invoice-db', String(args['invoice-db']));
+  if (args['real-labels']) childArgs.push('--real-labels');
   const result = spawnSync(process.execPath, childArgs, { cwd: ROOT_DIR, encoding: 'utf8' });
   if (result.status !== 0) {
     throw new Error(`Hosted-safe summary export failed: ${String(result.stderr || result.stdout || '').trim()}`);
@@ -274,6 +275,12 @@ function loadSummary(args) {
 
   const normalized = normalizeFinanceImport(summary).data;
   return { summary: normalized, source };
+}
+
+function assertRealLabelFlagConsistent(args, summary) {
+  if (!args['real-labels']) return;
+  if (!args['export-real'] && !args.summary) throw new Error('--real-labels is only valid with --export-real or a pre-generated --summary that already includes the real-labels source kind.');
+  if (!summary.sources.sourceKinds.includes('real-labels')) throw new Error('--real-labels was requested, but the summary does not include the real-labels source kind.');
 }
 
 function assertProviderRefreshSummaryHealthy(summary, refreshedSource) {
@@ -361,7 +368,7 @@ async function pushSummary({ args, summary }) {
 }
 
 function printHelp() {
-  console.log(`WAWCO Fin finance refresh push\n\nUsage:\n  npm run fin:finance-refresh -- --fixture --dry-run\n  npm run fin:finance-refresh -- --fixture --target http://127.0.0.1:3321/api/finance/system-import-summary\n  npm run fin:finance-refresh -- --summary .finance/exports/fin-dashboard-summary-YYYY-MM-...json\n\nOptions:\n  --fixture                 Use generic fake data. Does not read .finance/.\n  --summary PATH            Push an already generated hosted-safe summary JSON.\n  --export-real             Generate a hosted-safe summary from existing ignored .finance artifacts, then push it. Requires explicit approval before real use.\n  --source-refresh none     Default. Does not refresh provider source data.\n  --source-refresh mercury  Run a read-only Mercury snapshot into ignored .finance/, then export/import. Requires --export-real and current approval.\n  --snapshot-limit N        Limit passed to the Mercury snapshot helper for list calls. Defaults to 200.\n  --snapshot-out PATH       Optional private output directory under .finance/snapshots/ for the Mercury snapshot created by --source-refresh mercury.\n  --month YYYY-MM           Month for --fixture or --export-real.\n  --target URL              Import endpoint. Defaults to FIN_FINANCE_SYSTEM_IMPORT_URL or live Fin.\n  --key-id VALUE            HMAC key id. Defaults to FIN_FINANCE_SYSTEM_IMPORT_KEY_ID.\n  --dry-run                 Validate, canonicalize, and sign locally without sending.\n  --receipt PATH            Write a sanitized receipt JSON. Defaults to .finance/fin-refresh-receipts/ after a send.\n  --help                    Show this help.\n\nBoundary:\n  --source-refresh none performs no finance-source refresh. --source-refresh mercury runs only the WAWCO Mercury helper's read-only snapshot command, keeps raw snapshots under .finance/snapshots/, and refuses to export/import if the snapshot reports command errors, hits the configured row limit, or does not cover the requested month. No Stripe, Gmail, bank write, payment, customer write, invoice-send, card write, recipient, webhook, or transaction-category action is performed by this script.\n`);
+  console.log(`WAWCO Fin finance refresh push\n\nUsage:\n  npm run fin:finance-refresh -- --fixture --dry-run\n  npm run fin:finance-refresh -- --fixture --target http://127.0.0.1:3321/api/finance/system-import-summary\n  npm run fin:finance-refresh -- --summary .finance/exports/fin-dashboard-summary-YYYY-MM-...json\n\nOptions:\n  --fixture                 Use generic fake data. Does not read .finance/.\n  --summary PATH            Push an already generated hosted-safe summary JSON.\n  --export-real             Generate a hosted-safe summary from existing ignored .finance artifacts, then push it. Requires explicit approval before real use.\n  --source-refresh none     Default. Does not refresh provider source data.\n  --source-refresh mercury  Run a read-only Mercury snapshot into ignored .finance/, then export/import. Requires --export-real and current approval.\n  --snapshot-limit N        Limit passed to the Mercury snapshot helper for list calls. Defaults to 200.\n  --snapshot-out PATH       Optional private output directory under .finance/snapshots/ for the Mercury snapshot created by --source-refresh mercury.\n  --real-labels             Preserve safe merchant, counterparty, account, funding-signal, and card-service labels in --export-real output; still blocks raw IDs, card/account numbers, last four, emails, long numeric identifiers, paths, and tokens.\n  --month YYYY-MM           Month for --fixture or --export-real.\n  --target URL              Import endpoint. Defaults to FIN_FINANCE_SYSTEM_IMPORT_URL or live Fin.\n  --key-id VALUE            HMAC key id. Defaults to FIN_FINANCE_SYSTEM_IMPORT_KEY_ID.\n  --dry-run                 Validate, canonicalize, and sign locally without sending.\n  --receipt PATH            Write a sanitized receipt JSON. Defaults to .finance/fin-refresh-receipts/ after a send.\n  --help                    Show this help.\n\nBoundary:\n  --source-refresh none performs no finance-source refresh. --source-refresh mercury runs only the WAWCO Mercury helper's read-only snapshot command, keeps raw snapshots under .finance/snapshots/, and refuses to export/import if the snapshot reports command errors, hits the configured row limit, or does not cover the requested month. --real-labels changes only hosted-safe display labels in the derived summary. No Stripe, Gmail, bank write, payment, customer write, invoice-send, card write, recipient, webhook, or transaction-category action is performed by this script.\n`);
 }
 
 async function main() {
@@ -374,6 +381,7 @@ async function main() {
   const sourceRefresh = sourceRefreshMode(args);
   const refreshedSource = refreshSources(args, sourceRefresh);
   const { summary, source } = loadSummary(args);
+  assertRealLabelFlagConsistent(args, summary);
   assertProviderRefreshSummaryHealthy(summary, refreshedSource);
   const result = await pushSummary({ args, summary });
   const receipt = {
@@ -391,6 +399,7 @@ async function main() {
       rowCounts: refreshedSource.rowCounts,
     } : null,
     summarySource: source === 'fixture' ? 'fixture' : path.relative(ROOT_DIR, source),
+    realLabels: summary.sources.sourceKinds.includes('real-labels'),
     target: result.request.target,
     keyId: result.request.keyId,
     month: summary.month,

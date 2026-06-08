@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <title>Finance dashboard | Fin</title>
-  <link rel="stylesheet" href="/styles.css?v=20260530a">
+  <link rel="stylesheet" href="/styles.css?v=20260530b">
 </head>
 <body>
   <header class="site-header">
@@ -46,28 +46,6 @@
         <p class="help" id="dashboard-state">Checking finance summary...</p>
         <button type="button" class="secondary" id="refresh-summary">Refresh</button>
       </div>
-
-      <article class="dash-section dash-full finance-import-panel" id="finance-import-panel" hidden>
-        <div class="finance-section-head">
-          <div>
-            <p class="eyebrow">Admin import</p>
-            <h2>Derived finance summary import</h2>
-          </div>
-          <p>Upload only a hosted-safe derived summary JSON. Raw `.finance/`, Mercury, Stripe, bank, customer, and card exports stay local.</p>
-        </div>
-        <div class="import-grid">
-          <label class="file-action import-file-action" for="finance-import-file">
-            <span>Choose derived JSON</span>
-            <input id="finance-import-file" type="file" accept="application/json,.json">
-          </label>
-          <div class="import-preview" id="finance-import-preview">No derived summary selected.</div>
-        </div>
-        <div class="actions">
-          <button type="button" id="finance-import-submit" disabled>Import derived summary</button>
-          <button type="button" class="secondary" id="finance-import-refresh">Refresh imports</button>
-        </div>
-        <div class="finance-stack" id="finance-import-list"></div>
-      </article>
 
       <section class="dash-metrics" id="metrics" aria-label="Finance metrics"></section>
 
@@ -270,6 +248,41 @@
         </div>
         <dl id="sources" class="finance-sources"></dl>
       </article>
+
+      <details class="dash-full finance-admin-drawer" id="finance-import-panel" hidden>
+        <summary>
+          <span>
+            <span class="eyebrow">Admin</span>
+            <strong>Data import and history</strong>
+          </span>
+          <small id="finance-import-summary-status">No imports loaded.</small>
+        </summary>
+        <div class="finance-admin-body">
+          <div class="finance-section-head">
+            <div>
+              <p class="eyebrow">Derived summary import</p>
+              <h2>Derived finance summary import</h2>
+            </div>
+            <p>Raw `.finance/`, Mercury, Stripe, bank, customer, and card exports stay local.</p>
+          </div>
+          <div class="import-grid">
+            <label class="file-action import-file-action" for="finance-import-file">
+              <span>Choose derived JSON</span>
+              <input id="finance-import-file" type="file" accept="application/json,.json">
+            </label>
+            <div class="import-preview" id="finance-import-preview">No derived summary selected.</div>
+          </div>
+          <div class="actions">
+            <button type="button" id="finance-import-submit" disabled>Import derived summary</button>
+            <button type="button" class="secondary" id="finance-import-refresh">Refresh imports</button>
+          </div>
+          <div class="finance-current-import" id="finance-current-import"></div>
+          <details class="finance-import-history">
+            <summary id="finance-import-history-summary">Show import history</summary>
+            <div class="finance-stack" id="finance-import-list"></div>
+          </details>
+        </div>
+      </details>
     </section>
 
     <section class="panel">
@@ -282,6 +295,6 @@
     </section>
   </main>
 
-  <script src="/finance.js?v=20260530a" type="module"></script>
+  <script src="/finance.js?v=20260530b" type="module"></script>
 </body>
 </html>

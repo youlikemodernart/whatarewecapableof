@@ -34,6 +34,9 @@ const refs = {
   importPreview: $('#finance-import-preview'),
   importSubmit: $('#finance-import-submit'),
   importRefresh: $('#finance-import-refresh'),
+  importSummaryStatus: $('#finance-import-summary-status'),
+  importCurrent: $('#finance-current-import'),
+  importHistorySummary: $('#finance-import-history-summary'),
   importList: $('#finance-import-list'),
 };
 
@@ -294,6 +297,11 @@ function renderTransactions() {
   refs.transactionRows.replaceChildren(...rows.length ? rows : [emptyRow(6, 'No hosted transaction summary has been imported yet.')]);
 }
 
+function sourceKindLine(summary = state.summary || {}) {
+  const sourceKinds = summary.sources?.sourceKinds || [];
+  return Array.isArray(sourceKinds) && sourceKinds.length ? sourceKinds.join(', ') : 'no hosted summary source';
+}
+
 function renderSources() {
   const summary = state.summary || {};
   const sources = summary.sources || {};
@@ -319,6 +327,30 @@ function importSummaryLine(item) {
   return `${item.month || 'No month'} · ${item.importedAt || 'No timestamp'} · ${hash}`;
 }
 
+function renderImportAdminSummary() {
+  const imports = state.imports || [];
+  const latest = imports[0] || state.summary?.latestFinanceImport || null;
+  const importCount = imports.length ? `${imports.length} import${imports.length === 1 ? '' : 's'}` : 'no import history loaded';
+  const month = latest?.month || state.summary?.month || 'No active import';
+  refs.importSummaryStatus.textContent = `${month} · ${sourceKindLine()} · ${importCount}`;
+  refs.importHistorySummary.textContent = imports.length ? `Show import history (${imports.length})` : 'Show import history';
+}
+
+function renderCurrentImport() {
+  const latest = (state.imports || [])[0] || state.summary?.latestFinanceImport || null;
+  if (!latest) {
+    refs.importCurrent.replaceChildren(el('p', { class: 'empty', text: 'No active derived summary import.' }));
+    return;
+  }
+  refs.importCurrent.replaceChildren(
+    el('div', {}, [
+      el('span', { class: 'eyebrow', text: 'Active import' }),
+      el('strong', { text: latest.label || `Finance import ${latest.month || ''}` }),
+      el('small', { text: importSummaryLine(latest) }),
+    ]),
+  );
+}
+
 function renderImportPreview() {
   const pending = state.pendingImport;
   if (!pending) {
@@ -336,6 +368,8 @@ function renderImportPreview() {
 
 function renderImports() {
   const imports = state.imports || [];
+  renderImportAdminSummary();
+  renderCurrentImport();
   refs.importList.replaceChildren(...imports.map((item) => {
     const deleteButton = el('button', { type: 'button', class: 'secondary', text: 'Delete' });
     deleteButton.addEventListener('click', () => deleteImport(item.id).catch((error) => {
@@ -423,6 +457,8 @@ function render() {
   renderExceptions();
   renderTransactions();
   renderSources();
+  renderImportAdminSummary();
+  renderCurrentImport();
 }
 
 async function loadSummary() {
@@ -433,7 +469,7 @@ async function loadSummary() {
   state.month = state.summary.month || state.month || '';
   state.months = state.summary.months || [];
   render();
-  refs.state.textContent = `Updated ${new Date(state.summary.generatedAt || Date.now()).toLocaleString()}.`;
+  refs.state.textContent = `Updated ${new Date(state.summary.generatedAt || Date.now()).toLocaleString()} · ${state.summary.month || 'no month'} · ${sourceKindLine()}`;
 }
 
 async function loadSession() {

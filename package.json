@@ -13,6 +13,7 @@
     "mail": "node scripts/gmail-monitor.mjs",
     "mail:draft": "node scripts/gmail-draft.mjs",
     "sheet": "node scripts/sheets-read.mjs",
+    "workspace:admin": "node scripts/workspace-admin.mjs",
     "fin": "cd apps/fin && vercel dev --listen 3187 --yes",
     "fin:smoke": "cd apps/fin && npm run smoke",
     "ask": "cd apps/ask && vercel dev --listen 3197 --yes",

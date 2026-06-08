@@ -13,6 +13,7 @@
     { "src": "/design(?:/.*)?", "status": 404, "dest": "/404.html" },
     { "src": "/scripts(?:/.*)?", "status": 404, "dest": "/404.html" },
     { "src": "/tools(?:/.*)?", "status": 404, "dest": "/404.html" },
+    { "src": "/apps/ask(?:/.*)?", "status": 404, "dest": "/404.html" },
     { "src": "/apps/fin(?:/.*)?", "status": 404, "dest": "/404.html" },
     { "src": "/apps/index(?:/.*)?", "status": 404, "dest": "/404.html" },
     { "src": "/proposals/_template(?:/.*)?", "status": 404, "dest": "/404.html" },

@@ -153,15 +153,16 @@ function formatStatus(status) {
 }
 
 function paymentLabel(payment) {
-  if (!payment) return 'No link';
-  if (payment.status === 'active') return `${formatStatus(payment.mode)} link active`;
+  if (!payment) return 'No page';
+  if (payment.status === 'active' && payment.urlKind === 'customer_payment_page') return `${formatStatus(payment.mode)} payment page active`;
+  if (payment.status === 'active') return `${formatStatus(payment.mode)} ${formatStatus(payment.paymentMethodFamily || 'checkout')} active`;
   if (payment.status === 'paid') return 'Paid';
   if (payment.status === 'processing') return 'Payment processing';
   if (payment.status === 'expired') return 'Expired';
   if (payment.status === 'failed') return 'Failed';
   if (payment.status === 'refunded') return 'Refunded';
   if (payment.status === 'disputed') return 'Dispute watch';
-  return formatStatus(payment.status || 'No link');
+  return formatStatus(payment.status || 'No page');
 }
 
 function checkoutModeAvailable(mode) {
@@ -172,6 +173,7 @@ function checkoutModeAvailable(mode) {
 }
 
 function paymentModeCopy(payment) {
+  if (payment?.paymentMethodFamily && payment.paymentMethodFamily !== 'customer_choice' && payment.paymentMethodFamily !== 'legacy') return `${formatStatus(payment.mode)} ${formatStatus(payment.paymentMethodFamily)}`;
   if (payment) return `${formatStatus(payment.mode)} mode`;
   if (!paymentSettings.configured) return 'Not configured';
   if (paymentSettings.mode === 'live') return paymentSettings.liveLinksEnabled ? 'Live ready' : 'Live disabled';
@@ -538,7 +540,7 @@ function fillForm(invoice = baseInvoice()) {
   refs.notes.value = invoice.notes || '';
   refs.terms.value = invoice.terms || '';
   refs.paymentInstructions.value = invoice.paymentInstructions || '';
-  refs.deleteInvoice.disabled = !invoice.id;
+  refs.deleteInvoice.disabled = !invoice.id || Boolean(invoice.payment?.active);
   renderItemsEditor();
   renderPreview();
 }
@@ -553,17 +555,18 @@ function renderPaymentPanel(invoice) {
   refs.paymentStatusLabel.classList.toggle('is-active', Boolean(payment?.active));
   refs.paymentStatusLabel.classList.toggle('is-paid', payment?.status === 'paid');
   refs.paymentMode.textContent = paymentModeCopy(payment);
-  refs.paymentAmount.textContent = formatCurrency(payment?.amountCents ?? invoice.totals?.totalCents ?? 0);
-  refs.paymentUrl.value = payment?.url || '';
+  refs.paymentAmount.textContent = formatCurrency(payment?.baseAmountCents ?? payment?.amountCents ?? invoice.totals?.totalCents ?? 0);
+  const customerPaymentUrl = payment?.publicUrl || (payment?.urlKind === 'customer_payment_page' ? payment.url : '');
+  refs.paymentUrl.value = customerPaymentUrl;
   refs.createTestPaymentLink.disabled = !canCreateTestLink;
   refs.createLivePaymentLink.disabled = !canCreateLiveLink;
-  refs.copyPaymentLink.disabled = !payment?.url;
-  if (!invoice.id) refs.paymentHelp.textContent = 'Save the invoice before creating a payment link.';
-  else if (formDirty) refs.paymentHelp.textContent = 'Save or approve the current invoice state before creating a payment link.';
-  else if (invoice.status !== 'approved' || currentInvoice?.status !== 'approved') refs.paymentHelp.textContent = 'Approve the invoice before creating a Stripe Checkout link.';
-  else if (payment?.active) refs.paymentHelp.textContent = 'This invoice already has an active payment link for the current snapshot.';
-  else if (canCreateLiveLink) refs.paymentHelp.textContent = 'Ready to create a live Stripe Checkout link. Create it at send time; Checkout Sessions expire.';
-  else if (canCreateTestLink) refs.paymentHelp.textContent = 'Ready to create a Stripe Checkout link in test mode.';
+  refs.copyPaymentLink.disabled = !customerPaymentUrl;
+  if (!invoice.id) refs.paymentHelp.textContent = 'Save the invoice before creating a customer payment page.';
+  else if (formDirty) refs.paymentHelp.textContent = 'Save or approve the current invoice state before creating a customer payment page.';
+  else if (invoice.status !== 'approved' || currentInvoice?.status !== 'approved') refs.paymentHelp.textContent = 'Approve the invoice before creating a customer payment page.';
+  else if (payment?.active) refs.paymentHelp.textContent = payment.urlKind === 'customer_payment_page' ? 'This invoice already has an active customer payment page for the current snapshot.' : 'This invoice has active Stripe checkout activity for the current snapshot.';
+  else if (canCreateLiveLink) refs.paymentHelp.textContent = 'Ready to create a live customer payment page. The page lets the client choose bank account or card before Stripe Checkout.';
+  else if (canCreateTestLink) refs.paymentHelp.textContent = 'Ready to create a test customer payment page.';
   else if (!paymentSettings.configured) refs.paymentHelp.textContent = 'Stripe Checkout is not configured for this workspace.';
   else refs.paymentHelp.textContent = `Stripe is configured for ${formatStatus(paymentSettings.mode)}, but that link mode is disabled here.`;
 }
@@ -571,8 +574,9 @@ function renderPaymentPanel(invoice) {
 function previewPaymentInstructions(invoice) {
   const parts = [invoice.paymentInstructions || ''].filter(Boolean);
   const payment = invoice.payment || null;
-  if (payment?.url && ['active', 'processing', 'paid'].includes(payment.status)) {
-    parts.push(`${payment.mode === 'test' ? 'TEST MODE, DO NOT PAY\n' : ''}Pay online for this invoice:\n${payment.url}`);
+  const customerPaymentUrl = payment?.publicUrl || (payment?.urlKind === 'customer_payment_page' ? payment.url : '');
+  if (customerPaymentUrl && ['active', 'processing', 'paid'].includes(payment.status)) {
+    parts.push(`${payment.mode === 'test' ? 'TEST MODE, DO NOT PAY\n' : ''}Pay online for this invoice:\n${customerPaymentUrl}`);
   }
   return parts.join('\n\n');
 }
@@ -764,39 +768,39 @@ function yamlScalar(value) {
 
 async function createPaymentLink(mode) {
   if (!currentInvoice?.id) {
-    setNotice('Save the invoice before creating a payment link.');
+    setNotice('Save the invoice before creating a customer payment page.');
     return;
   }
   if (formDirty) {
-    setNotice('Save or approve the current invoice state before creating a payment link.');
+    setNotice('Save or approve the current invoice state before creating a customer payment page.');
     return;
   }
   if (currentInvoice.status !== 'approved') {
-    setNotice('Approve the invoice before creating a payment link.');
+    setNotice('Approve the invoice before creating a customer payment page.');
     return;
   }
   if (mode === 'live') {
-    const confirmed = window.confirm('Create a live Stripe Checkout link for this approved invoice? This creates a live Stripe payment object. Do not send the link until the client send is separately approved.');
+    const confirmed = window.confirm('Create a live customer payment page for this approved invoice? This prepares a live client-facing page, but does not enter payment details or send anything. Do not share the link until the client send is separately approved.');
     if (!confirmed) return;
   }
-  setNotice(`Creating Stripe ${mode} payment link...`);
+  setNotice(`Creating Stripe ${mode} customer payment page...`);
   const data = await getJson('/api/stripe/checkout', {
     method: 'POST',
     body: JSON.stringify({ invoiceId: currentInvoice.id, mode }),
   });
   currentInvoice = { ...(currentInvoice || {}), payment: data.payment };
   renderPreview();
-  setNotice(data.reused ? `Existing Stripe ${mode} payment link loaded.` : `Stripe ${mode} payment link created.`);
+  setNotice(data.reused ? `Existing Stripe ${mode} customer payment page loaded.` : `Stripe ${mode} customer payment page created.`);
 }
 
 async function copyPaymentLink() {
   const url = refs.paymentUrl.value.trim();
   if (!url) {
-    setNotice('No payment link to copy.');
+    setNotice('No customer payment page to copy.');
     return;
   }
   await navigator.clipboard.writeText(url);
-  setNotice('Payment link copied.');
+  setNotice('Customer payment page copied.');
 }
 
 function exportMercuryPlan() {

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Pay invoice | What are we capable of?</title>
+  <link rel="stylesheet" href="/styles.css?v=20260610a">
+</head>
+<body class="pay-body">
+  <main class="pay-shell" aria-live="polite">
+    <section class="pay-card" id="pay-card">
+      <p class="eyebrow">What are we capable of?</p>
+      <h1 id="pay-title">Loading invoice</h1>
+      <p class="pay-note" id="pay-message">Checking this payment page.</p>
+
+      <div class="pay-invoice" id="pay-invoice" hidden>
+        <div>
+          <p class="label">Invoice</p>
+          <strong id="pay-invoice-number"></strong>
+        </div>
+        <div>
+          <p class="label">Amount due</p>
+          <strong id="pay-amount"></strong>
+        </div>
+        <div>
+          <p class="label">Client</p>
+          <strong id="pay-client"></strong>
+        </div>
+        <div id="pay-due-wrap">
+          <p class="label">Due</p>
+          <strong id="pay-due"></strong>
+        </div>
+      </div>
+
+      <div class="pay-methods" id="pay-methods" hidden></div>
+
+      <div class="pay-summary" id="pay-summary" hidden>
+        <div>
+          <span>Invoice amount</span>
+          <strong id="pay-base"></strong>
+        </div>
+        <div id="pay-processing-row">
+          <span id="pay-processing-label">Processing cost</span>
+          <strong id="pay-processing"></strong>
+        </div>
+        <div class="pay-summary-total">
+          <span>Total before Stripe Checkout</span>
+          <strong id="pay-total"></strong>
+        </div>
+      </div>
+
+      <div class="actions pay-actions">
+        <button type="button" id="pay-continue" disabled>Continue to Stripe</button>
+      </div>
+      <p class="help" id="pay-disclosure"></p>
+      <p class="help">Stripe collects the payment details. What are we capable of? updates the invoice after Stripe confirms the payment status.</p>
+    </section>
+  </main>
+
+  <script src="/pay.js?v=20260610a" type="module"></script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 const crypto = require('crypto');
 const { makeHttpError } = require('./_http');
+const { paymentMethodQuote } = require('./_payment_pricing');
 
 const STRIPE_API_BASE = 'https://api.stripe.com/v1';
 const WEBHOOK_TOLERANCE_SECONDS = 300;
@@ -68,8 +69,16 @@ function checkoutLineName(paymentRequest) {
   return `Invoice ${paymentRequest.invoiceNumber || paymentRequest.invoiceId}`;
 }
 
+function appendReturnState(url, state) {
+  const text = String(url || '').trim();
+  if (!text) return '';
+  const joiner = text.includes('?') ? '&' : '?';
+  return `${text}${joiner}${state}`;
+}
+
 function fakeCheckoutSession(paymentRequest) {
-  const id = `cs_${paymentRequest.mode}_${crypto.createHash('sha256').update(paymentRequest.id).digest('hex').slice(0, 24)}`;
+  const methodPart = paymentRequest.paymentMethodType ? `_${paymentRequest.paymentMethodType}` : '';
+  const id = `cs_${paymentRequest.mode}${methodPart}_${crypto.createHash('sha256').update(paymentRequest.id).digest('hex').slice(0, 24)}`;
   return {
     id,
     url: `https://checkout.stripe.com/c/pay/${id}`,
@@ -79,20 +88,56 @@ function fakeCheckoutSession(paymentRequest) {
   };
 }
 
+function addCheckoutLine(form, index, { amountCents, currency, name, description }) {
+  appendForm(form, `line_items[${index}][quantity]`, '1');
+  appendForm(form, `line_items[${index}][price_data][currency]`, String(currency || 'USD').toLowerCase());
+  appendForm(form, `line_items[${index}][price_data][unit_amount]`, amountCents);
+  appendForm(form, `line_items[${index}][price_data][product_data][name]`, name);
+  appendForm(form, `line_items[${index}][price_data][product_data][description]`, description);
+}
+
+function checkoutReturnUrls(paymentRequest, baseUrl) {
+  if (paymentRequest.publicUrl) {
+    return {
+      successUrl: appendReturnState(paymentRequest.publicUrl, 'checkout=success&session_id={CHECKOUT_SESSION_ID}'),
+      cancelUrl: appendReturnState(paymentRequest.publicUrl, 'checkout=cancel'),
+    };
+  }
+  return {
+    successUrl: `${baseUrl}/invoices?payment=success&invoice=${encodeURIComponent(paymentRequest.invoiceId)}`,
+    cancelUrl: `${baseUrl}/invoices?payment=cancel&invoice=${encodeURIComponent(paymentRequest.invoiceId)}`,
+  };
+}
+
 async function createCheckoutSession({ paymentRequest, invoice, baseUrl }) {
   if (fakeStripeEnabled()) return fakeCheckoutSession(paymentRequest);
 
   const form = new URLSearchParams();
+  const quote = paymentRequest.paymentMethodFamily && paymentRequest.paymentMethodFamily !== 'legacy'
+    ? paymentMethodQuote(paymentRequest.baseAmountCents || paymentRequest.amountCents, paymentRequest.paymentMethodFamily)
+    : null;
+  const { successUrl, cancelUrl } = checkoutReturnUrls(paymentRequest, baseUrl);
   appendForm(form, 'mode', 'payment');
   appendForm(form, 'client_reference_id', paymentRequest.invoiceId);
-  appendForm(form, 'success_url', `${baseUrl}/invoices?payment=success&invoice=${encodeURIComponent(paymentRequest.invoiceId)}`);
-  appendForm(form, 'cancel_url', `${baseUrl}/invoices?payment=cancel&invoice=${encodeURIComponent(paymentRequest.invoiceId)}`);
+  appendForm(form, 'success_url', successUrl);
+  appendForm(form, 'cancel_url', cancelUrl);
   appendForm(form, 'customer_email', invoice.client?.email || '');
-  appendForm(form, 'line_items[0][quantity]', '1');
-  appendForm(form, 'line_items[0][price_data][currency]', String(paymentRequest.currency || 'USD').toLowerCase());
-  appendForm(form, 'line_items[0][price_data][unit_amount]', paymentRequest.amountCents);
-  appendForm(form, 'line_items[0][price_data][product_data][name]', checkoutLineName(paymentRequest));
-  appendForm(form, 'line_items[0][price_data][product_data][description]', `Payment for ${paymentRequest.invoiceNumber || 'WAWCO invoice'}`);
+  if (paymentRequest.paymentMethodType) appendForm(form, 'payment_method_types[0]', paymentRequest.paymentMethodType);
+
+  addCheckoutLine(form, 0, {
+    amountCents: quote ? quote.baseAmountCents : paymentRequest.amountCents,
+    currency: paymentRequest.currency,
+    name: checkoutLineName(paymentRequest),
+    description: `Payment for ${paymentRequest.invoiceNumber || 'What are we capable of? invoice'}`,
+  });
+  if (quote?.method === 'card' && quote.clientProcessingCostCents > 0) {
+    addCheckoutLine(form, 1, {
+      amountCents: quote.clientProcessingCostCents,
+      currency: paymentRequest.currency,
+      name: 'Card processing cost',
+      description: 'Processing cost shown before card checkout.',
+    });
+  }
 
   for (const [key, value] of Object.entries(paymentRequest.metadata || {})) {
     appendForm(form, `metadata[${key}]`, value);
@@ -120,6 +165,68 @@ async function createCheckoutSession({ paymentRequest, invoice, baseUrl }) {
     customerId: typeof data.customer === 'string' ? data.customer : data.customer?.id || '',
     expiresAt: data.expires_at ? new Date(Number(data.expires_at) * 1000).toISOString() : '',
   };
+}
+
+function safePaymentMethodDetails(details = {}) {
+  const type = String(details.type || '').trim();
+  if (type === 'card') {
+    return {
+      type,
+      card: {
+        brand: String(details.card?.brand || '').trim().slice(0, 40),
+        funding: String(details.card?.funding || '').trim().slice(0, 40),
+        country: String(details.card?.country || '').trim().slice(0, 4),
+        last4: String(details.card?.last4 || '').trim().replace(/\D+/g, '').slice(-4),
+      },
+    };
+  }
+  if (type === 'us_bank_account') {
+    return {
+      type,
+      us_bank_account: {
+        bank_name: String(details.us_bank_account?.bank_name || '').trim().slice(0, 80),
+        account_holder_type: String(details.us_bank_account?.account_holder_type || '').trim().slice(0, 40),
+        account_type: String(details.us_bank_account?.account_type || '').trim().slice(0, 40),
+        last4: String(details.us_bank_account?.last4 || '').trim().replace(/\D+/g, '').slice(-4),
+      },
+    };
+  }
+  return type ? { type } : {};
+}
+
+function reconciliationFromCharge(charge = {}) {
+  const balanceTransaction = charge.balance_transaction && typeof charge.balance_transaction === 'object'
+    ? charge.balance_transaction
+    : null;
+  const balanceTransactionId = typeof charge.balance_transaction === 'string'
+    ? charge.balance_transaction
+    : balanceTransaction?.id || '';
+  const actualStripeFeeCents = Number.isFinite(Number(balanceTransaction?.fee)) ? Number(balanceTransaction.fee) : null;
+  const actualNetCents = Number.isFinite(Number(balanceTransaction?.net)) ? Number(balanceTransaction.net) : null;
+  const status = actualStripeFeeCents !== null && actualNetCents !== null
+    ? 'reconciled'
+    : balanceTransactionId ? 'pending_balance_transaction' : 'pending_stripe_fee';
+  return {
+    chargeId: typeof charge.id === 'string' ? charge.id : '',
+    balanceTransactionId,
+    actualStripeFeeCents,
+    actualNetCents,
+    reconciliationStatus: status,
+    paymentMethodDetails: safePaymentMethodDetails(charge.payment_method_details || {}),
+  };
+}
+
+async function retrieveChargeReconciliation(chargeId) {
+  const id = String(chargeId || '').trim();
+  if (!id || fakeStripeEnabled()) return null;
+  const key = stripeSecretKey();
+  if (!key) return null;
+  const response = await fetch(`${STRIPE_API_BASE}/charges/${encodeURIComponent(id)}?expand[]=balance_transaction`, {
+    headers: { Authorization: `Bearer ${key}` },
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) return { chargeId: id, reconciliationStatus: 'reconciliation_fetch_failed', error: data.error?.message || `Stripe charge fetch failed: ${response.status}` };
+  return reconciliationFromCharge(data);
 }
 
 function parseStripeSignature(header) {
@@ -174,6 +281,8 @@ module.exports = {
   cleanMode,
   ensureStripeCheckoutEnabled,
   createCheckoutSession,
+  retrieveChargeReconciliation,
+  reconciliationFromCharge,
   verifyStripeWebhook,
   signTestWebhookPayload,
 };

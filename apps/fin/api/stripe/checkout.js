@@ -1,11 +1,7 @@
 const { getSession, storageConfig, json, getBaseUrl } = require('../_auth');
 const { makeHttpError, readJsonBody, handleApiError } = require('../_http');
-const {
-  createInvoicePaymentRequest,
-  activateInvoicePaymentRequest,
-  failInvoicePaymentRequest,
-} = require('../_db');
-const { cleanMode, ensureStripeCheckoutEnabled, createCheckoutSession } = require('../_stripe');
+const { createInvoiceCustomerPaymentPage } = require('../_db');
+const { cleanMode, ensureStripeCheckoutEnabled } = require('../_stripe');
 
 function ensureStorageReady() {
   const storage = storageConfig();
@@ -52,27 +48,16 @@ module.exports = async function handler(req, res) {
     if (!invoiceId) throw makeHttpError(400, 'Invoice id is required.');
     const mode = cleanMode(body.mode || 'test');
     const stripe = ensureStripeCheckoutEnabled(mode);
-    const prepared = await createInvoicePaymentRequest(user, invoiceId, mode);
+    const prepared = await createInvoiceCustomerPaymentPage(user, invoiceId, mode, getBaseUrl(req));
 
     if (prepared.reused) {
-      if (prepared.paymentRequest?.status === 'active' && prepared.paymentRequest.url) {
+      if (prepared.paymentRequest?.status === 'active' && prepared.paymentRequest.publicUrl) {
         return json(res, 200, { ok: true, storage, stripe, reused: true, payment: prepared.paymentRequest });
       }
-      throw makeHttpError(409, 'This invoice already has a Stripe payment request in progress. Wait for it to finish or expire before creating another link.');
+      throw makeHttpError(409, 'This invoice already has a customer payment page in progress. Wait for it to finish or expire before creating another link.');
     }
 
-    try {
-      const session = await createCheckoutSession({
-        paymentRequest: prepared.paymentRequest,
-        invoice: prepared.invoice,
-        baseUrl: getBaseUrl(req),
-      });
-      const payment = await activateInvoicePaymentRequest(user, prepared.paymentRequest.id, session);
-      return json(res, 201, { ok: true, storage, stripe, reused: false, payment });
-    } catch (error) {
-      await failInvoicePaymentRequest(user, prepared.paymentRequest.id, error.message).catch(() => {});
-      throw error;
-    }
+    return json(res, 201, { ok: true, storage, stripe, reused: false, payment: prepared.paymentRequest });
   } catch (error) {
     return handleApiError(res, json, error);
   }

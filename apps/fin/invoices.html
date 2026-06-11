@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <title>Invoice studio | Fin</title>
-  <link rel="stylesheet" href="/styles.css?v=20260602a">
+  <link rel="stylesheet" href="/styles.css?v=20260610a">
 </head>
 <body>
   <header class="site-header">
@@ -22,7 +22,7 @@
   <main class="page page-wide">
     <header class="page-head">
       <h1>Invoice studio</h1>
-      <p class="page-note">Hosted WAWCO drafts, custom PDFs, and admin-created Stripe Checkout payment links. Mercury plans are browser downloads only; client sends, refunds, customer changes, and bank actions remain separate approval-gated steps.</p>
+      <p class="page-note">Hosted What are we capable of? drafts, custom PDFs, and admin-created Stripe customer payment pages. Mercury plans are browser downloads only; client sends, refunds, customer changes, and bank actions remain separate approval-gated steps.</p>
     </header>
 
     <section class="panel" id="signin-panel" hidden>
@@ -68,7 +68,7 @@
           <div class="section-header">
             <div>
               <h2>Stripe payment</h2>
-              <p class="help" id="payment-help">Approve the invoice before creating a Stripe Checkout link.</p>
+              <p class="help" id="payment-help">Approve the invoice before creating a customer payment page.</p>
             </div>
             <span class="status-pill" id="payment-status-label">No link</span>
           </div>
@@ -82,15 +82,15 @@
               <strong id="payment-amount">$0.00</strong>
             </div>
           </div>
-          <label>Payment URL
-            <input id="payment-url" readonly placeholder="No Stripe Checkout link yet">
+          <label>Customer payment page URL
+            <input id="payment-url" readonly placeholder="No customer payment page yet">
           </label>
           <div class="actions compact-actions">
-            <button type="button" class="secondary" id="create-test-payment-link">Create test payment link</button>
-            <button type="button" id="create-live-payment-link">Create live payment link</button>
-            <button type="button" class="secondary" id="copy-payment-link">Copy link</button>
+            <button type="button" class="secondary" id="create-test-payment-link">Create test payment page</button>
+            <button type="button" id="create-live-payment-link">Create live payment page</button>
+            <button type="button" class="secondary" id="copy-payment-link">Copy page link</button>
           </div>
-          <p class="help">Create live links only after invoice approval and at send time. Stripe Checkout Sessions expire; client sends, invoice emails, refunds, and Stripe configuration changes remain separate approval-gated actions.</p>
+          <p class="help">Create live pages only after invoice approval and at send time. The customer page lets the client choose bank account or card before Stripe Checkout; client sends, invoice emails, refunds, payment attempts, and Stripe configuration changes remain separate approval-gated actions.</p>
         </section>
 
         <form id="invoice-form">
@@ -356,6 +356,6 @@
     </div>
   </main>
 
-  <script src="/invoices.js?v=20260530b" type="module"></script>
+  <script src="/invoices.js?v=20260610a" type="module"></script>
 </body>
 </html>

@@ -2,6 +2,8 @@ const crypto = require('crypto');
 const { neon } = require('@neondatabase/serverless');
 const { normalizeInvoice, invoiceClientLabel, invoiceListItem } = require('./_invoice');
 const { normalizeFinanceImport, stableFinanceImportContentSha256, summarizeFinanceImport } = require('./_finance_import');
+const { cleanPaymentMethod, customerPaymentMethods, paymentMethodQuote } = require('./_payment_pricing');
+const { reconciliationFromCharge, retrieveChargeReconciliation } = require('./_stripe');
 
 let sqlClient = null;
 let schemaReady = false;
@@ -209,9 +211,34 @@ async function ensureSchema() {
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     deleted_at TIMESTAMPTZ
   )`;
+  await db`ALTER TABLE fin_invoice_payment_requests ADD COLUMN IF NOT EXISTS payment_method_family TEXT NOT NULL DEFAULT 'legacy'`;
+  await db`ALTER TABLE fin_invoice_payment_requests ADD COLUMN IF NOT EXISTS payment_method_type TEXT NOT NULL DEFAULT ''`;
+  await db`ALTER TABLE fin_invoice_payment_requests ADD COLUMN IF NOT EXISTS fee_policy TEXT NOT NULL DEFAULT 'legacy_invoice_total'`;
+  await db`ALTER TABLE fin_invoice_payment_requests ADD COLUMN IF NOT EXISTS base_amount_cents INTEGER NOT NULL DEFAULT 0`;
+  await db`ALTER TABLE fin_invoice_payment_requests ADD COLUMN IF NOT EXISTS client_processing_cost_cents INTEGER NOT NULL DEFAULT 0`;
+  await db`ALTER TABLE fin_invoice_payment_requests ADD COLUMN IF NOT EXISTS collection_amount_cents INTEGER NOT NULL DEFAULT 0`;
+  await db`ALTER TABLE fin_invoice_payment_requests ADD COLUMN IF NOT EXISTS expected_stripe_fee_cents INTEGER NOT NULL DEFAULT 0`;
+  await db`ALTER TABLE fin_invoice_payment_requests ADD COLUMN IF NOT EXISTS expected_net_cents INTEGER NOT NULL DEFAULT 0`;
+  await db`ALTER TABLE fin_invoice_payment_requests ADD COLUMN IF NOT EXISTS expected_fee_formula_json JSONB NOT NULL DEFAULT '{}'::jsonb`;
+  await db`ALTER TABLE fin_invoice_payment_requests ADD COLUMN IF NOT EXISTS fee_disclosure_text TEXT NOT NULL DEFAULT ''`;
+  await db`ALTER TABLE fin_invoice_payment_requests ADD COLUMN IF NOT EXISTS public_token_hash TEXT`;
+  await db`ALTER TABLE fin_invoice_payment_requests ADD COLUMN IF NOT EXISTS public_token_hint TEXT NOT NULL DEFAULT ''`;
+  await db`ALTER TABLE fin_invoice_payment_requests ADD COLUMN IF NOT EXISTS public_url TEXT NOT NULL DEFAULT ''`;
+  await db`ALTER TABLE fin_invoice_payment_requests ADD COLUMN IF NOT EXISTS stripe_balance_transaction_id TEXT NOT NULL DEFAULT ''`;
+  await db`ALTER TABLE fin_invoice_payment_requests ADD COLUMN IF NOT EXISTS actual_stripe_fee_cents INTEGER`;
+  await db`ALTER TABLE fin_invoice_payment_requests ADD COLUMN IF NOT EXISTS actual_net_cents INTEGER`;
+  await db`ALTER TABLE fin_invoice_payment_requests ADD COLUMN IF NOT EXISTS reconciliation_status TEXT NOT NULL DEFAULT 'not_started'`;
+  await db`ALTER TABLE fin_invoice_payment_requests ADD COLUMN IF NOT EXISTS reconciled_at TIMESTAMPTZ`;
+  await db`ALTER TABLE fin_invoice_payment_requests ADD COLUMN IF NOT EXISTS payment_method_details_json JSONB NOT NULL DEFAULT '{}'::jsonb`;
+  await db`UPDATE fin_invoice_payment_requests SET base_amount_cents = amount_cents WHERE base_amount_cents = 0 AND amount_cents > 0`;
+  await db`UPDATE fin_invoice_payment_requests SET collection_amount_cents = amount_cents WHERE collection_amount_cents = 0 AND amount_cents > 0`;
+  await db`UPDATE fin_invoice_payment_requests SET expected_net_cents = amount_cents WHERE expected_net_cents = 0 AND amount_cents > 0`;
+  await db`DROP INDEX IF EXISTS fin_invoice_payment_requests_active_invoice_mode_idx`;
+  await db`DROP INDEX IF EXISTS fin_invoice_payment_requests_snapshot_mode_idx`;
   await db`CREATE INDEX IF NOT EXISTS fin_invoice_payment_requests_invoice_idx ON fin_invoice_payment_requests (invoice_id, updated_at DESC) WHERE deleted_at IS NULL`;
-  await db`CREATE UNIQUE INDEX IF NOT EXISTS fin_invoice_payment_requests_active_invoice_mode_idx ON fin_invoice_payment_requests (invoice_id, stripe_mode) WHERE deleted_at IS NULL AND status IN ('creating', 'active', 'processing', 'paid')`;
-  await db`CREATE UNIQUE INDEX IF NOT EXISTS fin_invoice_payment_requests_snapshot_mode_idx ON fin_invoice_payment_requests (invoice_id, invoice_snapshot_sha256, stripe_mode) WHERE deleted_at IS NULL`;
+  await db`CREATE INDEX IF NOT EXISTS fin_invoice_payment_requests_public_token_idx ON fin_invoice_payment_requests (public_token_hash) WHERE deleted_at IS NULL AND public_token_hash IS NOT NULL`;
+  await db`CREATE UNIQUE INDEX IF NOT EXISTS fin_invoice_payment_requests_active_method_idx ON fin_invoice_payment_requests (invoice_id, stripe_mode, payment_method_family) WHERE deleted_at IS NULL AND status IN ('creating', 'active', 'processing', 'paid')`;
+  await db`CREATE UNIQUE INDEX IF NOT EXISTS fin_invoice_payment_requests_snapshot_method_idx ON fin_invoice_payment_requests (invoice_id, invoice_snapshot_sha256, stripe_mode, payment_method_family) WHERE deleted_at IS NULL`;
 
   await db`CREATE TABLE IF NOT EXISTS fin_stripe_events (
     stripe_event_id TEXT PRIMARY KEY,
@@ -541,9 +568,46 @@ async function deleteInvoice(user, id) {
   const currentUser = await ensureUser(user);
   const db = sql();
   const rows = currentUser.role === 'admin'
-    ? await db`UPDATE fin_invoices SET deleted_at = now(), updated_at = now() WHERE id = ${id} AND deleted_at IS NULL RETURNING id`
-    : await db`UPDATE fin_invoices SET deleted_at = now(), updated_at = now() WHERE id = ${id} AND created_by_user_id = ${currentUser.id} AND deleted_at IS NULL RETURNING id`;
-  if (!rows[0]) return false;
+    ? await db`
+      UPDATE fin_invoices SET deleted_at = now(), updated_at = now()
+      WHERE id = ${id}
+        AND deleted_at IS NULL
+        AND NOT EXISTS (
+          SELECT 1 FROM fin_invoice_payment_requests
+          WHERE invoice_id = ${id}
+            AND deleted_at IS NULL
+            AND status IN ('creating', 'active', 'processing', 'paid')
+        )
+      RETURNING id
+    `
+    : await db`
+      UPDATE fin_invoices SET deleted_at = now(), updated_at = now()
+      WHERE id = ${id}
+        AND created_by_user_id = ${currentUser.id}
+        AND deleted_at IS NULL
+        AND NOT EXISTS (
+          SELECT 1 FROM fin_invoice_payment_requests
+          WHERE invoice_id = ${id}
+            AND deleted_at IS NULL
+            AND status IN ('creating', 'active', 'processing', 'paid')
+        )
+      RETURNING id
+    `;
+  if (!rows[0]) {
+    const visibleRows = currentUser.role === 'admin'
+      ? await db`SELECT id FROM fin_invoices WHERE id = ${id} AND deleted_at IS NULL LIMIT 1`
+      : await db`SELECT id FROM fin_invoices WHERE id = ${id} AND created_by_user_id = ${currentUser.id} AND deleted_at IS NULL LIMIT 1`;
+    if (!visibleRows[0]) return false;
+    const activePaymentRows = await db`
+      SELECT id, status FROM fin_invoice_payment_requests
+      WHERE invoice_id = ${id}
+        AND deleted_at IS NULL
+        AND status IN ('creating', 'active', 'processing', 'paid')
+      LIMIT 1
+    `;
+    if (activePaymentRows[0]) throw makeError(409, 'This invoice has an active Stripe payment link. Expire, cancel, or supersede the link before deleting the invoice.');
+    return false;
+  }
   await db`INSERT INTO fin_invoice_events (invoice_id, actor_user_id, event_type, summary, metadata) VALUES (${id}, ${currentUser.id}, 'deleted', 'Invoice draft deleted', '{}'::jsonb)`;
   return true;
 }
@@ -605,8 +669,54 @@ function cleanStripeMode(value) {
   return mode;
 }
 
+function paymentTokenHash(token) {
+  const text = cleanSingleLine(token, 240);
+  if (text.length < 24) throw makeError(404, 'Payment page not found.');
+  return crypto.createHash('sha256').update(text).digest('hex');
+}
+
+function generatePaymentToken() {
+  return crypto.randomBytes(32).toString('base64url');
+}
+
+function joinPaymentUrl(baseUrl, token) {
+  const base = String(baseUrl || '').replace(/\/$/, '');
+  return `${base}/pay?t=${encodeURIComponent(token)}`;
+}
+
+function methodLabel(method) {
+  if (method === 'bank_account') return 'bank account';
+  if (method === 'card') return 'card';
+  if (method === 'customer_choice') return 'customer payment page';
+  if (method === 'legacy') return 'legacy Checkout';
+  return formatUnknownMethod(method);
+}
+
+function formatUnknownMethod(value) {
+  return cleanSingleLine(value, 80).replace(/[_-]/g, ' ') || 'payment';
+}
+
+function activePaymentStatuses() {
+  return ['creating', 'active', 'processing', 'paid'];
+}
+
+function paymentRequestSelectFields(prefix = '') {
+  const p = prefix ? `${prefix}.` : '';
+  return `id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+      payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_charge_id, stripe_customer_id,
+      payment_method_family, payment_method_type, fee_policy, base_amount_cents, client_processing_cost_cents,
+      collection_amount_cents, expected_stripe_fee_cents, expected_net_cents, expected_fee_formula_json,
+      fee_disclosure_text, public_token_hash, public_token_hint, public_url, stripe_balance_transaction_id,
+      actual_stripe_fee_cents, actual_net_cents, reconciliation_status, payment_method_details_json,
+      expires_at::text AS expires_at, paid_at::text AS paid_at, reconciled_at::text AS reconciled_at, updated_at::text AS updated_at`;
+}
+
 function paymentRequestSummary(row) {
   if (!row) return null;
+  const methodFamily = row.payment_method_family || row.paymentMethodFamily || 'legacy';
+  const collectionAmountCents = Number(row.collection_amount_cents ?? row.collectionAmountCents ?? row.amount_cents ?? row.amountCents ?? 0);
+  const baseAmountCents = Number(row.base_amount_cents ?? row.baseAmountCents ?? row.amount_cents ?? row.amountCents ?? 0);
+  const publicUrl = row.public_url || row.publicUrl || '';
   return {
     id: row.id,
     invoiceId: row.invoice_id || row.invoiceId || '',
@@ -614,17 +724,36 @@ function paymentRequestSummary(row) {
     snapshotSha256: row.invoice_snapshot_sha256 || row.snapshotSha256 || '',
     mode: row.stripe_mode || row.mode || 'test',
     status: row.status || 'none',
-    amountCents: Number(row.amount_cents ?? row.amountCents ?? 0),
+    amountCents: Number(row.amount_cents ?? row.amountCents ?? collectionAmountCents),
     currency: row.currency || 'USD',
     url: row.payment_url || row.url || '',
     urlKind: row.payment_url_kind || row.urlKind || 'checkout_session',
+    publicUrl,
+    tokenHint: row.public_token_hint || row.tokenHint || '',
     checkoutSessionId: row.stripe_checkout_session_id || row.checkoutSessionId || '',
     paymentIntentId: row.stripe_payment_intent_id || row.paymentIntentId || '',
+    chargeId: row.stripe_charge_id || row.chargeId || '',
     customerId: row.stripe_customer_id || row.customerId || '',
+    paymentMethodFamily: methodFamily,
+    paymentMethodType: row.payment_method_type || row.paymentMethodType || '',
+    feePolicy: row.fee_policy || row.feePolicy || '',
+    baseAmountCents,
+    clientProcessingCostCents: Number(row.client_processing_cost_cents ?? row.clientProcessingCostCents ?? 0),
+    collectionAmountCents,
+    expectedStripeFeeCents: Number(row.expected_stripe_fee_cents ?? row.expectedStripeFeeCents ?? 0),
+    expectedNetCents: Number(row.expected_net_cents ?? row.expectedNetCents ?? 0),
+    expectedFeeFormula: row.expected_fee_formula_json || row.expectedFeeFormula || {},
+    feeDisclosureText: row.fee_disclosure_text || row.feeDisclosureText || '',
+    balanceTransactionId: row.stripe_balance_transaction_id || row.balanceTransactionId || '',
+    actualStripeFeeCents: row.actual_stripe_fee_cents ?? row.actualStripeFeeCents ?? null,
+    actualNetCents: row.actual_net_cents ?? row.actualNetCents ?? null,
+    reconciliationStatus: row.reconciliation_status || row.reconciliationStatus || 'not_started',
+    paymentMethodDetails: row.payment_method_details_json || row.paymentMethodDetails || {},
     expiresAt: row.expires_at || row.expiresAt || '',
     paidAt: row.paid_at || row.paidAt || '',
+    reconciledAt: row.reconciled_at || row.reconciledAt || '',
     updatedAt: row.updated_at || row.updatedAt || '',
-    active: ['creating', 'active', 'processing', 'paid'].includes(row.status || ''),
+    active: activePaymentStatuses().includes(row.status || ''),
   };
 }
 
@@ -637,14 +766,40 @@ async function latestPaymentRequestForInvoice(user, invoiceId) {
   if (!invoiceRows[0]) return null;
   const rows = await db`
     SELECT id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
-      payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_customer_id,
-      expires_at::text AS expires_at, paid_at::text AS paid_at, updated_at::text AS updated_at
+      payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_charge_id, stripe_customer_id,
+      payment_method_family, payment_method_type, fee_policy, base_amount_cents, client_processing_cost_cents,
+      collection_amount_cents, expected_stripe_fee_cents, expected_net_cents, expected_fee_formula_json,
+      fee_disclosure_text, public_token_hint, public_url, stripe_balance_transaction_id,
+      actual_stripe_fee_cents, actual_net_cents, reconciliation_status, payment_method_details_json,
+      expires_at::text AS expires_at, paid_at::text AS paid_at, reconciled_at::text AS reconciled_at, updated_at::text AS updated_at
     FROM fin_invoice_payment_requests
     WHERE invoice_id = ${invoiceId} AND deleted_at IS NULL
-    ORDER BY updated_at DESC
+    ORDER BY CASE WHEN payment_method_family = 'customer_choice' THEN 0 ELSE 1 END, updated_at DESC
     LIMIT 1
   `;
   return paymentRequestSummary(rows[0]);
+}
+
+async function loadApprovedInvoiceForPayment(invoiceId) {
+  const db = sql();
+  const invoiceRows = await db`
+    SELECT id, invoice_number, status, currency, total_cents, approved_by_user_id, data_json
+    FROM fin_invoices
+    WHERE id = ${invoiceId} AND deleted_at IS NULL
+    LIMIT 1
+  `;
+  const row = invoiceRows[0];
+  if (!row) throw makeError(404, 'Invoice draft not found.');
+  const invoice = parseStoredInvoice(row.data_json);
+  if (!invoice) throw makeError(500, 'Invoice data is unavailable.');
+  if (invoice.status !== 'approved' || row.status !== 'approved' || !row.approved_by_user_id) throw makeError(409, 'Approve the invoice before creating a payment link.');
+  const amountCents = Number(row.total_cents || invoice.totals?.totalCents || 0);
+  if (!Number.isFinite(amountCents) || amountCents <= 0) throw makeError(409, 'Invoice total must be greater than zero before creating a payment link.');
+  return { row, invoice, amountCents, snapshotSha256: paymentSnapshotHash(invoice) };
+}
+
+function paymentRowSelectFragment() {
+  return null;
 }
 
 async function createInvoicePaymentRequest(user, invoiceId, modeInput = 'test') {
@@ -798,12 +953,461 @@ async function failInvoicePaymentRequest(user, paymentRequestId, message = '') {
   }
 }
 
+async function createInvoiceCustomerPaymentPage(user, invoiceId, modeInput = 'test', baseUrl = '') {
+  const currentUser = await ensureUser(user);
+  if (currentUser.role !== 'admin') throw makeError(403, 'Only Fin admins can create customer payment pages.');
+  const mode = cleanStripeMode(modeInput);
+  const db = sql();
+  const { row, invoice, amountCents, snapshotSha256 } = await loadApprovedInvoiceForPayment(invoiceId);
+  const methodFamily = 'customer_choice';
+
+  await db`
+    UPDATE fin_invoice_payment_requests
+    SET status = 'failed', updated_at = now()
+    WHERE invoice_id = ${invoiceId} AND stripe_mode = ${mode} AND payment_method_family = ${methodFamily}
+      AND deleted_at IS NULL AND status = 'creating' AND updated_at < now() - interval '15 minutes'
+  `;
+
+  const activeRows = await db`
+    SELECT id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+      payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_charge_id, stripe_customer_id,
+      payment_method_family, payment_method_type, fee_policy, base_amount_cents, client_processing_cost_cents,
+      collection_amount_cents, expected_stripe_fee_cents, expected_net_cents, expected_fee_formula_json,
+      fee_disclosure_text, public_token_hint, public_url, stripe_balance_transaction_id,
+      actual_stripe_fee_cents, actual_net_cents, reconciliation_status, payment_method_details_json,
+      expires_at::text AS expires_at, paid_at::text AS paid_at, reconciled_at::text AS reconciled_at, updated_at::text AS updated_at
+    FROM fin_invoice_payment_requests
+    WHERE invoice_id = ${invoiceId} AND stripe_mode = ${mode} AND payment_method_family = ${methodFamily}
+      AND deleted_at IS NULL AND status IN ('creating', 'active', 'processing', 'paid')
+    ORDER BY updated_at DESC
+    LIMIT 1
+  `;
+  if (activeRows[0]) {
+    const active = paymentRequestSummary(activeRows[0]);
+    if (active.snapshotSha256 === snapshotSha256) {
+      if (active.status === 'paid') throw makeError(409, 'This invoice is already paid.');
+      return { invoice, paymentRequest: active, reused: true };
+    }
+    throw makeError(409, 'This invoice already has an active customer payment page for a different snapshot. Supersede or expire it before creating another page.');
+  }
+
+  const conflictingRows = await db`
+    SELECT id, status, payment_method_family, invoice_snapshot_sha256
+    FROM fin_invoice_payment_requests
+    WHERE invoice_id = ${invoiceId} AND stripe_mode = ${mode} AND payment_method_family <> ${methodFamily}
+      AND deleted_at IS NULL AND status IN ('creating', 'active', 'processing', 'paid')
+    ORDER BY updated_at DESC
+    LIMIT 1
+  `;
+  if (conflictingRows[0]) {
+    if (conflictingRows[0].status === 'paid') throw makeError(409, 'This invoice is already paid.');
+    throw makeError(409, 'This invoice already has active Stripe checkout activity. Expire, cancel, or supersede it before creating a customer payment page.');
+  }
+
+  const existingRows = await db`
+    SELECT id, status, public_url
+    FROM fin_invoice_payment_requests
+    WHERE invoice_id = ${invoiceId} AND invoice_snapshot_sha256 = ${snapshotSha256} AND stripe_mode = ${mode}
+      AND payment_method_family = ${methodFamily} AND deleted_at IS NULL
+    ORDER BY updated_at DESC
+    LIMIT 1
+  `;
+  if (existingRows[0] && !['failed', 'expired', 'canceled'].includes(existingRows[0].status)) {
+    throw makeError(409, 'This invoice already has a customer payment page for this snapshot.');
+  }
+
+  const token = generatePaymentToken();
+  const publicUrl = joinPaymentUrl(baseUrl, token);
+  const tokenHash = paymentTokenHash(token);
+  const tokenHint = token.slice(-8);
+  const id = existingRows[0]?.id || crypto.randomUUID();
+  const idempotencyKey = `fin-paypage-${mode}-${invoiceId}-${snapshotSha256}`;
+  const metadata = {
+    fin_invoice_id: invoiceId,
+    fin_payment_request_id: id,
+    fin_invoice_number: row.invoice_number,
+    fin_invoice_snapshot_sha256: snapshotSha256,
+    fin_environment: mode,
+    fin_payment_method_family: methodFamily,
+    fin_fee_policy: 'method_specific_choice',
+  };
+
+  const rows = existingRows[0]
+    ? await db`
+      UPDATE fin_invoice_payment_requests SET
+        status = 'active', amount_cents = ${amountCents}, currency = ${invoice.currency || row.currency || 'USD'},
+        payment_url = ${publicUrl}, payment_url_kind = 'customer_payment_page', stripe_checkout_session_id = NULL,
+        stripe_payment_intent_id = NULL, stripe_charge_id = '', stripe_customer_id = '',
+        payment_method_family = ${methodFamily}, payment_method_type = '', fee_policy = 'method_specific_choice',
+        base_amount_cents = ${amountCents}, client_processing_cost_cents = 0, collection_amount_cents = ${amountCents},
+        expected_stripe_fee_cents = 0, expected_net_cents = ${amountCents}, expected_fee_formula_json = ${JSON.stringify({ version: 'customer-choice', methods: ['bank_account', 'card'] })}::jsonb,
+        fee_disclosure_text = 'Choose bank account or card before Stripe Checkout.',
+        public_token_hash = ${tokenHash}, public_token_hint = ${tokenHint}, public_url = ${publicUrl},
+        stripe_balance_transaction_id = '', actual_stripe_fee_cents = NULL, actual_net_cents = NULL,
+        reconciliation_status = 'not_started', reconciled_at = NULL, payment_method_details_json = '{}'::jsonb,
+        idempotency_key = ${idempotencyKey}, metadata_json = ${JSON.stringify(metadata)}::jsonb, updated_at = now()
+      WHERE id = ${existingRows[0].id} AND deleted_at IS NULL
+      RETURNING id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+        payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_charge_id, stripe_customer_id,
+        payment_method_family, payment_method_type, fee_policy, base_amount_cents, client_processing_cost_cents,
+        collection_amount_cents, expected_stripe_fee_cents, expected_net_cents, expected_fee_formula_json,
+        fee_disclosure_text, public_token_hint, public_url, stripe_balance_transaction_id,
+        actual_stripe_fee_cents, actual_net_cents, reconciliation_status, payment_method_details_json,
+        expires_at::text AS expires_at, paid_at::text AS paid_at, reconciled_at::text AS reconciled_at, updated_at::text AS updated_at
+    `
+    : await db`
+      INSERT INTO fin_invoice_payment_requests (
+        id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+        payment_url, payment_url_kind, payment_method_family, payment_method_type, fee_policy,
+        base_amount_cents, client_processing_cost_cents, collection_amount_cents, expected_stripe_fee_cents,
+        expected_net_cents, expected_fee_formula_json, fee_disclosure_text, public_token_hash, public_token_hint,
+        public_url, idempotency_key, created_by_user_id, approved_by_user_id, metadata_json, created_at, updated_at
+      ) VALUES (
+        ${id}, ${invoiceId}, ${row.invoice_number}, ${snapshotSha256}, ${mode}, 'active', ${amountCents}, ${invoice.currency || row.currency || 'USD'},
+        ${publicUrl}, 'customer_payment_page', ${methodFamily}, '', 'method_specific_choice',
+        ${amountCents}, 0, ${amountCents}, 0,
+        ${amountCents}, ${JSON.stringify({ version: 'customer-choice', methods: ['bank_account', 'card'] })}::jsonb, 'Choose bank account or card before Stripe Checkout.', ${tokenHash}, ${tokenHint},
+        ${publicUrl}, ${idempotencyKey}, ${currentUser.id}, ${currentUser.id}, ${JSON.stringify(metadata)}::jsonb, now(), now()
+      )
+      RETURNING id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+        payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_charge_id, stripe_customer_id,
+        payment_method_family, payment_method_type, fee_policy, base_amount_cents, client_processing_cost_cents,
+        collection_amount_cents, expected_stripe_fee_cents, expected_net_cents, expected_fee_formula_json,
+        fee_disclosure_text, public_token_hint, public_url, stripe_balance_transaction_id,
+        actual_stripe_fee_cents, actual_net_cents, reconciliation_status, payment_method_details_json,
+        expires_at::text AS expires_at, paid_at::text AS paid_at, reconciled_at::text AS reconciled_at, updated_at::text AS updated_at
+    `;
+
+  const payment = paymentRequestSummary(rows[0]);
+  await db`UPDATE fin_invoices SET payment_status = 'link_ready', current_payment_request_id = ${payment.id}, payment_updated_at = now(), updated_at = now() WHERE id = ${payment.invoiceId} AND deleted_at IS NULL`;
+  await db`INSERT INTO fin_invoice_events (invoice_id, actor_user_id, event_type, summary, metadata) VALUES (${invoiceId}, ${currentUser.id}, 'stripe_customer_payment_page_created', 'Customer payment page created', ${JSON.stringify({ mode, paymentRequestId: id, snapshotSha256 })}::jsonb)`;
+  return { invoice, paymentRequest: payment, reused: false };
+}
+
+function safePublicInvoice(invoice = {}) {
+  return {
+    invoiceNumber: cleanSingleLine(invoice.invoiceNumber, 80),
+    status: cleanSingleLine(invoice.status, 40),
+    currency: cleanSingleLine(invoice.currency || 'USD', 10),
+    project: cleanSingleLine(invoice.project, 240),
+    invoiceDate: cleanSingleLine(invoice.invoiceDate, 20),
+    dueDate: cleanSingleLine(invoice.dueDate, 20),
+    from: {
+      name: cleanSingleLine(invoice.from?.name || invoice.from?.company || 'What are we capable of?', 240),
+      email: cleanSingleLine(invoice.from?.email || 'hello@whatarewecapableof.com', 240),
+    },
+    client: {
+      label: invoiceClientLabel(invoice),
+      name: cleanSingleLine(invoice.client?.name, 240),
+      company: cleanSingleLine(invoice.client?.company, 240),
+      email: cleanSingleLine(invoice.client?.email, 240),
+    },
+    notes: cleanText(invoice.notes, 1200),
+    terms: cleanText(invoice.terms, 1200),
+    items: (invoice.items || []).map((item) => ({
+      description: cleanText(item.description, 600).trim(),
+      quantity: cleanQuantity(item.quantity),
+      unitPrice: centsToInput(Math.max(0, parseMoneyToCents(item.unitPrice))),
+    })),
+    totals: invoice.totals || {},
+  };
+}
+
+function publicMethodSummary(baseAmountCents, method, existing = null) {
+  const quote = paymentMethodQuote(baseAmountCents, method);
+  return {
+    method: quote.method,
+    label: quote.customerLabel,
+    shortCopy: quote.shortCopy,
+    paymentMethodType: quote.paymentMethodType,
+    feePolicy: quote.feePolicy,
+    baseAmountCents: quote.baseAmountCents,
+    clientProcessingCostCents: quote.clientProcessingCostCents,
+    collectionAmountCents: quote.collectionAmountCents,
+    expectedStripeFeeCents: quote.expectedStripeFeeCents,
+    expectedNetCents: quote.expectedNetCents,
+    disclosureText: quote.disclosureText,
+    status: existing?.status || 'available',
+    active: Boolean(existing?.active),
+  };
+}
+
+async function getPublicPaymentPage(token) {
+  await ensureSchema();
+  const tokenHash = paymentTokenHash(token);
+  const db = sql();
+  const rows = await db`
+    SELECT pr.*, inv.data_json, inv.status AS invoice_status, inv.payment_status AS invoice_payment_status
+    FROM fin_invoice_payment_requests pr
+    JOIN fin_invoices inv ON inv.id = pr.invoice_id
+    WHERE pr.public_token_hash = ${tokenHash}
+      AND pr.payment_method_family = 'customer_choice'
+      AND pr.deleted_at IS NULL
+      AND pr.status IN ('active', 'processing', 'paid')
+      AND inv.deleted_at IS NULL
+    ORDER BY pr.updated_at DESC
+    LIMIT 1
+  `;
+  const row = rows[0];
+  if (!row) throw makeError(404, 'Payment page not found.');
+  const invoice = parseStoredInvoice(row.data_json);
+  if (!invoice) throw makeError(404, 'Payment page not found.');
+  if (!['approved', 'issued', 'paid'].includes(invoice.status)) throw makeError(404, 'Payment page not found.');
+  const pagePayment = paymentRequestSummary(row);
+  const methodRows = await db`
+    SELECT id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+      payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_charge_id, stripe_customer_id,
+      payment_method_family, payment_method_type, fee_policy, base_amount_cents, client_processing_cost_cents,
+      collection_amount_cents, expected_stripe_fee_cents, expected_net_cents, expected_fee_formula_json,
+      fee_disclosure_text, public_token_hint, public_url, stripe_balance_transaction_id,
+      actual_stripe_fee_cents, actual_net_cents, reconciliation_status, payment_method_details_json,
+      expires_at::text AS expires_at, paid_at::text AS paid_at, reconciled_at::text AS reconciled_at, updated_at::text AS updated_at
+    FROM fin_invoice_payment_requests
+    WHERE invoice_id = ${pagePayment.invoiceId} AND stripe_mode = ${pagePayment.mode}
+      AND public_token_hash = ${tokenHash}
+      AND payment_method_family IN ('bank_account', 'card')
+      AND deleted_at IS NULL
+    ORDER BY updated_at DESC
+  `;
+  const latestByMethod = methodRows.reduce((map, methodRow) => {
+    const payment = paymentRequestSummary(methodRow);
+    if (!map[payment.paymentMethodFamily]) map[payment.paymentMethodFamily] = payment;
+    return map;
+  }, {});
+  const baseAmountCents = pagePayment.baseAmountCents || Number(invoice.totals?.totalCents || 0);
+  return {
+    page: {
+      status: pagePayment.status,
+      mode: pagePayment.mode,
+      paymentStatus: row.invoice_payment_status || 'none',
+      tokenHint: pagePayment.tokenHint,
+      updatedAt: pagePayment.updatedAt,
+    },
+    invoice: safePublicInvoice(invoice),
+    amountCents: baseAmountCents,
+    currency: invoice.currency || 'USD',
+    methods: [
+      publicMethodSummary(baseAmountCents, 'bank_account', latestByMethod.bank_account),
+      publicMethodSummary(baseAmountCents, 'card', latestByMethod.card),
+    ],
+  };
+}
+
+async function createCustomerCheckoutPaymentRequest(token, methodInput) {
+  await ensureSchema();
+  const tokenHash = paymentTokenHash(token);
+  const method = cleanPaymentMethod(methodInput);
+  const db = sql();
+  const pageRows = await db`
+    SELECT pr.*, inv.id AS invoice_row_id, inv.invoice_number, inv.status AS invoice_status, inv.currency, inv.total_cents, inv.data_json, inv.approved_by_user_id
+    FROM fin_invoice_payment_requests pr
+    JOIN fin_invoices inv ON inv.id = pr.invoice_id
+    WHERE pr.public_token_hash = ${tokenHash}
+      AND pr.payment_method_family = 'customer_choice'
+      AND pr.deleted_at IS NULL
+      AND pr.status IN ('active', 'processing', 'paid')
+      AND inv.deleted_at IS NULL
+    ORDER BY pr.updated_at DESC
+    LIMIT 1
+  `;
+  const pageRow = pageRows[0];
+  if (!pageRow) throw makeError(404, 'Payment page not found.');
+  const invoice = parseStoredInvoice(pageRow.data_json);
+  if (!invoice) throw makeError(404, 'Payment page not found.');
+  if (!['approved', 'issued'].includes(invoice.status)) throw makeError(409, 'This invoice is not currently payable.');
+  const amountCents = Number(pageRow.base_amount_cents || pageRow.total_cents || invoice.totals?.totalCents || 0);
+  if (!Number.isFinite(amountCents) || amountCents <= 0) throw makeError(409, 'Invoice total must be greater than zero before checkout.');
+  const snapshotSha256 = paymentSnapshotHash(invoice);
+  if (snapshotSha256 !== pageRow.invoice_snapshot_sha256) throw makeError(409, 'This payment page no longer matches the current invoice snapshot. Ask for a fresh link.');
+  const quote = paymentMethodQuote(amountCents, method);
+
+  await db`
+    UPDATE fin_invoice_payment_requests
+    SET status = 'failed', updated_at = now()
+    WHERE invoice_id = ${pageRow.invoice_id} AND stripe_mode = ${pageRow.stripe_mode} AND payment_method_family = ${quote.paymentMethodFamily}
+      AND deleted_at IS NULL AND status = 'creating' AND updated_at < now() - interval '15 minutes'
+  `;
+
+  const activeRows = await db`
+    SELECT id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+      payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_charge_id, stripe_customer_id,
+      payment_method_family, payment_method_type, fee_policy, base_amount_cents, client_processing_cost_cents,
+      collection_amount_cents, expected_stripe_fee_cents, expected_net_cents, expected_fee_formula_json,
+      fee_disclosure_text, public_token_hint, public_url, stripe_balance_transaction_id,
+      actual_stripe_fee_cents, actual_net_cents, reconciliation_status, payment_method_details_json,
+      idempotency_key, metadata_json,
+      expires_at::text AS expires_at, paid_at::text AS paid_at, reconciled_at::text AS reconciled_at, updated_at::text AS updated_at
+    FROM fin_invoice_payment_requests
+    WHERE invoice_id = ${pageRow.invoice_id} AND stripe_mode = ${pageRow.stripe_mode} AND payment_method_family = ${quote.paymentMethodFamily}
+      AND deleted_at IS NULL AND status IN ('creating', 'active', 'processing', 'paid')
+    ORDER BY updated_at DESC
+    LIMIT 1
+  `;
+  if (activeRows[0]) {
+    const active = {
+      ...paymentRequestSummary(activeRows[0]),
+      idempotencyKey: activeRows[0].idempotency_key,
+      metadata: activeRows[0].metadata_json || {},
+    };
+    if (active.snapshotSha256 === snapshotSha256) {
+      if (active.status === 'paid') throw makeError(409, 'This invoice is already paid.');
+      if (active.status === 'active' && active.url) return { invoice, paymentRequest: active, reused: true };
+      throw makeError(409, 'Checkout creation is already in progress. Try again shortly.');
+    }
+    throw makeError(409, 'This invoice already has an active checkout for a different snapshot. Ask for a fresh link.');
+  }
+
+  const existingRows = await db`
+    SELECT id, status, idempotency_key, metadata_json
+    FROM fin_invoice_payment_requests
+    WHERE invoice_id = ${pageRow.invoice_id} AND invoice_snapshot_sha256 = ${snapshotSha256}
+      AND stripe_mode = ${pageRow.stripe_mode} AND payment_method_family = ${quote.paymentMethodFamily}
+      AND deleted_at IS NULL
+    ORDER BY updated_at DESC
+    LIMIT 1
+  `;
+
+  const id = existingRows[0]?.id || crypto.randomUUID();
+  const idempotencyKey = existingRows[0]?.idempotency_key || `fin-checkout-${pageRow.stripe_mode}-${method}-${pageRow.invoice_id}-${snapshotSha256}`;
+  const metadata = {
+    fin_invoice_id: pageRow.invoice_id,
+    fin_payment_request_id: id,
+    fin_invoice_number: pageRow.invoice_number,
+    fin_invoice_snapshot_sha256: snapshotSha256,
+    fin_environment: pageRow.stripe_mode,
+    fin_payment_method_family: quote.paymentMethodFamily,
+    fin_payment_method_type: quote.paymentMethodType,
+    fin_fee_policy: quote.feePolicy,
+    fin_base_amount_cents: String(quote.baseAmountCents),
+    fin_collection_amount_cents: String(quote.collectionAmountCents),
+    fin_client_processing_cost_cents: String(quote.clientProcessingCostCents),
+  };
+  if (existingRows[0] && !['failed', 'expired', 'canceled'].includes(existingRows[0].status)) {
+    throw makeError(409, 'This invoice already has a terminal Stripe payment record for this method.');
+  }
+
+  const rows = existingRows[0]
+    ? await db`
+      UPDATE fin_invoice_payment_requests SET
+        status = 'creating', amount_cents = ${quote.collectionAmountCents}, currency = ${invoice.currency || pageRow.currency || 'USD'},
+        payment_url = '', payment_url_kind = 'checkout_session', stripe_checkout_session_id = NULL,
+        stripe_payment_intent_id = NULL, stripe_charge_id = '', stripe_customer_id = '',
+        payment_method_family = ${quote.paymentMethodFamily}, payment_method_type = ${quote.paymentMethodType}, fee_policy = ${quote.feePolicy},
+        base_amount_cents = ${quote.baseAmountCents}, client_processing_cost_cents = ${quote.clientProcessingCostCents}, collection_amount_cents = ${quote.collectionAmountCents},
+        expected_stripe_fee_cents = ${quote.expectedStripeFeeCents}, expected_net_cents = ${quote.expectedNetCents}, expected_fee_formula_json = ${JSON.stringify(quote.formula)}::jsonb,
+        fee_disclosure_text = ${quote.disclosureText}, public_token_hash = ${tokenHash}, public_token_hint = ${pageRow.public_token_hint}, public_url = ${pageRow.public_url},
+        stripe_balance_transaction_id = '', actual_stripe_fee_cents = NULL, actual_net_cents = NULL,
+        reconciliation_status = 'pending_payment', reconciled_at = NULL, payment_method_details_json = '{}'::jsonb,
+        idempotency_key = ${idempotencyKey}, metadata_json = ${JSON.stringify(metadata)}::jsonb, updated_at = now()
+      WHERE id = ${existingRows[0].id} AND deleted_at IS NULL AND status IN ('failed', 'expired', 'canceled')
+      RETURNING id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+        payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_charge_id, stripe_customer_id,
+        payment_method_family, payment_method_type, fee_policy, base_amount_cents, client_processing_cost_cents,
+        collection_amount_cents, expected_stripe_fee_cents, expected_net_cents, expected_fee_formula_json,
+        fee_disclosure_text, public_token_hint, public_url, stripe_balance_transaction_id,
+        actual_stripe_fee_cents, actual_net_cents, reconciliation_status, payment_method_details_json,
+        expires_at::text AS expires_at, paid_at::text AS paid_at, reconciled_at::text AS reconciled_at, updated_at::text AS updated_at
+    `
+    : await db`
+      INSERT INTO fin_invoice_payment_requests (
+        id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+        payment_url_kind, payment_method_family, payment_method_type, fee_policy,
+        base_amount_cents, client_processing_cost_cents, collection_amount_cents, expected_stripe_fee_cents,
+        expected_net_cents, expected_fee_formula_json, fee_disclosure_text, public_token_hash, public_token_hint,
+        public_url, reconciliation_status, idempotency_key, created_by_user_id, approved_by_user_id, metadata_json, created_at, updated_at
+      ) VALUES (
+        ${id}, ${pageRow.invoice_id}, ${pageRow.invoice_number}, ${snapshotSha256}, ${pageRow.stripe_mode}, 'creating', ${quote.collectionAmountCents}, ${invoice.currency || pageRow.currency || 'USD'},
+        'checkout_session', ${quote.paymentMethodFamily}, ${quote.paymentMethodType}, ${quote.feePolicy},
+        ${quote.baseAmountCents}, ${quote.clientProcessingCostCents}, ${quote.collectionAmountCents}, ${quote.expectedStripeFeeCents},
+        ${quote.expectedNetCents}, ${JSON.stringify(quote.formula)}::jsonb, ${quote.disclosureText}, ${tokenHash}, ${pageRow.public_token_hint},
+        ${pageRow.public_url}, 'pending_payment', ${idempotencyKey}, ${pageRow.created_by_user_id}, ${pageRow.approved_by_user_id}, ${JSON.stringify(metadata)}::jsonb, now(), now()
+      )
+      RETURNING id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+        payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_charge_id, stripe_customer_id,
+        payment_method_family, payment_method_type, fee_policy, base_amount_cents, client_processing_cost_cents,
+        collection_amount_cents, expected_stripe_fee_cents, expected_net_cents, expected_fee_formula_json,
+        fee_disclosure_text, public_token_hint, public_url, stripe_balance_transaction_id,
+        actual_stripe_fee_cents, actual_net_cents, reconciliation_status, payment_method_details_json,
+        expires_at::text AS expires_at, paid_at::text AS paid_at, reconciled_at::text AS reconciled_at, updated_at::text AS updated_at
+    `;
+  const prepared = rows[0];
+  if (!prepared) throw makeError(409, 'Stripe payment request could not be prepared for checkout.');
+  await db`INSERT INTO fin_invoice_events (invoice_id, actor_user_id, event_type, summary, metadata) VALUES (${pageRow.invoice_id}, NULL, 'stripe_customer_checkout_requested', ${`Customer chose ${methodLabel(method)} payment`}, ${JSON.stringify({ mode: pageRow.stripe_mode, paymentRequestId: id, method })}::jsonb)`;
+  return {
+    invoice,
+    paymentRequest: { ...paymentRequestSummary(prepared), idempotencyKey, metadata },
+    reused: false,
+  };
+}
+
+async function activateCustomerCheckoutPaymentRequest(paymentRequestId, session = {}) {
+  const db = sql();
+  const rows = await db`
+    UPDATE fin_invoice_payment_requests SET
+      status = 'active',
+      payment_url = ${cleanSingleLine(session.url, 1200)},
+      stripe_checkout_session_id = ${cleanSingleLine(session.id, 160) || null},
+      stripe_payment_intent_id = ${cleanSingleLine(session.paymentIntentId, 160) || null},
+      stripe_customer_id = ${cleanSingleLine(session.customerId, 160)},
+      expires_at = ${session.expiresAt || null},
+      updated_at = now()
+    WHERE id = ${paymentRequestId} AND deleted_at IS NULL
+    RETURNING id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+      payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_charge_id, stripe_customer_id,
+      payment_method_family, payment_method_type, fee_policy, base_amount_cents, client_processing_cost_cents,
+      collection_amount_cents, expected_stripe_fee_cents, expected_net_cents, expected_fee_formula_json,
+      fee_disclosure_text, public_token_hint, public_url, stripe_balance_transaction_id,
+      actual_stripe_fee_cents, actual_net_cents, reconciliation_status, payment_method_details_json,
+      expires_at::text AS expires_at, paid_at::text AS paid_at, reconciled_at::text AS reconciled_at, updated_at::text AS updated_at
+  `;
+  if (!rows[0]) throw makeError(404, 'Payment request not found.');
+  const payment = paymentRequestSummary(rows[0]);
+  await db`UPDATE fin_invoices SET payment_status = 'link_ready', current_payment_request_id = ${payment.id}, payment_updated_at = now(), updated_at = now() WHERE id = ${payment.invoiceId} AND deleted_at IS NULL`;
+  await db`INSERT INTO fin_invoice_events (invoice_id, actor_user_id, event_type, summary, metadata) VALUES (${payment.invoiceId}, NULL, 'stripe_customer_checkout_created', ${`Customer ${methodLabel(payment.paymentMethodFamily)} Checkout created`}, ${JSON.stringify({ mode: payment.mode, paymentRequestId: payment.id, checkoutSessionId: payment.checkoutSessionId, method: payment.paymentMethodFamily })}::jsonb)`;
+  return payment;
+}
+
+async function failCustomerCheckoutPaymentRequest(paymentRequestId, message = '') {
+  const db = sql();
+  const rows = await db`
+    UPDATE fin_invoice_payment_requests SET status = 'failed', updated_at = now()
+    WHERE id = ${paymentRequestId} AND deleted_at IS NULL
+    RETURNING id, invoice_id
+  `;
+  if (rows[0]) {
+    await db`INSERT INTO fin_invoice_events (invoice_id, actor_user_id, event_type, summary, metadata) VALUES (${rows[0].invoice_id}, NULL, 'stripe_customer_checkout_failed', 'Customer Stripe Checkout creation failed', ${JSON.stringify({ paymentRequestId, message: cleanSingleLine(message, 240) })}::jsonb)`;
+  }
+}
+
 function stripeEventMode(event) {
   return event?.livemode ? 'live' : 'test';
 }
 
 function stripeObjectAmountCents(object = {}) {
   return Number(object.amount_total ?? object.amount_received ?? object.amount ?? 0);
+}
+
+function stripeChargeIdFromObject(type, object = {}) {
+  if (type.startsWith('charge.')) return cleanSingleLine(object.id, 160);
+  if (typeof object.latest_charge === 'string') return cleanSingleLine(object.latest_charge, 160);
+  if (object.latest_charge?.id) return cleanSingleLine(object.latest_charge.id, 160);
+  if (Array.isArray(object.charges?.data) && object.charges.data[0]?.id) return cleanSingleLine(object.charges.data[0].id, 160);
+  return '';
+}
+
+function stripeEventMethodTypes(object = {}) {
+  const values = [];
+  if (Array.isArray(object.payment_method_types)) values.push(...object.payment_method_types);
+  if (object.payment_method_type) values.push(object.payment_method_type);
+  if (object.payment_method_details?.type) values.push(object.payment_method_details.type);
+  return new Set(values.map((value) => cleanSingleLine(value, 80)).filter(Boolean));
+}
+
+async function reconciliationForStripeEvent(type, object = {}) {
+  if (type.startsWith('charge.')) return reconciliationFromCharge(object);
+  const chargeId = stripeChargeIdFromObject(type, object);
+  if (!chargeId) return null;
+  return retrieveChargeReconciliation(chargeId);
 }
 
 async function processStripeEvent(event = {}) {
@@ -835,6 +1439,12 @@ async function processStripeEvent(event = {}) {
   if (!paymentRows[0] && type.startsWith('payment_intent.')) {
     paymentRows = await db`SELECT * FROM fin_invoice_payment_requests WHERE stripe_payment_intent_id = ${cleanSingleLine(object.id, 160)} AND deleted_at IS NULL LIMIT 1`;
   }
+  if (!paymentRows[0] && type.startsWith('charge.') && object.payment_intent) {
+    paymentRows = await db`SELECT * FROM fin_invoice_payment_requests WHERE stripe_payment_intent_id = ${cleanSingleLine(object.payment_intent, 160)} AND deleted_at IS NULL LIMIT 1`;
+  }
+  if (!paymentRows[0] && type.startsWith('charge.')) {
+    paymentRows = await db`SELECT * FROM fin_invoice_payment_requests WHERE stripe_charge_id = ${cleanSingleLine(object.id, 160)} AND deleted_at IS NULL LIMIT 1`;
+  }
   if (!paymentRows[0] && object.metadata?.fin_payment_request_id) {
     paymentRows = await db`SELECT * FROM fin_invoice_payment_requests WHERE id = ${cleanSingleLine(object.metadata.fin_payment_request_id, 120)} AND deleted_at IS NULL LIMIT 1`;
   }
@@ -859,6 +1469,11 @@ async function processStripeEvent(event = {}) {
     await db`UPDATE fin_stripe_events SET status = 'failed', processed_at = now(), payment_request_id = ${payment.id}, invoice_id = ${payment.invoiceId}, safe_summary_json = ${JSON.stringify({ type, mode, objectId: object.id || '', reason: 'currency-mismatch' })}::jsonb WHERE stripe_event_id = ${eventId}`;
     throw makeError(400, 'Stripe event currency does not match the Fin payment snapshot.');
   }
+  const eventMethodTypes = stripeEventMethodTypes(object);
+  if (payment.paymentMethodType && eventMethodTypes.size && !eventMethodTypes.has(payment.paymentMethodType)) {
+    await db`UPDATE fin_stripe_events SET status = 'failed', processed_at = now(), payment_request_id = ${payment.id}, invoice_id = ${payment.invoiceId}, safe_summary_json = ${JSON.stringify({ type, mode, objectId: object.id || '', reason: 'payment-method-mismatch', expected: payment.paymentMethodType, observed: [...eventMethodTypes] })}::jsonb WHERE stripe_event_id = ${eventId}`;
+    throw makeError(400, 'Stripe event payment method does not match the Fin payment request.');
+  }
 
   let nextStatus = '';
   let invoicePaymentStatus = '';
@@ -880,6 +1495,9 @@ async function processStripeEvent(event = {}) {
   } else if (type === 'payment_intent.canceled') {
     nextStatus = 'canceled';
     invoicePaymentStatus = 'failed';
+  } else if (type === 'charge.succeeded') {
+    nextStatus = 'paid';
+    invoicePaymentStatus = 'paid';
   } else if (type === 'charge.refunded') {
     nextStatus = 'refunded';
     invoicePaymentStatus = 'refunded';
@@ -905,18 +1523,37 @@ async function processStripeEvent(event = {}) {
     return { duplicate: false, status: 'ignored', reason: 'stale-state-transition', eventId };
   }
 
-  const paymentIntentId = cleanSingleLine(object.payment_intent || object.id, 160);
+  const paymentIntentId = cleanSingleLine(type.startsWith('payment_intent.') ? object.id : object.payment_intent || '', 160);
+  const chargeId = stripeChargeIdFromObject(type, object);
+  const reconciliation = nextStatus === 'paid' || type.startsWith('charge.') ? await reconciliationForStripeEvent(type, object) : null;
+  const balanceTransactionId = cleanSingleLine(reconciliation?.balanceTransactionId, 160);
+  const actualStripeFeeCents = Number.isFinite(Number(reconciliation?.actualStripeFeeCents)) ? Number(reconciliation.actualStripeFeeCents) : null;
+  const actualNetCents = Number.isFinite(Number(reconciliation?.actualNetCents)) ? Number(reconciliation.actualNetCents) : null;
+  const reconciliationStatus = cleanSingleLine(reconciliation?.reconciliationStatus || (nextStatus === 'paid' ? 'pending_stripe_fee' : ''), 80);
+  const paymentMethodDetails = reconciliation?.paymentMethodDetails || (object.payment_method_details ? reconciliationFromCharge(object).paymentMethodDetails : {});
   const paidAt = nextStatus === 'paid' ? new Date().toISOString() : null;
+  const reconciledAt = reconciliationStatus === 'reconciled' ? new Date().toISOString() : null;
   const updatedRows = await db`
     UPDATE fin_invoice_payment_requests SET
       status = ${nextStatus},
       stripe_payment_intent_id = CASE WHEN ${paymentIntentId} <> '' THEN ${paymentIntentId} ELSE stripe_payment_intent_id END,
+      stripe_charge_id = CASE WHEN ${chargeId} <> '' THEN ${chargeId} ELSE stripe_charge_id END,
+      stripe_balance_transaction_id = CASE WHEN ${balanceTransactionId} <> '' THEN ${balanceTransactionId} ELSE stripe_balance_transaction_id END,
+      actual_stripe_fee_cents = CASE WHEN ${actualStripeFeeCents}::integer IS NOT NULL THEN ${actualStripeFeeCents}::integer ELSE actual_stripe_fee_cents END,
+      actual_net_cents = CASE WHEN ${actualNetCents}::integer IS NOT NULL THEN ${actualNetCents}::integer ELSE actual_net_cents END,
+      reconciliation_status = CASE WHEN ${reconciliationStatus} <> '' THEN ${reconciliationStatus} ELSE reconciliation_status END,
+      reconciled_at = CASE WHEN ${reconciledAt}::timestamptz IS NOT NULL THEN ${reconciledAt}::timestamptz ELSE reconciled_at END,
+      payment_method_details_json = CASE WHEN ${JSON.stringify(paymentMethodDetails || {})}::jsonb <> '{}'::jsonb THEN ${JSON.stringify(paymentMethodDetails || {})}::jsonb ELSE payment_method_details_json END,
       paid_at = CASE WHEN ${paidAt}::timestamptz IS NOT NULL THEN ${paidAt}::timestamptz ELSE paid_at END,
       updated_at = now()
     WHERE id = ${payment.id}
     RETURNING id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
-      payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_customer_id,
-      expires_at::text AS expires_at, paid_at::text AS paid_at, updated_at::text AS updated_at
+      payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_charge_id, stripe_customer_id,
+      payment_method_family, payment_method_type, fee_policy, base_amount_cents, client_processing_cost_cents,
+      collection_amount_cents, expected_stripe_fee_cents, expected_net_cents, expected_fee_formula_json,
+      fee_disclosure_text, public_token_hint, public_url, stripe_balance_transaction_id,
+      actual_stripe_fee_cents, actual_net_cents, reconciliation_status, payment_method_details_json,
+      expires_at::text AS expires_at, paid_at::text AS paid_at, reconciled_at::text AS reconciled_at, updated_at::text AS updated_at
   `;
   const updatedPayment = paymentRequestSummary(updatedRows[0]);
   const invoiceRows = await db`SELECT data_json FROM fin_invoices WHERE id = ${payment.invoiceId} LIMIT 1`;
@@ -1740,6 +2377,11 @@ module.exports = {
   deleteInvoice,
   latestPaymentRequestForInvoice,
   createInvoicePaymentRequest,
+  createInvoiceCustomerPaymentPage,
+  getPublicPaymentPage,
+  createCustomerCheckoutPaymentRequest,
+  activateCustomerCheckoutPaymentRequest,
+  failCustomerCheckoutPaymentRequest,
   activateInvoicePaymentRequest,
   failInvoicePaymentRequest,
   processStripeEvent,

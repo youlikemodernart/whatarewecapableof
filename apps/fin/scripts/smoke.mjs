@@ -98,6 +98,7 @@ async function callHandler(handler, options) {
 function installFakeFinDb() {
   const { normalizeInvoice, invoiceClientLabel } = require('../api/_invoice.js');
   const { normalizeFinanceImport, summarizeFinanceImport, fakeFinanceImportSummary } = require('../api/_finance_import.js');
+  const { cleanPaymentMethod, customerPaymentMethods, paymentMethodQuote } = require('../api/_payment_pricing.js');
   const records = new Map();
   const profileRecords = new Map();
   const financeImports = new Map();
@@ -248,11 +249,30 @@ function installFakeFinDb() {
       currency: record.currency,
       url: record.url || '',
       urlKind: record.urlKind || 'checkout_session',
+      publicUrl: record.publicUrl || '',
+      tokenHint: record.tokenHint || '',
       checkoutSessionId: record.checkoutSessionId || '',
       paymentIntentId: record.paymentIntentId || '',
+      chargeId: record.chargeId || '',
       customerId: record.customerId || '',
+      paymentMethodFamily: record.paymentMethodFamily || 'legacy',
+      paymentMethodType: record.paymentMethodType || '',
+      feePolicy: record.feePolicy || 'legacy_invoice_total',
+      baseAmountCents: record.baseAmountCents ?? record.amountCents,
+      clientProcessingCostCents: record.clientProcessingCostCents || 0,
+      collectionAmountCents: record.collectionAmountCents ?? record.amountCents,
+      expectedStripeFeeCents: record.expectedStripeFeeCents || 0,
+      expectedNetCents: record.expectedNetCents || record.amountCents,
+      expectedFeeFormula: record.expectedFeeFormula || {},
+      feeDisclosureText: record.feeDisclosureText || '',
+      balanceTransactionId: record.balanceTransactionId || '',
+      actualStripeFeeCents: record.actualStripeFeeCents ?? null,
+      actualNetCents: record.actualNetCents ?? null,
+      reconciliationStatus: record.reconciliationStatus || 'not_started',
+      paymentMethodDetails: record.paymentMethodDetails || {},
       expiresAt: record.expiresAt || '',
       paidAt: record.paidAt || '',
+      reconciledAt: record.reconciledAt || '',
       updatedAt: record.updatedAt || '2026-05-29T00:00:00.000Z',
       active: ['creating', 'active', 'processing', 'paid'].includes(record.status),
     };
@@ -264,9 +284,9 @@ function installFakeFinDb() {
       .sort((a, b) => String(b.updatedAt).localeCompare(String(a.updatedAt)))[0] || null;
   }
 
-  function activePaymentRecord(invoiceId, mode = 'test') {
+  function activePaymentRecord(invoiceId, mode = 'test', methodFamily = '') {
     return Array.from(paymentRequests.values())
-      .filter((payment) => !payment.deleted && payment.invoiceId === invoiceId && payment.mode === mode && ['creating', 'active', 'processing', 'paid'].includes(payment.status))
+      .filter((payment) => !payment.deleted && payment.invoiceId === invoiceId && payment.mode === mode && (!methodFamily || payment.paymentMethodFamily === methodFamily) && ['creating', 'active', 'processing', 'paid'].includes(payment.status))
       .sort((a, b) => String(b.updatedAt).localeCompare(String(a.updatedAt)))[0] || null;
   }
 
@@ -282,6 +302,14 @@ function installFakeFinDb() {
     if (type.startsWith('payment_intent.')) {
       const byIntent = Array.from(paymentRequests.values()).find((payment) => !payment.deleted && payment.paymentIntentId === object.id);
       if (byIntent) return byIntent;
+    }
+    if (type.startsWith('charge.') && object.payment_intent) {
+      const byIntent = Array.from(paymentRequests.values()).find((payment) => !payment.deleted && payment.paymentIntentId === object.payment_intent);
+      if (byIntent) return byIntent;
+    }
+    if (type.startsWith('charge.')) {
+      const byCharge = Array.from(paymentRequests.values()).find((payment) => !payment.deleted && payment.chargeId === object.id);
+      if (byCharge) return byCharge;
     }
     const metadataId = object.metadata?.fin_payment_request_id;
     if (metadataId) return paymentRequests.get(String(metadataId)) || null;
@@ -477,6 +505,8 @@ function installFakeFinDb() {
       userRow(user);
       const invoice = records.get(id);
       if (!invoice || invoice.deleted) return false;
+      const activePayment = activePaymentRecord(id, 'test') || activePaymentRecord(id, 'live');
+      if (activePayment) throw makeError(409, 'This invoice has an active Stripe payment link. Expire, cancel, or supersede the link before deleting the invoice.');
       records.set(id, { ...invoice, deleted: true });
       return true;
     },
@@ -580,6 +610,228 @@ function installFakeFinDb() {
         paymentRequests.set(paymentRequestId, { ...existing, status: 'failed', updatedAt: '2026-05-29T00:31:00.000Z' });
       }
     },
+    async createInvoiceCustomerPaymentPage(user, invoiceId, mode = 'test', baseUrl = 'http://127.0.0.1:3321') {
+      const currentUser = userRow(user);
+      if (currentUser.role !== 'admin') throw makeError(403, 'Only Fin admins can create customer payment pages.');
+      if (!['test', 'live'].includes(mode)) throw makeError(400, 'Stripe mode must be test or live.');
+      const invoice = records.get(invoiceId);
+      if (!invoice || invoice.deleted) throw makeError(404, 'Invoice draft not found.');
+      if (invoice.status !== 'approved' || !invoice.approvedByUserId) throw makeError(409, 'Approve the invoice before creating a payment link.');
+      const amountCents = Number(invoice.totals?.totalCents || 0);
+      if (!Number.isFinite(amountCents) || amountCents <= 0) throw makeError(409, 'Invoice total must be greater than zero before creating a payment link.');
+      const snapshotSha256 = paymentSnapshotHash(invoice);
+      const activePayment = activePaymentRecord(invoiceId, mode, 'customer_choice');
+      if (activePayment) {
+        if (activePayment.snapshotSha256 === snapshotSha256) return { invoice, paymentRequest: paymentSummary(activePayment), reused: true };
+        throw makeError(409, 'This invoice already has an active customer payment page for a different snapshot.');
+      }
+      const conflictingPayment = activePaymentRecord(invoiceId, mode, '');
+      if (conflictingPayment) {
+        if (conflictingPayment.status === 'paid') throw makeError(409, 'This invoice is already paid.');
+        throw makeError(409, 'This invoice already has active Stripe checkout activity. Expire, cancel, or supersede it before creating a customer payment page.');
+      }
+      paymentRequestSequence += 1;
+      const id = `pay-page-${paymentRequestSequence}`;
+      const token = `smoke-token-${paymentRequestSequence}-${crypto.randomBytes(8).toString('hex')}`;
+      const publicUrl = `${String(baseUrl).replace(/\/$/, '')}/pay?t=${encodeURIComponent(token)}`;
+      const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+      const metadata = {
+        fin_invoice_id: invoiceId,
+        fin_payment_request_id: id,
+        fin_invoice_number: invoice.invoiceNumber,
+        fin_invoice_snapshot_sha256: snapshotSha256,
+        fin_environment: mode,
+        fin_payment_method_family: 'customer_choice',
+      };
+      const record = {
+        id,
+        invoiceId,
+        invoiceNumber: invoice.invoiceNumber,
+        snapshotSha256,
+        mode,
+        status: 'active',
+        amountCents,
+        currency: invoice.currency || 'USD',
+        url: publicUrl,
+        urlKind: 'customer_payment_page',
+        publicUrl,
+        token,
+        tokenHash,
+        tokenHint: token.slice(-8),
+        checkoutSessionId: '',
+        paymentIntentId: '',
+        customerId: '',
+        paymentMethodFamily: 'customer_choice',
+        paymentMethodType: '',
+        feePolicy: 'method_specific_choice',
+        baseAmountCents: amountCents,
+        clientProcessingCostCents: 0,
+        collectionAmountCents: amountCents,
+        expectedStripeFeeCents: 0,
+        expectedNetCents: amountCents,
+        expectedFeeFormula: { version: 'customer-choice' },
+        feeDisclosureText: 'Choose bank account or card before Stripe Checkout.',
+        reconciliationStatus: 'not_started',
+        idempotencyKey: `fin-paypage-${mode}-${invoiceId}-${snapshotSha256}`,
+        metadata,
+        updatedAt: `2026-05-29T00:${String(paymentRequestSequence).padStart(2, '0')}:00.000Z`,
+      };
+      paymentRequests.set(id, record);
+      records.set(invoiceId, { ...invoice, paymentStatus: 'link_ready' });
+      return { invoice, paymentRequest: paymentSummary(record), reused: false };
+    },
+    async getPublicPaymentPage(token) {
+      const tokenHash = crypto.createHash('sha256').update(String(token || '')).digest('hex');
+      const page = Array.from(paymentRequests.values()).find((payment) => !payment.deleted && payment.tokenHash === tokenHash && payment.paymentMethodFamily === 'customer_choice' && ['active', 'processing', 'paid'].includes(payment.status));
+      if (!page) throw makeError(404, 'Payment page not found.');
+      const invoice = records.get(page.invoiceId);
+      if (!invoice || invoice.deleted || !['approved', 'issued', 'paid'].includes(invoice.status)) throw makeError(404, 'Payment page not found.');
+      const methodRows = Array.from(paymentRequests.values()).filter((payment) => !payment.deleted && payment.invoiceId === page.invoiceId && payment.mode === page.mode && payment.tokenHash === tokenHash && ['bank_account', 'card'].includes(payment.paymentMethodFamily));
+      const latestByMethod = Object.fromEntries(methodRows.sort((a, b) => String(b.updatedAt).localeCompare(String(a.updatedAt))).map((payment) => [payment.paymentMethodFamily, paymentSummary(payment)]));
+      return {
+        page: { status: page.status, mode: page.mode, paymentStatus: invoice.paymentStatus || 'none', tokenHint: page.tokenHint, updatedAt: page.updatedAt },
+        invoice: {
+          invoiceNumber: invoice.invoiceNumber,
+          status: invoice.status,
+          currency: invoice.currency || 'USD',
+          project: invoice.project || '',
+          invoiceDate: invoice.invoiceDate || '',
+          dueDate: invoice.dueDate || '',
+          from: { name: invoice.from?.name || 'What are we capable of?', email: invoice.from?.email || 'hello@whatarewecapableof.com' },
+          client: { label: invoiceClientLabel(invoice), name: invoice.client?.name || '', company: invoice.client?.company || '', email: invoice.client?.email || '' },
+          notes: invoice.notes || '',
+          terms: invoice.terms || '',
+          items: invoice.items || [],
+          totals: invoice.totals || {},
+        },
+        amountCents: page.baseAmountCents,
+        currency: invoice.currency || 'USD',
+        methods: customerPaymentMethods(page.baseAmountCents).map((quote) => ({
+          method: quote.method,
+          label: quote.customerLabel,
+          shortCopy: quote.shortCopy,
+          paymentMethodType: quote.paymentMethodType,
+          feePolicy: quote.feePolicy,
+          baseAmountCents: quote.baseAmountCents,
+          clientProcessingCostCents: quote.clientProcessingCostCents,
+          collectionAmountCents: quote.collectionAmountCents,
+          expectedStripeFeeCents: quote.expectedStripeFeeCents,
+          expectedNetCents: quote.expectedNetCents,
+          disclosureText: quote.disclosureText,
+          status: latestByMethod[quote.paymentMethodFamily]?.status || 'available',
+          active: Boolean(latestByMethod[quote.paymentMethodFamily]?.active),
+        })),
+      };
+    },
+    async createCustomerCheckoutPaymentRequest(token, methodInput) {
+      const tokenHash = crypto.createHash('sha256').update(String(token || '')).digest('hex');
+      const method = cleanPaymentMethod(methodInput);
+      const page = Array.from(paymentRequests.values()).find((payment) => !payment.deleted && payment.tokenHash === tokenHash && payment.paymentMethodFamily === 'customer_choice' && ['active', 'processing', 'paid'].includes(payment.status));
+      if (!page) throw makeError(404, 'Payment page not found.');
+      const invoice = records.get(page.invoiceId);
+      if (!invoice || invoice.deleted || !['approved', 'issued'].includes(invoice.status)) throw makeError(409, 'This invoice is not currently payable.');
+      const snapshotSha256 = paymentSnapshotHash(invoice);
+      if (snapshotSha256 !== page.snapshotSha256) throw makeError(409, 'This payment page no longer matches the current invoice snapshot. Ask for a fresh link.');
+      const quote = paymentMethodQuote(page.baseAmountCents, method);
+      const activePayment = activePaymentRecord(page.invoiceId, page.mode, quote.paymentMethodFamily);
+      if (activePayment) {
+        if (activePayment.snapshotSha256 === snapshotSha256 && activePayment.status === 'active' && activePayment.url) return { invoice, paymentRequest: { ...paymentSummary(activePayment), idempotencyKey: activePayment.idempotencyKey, metadata: activePayment.metadata }, reused: true };
+        throw makeError(409, 'Checkout creation is already in progress. Try again shortly.');
+      }
+      const existingPayment = Array.from(paymentRequests.values())
+        .filter((payment) => !payment.deleted && payment.invoiceId === page.invoiceId && payment.mode === page.mode && payment.paymentMethodFamily === quote.paymentMethodFamily && payment.snapshotSha256 === snapshotSha256)
+        .sort((a, b) => String(b.updatedAt).localeCompare(String(a.updatedAt)))[0] || null;
+      if (existingPayment) {
+        if (!['failed', 'expired', 'canceled'].includes(existingPayment.status)) throw makeError(409, 'This invoice already has a terminal Stripe payment record for this method.');
+        const resetPayment = {
+          ...existingPayment,
+          status: 'creating',
+          amountCents: quote.collectionAmountCents,
+          url: '',
+          checkoutSessionId: '',
+          paymentIntentId: '',
+          customerId: '',
+          expiresAt: '',
+          paidAt: '',
+          updatedAt: '2026-05-29T00:40:00.000Z',
+        };
+        paymentRequests.set(existingPayment.id, resetPayment);
+        return { invoice, paymentRequest: { ...paymentSummary(resetPayment), idempotencyKey: resetPayment.idempotencyKey, metadata: resetPayment.metadata }, reused: false };
+      }
+      paymentRequestSequence += 1;
+      const id = `pay-${paymentRequestSequence}`;
+      const metadata = {
+        fin_invoice_id: page.invoiceId,
+        fin_payment_request_id: id,
+        fin_invoice_number: invoice.invoiceNumber,
+        fin_invoice_snapshot_sha256: snapshotSha256,
+        fin_environment: page.mode,
+        fin_payment_method_family: quote.paymentMethodFamily,
+        fin_payment_method_type: quote.paymentMethodType,
+        fin_fee_policy: quote.feePolicy,
+        fin_base_amount_cents: String(quote.baseAmountCents),
+        fin_collection_amount_cents: String(quote.collectionAmountCents),
+        fin_client_processing_cost_cents: String(quote.clientProcessingCostCents),
+      };
+      const record = {
+        id,
+        invoiceId: page.invoiceId,
+        invoiceNumber: invoice.invoiceNumber,
+        snapshotSha256,
+        mode: page.mode,
+        status: 'creating',
+        amountCents: quote.collectionAmountCents,
+        currency: invoice.currency || 'USD',
+        url: '',
+        urlKind: 'checkout_session',
+        publicUrl: page.publicUrl,
+        tokenHash,
+        tokenHint: page.tokenHint,
+        checkoutSessionId: '',
+        paymentIntentId: '',
+        customerId: '',
+        paymentMethodFamily: quote.paymentMethodFamily,
+        paymentMethodType: quote.paymentMethodType,
+        feePolicy: quote.feePolicy,
+        baseAmountCents: quote.baseAmountCents,
+        clientProcessingCostCents: quote.clientProcessingCostCents,
+        collectionAmountCents: quote.collectionAmountCents,
+        expectedStripeFeeCents: quote.expectedStripeFeeCents,
+        expectedNetCents: quote.expectedNetCents,
+        expectedFeeFormula: quote.formula,
+        feeDisclosureText: quote.disclosureText,
+        reconciliationStatus: 'pending_payment',
+        idempotencyKey: `fin-checkout-${page.mode}-${method}-${page.invoiceId}-${snapshotSha256}`,
+        metadata,
+        updatedAt: `2026-05-29T00:${String(paymentRequestSequence).padStart(2, '0')}:00.000Z`,
+      };
+      paymentRequests.set(id, record);
+      return { invoice, paymentRequest: { ...paymentSummary(record), idempotencyKey: record.idempotencyKey, metadata }, reused: false };
+    },
+    async activateCustomerCheckoutPaymentRequest(paymentRequestId, session = {}) {
+      const existing = paymentRequests.get(paymentRequestId);
+      if (!existing || existing.deleted) throw makeError(404, 'Payment request not found.');
+      const record = {
+        ...existing,
+        status: 'active',
+        url: String(session.url || ''),
+        checkoutSessionId: String(session.id || ''),
+        paymentIntentId: String(session.paymentIntentId || ''),
+        customerId: String(session.customerId || ''),
+        expiresAt: String(session.expiresAt || ''),
+        updatedAt: '2026-05-29T00:30:00.000Z',
+      };
+      paymentRequests.set(paymentRequestId, record);
+      const invoice = records.get(record.invoiceId);
+      if (invoice && !invoice.deleted) records.set(record.invoiceId, { ...invoice, paymentStatus: 'link_ready' });
+      return paymentSummary(record);
+    },
+    async failCustomerCheckoutPaymentRequest(paymentRequestId) {
+      const existing = paymentRequests.get(paymentRequestId);
+      if (existing && !existing.deleted) {
+        paymentRequests.set(paymentRequestId, { ...existing, status: 'failed', updatedAt: '2026-05-29T00:31:00.000Z' });
+      }
+    },
     async processStripeEvent(event = {}) {
       const eventId = String(event.id || '');
       if (!eventId) throw makeError(400, 'Stripe event id is required.');
@@ -626,6 +878,9 @@ function installFakeFinDb() {
       } else if (type === 'payment_intent.canceled') {
         nextStatus = 'canceled';
         invoicePaymentStatus = 'failed';
+      } else if (type === 'charge.succeeded') {
+        nextStatus = 'paid';
+        invoicePaymentStatus = 'paid';
       } else if (type === 'charge.refunded') {
         nextStatus = 'refunded';
         invoicePaymentStatus = 'refunded';
@@ -649,10 +904,17 @@ function installFakeFinDb() {
         stripeEvents.set(eventId, { status: 'ignored', reason: 'stale-state-transition', paymentRequestId: payment.id });
         return { duplicate: false, status: 'ignored', reason: 'stale-state-transition', eventId };
       }
+      const balanceTransaction = object.balance_transaction && typeof object.balance_transaction === 'object' ? object.balance_transaction : null;
       const record = {
         ...payment,
         status: nextStatus,
-        paymentIntentId: String(object.payment_intent || object.id || payment.paymentIntentId || ''),
+        paymentIntentId: String(type.startsWith('payment_intent.') ? object.id : object.payment_intent || payment.paymentIntentId || ''),
+        chargeId: String(type.startsWith('charge.') ? object.id : object.latest_charge || payment.chargeId || ''),
+        balanceTransactionId: typeof object.balance_transaction === 'string' ? object.balance_transaction : balanceTransaction?.id || payment.balanceTransactionId || '',
+        actualStripeFeeCents: Number.isFinite(Number(balanceTransaction?.fee)) ? Number(balanceTransaction.fee) : payment.actualStripeFeeCents ?? null,
+        actualNetCents: Number.isFinite(Number(balanceTransaction?.net)) ? Number(balanceTransaction.net) : payment.actualNetCents ?? null,
+        reconciliationStatus: balanceTransaction ? 'reconciled' : nextStatus === 'paid' ? 'pending_stripe_fee' : payment.reconciliationStatus,
+        paymentMethodDetails: object.payment_method_details ? { type: object.payment_method_details.type || '' } : payment.paymentMethodDetails,
         paidAt: nextStatus === 'paid' ? '2026-05-29T01:00:00.000Z' : payment.paidAt,
         updatedAt: '2026-05-29T01:00:00.000Z',
       };
@@ -950,8 +1212,11 @@ async function runAuthenticatedRouteSmoke() {
     require.resolve('../api/profiles.js'),
     require.resolve('../api/numbering.js'),
     require.resolve('../api/stripe/checkout.js'),
+    require.resolve('../api/pay.js'),
+    require.resolve('../api/pay/checkout.js'),
     require.resolve('../api/stripe/webhook.js'),
     require.resolve('../api/_stripe.js'),
+    require.resolve('../api/_payment_pricing.js'),
   ];
   routePaths.forEach((path) => delete require.cache[path]);
   installFakeFinDb();
@@ -964,8 +1229,11 @@ async function runAuthenticatedRouteSmoke() {
   const numberingHandler = require('../api/numbering.js');
   const fakeDb = require('../api/_db.js');
   const checkoutHandler = require('../api/stripe/checkout.js');
+  const payHandler = require('../api/pay.js');
+  const payCheckoutHandler = require('../api/pay/checkout.js');
   const webhookHandler = require('../api/stripe/webhook.js');
   const { signTestWebhookPayload } = require('../api/_stripe.js');
+  const { cardGrossUpCents } = require('../api/_payment_pricing.js');
 
   try {
     for (const spec of [
@@ -1146,15 +1414,49 @@ async function runAuthenticatedRouteSmoke() {
     assert(approved.status === 200 && approved.data.invoice.status === 'approved', 'invoice approval smoke failed');
 
     const checkoutCreated = await callHandler(checkoutHandler, { method: 'POST', url: '/api/stripe/checkout', cookie, body: { invoiceId: id, mode: 'test' }, headers: checkoutOrigin });
-    assert(checkoutCreated.status === 201 && checkoutCreated.data.payment.status === 'active', 'Stripe Checkout fake create smoke failed');
-    assert(checkoutCreated.data.stripe.fake === true && checkoutCreated.data.payment.url.includes('checkout.stripe.com'), 'Stripe Checkout fake URL smoke failed');
+    assert(checkoutCreated.status === 201 && checkoutCreated.data.payment.status === 'active', 'customer payment page fake create smoke failed');
+    assert(checkoutCreated.data.stripe.fake === true && checkoutCreated.data.payment.urlKind === 'customer_payment_page', 'customer payment page kind smoke failed');
+    assert(checkoutCreated.data.payment.publicUrl.includes('/pay?t='), 'customer payment page public URL smoke failed');
+
+    const paymentPageUrl = new URL(checkoutCreated.data.payment.publicUrl);
+    const paymentPageToken = paymentPageUrl.searchParams.get('t');
+    assert(paymentPageToken, 'customer payment page token smoke failed');
 
     const checkoutReadBack = await callHandler(invoiceHandler, { method: 'GET', url: `/api/invoices?id=${encodeURIComponent(id)}`, cookie });
-    assert(checkoutReadBack.status === 200 && checkoutReadBack.data.invoice.payment?.status === 'active', 'invoice payment attach smoke failed');
+    assert(checkoutReadBack.status === 200 && checkoutReadBack.data.invoice.payment?.urlKind === 'customer_payment_page', 'invoice payment page attach smoke failed');
 
     const checkoutDuplicate = await callHandler(checkoutHandler, { method: 'POST', url: '/api/stripe/checkout', cookie, body: { invoiceId: id, mode: 'test' }, headers: checkoutOrigin });
-    assert(checkoutDuplicate.status === 200 && checkoutDuplicate.data.reused === true, 'Stripe Checkout duplicate reuse smoke failed');
-    assert(checkoutDuplicate.data.payment.id === checkoutCreated.data.payment.id, 'Stripe Checkout duplicate payment id smoke failed');
+    assert(checkoutDuplicate.status === 200 && checkoutDuplicate.data.reused === true, 'customer payment page duplicate reuse smoke failed');
+    assert(checkoutDuplicate.data.payment.id === checkoutCreated.data.payment.id, 'customer payment page duplicate payment id smoke failed');
+
+    const missingPayPage = await callHandler(payHandler, { method: 'GET', url: '/api/pay?t=missing-token' });
+    assert(missingPayPage.status === 404, 'public payment page missing-token smoke failed');
+
+    const publicPayPage = await callHandler(payHandler, { method: 'GET', url: `/api/pay?t=${encodeURIComponent(paymentPageToken)}` });
+    assert(publicPayPage.status === 200 && publicPayPage.data.paymentPage.invoice.invoiceNumber === 'SUBSTRATE-052626-01', 'public payment page read smoke failed');
+    assert(!JSON.stringify(publicPayPage.data.paymentPage).includes('paymentInstructions'), 'public payment page hides private payment instructions smoke failed');
+    const bankMethod = publicPayPage.data.paymentPage.methods.find((method) => method.method === 'bank_account');
+    const cardMethod = publicPayPage.data.paymentPage.methods.find((method) => method.method === 'card');
+    assert(bankMethod && cardMethod, 'public payment page method list smoke failed');
+    assert(bankMethod.collectionAmountCents === 27500 && bankMethod.clientProcessingCostCents === 0, 'bank account no-added-fee quote smoke failed');
+    assert(cardMethod.collectionAmountCents === cardGrossUpCents(27500) && cardMethod.clientProcessingCostCents > 0, 'card gross-up quote smoke failed');
+
+    const missingOriginPayCheckout = await callHandler(payCheckoutHandler, { method: 'POST', url: '/api/pay/checkout', body: { token: paymentPageToken, method: 'bank_account' } });
+    assert(missingOriginPayCheckout.status === 403, 'public checkout origin guard smoke failed');
+    const badMethodPayCheckout = await callHandler(payCheckoutHandler, { method: 'POST', url: '/api/pay/checkout', body: { token: paymentPageToken, method: 'cash' }, headers: checkoutOrigin });
+    assert(badMethodPayCheckout.status === 400, 'public checkout method validation smoke failed');
+
+    const bankCheckout = await callHandler(payCheckoutHandler, { method: 'POST', url: '/api/pay/checkout', body: { token: paymentPageToken, method: 'bank_account' }, headers: checkoutOrigin });
+    assert(bankCheckout.status === 201 && bankCheckout.data.payment.paymentMethodType === 'us_bank_account', 'bank account checkout create smoke failed');
+    assert(bankCheckout.data.payment.amountCents === 27500 && bankCheckout.data.url.includes('checkout.stripe.com'), 'bank account checkout amount/url smoke failed');
+    const bankDuplicate = await callHandler(payCheckoutHandler, { method: 'POST', url: '/api/pay/checkout', body: { token: paymentPageToken, method: 'bank_account' }, headers: checkoutOrigin });
+    assert(bankDuplicate.status === 200 && bankDuplicate.data.reused === true && bankDuplicate.data.payment.id === bankCheckout.data.payment.id, 'bank account checkout duplicate reuse smoke failed');
+
+    const cardCheckout = await callHandler(payCheckoutHandler, { method: 'POST', url: '/api/pay/checkout', body: { token: paymentPageToken, method: 'card' }, headers: checkoutOrigin });
+    assert(cardCheckout.status === 201 && cardCheckout.data.payment.paymentMethodType === 'card', 'card checkout create smoke failed');
+    assert(cardCheckout.data.payment.baseAmountCents === 27500 && cardCheckout.data.payment.amountCents === cardGrossUpCents(27500), 'card checkout gross-up amount smoke failed');
+    const cardDuplicate = await callHandler(payCheckoutHandler, { method: 'POST', url: '/api/pay/checkout', body: { token: paymentPageToken, method: 'card' }, headers: checkoutOrigin });
+    assert(cardDuplicate.status === 200 && cardDuplicate.data.reused === true && cardDuplicate.data.payment.id === cardCheckout.data.payment.id, 'card checkout duplicate reuse smoke failed');
 
     const statusRegressionUpdate = await callHandler(invoiceHandler, {
       method: 'PUT',
@@ -1179,7 +1481,7 @@ async function runAuthenticatedRouteSmoke() {
     });
     assert(staleTermsUpdate.status === 409, 'Stripe Checkout terms snapshot guard smoke failed');
 
-    const payment = checkoutCreated.data.payment;
+    const payment = cardCheckout.data.payment;
     const webhookBase = {
       livemode: false,
       created: Math.floor(Date.now() / 1000),
@@ -1190,6 +1492,7 @@ async function runAuthenticatedRouteSmoke() {
           currency: 'usd',
           payment_status: 'paid',
           payment_intent: payment.paymentIntentId,
+          payment_method_types: ['card'],
           metadata: { fin_payment_request_id: payment.id },
         },
       },
@@ -1210,6 +1513,16 @@ async function runAuthenticatedRouteSmoke() {
     assert(duplicateWebhook.status === 200 && duplicateWebhook.data.result.duplicate === true, 'Stripe webhook idempotency smoke failed');
     const paidInvoiceReadBack = await callHandler(invoiceHandler, { method: 'GET', url: `/api/invoices?id=${encodeURIComponent(id)}`, cookie });
     assert(paidInvoiceReadBack.status === 200 && paidInvoiceReadBack.data.invoice.status === 'paid', 'Stripe webhook invoice paid smoke failed');
+
+    const chargeSucceededRaw = JSON.stringify({
+      ...webhookBase,
+      id: 'evt_smoke_charge_succeeded',
+      type: 'charge.succeeded',
+      data: { object: { id: 'ch_smoke_card', amount: payment.amountCents, currency: 'usd', payment_intent: payment.paymentIntentId, balance_transaction: { id: 'txn_smoke_card', fee: payment.clientProcessingCostCents, net: payment.baseAmountCents }, payment_method_details: { type: 'card', card: { brand: 'visa', last4: '4242' } }, metadata: { fin_payment_request_id: payment.id } } },
+    });
+    const chargeSucceeded = await callHandler(webhookHandler, { method: 'POST', url: '/api/stripe/webhook', rawBody: chargeSucceededRaw, headers: { 'stripe-signature': signTestWebhookPayload(chargeSucceededRaw, process.env.STRIPE_WEBHOOK_SECRET) } });
+    assert(chargeSucceeded.status === 200 && chargeSucceeded.data.result.payment.reconciliationStatus === 'reconciled', 'Stripe charge reconciliation smoke failed');
+    assert(chargeSucceeded.data.result.payment.actualNetCents === payment.baseAmountCents, 'Stripe charge net reconciliation smoke failed');
 
     const modeMismatchWebhookRaw = JSON.stringify({ ...webhookBase, id: 'evt_smoke_mode_mismatch', type: 'checkout.session.completed', livemode: true });
     const modeMismatchWebhook = await callHandler(webhookHandler, { method: 'POST', url: '/api/stripe/webhook', rawBody: modeMismatchWebhookRaw, headers: { 'stripe-signature': signTestWebhookPayload(modeMismatchWebhookRaw, process.env.STRIPE_WEBHOOK_SECRET) } });
@@ -1247,13 +1560,42 @@ async function runAuthenticatedRouteSmoke() {
     assert(retryInvoice.status === 201, 'retry invoice create smoke failed');
     const retryApproved = await callHandler(invoiceHandler, { method: 'PUT', url: `/api/invoices?id=${encodeURIComponent(retryInvoice.data.invoice.id)}`, cookie, body: { status: 'approved' } });
     assert(retryApproved.status === 200, 'retry invoice approve smoke failed');
-    const preparedRetryPayment = await fakeDb.createInvoicePaymentRequest({ email: 'noah@whatarewecapableof.com', name: 'Fin Smoke User' }, retryInvoice.data.invoice.id, 'test');
-    await fakeDb.failInvoicePaymentRequest({ email: 'noah@whatarewecapableof.com', name: 'Fin Smoke User' }, preparedRetryPayment.paymentRequest.id, 'synthetic failure');
-    const retriedCheckout = await callHandler(checkoutHandler, { method: 'POST', url: '/api/stripe/checkout', cookie, body: { invoiceId: retryInvoice.data.invoice.id, mode: 'test' }, headers: checkoutOrigin });
+    const retryPage = await callHandler(checkoutHandler, { method: 'POST', url: '/api/stripe/checkout', cookie, body: { invoiceId: retryInvoice.data.invoice.id, mode: 'test' }, headers: checkoutOrigin });
+    assert(retryPage.status === 201 && retryPage.data.payment.urlKind === 'customer_payment_page', 'retry customer payment page create smoke failed');
+    const retryToken = new URL(retryPage.data.payment.publicUrl).searchParams.get('t');
+    const preparedRetryPayment = await fakeDb.createCustomerCheckoutPaymentRequest(retryToken, 'card');
+    await fakeDb.failCustomerCheckoutPaymentRequest(preparedRetryPayment.paymentRequest.id, 'synthetic failure');
+    const retriedCheckout = await callHandler(payCheckoutHandler, { method: 'POST', url: '/api/pay/checkout', body: { token: retryToken, method: 'card' }, headers: checkoutOrigin });
     assert(retriedCheckout.status === 201 && retriedCheckout.data.payment.status === 'active', 'Stripe Checkout failed-request retry smoke failed');
-    assert(retriedCheckout.data.payment.id === preparedRetryPayment.paymentRequest.id, 'Stripe Checkout retry should reuse the failed request with its metadata and idempotency key smoke failed');
+    assert(retriedCheckout.data.payment.id === preparedRetryPayment.paymentRequest.id, 'Stripe Checkout retry should reuse the failed method request smoke failed');
+    const retryActiveDelete = await callHandler(invoiceHandler, { method: 'DELETE', url: `/api/invoices?id=${encodeURIComponent(retryInvoice.data.invoice.id)}`, cookie });
+    assert(retryActiveDelete.status === 409, 'active retry payment delete guard smoke failed');
+    await fakeDb.failCustomerCheckoutPaymentRequest(retriedCheckout.data.payment.id, 'synthetic cleanup failure');
+    await fakeDb.failCustomerCheckoutPaymentRequest(retryPage.data.payment.id, 'synthetic page cleanup failure');
     const retryDeleted = await callHandler(invoiceHandler, { method: 'DELETE', url: `/api/invoices?id=${encodeURIComponent(retryInvoice.data.invoice.id)}`, cookie });
     assert(retryDeleted.status === 200 && retryDeleted.data.deleted === true, 'retry payment fixture cleanup smoke failed');
+
+    const legacyConflictInvoice = await callHandler(invoiceHandler, {
+      method: 'POST',
+      url: '/api/invoices',
+      cookie,
+      body: {
+        from: { name: 'What are we capable of?', email: 'hello@whatarewecapableof.com' },
+        client: { company: 'Legacy conflict client', invoiceCode: 'LEGACY' },
+        invoiceDate: '2099-02-15',
+        items: [{ description: 'Legacy conflict work', quantity: 1, unitPrice: '60.00' }],
+      },
+    });
+    assert(legacyConflictInvoice.status === 201, 'legacy conflict invoice create smoke failed');
+    const legacyConflictApproved = await callHandler(invoiceHandler, { method: 'PUT', url: `/api/invoices?id=${encodeURIComponent(legacyConflictInvoice.data.invoice.id)}`, cookie, body: { status: 'approved' } });
+    assert(legacyConflictApproved.status === 200, 'legacy conflict invoice approve smoke failed');
+    const legacyPrepared = await fakeDb.createInvoicePaymentRequest({ email: 'noah@whatarewecapableof.com', name: 'Fin Smoke User' }, legacyConflictInvoice.data.invoice.id, 'test');
+    await fakeDb.activateInvoicePaymentRequest({ email: 'noah@whatarewecapableof.com', name: 'Fin Smoke User' }, legacyPrepared.paymentRequest.id, { id: 'cs_legacy_conflict', url: 'https://checkout.stripe.com/c/pay/cs_legacy_conflict', paymentIntentId: 'pi_legacy_conflict' });
+    const legacyConflictPage = await callHandler(checkoutHandler, { method: 'POST', url: '/api/stripe/checkout', cookie, body: { invoiceId: legacyConflictInvoice.data.invoice.id, mode: 'test' }, headers: checkoutOrigin });
+    assert(legacyConflictPage.status === 409, 'legacy active checkout should block customer payment page smoke failed');
+    await fakeDb.failInvoicePaymentRequest({ email: 'noah@whatarewecapableof.com', name: 'Fin Smoke User' }, legacyPrepared.paymentRequest.id, 'synthetic legacy conflict cleanup');
+    const legacyConflictDeleted = await callHandler(invoiceHandler, { method: 'DELETE', url: `/api/invoices?id=${encodeURIComponent(legacyConflictInvoice.data.invoice.id)}`, cookie });
+    assert(legacyConflictDeleted.status === 200 && legacyConflictDeleted.data.deleted === true, 'legacy conflict cleanup smoke failed');
 
     const liveInvoice = await callHandler(invoiceHandler, {
       method: 'POST',
@@ -1273,6 +1615,9 @@ async function runAuthenticatedRouteSmoke() {
     assert(liveCheckout.status === 201 && liveCheckout.data.payment.status === 'active' && liveCheckout.data.payment.mode === 'live', 'Stripe Checkout live fake create smoke failed');
     const liveReadBack = await callHandler(invoiceHandler, { method: 'GET', url: `/api/invoices?id=${encodeURIComponent(liveInvoice.data.invoice.id)}`, cookie });
     assert(liveReadBack.status === 200 && liveReadBack.data.invoice.payment?.mode === 'live', 'live payment attach smoke failed');
+    const liveActiveDelete = await callHandler(invoiceHandler, { method: 'DELETE', url: `/api/invoices?id=${encodeURIComponent(liveInvoice.data.invoice.id)}`, cookie });
+    assert(liveActiveDelete.status === 409, 'active live payment delete guard smoke failed');
+    await fakeDb.failInvoicePaymentRequest({ email: 'noah@whatarewecapableof.com', name: 'Fin Smoke User' }, liveCheckout.data.payment.id, 'synthetic cleanup failure');
     const liveDeleted = await callHandler(invoiceHandler, { method: 'DELETE', url: `/api/invoices?id=${encodeURIComponent(liveInvoice.data.invoice.id)}`, cookie });
     assert(liveDeleted.status === 200 && liveDeleted.data.deleted === true, 'live payment fixture cleanup smoke failed');
 
@@ -1291,6 +1636,9 @@ async function runAuthenticatedRouteSmoke() {
     assert(directApprovedInvoice.status === 201 && directApprovedInvoice.data.invoice.status === 'approved', 'admin direct-approved create smoke failed');
     const directApprovedCheckout = await callHandler(checkoutHandler, { method: 'POST', url: '/api/stripe/checkout', cookie, body: { invoiceId: directApprovedInvoice.data.invoice.id, mode: 'test' }, headers: checkoutOrigin });
     assert(directApprovedCheckout.status === 201 && directApprovedCheckout.data.payment.status === 'active', 'admin direct-approved Checkout smoke failed');
+    const directApprovedActiveDelete = await callHandler(invoiceHandler, { method: 'DELETE', url: `/api/invoices?id=${encodeURIComponent(directApprovedInvoice.data.invoice.id)}`, cookie });
+    assert(directApprovedActiveDelete.status === 409, 'active direct-approved payment delete guard smoke failed');
+    await fakeDb.failInvoicePaymentRequest({ email: 'noah@whatarewecapableof.com', name: 'Fin Smoke User' }, directApprovedCheckout.data.payment.id, 'synthetic cleanup failure');
     const directApprovedDeleted = await callHandler(invoiceHandler, { method: 'DELETE', url: `/api/invoices?id=${encodeURIComponent(directApprovedInvoice.data.invoice.id)}`, cookie });
     assert(directApprovedDeleted.status === 200 && directApprovedDeleted.data.deleted === true, 'direct-approved payment fixture cleanup smoke failed');
 
@@ -1578,6 +1926,12 @@ async function runAuthenticatedRouteSmoke() {
     const optionalMetaReadBack = await callHandler(invoiceHandler, { method: 'GET', url: `/api/invoices?id=${encodeURIComponent(optionalMetaInvoice.data.invoice.id)}`, cookie });
     assert(optionalMetaReadBack.status === 200 && optionalMetaReadBack.data.invoice.dueDate === '', 'optional metadata readback smoke failed');
 
+    const paidActiveDelete = await callHandler(invoiceHandler, { method: 'DELETE', url: `/api/invoices?id=${encodeURIComponent(id)}`, cookie });
+    assert(paidActiveDelete.status === 409, 'paid Stripe payment delete guard smoke failed');
+    await fakeDb.failCustomerCheckoutPaymentRequest(payment.id, 'synthetic cleanup failure');
+    await fakeDb.failCustomerCheckoutPaymentRequest(bankCheckout.data.payment.id, 'synthetic cleanup failure');
+    await fakeDb.failCustomerCheckoutPaymentRequest(checkoutCreated.data.payment.id, 'synthetic cleanup failure');
+
     for (const invoiceId of [id, privateInvoice.data.invoice.id, fallbackPrivateInvoice.data.invoice.id, optionalMetaInvoice.data.invoice.id]) {
       const deleted = await callHandler(invoiceHandler, { method: 'DELETE', url: `/api/invoices?id=${encodeURIComponent(invoiceId)}`, cookie });
       assert(deleted.status === 200 && deleted.data.deleted === true, 'invoice delete smoke failed');
@@ -1623,7 +1977,7 @@ try {
   assert(invoicesHtml.includes('client-invoice-code'), 'missing client invoice code UI marker');
   assert(invoicesHtml.includes('preview-due-date-field'), 'missing optional metadata preview wrappers');
   assert(invoicesHtml.includes('approve-invoice') && invoicesHtml.includes('Stripe payment') && invoicesHtml.includes('create-test-payment-link') && invoicesHtml.includes('create-live-payment-link'), 'missing Stripe payment UI marker');
-  assert(invoicesHtml.includes('Create live links only after invoice approval'), 'missing Stripe live-link warning marker');
+  assert(invoicesHtml.includes('Create live pages only after invoice approval'), 'missing Stripe live-link warning marker');
   assert(!invoicesHtml.includes('id="preview-status"'), 'client-facing invoice preview should not render internal status badge');
 
   const invoicesJs = await fetchWithRetry('/invoices.js');
@@ -1638,6 +1992,13 @@ try {
   assert(invoicesJsText.includes('/api/stripe/checkout'), 'missing Stripe Checkout client marker');
   assert(invoicesJsText.includes("createPaymentLink('live')"), 'missing Stripe live Checkout client marker');
   assert(invoicesJsText.includes('TEST MODE, DO NOT PAY'), 'missing Stripe test payment preview marker');
+
+  const payPage = await fetchWithRetry('/pay');
+  const payHtml = await payPage.text();
+  assert(payHtml.includes('Pay invoice') && payHtml.includes('Continue to Stripe'), 'missing public pay page copy');
+  const payJs = await fetchWithRetry('/pay.js');
+  const payJsText = await payJs.text();
+  assert(payJsText.includes('/api/pay') && payJsText.includes('/api/pay/checkout') && payJsText.includes('bank_account') && payJsText.includes('card'), 'missing public pay client markers');
 
   const financePage = await fetchWithRetry('/finance');
   const financeHtml = await financePage.text();

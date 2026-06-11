@@ -1324,6 +1324,112 @@ label {
 }
 
 /* ============================================================
+   Public payment page
+   ============================================================ */
+
+.pay-body {
+  background: var(--wash);
+}
+
+.pay-shell {
+  width: min(760px, calc(100% - 2 * var(--gutter)));
+  min-height: 100vh;
+  margin-inline: auto;
+  padding-block: var(--space-6);
+  display: grid;
+  align-items: center;
+}
+
+.pay-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: var(--space-6);
+  display: grid;
+  gap: var(--space-4);
+}
+
+.pay-note {
+  color: var(--ink-soft);
+  max-width: 60ch;
+}
+
+.pay-invoice,
+.pay-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  border-top: 1px solid var(--line);
+  padding-block-start: var(--space-3);
+}
+
+.pay-invoice strong,
+.pay-summary strong {
+  display: block;
+  font-weight: 600;
+}
+
+.pay-methods {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.pay-method {
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  padding: var(--space-3);
+  min-height: 132px;
+  text-align: left;
+  display: grid;
+  align-content: start;
+  gap: var(--space-1);
+}
+
+.pay-method:hover,
+.pay-method.is-selected {
+  border-color: var(--ink);
+}
+
+.pay-method span {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.pay-method small {
+  color: var(--muted);
+  font-size: var(--text-sm);
+  line-height: 1.35;
+}
+
+.pay-summary {
+  grid-template-columns: 1fr;
+  gap: var(--space-2);
+}
+
+.pay-summary > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  border-bottom: 1px solid var(--line);
+  padding-block-end: var(--space-2);
+}
+
+.pay-summary-total {
+  border-bottom: 0 !important;
+  padding-block-start: var(--space-1);
+}
+
+.pay-summary-total strong {
+  font-size: var(--text-lg);
+}
+
+.pay-actions {
+  justify-content: flex-start;
+}
+
+/* ============================================================
    Responsive
    ============================================================ */
 
@@ -1372,7 +1478,9 @@ label {
   .intro-panel,
   .module-grid,
   .status-grid,
-  .metric-grid {
+  .metric-grid,
+  .pay-invoice,
+  .pay-methods {
     grid-template-columns: 1fr;
   }
 }
@@ -1385,6 +1493,15 @@ label {
   .dash {
     padding: var(--space-3);
     gap: var(--space-4);
+  }
+
+  .pay-shell {
+    align-items: start;
+    padding-block: var(--space-4);
+  }
+
+  .pay-card {
+    padding: var(--space-4);
   }
 
   .grid.two,

@@ -45,7 +45,7 @@ button { cursor: pointer; }
 .globalnav-toggle[aria-expanded="true"] span:nth-child(1) { top: 22px; transform: rotate(45deg); }
 .globalnav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
 .globalnav-toggle[aria-expanded="true"] span:nth-child(3) { top: 22px; transform: rotate(-45deg); }
-.stack { padding: 0 clamp(0px, 1vw, 12px); }
+.stack { padding: var(--tile-gap) clamp(0px, 1vw, 12px) 0; } /* top gutter = tile-gap, so the first tile clears the sticky nav (matches the deck's 100svh - 56px math) */
 .tile { background: var(--bg-elevated); color: var(--text); border-radius: var(--tile-radius); padding: clamp(56px, 7.5vw, 88px) clamp(20px, 3vw, 24px) clamp(46px, 6vw, 72px); margin-bottom: var(--tile-gap); overflow: hidden; position: relative; }
 .tile.dark { background: var(--bg-dark); color: var(--text-on-dark); -webkit-font-smoothing: antialiased; }
 .tile.graphite { background: var(--bg-graphite); color: var(--text-on-dark); }
@@ -305,3 +305,25 @@ button { cursor: pointer; }
   .model.has-statement .financial-tables { display: none; }
   .model.has-statement .model-statement { display: block; }
 }
+
+/* ============================================================
+   v3 typographic pass (2026-06-11): line-break quality. The
+   textwrap-check audit graded every page REVIEW for orphans and
+   runts across mobile and desktop widths. balance evens short
+   display blocks and is cross-engine; pretty keeps the natural
+   rag on running text but pulls up orphaned last words and is
+   strongest in WebKit (the iOS Safari delivery engine) and
+   progressive elsewhere. Headlines and pull-quotes already
+   carry balance; photo-band captions already carry balance.
+   ============================================================ */
+
+/* Short display blocks: even the lines, no stranded last word. */
+.subhead, .lede, .callout .big, .calc-impact, .org-line,
+.slide-title { text-wrap: balance; }
+
+/* Running text and grid descriptions: keep the rag, kill the
+   orphan and the one-word last line. */
+.body-text, .section-note, .footnote,
+.specs p, .flow p, .card p, .opp p, .splits p, .traj p,
+.fork-card p, .ol-vision li, .org .cell,
+.slide-bullets li { text-wrap: pretty; }

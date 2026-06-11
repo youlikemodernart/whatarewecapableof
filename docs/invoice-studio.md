@@ -87,6 +87,8 @@ The studio does not create Mercury invoices, send Mercury invoices, send Gmail, 
 
 Live Stripe link creation, client sends, refunds, Mercury, Gmail, payment, customer, and bank actions require explicit current-session approval and the relevant approval gate.
 
+Before sharing any customer payment link, apply the current internal payment-link policy and approval gates. Live payment links require separate approval for payment policy, link creation, and send/share.
+
 ## Legacy local data
 
 The previous local prototype stored drafts under:

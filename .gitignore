@@ -1,5 +1,7 @@
 .vercel
 node_modules/
+.DS_Store
+**/.DS_Store
 
 # Working artifacts that shouldn't be tracked
 design/claude-session.log
@@ -27,3 +29,7 @@ proposals/*/diagrams/toolchain/checks/
 
 # Local source assets pulled for proposal image selection/cropping
 proposals/*/img/src/
+
+# Generated/local cleanup outputs
+/docs/.generated/
+/pinterest/demo-video/

@@ -469,11 +469,38 @@ a:hover {
   margin: 0;
 }
 
+.slide-image-shell {
+  position: relative;
+  background: #ffffff;
+}
+
 .slide-figure img {
   display: block;
   width: 100%;
   height: auto;
   background: #ffffff;
+}
+
+.slide-link-overlay {
+  position: absolute;
+  left: var(--link-left);
+  top: var(--link-top);
+  z-index: 2;
+  display: block;
+  width: var(--link-width);
+  height: var(--link-height);
+  border-radius: 4px;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: rgba(17, 17, 17, 0.18);
+}
+
+.slide-link-overlay:focus-visible {
+  outline: max(3px, 0.16vw) solid rgba(17, 17, 17, 0.86);
+  outline-offset: 3px;
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.86);
 }
 
 .slide-transcript {

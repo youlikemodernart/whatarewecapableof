@@ -19,10 +19,15 @@
     .term .note { font-size: 14px; color: var(--ink-3); margin-top: 6px; }
     .plain-list { margin: 0; padding-left: 1.1em; max-width: 58ch; }
     .plain-list li { margin-bottom: 0.45em; }
+    .compact-scope { margin: 24px 0 0; padding: 0; list-style: none; border-top: 1px solid var(--rule); }
+    .compact-scope li { display: grid; grid-template-columns: 96px 1fr; gap: 20px; padding: 18px 0; border-bottom: 1px solid var(--rule); }
+    .compact-scope strong { font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; }
+    .compact-scope p { margin: 0; }
     .quiet-note { color: var(--ink-3); font-size: 15px; }
     @media (max-width: 700px) {
       .terms-grid { grid-template-columns: 1fr; gap: 16px; }
       .term .value { font-size: 22px; }
+      .compact-scope li { grid-template-columns: 1fr; gap: 8px; }
     }
   </style>
 </head>
@@ -33,103 +38,65 @@
       <a class="mail" href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a>
     </header>
 
-    <p class="p-meta">Prepared for Sophie Saint Motors | June 2026 | Private sourcing scope</p>
+    <p class="p-meta">Prepared for Sophie Saint Motors | June 2026 | Private proposal</p>
     <h1 class="p-title">Sourcing and vendor coordination for the first drop.</h1>
-    <p class="p-lede">A focused LA sourcing pass to lock fabric options, logo application, and the vendor path Oscar needs before the first sample or small run moves forward.</p>
-
-    <section>
-      <p class="eyebrow">Intent</p>
-      <h2>A narrower first step</h2>
-      <p>This revision keeps the first engagement tight. Sophie will handle fit approvals, QC, labels, and direct production oversight with Oscar.</p>
-      <p>I will focus on the two areas where I can move the project faster from LA: fabric sourcing and logo application. The output is a practical source and vendor packet Sophie can use with Oscar before sampling or buying the first run.</p>
-      <div class="stats" style="margin-top: 36px;">
-        <div class="stat"><div class="num">7-10 days</div><div class="label">target sourcing window</div></div>
-        <div class="stat"><div class="num">$1,250</div><div class="label">sourcing coordination fee</div></div>
-        <div class="stat"><div class="num">11-12 hrs</div><div class="label">estimated effort</div></div>
-        <div class="stat"><div class="num">LA</div><div class="label">fabric and decoration path</div></div>
-      </div>
-    </section>
+    <p class="p-lede">Here is the tighter scope we talked through. You and Oscar keep production: fit, QC, labels, and oversight. I take the two areas where I can move fastest from LA: fabric and logo application. Then I hand you a short packet you can act on before the first sample or run.</p>
 
     <section>
       <p class="eyebrow">Scope</p>
-      <h2>What I will run</h2>
-      <div class="layer"><div class="label">Oscar</div><div><h3>Maker and reference alignment</h3><p>I meet or coordinate with Oscar, confirm what he needs before sampling or cutting, and identify any construction issue that affects fabric choice, yardage, logo placement, or sample order.</p></div></div>
-      <div class="layer"><div class="label">Fabric</div><div><h3>Local material sourcing</h3><p>I check LA sources for cotton jersey, baby rib, heather grey knit, trim, and related options for the ringer tee, tank, and 3/4-sleeve knit. I collect price, width, minimum, lead time, and sample-yardage details.</p></div></div>
-      <div class="layer"><div class="label">Logo</div><div><h3>Decoration route</h3><p>I coordinate with my decoration contact and one or two backups as needed, then compare screen print, embroidery, patch, or mixed execution based on the garment, logo files, and timeline.</p></div></div>
-      <div class="layer"><div class="label">Packet</div><div><h3>Source and vendor handoff</h3><p>I return a short packet with fabric options, decoration options, pricing, minimums, lead times, recommended path, and notes for Oscar so the maker, fabric, and logo route stay aligned.</p></div></div>
+      <h2>One focused pass</h2>
+      <ul class="compact-scope">
+        <li><strong>Oscar</strong><p>Meet or coordinate with him to confirm what he needs before sampling, and flag anything in the construction that affects fabric, yardage, or logo placement.</p></li>
+        <li><strong>Fabric</strong><p>Source LA options for the first knit pieces, including the ringer tee, tank, and 3/4-sleeve, with price, widths, minimums, and lead times.</p></li>
+        <li><strong>Logo</strong><p>Compare application options: print, embroidery, patch, or a mix. I will pull pricing, minimums, file requirements, and sample requirements.</p></li>
+      </ul>
     </section>
 
     <section>
-      <p class="eyebrow">Investment</p>
+      <p class="eyebrow">Deliverable</p>
+      <h2>A short source and vendor packet</h2>
+      <p>You get the fabric and logo options I recommend, with pricing, minimums, lead times, and a clear next step for you and Oscar. It will be short enough to read in a few minutes and practical enough to decide what to sample or buy first.</p>
+    </section>
+
+    <section>
+      <p class="eyebrow">Price</p>
       <h2>Service fee and payment</h2>
-      <p>The sourcing and vendor-coordination fee is <strong>$1,250</strong>. It is a fixed fee for this focused sprint, priced from about <strong>11 to 12 hours</strong> at <strong>$110/hour</strong>.</p>
       <div class="terms-grid" aria-label="Key terms">
         <div class="term"><div class="label">Service fee</div><div class="value">$1,250</div><div class="note">Sourcing and vendor coordination</div></div>
         <div class="term"><div class="label">Deposit</div><div class="value">$625</div><div class="note">Due on approval</div></div>
         <div class="term"><div class="label">Balance</div><div class="value">$625</div><div class="note">Due when the packet is delivered</div></div>
       </div>
-      <p style="margin-top: 28px;">Additional work outside this scope is billed at <strong>$110/hour</strong> after approval.</p>
+      <p style="margin-top: 28px;">Anything outside this scope is quoted and billed separately after you approve it.</p>
     </section>
 
     <section>
       <h2>Pass-through costs</h2>
-      <p>Production and vendor costs are separate from the service fee and passed through at cost.</p>
-      <table class="p-table p-table-stack">
-        <thead><tr><th>Cost</th><th>How it is handled</th></tr></thead>
-        <tbody>
-          <tr><td class="lead-cell" data-label="Cost">Fabric swatches or sample yardage</td><td data-label="How it is handled">Quoted before purchase and bought only after approval.</td></tr>
-          <tr><td class="lead-cell" data-label="Cost">Decoration samples or setup</td><td data-label="How it is handled">Print screens, embroidery digitizing, patch samples, or setup fees if needed.</td></tr>
-          <tr><td class="lead-cell" data-label="Cost">Courier, shipping, parking, or rush fees</td><td data-label="How it is handled">Used only when needed and billed at cost.</td></tr>
-          <tr><td class="lead-cell" data-label="Cost">Oscar or maker charges</td><td data-label="How it is handled">Sample, pattern, cut, sew, finishing, packaging, deposits, and release fees stay directly tied to the maker quote.</td></tr>
-        </tbody>
-      </table>
-      <p style="margin-top: 24px;">I will not buy fabric, place decoration orders, or commit production funds without approval.</p>
+      <p>Fabric and sample yardage, decoration setup or sample fees, courier or rush fees, and Oscar's maker charges are separate from the service fee and passed through at cost. I will quote each of these before anything is bought, and I will not buy fabric, order samples, or commit production funds without your approval first.</p>
     </section>
 
     <section>
-      <p class="eyebrow">Timeline</p>
-      <h2>How the sourcing sprint moves</h2>
-      <div class="timeline">
-        <div class="t-step"><div class="t-rail"><span class="t-dot"></span><span class="t-line"></span></div><div><p class="t-when">Start</p><p class="t-title">Approve scope and confirm references</p><p>Deposit received and reference garments made available if needed.</p></div></div>
-        <div class="t-step"><div class="t-rail"><span class="t-dot"></span><span class="t-line"></span></div><div><p class="t-when">Days 1-3</p><p class="t-title">Oscar and construction alignment</p><p>Confirm yardage, fabric constraints, logo placement constraints, and what needs to be true before sampling.</p></div></div>
-        <div class="t-step"><div class="t-rail"><span class="t-dot"></span><span class="t-line"></span></div><div><p class="t-when">Days 3-7</p><p class="t-title">Fabric and decoration sourcing</p><p>Check the strongest local sources, gather pricing and minimums, and compare logo execution paths.</p></div></div>
-        <div class="t-step"><div class="t-rail"><span class="t-dot"></span></div><div><p class="t-when">Days 7-10</p><p class="t-title">Packet and next decision</p><p>Deliver the source/vendor packet so Sophie can choose what to sample or buy first.</p></div></div>
-      </div>
-      <p style="margin-top: 28px;">The fastest version uses in-stock LA fabric, one decoration route, and a lean first-size plan.</p>
+      <h2>Timing</h2>
+      <p>7 to 10 days, once Oscar and the reference garments line up. Using in-stock LA fabric and a single decoration route keeps it at the fast end.</p>
     </section>
 
     <section>
-      <h2>What I need from Sophie</h2>
+      <h2>What I need from you</h2>
       <ul class="plain-list">
-        <li>Reference garments available if Oscar or the fabric source needs them in hand.</li>
-        <li>Any fabric, trim, button, label, or hang tag contacts you already want included.</li>
-        <li>Caroline's final logo or artwork files when decoration quoting needs them.</li>
-        <li>Approval before any sample yardage, logo sample, courier, or vendor order is purchased.</li>
+        <li>Reference garments available if Oscar or a fabric source needs them in hand.</li>
+        <li>The final logo and artwork files when it is time to quote decoration.</li>
+        <li>Any fabric or trim contacts you already want me to include.</li>
+        <li>Your go-ahead before I buy any fabric, sample, or vendor order.</li>
       </ul>
     </section>
 
     <section>
       <h2>Outside this scope</h2>
-      <ul class="plain-list">
-        <li>Fit approvals.</li>
-        <li>Full QC on the finished run.</li>
-        <li>Label and hang tag management if Sophie is handling those directly.</li>
-        <li>Production oversight with Oscar once the path is set.</li>
-        <li>E-commerce store setup, product pages, checkout, fulfillment system, launch plan, content, or customer support.</li>
-        <li>The larger Workwell collection.</li>
-        <li>Legal, tax, or accounting setup.</li>
-      </ul>
-      <p class="quiet-note" style="margin-top: 18px;">I can add production-management help back in if the run starts to need it. For now, this keeps the first step tight.</p>
+      <p>Fit approvals, QC, and production oversight stay with you and Oscar. This also leaves out your e-commerce store, the Workwell line, and any legal, tax, or accounting setup. If the run starts to need more hands, we can fold that back in.</p>
     </section>
 
     <section>
       <p class="eyebrow">Next</p>
-      <p class="close-line">Approve the revised sourcing scope, send the $625 deposit, and confirm whether I should pick up the reference garments. I will meet Oscar, source fabric and decoration options, and deliver the packet.</p>
-    </section>
-
-    <section>
-      <h2>After this sprint</h2>
-      <p>Once the fabric, logo path, and maker route are clear, Sophie can decide whether to keep production management in house or pull me back in for specific pieces of the run. The larger Workwell collection can be scoped separately when that timeline is closer.</p>
+      <p class="close-line">Approve the scope, send the $625 deposit, and tell me whether to pick up the reference garments. Then I meet Oscar, source the fabric and logo options, and get you the packet. Anything you are unsure about, we can talk through first.</p>
     </section>
 
     <footer class="site-footer">

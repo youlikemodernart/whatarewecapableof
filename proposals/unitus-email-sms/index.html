@@ -12,14 +12,32 @@
   <link rel="stylesheet" href="/css/site.css">
   <link rel="stylesheet" href="/css/proposal.css">
   <style>
-    .page-unitus-email-sms .page { max-width: 780px; }
-    .plain-list { margin: 0; padding-left: 1.1em; max-width: 62ch; }
-    .plain-list li { margin-bottom: 0.45em; }
-    .number-list { margin: 0; padding-left: 1.25em; max-width: 62ch; }
-    .number-list li { margin-bottom: 0.45em; }
-    .section-copy h2 { margin-bottom: 16px; }
-    .section-copy h3 { font-size: 19px; font-weight: 600; margin: 28px 0 12px; }
-    .section-copy h3:first-child { margin-top: 0; }
+    /* Unitus-local layer on css/site.css + css/proposal.css.
+       Three list textures for three jobs (scope items, budget ledger,
+       intake sequence) and a secondary note. Everything else inherits
+       the shared proposal system: .p-meta, .p-title, .eyebrow, h2,
+       .layer/.label, h3, .site-header/.site-footer. */
+
+    /* scope items: dash marker matching site.css .guarantees (7px x 1px ink) */
+    .scope-list { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 11px; max-width: 56ch; }
+    .scope-list li { position: relative; padding-left: 18px; }
+    .scope-list li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 7px; height: 1px; background: var(--ink); }
+
+    /* secondary clarification, gray-as-information per the proposal system */
+    .proposal-note { color: var(--ink-2); margin: 14px 0 0; max-width: 56ch; }
+
+    /* budget: quiet ledger, strong top rule like .timeline / .p-table head */
+    .budget-list { list-style: none; margin: 4px 0 0; padding: 0; border-top: 1px solid var(--rule); max-width: 56ch; }
+    .budget-list li { padding: 13px 0; margin: 0; border-bottom: 1px solid var(--rule); }
+
+    /* intake: numbered sequence, leading-zero apparatus markers */
+    .start-list { margin: 4px 0 0; padding-left: 2.6em; max-width: 56ch; list-style: decimal-leading-zero; border-top: 1px solid var(--rule); }
+    .start-list li { padding: 9px 0; margin: 0; }
+    .start-list li::marker { color: var(--ink-3); font-size: 13px; letter-spacing: 0.04em; }
+
+    @media (max-width: 600px) {
+      .start-list { padding-left: 2.3em; }
+    }
   </style>
 </head>
 <body class="page-proposal page-unitus-email-sms">
@@ -29,48 +47,63 @@
       <a class="mail" href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a>
     </header>
 
-    <section class="section-copy">
-      <h1 class="p-title">Scope</h1>
+    <p class="p-meta">Prepared for Unitus · Private proposal</p>
+    <h1 class="p-title">Email and SMS Support for Unitus</h1>
 
-      <h2>Setup: $1,800 flat</h2>
-      <p>A one-time setup that puts the system in place:</p>
-      <ul class="plain-list">
-        <li>Mailchimp access and a baseline read of recent sends, lists, and forms. Direct access is preferred where the data needs checking; exports are fine to start.</li>
-        <li>Klaviyo readiness check and migration review once access is available. Klaviyo readiness is included. Full migration ownership waits until we have seen the setup.</li>
-        <li>July map intake from John: dates, topics, offers, copy direction, and assets.</li>
-        <li>Campaign tracker: draft, approve, build, schedule, send, learn.</li>
-        <li>Email and SMS QA checklist: subject, offer, audience, CTA, product facts, links, mobile read, and approval.</li>
-        <li>Subscriber-path check: how new contacts enter and where they go across homepage, events, organic, and paid.</li>
-        <li>First direct build email and SMS batch</li>
-        <li>Light transition benchmark on the new Shopify site when it is ready: capture points, product clarity, CTA hierarchy, mobile read, cart basics, and a prioritized fix list for the builder.</li>
-      </ul>
+    <section aria-labelledby="scope-title">
+      <p class="eyebrow">01</p>
+      <h2 id="scope-title">Scope</h2>
 
-      <h2>Weekly execution support: $480/week</h2>
-      <p>Ongoing support once setup is done, I am personally targeting around 3 to 4 focused hours a week, but we do what it takes to accomplish the goals!</p>
-      <ul class="plain-list">
-        <li>Email and SMS production against the June/July map.</li>
-        <li>Copy and design assembly, build, QA, and scheduling where access is approved.</li>
-        <li>A flagged send when the calendar or data shows one is worth adding.</li>
-        <li>Subscriber-path checks and small fixes.</li>
-        <li>A short weekly status note: what shipped, what is waiting, what is next.</li>
-      </ul>
-      <p>Send volume follows the calendar, the offer, and the data rather than a set quota. Unitus approves anything customer-facing before it goes out.</p>
+      <div class="layer">
+        <div class="label">One-time</div>
+        <div>
+          <h3>Intake and setup: $1,800</h3>
+          <p>A one-time setup that puts the system in place:</p>
+          <ul class="scope-list">
+            <li>Mailchimp access and a baseline read of recent sends, lists, and forms. Direct access is preferred where the data needs checking; exports are fine to start.</li>
+            <li>Klaviyo readiness check and migration review once access is available. Klaviyo readiness is included. Full migration ownership waits until we have seen the setup.</li>
+            <li>July map intake from John: dates, topics, offers, copy direction, and assets.</li>
+            <li>Campaign tracker: draft, approve, build, schedule, send, learn.</li>
+            <li>Email and SMS QA checklist: subject, offer, audience, CTA, product facts, links, mobile read, and approval.</li>
+            <li>Subscriber-path check: how new contacts enter and where they go across homepage, events, organic, and paid.</li>
+            <li>First direct build email and SMS batch</li>
+            <li>Light transition benchmark on the new Shopify site when it is ready: capture points, product clarity, CTA hierarchy, mobile read, cart basics, and a prioritized fix list for the builder.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="layer">
+        <div class="label">Ongoing</div>
+        <div>
+          <h3>Weekly execution support: $480/week</h3>
+          <p>Ongoing support once setup is done, I am personally targeting around 3 to 4 focused hours a week, but we do what it takes to accomplish the goals!</p>
+          <ul class="scope-list">
+            <li>Email and SMS production against the June/July map.</li>
+            <li>Copy and design assembly, build, QA, and scheduling where access is approved.</li>
+            <li>A flagged send when the calendar or data shows one is worth adding.</li>
+            <li>Subscriber-path checks and small fixes.</li>
+            <li>A short weekly status note: what shipped, what is waiting, what is next.</li>
+          </ul>
+          <p class="proposal-note">Send volume follows the calendar, the offer, and the data rather than a set quota. Unitus approves anything customer-facing before it goes out.</p>
+        </div>
+      </div>
     </section>
 
-    <section class="section-copy">
-      <h2>Budget</h2>
-      <ul class="plain-list">
+    <section aria-labelledby="budget-title">
+      <p class="eyebrow">02</p>
+      <h2 id="budget-title">Budget</h2>
+      <ul class="budget-list">
         <li>Setup: $1,800 flat.</li>
         <li>Weekly execution support: $480/week.</li>
-        <li>First review point: after the first four weeks.</li>
         <li>First month, if it runs four weeks: $3,720 total ($1,800 setup plus $1,920 support).</li>
       </ul>
-      <p>A broader operating role, if it makes sense later, gets priced after the first execution cycles.</p>
+      <p class="proposal-note">A broader operating role, if it makes sense later, gets priced after the first execution cycles.</p>
     </section>
 
-    <section class="section-copy">
-      <h2>What we’d like to start</h2>
-      <ol class="number-list">
+    <section aria-labelledby="start-title">
+      <p class="eyebrow">03</p>
+      <h2 id="start-title">What we’d like to start</h2>
+      <ol class="start-list">
         <li>Mailchimp access</li>
         <li>Klaviyo access once it is available.</li>
         <li>The June/July map: dates, topics, offers, and copy direction.</li>

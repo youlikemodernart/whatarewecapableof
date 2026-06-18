@@ -148,3 +148,21 @@ h2 { font-size: 23px; line-height: 1.2; letter-spacing: -0.01em; font-weight: 60
 .q-lead { font-size: 21px; line-height: 1.5; max-width: 56ch; margin: 0 0 1em; text-wrap: pretty; }
 .stack > p { color: var(--ink-2); }
 .stack > p:first-child { color: var(--ink); }
+
+/* ===== where we help (operating-capability map) ===== */
+.cluster-note { font-size: 16px; color: var(--ink-3); max-width: 48ch; margin: -8px 0 0; text-wrap: pretty; }
+.areas { display: grid; gap: clamp(30px, 5vh, 46px); margin-top: 30px; }
+.area h3 { font-size: 19px; font-weight: 600; letter-spacing: -0.01em; margin: 0 0 8px; }
+.area p { margin: 0 0 0.7em; max-width: 56ch; }
+.area .meta { font-size: 15px; line-height: 1.5; color: var(--ink-2); max-width: 56ch; }
+.area .meta .label { color: var(--ink-3); }
+.area .meta.start { color: var(--ink); }
+.area > :last-child { margin-bottom: 0; }
+.actions { margin-top: clamp(28px, 4vh, 40px); display: flex; gap: 28px; align-items: baseline; flex-wrap: wrap; }
+.actions a { color: var(--ink); text-decoration: none; font-size: 18px; border-bottom: 1px solid var(--ink); padding-bottom: 2px; }
+.actions a:hover { border-bottom-width: 2px; }
+@media (max-width: 600px) {
+  .areas { gap: 30px; }
+  .actions { gap: 6px 24px; }
+  .actions a { font-size: 17px; padding: 11px 0 3px; }
+}

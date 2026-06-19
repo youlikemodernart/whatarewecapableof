@@ -1,9 +1,14 @@
-# Crawl posture: allow only the homepage and the Pinterest API policy pages.
-# Everything else (proposals, client tools, internal surfaces, booking, ethos)
-# is direct-link only. New pages are disallowed by default until reviewed.
+# Crawl posture: a deliberate public content surface: the homepage, how we work,
+# where we help, and the blog plus all articles. Everything else (proposals, client
+# tools, internal surfaces, booking, ethos) stays direct-link only. New pages are
+# disallowed by default until reviewed.
 User-agent: *
 Allow: /$
 Allow: /how-we-work
+Allow: /where-we-help
+Allow: /blog
+Allow: /different
+Allow: /question
 Allow: /pinterest/privacy
 Allow: /pinterest/terms
 # Static assets the allowed pages need to render and unfurl link previews
@@ -14,3 +19,5 @@ Allow: /favicon.svg
 Allow: /favicon.png
 Allow: /apple-touch-icon.png
 Disallow: /
+
+Sitemap: https://whatarewecapableof.com/sitemap.xml

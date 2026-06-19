@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-06-07",
+  "generatedAt": "2026-06-18",
   "source": "Curated starter registry from repo routes and read-only Vercel scope observations. Rows marked needs_review require live verification before being treated as complete inventory.",
   "items": [
     {
@@ -39,6 +39,25 @@
         "marketing"
       ],
       "description": "Public explanation of the working model.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "where-we-help",
+      "title": "Where we help",
+      "url": "https://whatarewecapableof.com/where-we-help/",
+      "path": "/where-we-help/",
+      "category": "page",
+      "group": "Main site",
+      "status": "active",
+      "audience": "public",
+      "auth": "public",
+      "visibility": "public",
+      "source": "repo:where-we-help/index.html",
+      "tags": [
+        "marketing",
+        "services"
+      ],
+      "description": "Public services page for where What are we capable of? helps organizations.",
       "lifecycle": "active"
     },
     {
@@ -152,6 +171,44 @@
       "lifecycle": "active"
     },
     {
+      "id": "blog",
+      "title": "Writing",
+      "url": "https://whatarewecapableof.com/blog/",
+      "path": "/blog/",
+      "category": "page",
+      "group": "Writing",
+      "status": "active",
+      "audience": "internal",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:blog/index.html",
+      "tags": [
+        "blog",
+        "writing"
+      ],
+      "description": "Noindex writing index for WAWCO working pages and essays.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "different",
+      "title": "How what we do is different",
+      "url": "https://whatarewecapableof.com/different/",
+      "path": "/different/",
+      "category": "page",
+      "group": "Writing",
+      "status": "active",
+      "audience": "internal",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:different/index.html",
+      "tags": [
+        "writing",
+        "ai-systems"
+      ],
+      "description": "Noindex essay on how WAWCO work differs from general AI tool access.",
+      "lifecycle": "active"
+    },
+    {
       "id": "tracker",
       "title": "Tracker",
       "url": "https://whatarewecapableof.com/tracker/",
@@ -226,6 +283,27 @@
       ],
       "description": "Internal meeting prep brief; not client-facing without review.",
       "lifecycle": "active"
+    },
+    {
+      "id": "brief-unitus-offer",
+      "title": "Unitus offer brief alias",
+      "url": "https://whatarewecapableof.com/briefs/unitus-offer/",
+      "path": "/briefs/unitus-offer/",
+      "category": "brief",
+      "group": "Briefs",
+      "status": "legacy",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:briefs/unitus-offer/index.html",
+      "tags": [
+        "brief",
+        "proposal",
+        "redirect"
+      ],
+      "description": "Legacy brief route that redirects to the current Unitus email/SMS proposal.",
+      "notes": "Kept as an alias row so Windex explains the live redirect instead of surfacing it as an unknown candidate.",
+      "lifecycle": "archived"
     },
     {
       "id": "proposal-belhaus",
@@ -347,7 +425,7 @@
       "path": "/proposals/eidi-scraper/",
       "category": "proposal",
       "group": "Proposals",
-      "status": "needs_review",
+      "status": "legacy",
       "audience": "client",
       "auth": "direct_link",
       "visibility": "noindex",
@@ -356,8 +434,26 @@
         "proposal"
       ],
       "description": "Client proposal route.",
-      "lifecycle": "active",
-      "notes": "Route returned 404 on 2026-06-07; confirm before treating as active."
+      "lifecycle": "archived",
+      "notes": "Live route returned 200 on 2026-06-18. Kept as the original Deal Watch proposal; current Windex row for the refreshed version is /proposals/eidi-scraper-v2/."
+    },
+    {
+      "id": "proposal-eidi-scraper-v2",
+      "title": "Eidi Deal Watch v2",
+      "url": "https://whatarewecapableof.com/proposals/eidi-scraper-v2/",
+      "path": "/proposals/eidi-scraper-v2/",
+      "category": "proposal",
+      "group": "Proposals",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/eidi-scraper-v2/index.html",
+      "tags": [
+        "proposal"
+      ],
+      "description": "Current Deal Watch proposal route.",
+      "lifecycle": "active"
     },
     {
       "id": "proposal-fde",
@@ -566,6 +662,25 @@
       "notes": "Archived in Windex so it stays findable without crowding the active category view. Route returned 404 on 2026-06-07; confirm before treating as active."
     },
     {
+      "id": "proposal-sophie-saint-production",
+      "title": "Sophie Saint Motors sourcing scope",
+      "url": "https://whatarewecapableof.com/proposals/sophie-saint/production/",
+      "path": "/proposals/sophie-saint/production/",
+      "category": "proposal",
+      "group": "Proposals",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/sophie-saint/production/index.html",
+      "tags": [
+        "proposal",
+        "production"
+      ],
+      "description": "Client production and vendor coordination proposal route.",
+      "lifecycle": "active"
+    },
+    {
       "id": "proposal-teaspressa",
       "title": "Teaspressa proposal",
       "url": "https://whatarewecapableof.com/proposals/teaspressa/",
@@ -602,6 +717,25 @@
       "description": "Proposal slots route.",
       "lifecycle": "archived",
       "notes": "Archived in Windex so it stays findable without crowding the active category view."
+    },
+    {
+      "id": "proposal-unitus-email-sms",
+      "title": "Unitus email/SMS scope",
+      "url": "https://whatarewecapableof.com/proposals/unitus-email-sms/",
+      "path": "/proposals/unitus-email-sms/",
+      "category": "proposal",
+      "group": "Proposals",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/unitus-email-sms/index.html",
+      "tags": [
+        "proposal",
+        "email-sms"
+      ],
+      "description": "Current Unitus email and SMS operating support proposal route.",
+      "lifecycle": "active"
     },
     {
       "id": "pinterest",
@@ -677,6 +811,45 @@
         "demo"
       ],
       "description": "Pinterest demo route.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "arena-internet-archaeology",
+      "title": "Are.na for internet archaeology",
+      "url": "https://whatarewecapableof.com/arena/",
+      "path": "/arena/",
+      "category": "page",
+      "group": "Arena",
+      "status": "active",
+      "audience": "internal",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:arena/index.html",
+      "tags": [
+        "arena",
+        "research"
+      ],
+      "description": "Noindex Are.na research and installation support page.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "arena-install",
+      "title": "Install Are.na",
+      "url": "https://whatarewecapableof.com/go/arena-install/",
+      "path": "/go/arena-install/",
+      "category": "page",
+      "group": "Arena",
+      "status": "active",
+      "audience": "internal",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:go/arena-install/index.html",
+      "tags": [
+        "arena",
+        "redirect",
+        "install"
+      ],
+      "description": "Noindex Are.na installation helper route.",
       "lifecycle": "active"
     },
     {
@@ -760,16 +933,17 @@
       "path": "/internal/pickingindustry/",
       "category": "internal",
       "group": "Internal research",
-      "status": "active",
+      "status": "blocked",
       "audience": "internal",
       "auth": "direct_link",
-      "visibility": "noindex",
+      "visibility": "source_blocked",
       "source": "repo:internal/pickingindustry/index.html",
       "tags": [
         "research"
       ],
       "description": "Internal research route found in repo inventory.",
-      "lifecycle": "active"
+      "lifecycle": "decommissioned",
+      "notes": "Production route intentionally returns 404 after the 2026-06-18 root-site route block. Keep row as organizational memory; republishing requires a separate source decision."
     },
     {
       "id": "internal-system-research",
@@ -805,6 +979,120 @@
         "experiment"
       ],
       "description": "Route found in repo inventory.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "kamplove-home",
+      "title": "Kamp Love growth plan",
+      "url": "https://whatarewecapableof.com/kamplove/",
+      "path": "/kamplove/",
+      "category": "project",
+      "group": "Kamplove",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "public",
+      "source": "repo:kamplove/index.html",
+      "tags": [
+        "kamplove",
+        "growth-plan"
+      ],
+      "description": "Kamp Love growth-plan site homepage.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "kamplove-board",
+      "title": "Kamp Love board of directors",
+      "url": "https://whatarewecapableof.com/kamplove/board/",
+      "path": "/kamplove/board/",
+      "category": "project",
+      "group": "Kamplove",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "public",
+      "source": "repo:kamplove/board/index.html",
+      "tags": [
+        "kamplove",
+        "board"
+      ],
+      "description": "Kamp Love board of directors page.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "kamplove-deck",
+      "title": "Kamp Love pitch deck",
+      "url": "https://whatarewecapableof.com/kamplove/deck/",
+      "path": "/kamplove/deck/",
+      "category": "project",
+      "group": "Kamplove",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "public",
+      "source": "repo:kamplove/deck/index.html",
+      "tags": [
+        "kamplove",
+        "deck"
+      ],
+      "description": "Kamp Love browser-native pitch deck.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "kamplove-financials",
+      "title": "Kamp Love financial model",
+      "url": "https://whatarewecapableof.com/kamplove/financials/",
+      "path": "/kamplove/financials/",
+      "category": "project",
+      "group": "Kamplove",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "public",
+      "source": "repo:kamplove/financials/index.html",
+      "tags": [
+        "kamplove",
+        "financials"
+      ],
+      "description": "Kamp Love financial model page.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "kamplove-kamp-songs",
+      "title": "Kamp Love Kamp Songs",
+      "url": "https://whatarewecapableof.com/kamplove/kamp-songs/",
+      "path": "/kamplove/kamp-songs/",
+      "category": "project",
+      "group": "Kamplove",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "public",
+      "source": "repo:kamplove/kamp-songs/index.html",
+      "tags": [
+        "kamplove",
+        "music"
+      ],
+      "description": "Kamp Love music and worship-leader development page.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "kamplove-vision",
+      "title": "Kamp Love vision",
+      "url": "https://whatarewecapableof.com/kamplove/vision/",
+      "path": "/kamplove/vision/",
+      "category": "project",
+      "group": "Kamplove",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "public",
+      "source": "repo:kamplove/vision/index.html",
+      "tags": [
+        "kamplove",
+        "vision"
+      ],
+      "description": "Kamp Love 2026 vision page.",
       "lifecycle": "active"
     },
     {

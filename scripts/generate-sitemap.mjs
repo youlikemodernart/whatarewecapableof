@@ -19,7 +19,6 @@ const STATIC_ROUTES = [
   { url: '/how-we-work', file: 'how-we-work/index.html' },
   { url: '/where-we-help', file: 'where-we-help/index.html' },
   { url: '/blog', file: 'blog/index.html' },
-  { url: '/different', file: 'different/index.html' },
   { url: '/question', file: 'question/index.html' },
 ];
 

@@ -69,7 +69,7 @@ module.exports = async function handler(req, res) {
   const grantedScopes = tokenPayload.scope || '';
   const envLine = `KW_SUBSTRATE_SHOPIFY_ADMIN_TOKEN=${token}`;
 
-  return html(res, 200, `<h1>Shopify read-only token created</h1>
+  return html(res, 200, `<h1>Shopify Admin API token created</h1>
 <p>Store: <code>${escapeHtml(shop)}</code></p>
 <p>Granted scopes: <code>${escapeHtml(grantedScopes)}</code></p>
 <p>Copy this line into <code>~/Projects/whatarewecapableof/.env.local</code>. Do not paste it into chat, docs, project memory, Git, Slack, or email.</p>

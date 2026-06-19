@@ -21,8 +21,8 @@ module.exports = async function handler(req, res) {
 
   const rawShop = req.query?.shop || req.query?.store;
   if (!rawShop) {
-    return html(res, 200, `<h1>WAWCO Shopify read-only install</h1>
-<p>Enter the store's myshopify domain to start the read-only OAuth flow.</p>
+    return html(res, 200, `<h1>WAWCO Shopify app install</h1>
+<p>Enter the store's myshopify domain to start the OAuth flow.</p>
 <form method="GET" action="/api/shopify/install">
   <p><label>Shop domain<br><input name="shop" placeholder="0da67d-c2.myshopify.com" style="width:100%;max-width:420px;padding:8px;"></label></p>
   <p><button type="submit">Start install</button></p>

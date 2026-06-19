@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 
-const DEFAULT_SCOPES = 'read_products,read_inventory,read_files,read_themes,read_metaobjects';
+const DEFAULT_SCOPES = 'read_products,write_products,read_inventory,write_inventory,read_files,write_files,read_themes,write_themes,read_metaobjects,write_metaobjects';
 const STATE_TTL_MS = 10 * 60 * 1000;
 
 function env(name, fallback = '') {

@@ -7,6 +7,7 @@ Allow: /$
 Allow: /how-we-work
 Allow: /where-we-help
 Allow: /blog
+# Legacy redirect: keep crawlable so search engines can see the 308 to /blog/different
 Allow: /different
 Allow: /question
 Allow: /pinterest/privacy

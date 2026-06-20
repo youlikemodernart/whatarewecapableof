@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-06-18",
+  "generatedAt": "2026-06-20",
   "source": "Curated starter registry from repo routes and read-only Vercel scope observations. Rows marked needs_review require live verification before being treated as complete inventory.",
   "items": [
     {
@@ -69,15 +69,16 @@
       "group": "Main site",
       "status": "active",
       "audience": "public",
-      "auth": "public",
-      "visibility": "public",
+      "auth": "direct_link",
+      "visibility": "noindex",
       "source": "repo:work/fde/index.html",
       "tags": [
         "work",
         "case-study"
       ],
       "description": "Public work page for FDE.",
-      "lifecycle": "active"
+      "lifecycle": "active",
+      "notes": "Reachable direct-link route, but outside the 2026-06 public indexable sitemap surface."
     },
     {
       "id": "book",
@@ -88,14 +89,15 @@
       "group": "Main site",
       "status": "active",
       "audience": "public",
-      "auth": "public",
-      "visibility": "public",
+      "auth": "direct_link",
+      "visibility": "noindex",
       "source": "repo:book/index.html",
       "tags": [
         "booking"
       ],
       "description": "Booking surface found in repo route inventory.",
-      "lifecycle": "active"
+      "lifecycle": "active",
+      "notes": "Reachable direct-link route, but outside the 2026-06 public indexable sitemap surface."
     },
     {
       "id": "coach",
@@ -106,14 +108,15 @@
       "group": "Coach",
       "status": "active",
       "audience": "public",
-      "auth": "public",
-      "visibility": "public",
+      "auth": "direct_link",
+      "visibility": "noindex",
       "source": "repo:coach/index.html",
       "tags": [
         "coach"
       ],
       "description": "Coach route found in repo inventory.",
-      "lifecycle": "active"
+      "lifecycle": "active",
+      "notes": "Reachable direct-link route, but outside the 2026-06 public indexable sitemap surface."
     },
     {
       "id": "coach-book",
@@ -124,15 +127,16 @@
       "group": "Coach",
       "status": "active",
       "audience": "public",
-      "auth": "public",
-      "visibility": "public",
+      "auth": "direct_link",
+      "visibility": "noindex",
       "source": "repo:coach/book/index.html",
       "tags": [
         "coach",
         "booking"
       ],
       "description": "Coach booking route found in repo inventory.",
-      "lifecycle": "active"
+      "lifecycle": "active",
+      "notes": "Reachable direct-link route, but outside the 2026-06 public indexable sitemap surface."
     },
     {
       "id": "question",
@@ -161,14 +165,15 @@
       "group": "Main site",
       "status": "active",
       "audience": "public",
-      "auth": "public",
-      "visibility": "public",
+      "auth": "direct_link",
+      "visibility": "noindex",
       "source": "repo:sitemap/index.html",
       "tags": [
         "navigation"
       ],
       "description": "Public sitemap route.",
-      "lifecycle": "active"
+      "lifecycle": "active",
+      "notes": "Reachable direct-link route, but outside the 2026-06 public indexable sitemap surface."
     },
     {
       "id": "blog",
@@ -178,15 +183,56 @@
       "category": "page",
       "group": "Writing",
       "status": "active",
-      "audience": "internal",
-      "auth": "direct_link",
-      "visibility": "noindex",
+      "audience": "public",
+      "auth": "public",
+      "visibility": "public",
       "source": "repo:blog/index.html",
       "tags": [
         "blog",
         "writing"
       ],
-      "description": "Noindex writing index for WAWCO working pages and essays.",
+      "description": "Public writing index for WAWCO essays and operating-system notes.",
+      "lifecycle": "active",
+      "notes": "Opened to index/follow and added to sitemap in the 2026-06 SEO public-surface update."
+    },
+    {
+      "id": "blog-business-process-automation",
+      "title": "What is business process automation, and when is it worth it?",
+      "url": "https://whatarewecapableof.com/blog/business-process-automation/",
+      "path": "/blog/business-process-automation/",
+      "category": "page",
+      "group": "Writing",
+      "status": "active",
+      "audience": "public",
+      "auth": "public",
+      "visibility": "public",
+      "source": "repo:blog/business-process-automation/index.html",
+      "tags": [
+        "blog",
+        "writing",
+        "business-process-automation"
+      ],
+      "description": "Public, indexable article defining business process automation and the build, buy, wait, or retire decision.",
+      "lifecycle": "active"
+    },
+    {
+      "id": "blog-different",
+      "title": "Everyone has Chat, Claude and Gemini: how is what we do different?",
+      "url": "https://whatarewecapableof.com/blog/different/",
+      "path": "/blog/different/",
+      "category": "page",
+      "group": "Writing",
+      "status": "active",
+      "audience": "public",
+      "auth": "public",
+      "visibility": "public",
+      "source": "repo:blog/different/index.html",
+      "tags": [
+        "blog",
+        "writing",
+        "ai-systems"
+      ],
+      "description": "Public, indexable essay on how WAWCO work differs from general AI tool access.",
       "lifecycle": "active"
     },
     {
@@ -196,17 +242,18 @@
       "path": "/different/",
       "category": "page",
       "group": "Writing",
-      "status": "active",
-      "audience": "internal",
-      "auth": "direct_link",
-      "visibility": "noindex",
-      "source": "repo:different/index.html",
+      "status": "legacy",
+      "audience": "public",
+      "auth": "public",
+      "visibility": "public",
+      "source": "repo:vercel.json",
       "tags": [
         "writing",
         "ai-systems"
       ],
-      "description": "Noindex essay on how WAWCO work differs from general AI tool access.",
-      "lifecycle": "active"
+      "description": "Legacy redirect alias for the essay now published at /blog/different/.",
+      "lifecycle": "archived",
+      "notes": "Production /different redirects to /blog/different. Keep as an archived alias so Windex explains old links without treating this as the canonical article."
     },
     {
       "id": "tracker",
@@ -746,15 +793,16 @@
       "group": "Pinterest",
       "status": "active",
       "audience": "public",
-      "auth": "public",
-      "visibility": "public",
+      "auth": "direct_link",
+      "visibility": "noindex",
       "source": "repo:pinterest/index.html",
       "tags": [
         "pinterest",
         "app"
       ],
       "description": "Pinterest app landing route.",
-      "lifecycle": "active"
+      "lifecycle": "active",
+      "notes": "Reachable direct-link route, but outside the 2026-06 public indexable sitemap surface."
     },
     {
       "id": "pinterest-privacy",
@@ -972,14 +1020,15 @@
       "group": "Experiments",
       "status": "active",
       "audience": "public",
-      "auth": "public",
-      "visibility": "public",
+      "auth": "direct_link",
+      "visibility": "noindex",
       "source": "repo:give/rainbow/index.html",
       "tags": [
         "experiment"
       ],
       "description": "Route found in repo inventory.",
-      "lifecycle": "active"
+      "lifecycle": "active",
+      "notes": "Reachable direct-link route, but outside the 2026-06 public indexable sitemap surface."
     },
     {
       "id": "kamplove-home",
@@ -991,14 +1040,15 @@
       "status": "active",
       "audience": "client",
       "auth": "direct_link",
-      "visibility": "public",
+      "visibility": "noindex",
       "source": "repo:kamplove/index.html",
       "tags": [
         "kamplove",
         "growth-plan"
       ],
       "description": "Kamp Love growth-plan site homepage.",
-      "lifecycle": "active"
+      "lifecycle": "active",
+      "notes": "Client/project route kept in Windex as direct-link material; outside the 2026-06 public indexable sitemap surface."
     },
     {
       "id": "kamplove-board",
@@ -1010,14 +1060,15 @@
       "status": "active",
       "audience": "client",
       "auth": "direct_link",
-      "visibility": "public",
+      "visibility": "noindex",
       "source": "repo:kamplove/board/index.html",
       "tags": [
         "kamplove",
         "board"
       ],
       "description": "Kamp Love board of directors page.",
-      "lifecycle": "active"
+      "lifecycle": "active",
+      "notes": "Client/project route kept in Windex as direct-link material; outside the 2026-06 public indexable sitemap surface."
     },
     {
       "id": "kamplove-deck",
@@ -1029,14 +1080,15 @@
       "status": "active",
       "audience": "client",
       "auth": "direct_link",
-      "visibility": "public",
+      "visibility": "noindex",
       "source": "repo:kamplove/deck/index.html",
       "tags": [
         "kamplove",
         "deck"
       ],
       "description": "Kamp Love browser-native pitch deck.",
-      "lifecycle": "active"
+      "lifecycle": "active",
+      "notes": "Client/project route kept in Windex as direct-link material; outside the 2026-06 public indexable sitemap surface."
     },
     {
       "id": "kamplove-financials",
@@ -1048,14 +1100,15 @@
       "status": "active",
       "audience": "client",
       "auth": "direct_link",
-      "visibility": "public",
+      "visibility": "noindex",
       "source": "repo:kamplove/financials/index.html",
       "tags": [
         "kamplove",
         "financials"
       ],
       "description": "Kamp Love financial model page.",
-      "lifecycle": "active"
+      "lifecycle": "active",
+      "notes": "Client/project route kept in Windex as direct-link material; outside the 2026-06 public indexable sitemap surface."
     },
     {
       "id": "kamplove-kamp-songs",
@@ -1067,14 +1120,15 @@
       "status": "active",
       "audience": "client",
       "auth": "direct_link",
-      "visibility": "public",
+      "visibility": "noindex",
       "source": "repo:kamplove/kamp-songs/index.html",
       "tags": [
         "kamplove",
         "music"
       ],
       "description": "Kamp Love music and worship-leader development page.",
-      "lifecycle": "active"
+      "lifecycle": "active",
+      "notes": "Client/project route kept in Windex as direct-link material; outside the 2026-06 public indexable sitemap surface."
     },
     {
       "id": "kamplove-vision",
@@ -1086,14 +1140,15 @@
       "status": "active",
       "audience": "client",
       "auth": "direct_link",
-      "visibility": "public",
+      "visibility": "noindex",
       "source": "repo:kamplove/vision/index.html",
       "tags": [
         "kamplove",
         "vision"
       ],
       "description": "Kamp Love 2026 vision page.",
-      "lifecycle": "active"
+      "lifecycle": "active",
+      "notes": "Client/project route kept in Windex as direct-link material; outside the 2026-06 public indexable sitemap surface."
     },
     {
       "id": "alt-home",

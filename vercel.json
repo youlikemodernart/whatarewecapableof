@@ -19,7 +19,7 @@
     { "src": "/internal/pickingindustry(?:/.*)?", "status": 404, "dest": "/404.html" },
     { "src": "/proposals/_template(?:/.*)?", "status": 404, "dest": "/404.html" },
     { "src": "/proposals/sales-school/diagrams/toolchain(?:/.*)?", "status": 404, "dest": "/404.html" },
-    { "src": "/different/?", "status": 308, "headers": { "Location": "/blog/different" } },
+    { "src": "/different(?:/index\\.html)?/?", "status": 308, "headers": { "Location": "/blog/different" } },
     { "src": "/blog/wearedifferent/?", "status": 308, "headers": { "Location": "/blog/different" } },
     { "src": "/briefs/unitus-offer(?:/index\\.html)?/?", "status": 308, "headers": { "Location": "/proposals/unitus-email-sms" } },
     { "handle": "filesystem" }

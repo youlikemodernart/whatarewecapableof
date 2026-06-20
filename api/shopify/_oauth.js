@@ -1,6 +1,30 @@
 const crypto = require('crypto');
 
-const DEFAULT_SCOPES = 'read_products,write_products,read_inventory,write_inventory,read_files,write_files,read_themes,write_themes,read_metaobjects,write_metaobjects';
+const DEFAULT_SCOPE_LIST = [
+  'read_products',
+  'write_products',
+  'read_inventory',
+  'write_inventory',
+  'read_locations',
+  'read_files',
+  'write_files',
+  'read_themes',
+  'write_themes',
+  'read_metaobjects',
+  'write_metaobjects',
+  'read_metaobject_definitions',
+  'write_metaobject_definitions',
+  'read_publications',
+  'write_publications',
+  'read_content',
+  'write_content',
+  'read_online_store_pages',
+  'read_online_store_navigation',
+  'write_online_store_navigation',
+  'read_translations',
+  'write_translations',
+];
+const DEFAULT_SCOPES = DEFAULT_SCOPE_LIST.join(',');
 const STATE_TTL_MS = 10 * 60 * 1000;
 
 function env(name, fallback = '') {
@@ -10,13 +34,25 @@ function env(name, fallback = '') {
 function getConfig() {
   const clientId = env('SHOPIFY_WAWCO_CLIENT_ID');
   const clientSecret = env('SHOPIFY_WAWCO_CLIENT_SECRET');
-  const scopes = env('SHOPIFY_WAWCO_SCOPES', DEFAULT_SCOPES);
+  const scopes = normalizeScopes([DEFAULT_SCOPES, env('SHOPIFY_WAWCO_SCOPES')].filter(Boolean).join(','));
 
   if (!clientId || !clientSecret) {
     throw new Error('Missing SHOPIFY_WAWCO_CLIENT_ID or SHOPIFY_WAWCO_CLIENT_SECRET');
   }
 
   return { clientId, clientSecret, scopes };
+}
+
+function normalizeScopes(value = '') {
+  const seen = new Set();
+  const scopes = [];
+  for (const scope of String(value || '').split(',')) {
+    const cleaned = scope.trim();
+    if (!cleaned || seen.has(cleaned)) continue;
+    seen.add(cleaned);
+    scopes.push(cleaned);
+  }
+  return scopes.join(',');
 }
 
 function normalizeShop(value = '') {

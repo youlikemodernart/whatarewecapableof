@@ -22,7 +22,7 @@
   <main class="page page-wide">
     <header class="page-head">
       <h1>Invoice studio</h1>
-      <p class="page-note">Hosted What are we capable of? drafts, custom PDFs, and admin-created Stripe customer payment pages. Mercury plans are browser downloads only; client sends, refunds, customer changes, and bank actions remain separate approval-gated steps.</p>
+      <p class="page-note">Hosted multi-entity drafts for What are we capable of? and Noah Development Group LLC, custom PDFs, and admin-created Stripe customer payment pages. Mercury plans are browser downloads only; client sends, refunds, customer changes, and bank actions remain separate approval-gated steps.</p>
     </header>
 
     <section class="panel" id="signin-panel" hidden>
@@ -56,7 +56,7 @@
           <div class="numbering-example" aria-live="polite">
             <span class="eyebrow">Format</span>
             <strong id="number-example">SUBSTRATE-052626-01</strong>
-            <p class="help">Client code, invoice date as MMDDYY, then a date-specific global sequence.</p>
+            <p class="help">Client code, invoice date as MMDDYY, then an issuing-entity date-specific sequence. NDG numbers use the NDG prefix.</p>
           </div>
           <label>Suffix digits
             <input id="number-padding" inputmode="numeric" value="2">
@@ -105,6 +105,12 @@
               </div>
             </div>
             <div class="grid two">
+              <label>Issuing entity
+                <select id="entity-id" name="entityId">
+                  <option value="wawco">What are we capable of?</option>
+                  <option value="ndg">Noah Development Group LLC</option>
+                </select>
+              </label>
               <label>Number
                 <input id="invoice-number" name="invoiceNumber" autocomplete="off" disabled>
               </label>
@@ -165,7 +171,8 @@
             <label>Reporting scope
               <select id="payee-reporting-scope">
                 <option value="wawco">WAWCO dashboard</option>
-                <option value="private">Private, exclude from WAWCO dashboard</option>
+                <option value="ndg">NDG dashboard</option>
+                <option value="private">Private, exclude from entity dashboard</option>
               </select>
             </label>
             <label>Mercury destination account ID

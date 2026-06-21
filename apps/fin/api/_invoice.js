@@ -3,6 +3,48 @@ const crypto = require('crypto');
 const STATUS_VALUES = new Set(['draft', 'ready_for_review', 'approved', 'issued', 'paid', 'void']);
 const MAX_ITEMS = 50;
 
+const ENTITY_DEFINITIONS = [
+  {
+    id: 'wawco',
+    key: 'wawco',
+    label: 'WAWCO',
+    name: 'What are we capable of?',
+    legalName: 'What are we capable of?',
+    email: 'hello@whatarewecapableof.com',
+    address: '',
+    invoiceCodePrefix: '',
+    reportingScope: 'wawco',
+    stripeAccountKey: 'default',
+    remitInstructions: 'Payment instructions to be confirmed before sending.',
+    defaultTerms: 'Payment due within 14 days unless otherwise agreed.',
+    branding: {
+      payPageEyebrow: 'What are we capable of?',
+      payPageHelp: 'What are we capable of? updates the invoice after Stripe confirms the payment status.',
+    },
+  },
+  {
+    id: 'ndg',
+    key: 'ndg',
+    label: 'NDG',
+    name: 'Noah Development Group LLC',
+    legalName: 'Noah Development Group LLC',
+    email: '',
+    address: '',
+    invoiceCodePrefix: 'NDG',
+    reportingScope: 'ndg',
+    stripeAccountKey: 'ndg',
+    remitInstructions: 'Payment instructions to be confirmed before sending.',
+    defaultTerms: 'Payment due within 14 days unless otherwise agreed.',
+    branding: {
+      payPageEyebrow: 'Noah Development Group LLC',
+      payPageHelp: 'Noah Development Group LLC updates the invoice after Stripe confirms the payment status.',
+    },
+  },
+];
+
+const ENTITY_BY_ID = new Map(ENTITY_DEFINITIONS.map((entity) => [entity.id, entity]));
+const REPORTING_SCOPES = new Set(['wawco', 'ndg', 'private']);
+
 function cleanSingleLine(value, max = 240) {
   return String(value || '').replace(/[\r\n\t]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, max);
 }
@@ -33,6 +75,59 @@ function cleanOptionalDate(value, fallback = '') {
 function cleanCurrency(value) {
   const text = cleanSingleLine(value, 3).toUpperCase();
   return /^[A-Z]{3}$/.test(text) ? text : 'USD';
+}
+
+function cleanEntityId(value, fallback = 'wawco') {
+  const id = cleanSingleLine(value, 40).toLowerCase();
+  if (ENTITY_BY_ID.has(id)) return id;
+  return ENTITY_BY_ID.has(fallback) ? fallback : 'wawco';
+}
+
+function entityById(value) {
+  return ENTITY_BY_ID.get(cleanEntityId(value)) || ENTITY_BY_ID.get('wawco');
+}
+
+function publicEntity(entityInput) {
+  const entity = entityById(typeof entityInput === 'string' ? entityInput : entityInput?.id);
+  return {
+    id: entity.id,
+    key: entity.key,
+    label: entity.label,
+    name: entity.name,
+    legalName: entity.legalName,
+    email: entity.email,
+    invoiceCodePrefix: entity.invoiceCodePrefix,
+    reportingScope: entity.reportingScope,
+    stripeAccountKey: entity.stripeAccountKey,
+    branding: { ...(entity.branding || {}) },
+  };
+}
+
+function invoiceEntities() {
+  return ENTITY_DEFINITIONS.map(publicEntity);
+}
+
+function entityInvoiceDefaults(entityId) {
+  const entity = entityById(entityId);
+  return {
+    entityId: entity.id,
+    payeeReportingScope: entity.reportingScope,
+    from: {
+      name: entity.name,
+      company: entity.legalName || entity.name,
+      email: entity.email,
+      address: entity.address,
+      mercuryDestinationAccountId: '',
+    },
+    terms: entity.defaultTerms,
+    paymentInstructions: entity.remitInstructions,
+  };
+}
+
+function cleanReportingScope(value, entityId = 'wawco') {
+  const scope = cleanSingleLine(value, 40).toLowerCase();
+  if (REPORTING_SCOPES.has(scope)) return scope;
+  return entityById(entityId).reportingScope || 'wawco';
 }
 
 function parseMoneyToCents(value) {
@@ -78,9 +173,12 @@ function calculateTotals(items, discount, taxRate, shipping) {
   return { subtotalCents, discountCents, taxableCents, taxCents, shippingCents, totalCents };
 }
 
-function baseInvoice(invoiceNumber = '') {
+function baseInvoice(invoiceNumber = '', entityIdInput = 'wawco') {
+  const defaults = entityInvoiceDefaults(entityIdInput);
   return {
     id: '',
+    entityId: defaults.entityId,
+    entity: publicEntity(defaults.entityId),
     invoiceNumber,
     status: 'draft',
     currency: 'USD',
@@ -93,15 +191,9 @@ function baseInvoice(invoiceNumber = '') {
     payeeProfileId: '',
     clientProfileId: '',
     userProfileId: '',
-    payeeReportingScope: 'wawco',
+    payeeReportingScope: defaults.payeeReportingScope,
     excludeFromWawcoDashboard: false,
-    from: {
-      name: 'What are we capable of?',
-      company: 'What are we capable of?',
-      email: 'hello@whatarewecapableof.com',
-      address: '',
-      mercuryDestinationAccountId: '',
-    },
+    from: defaults.from,
     client: {
       name: '',
       company: '',
@@ -122,8 +214,8 @@ function baseInvoice(invoiceNumber = '') {
     taxRate: 0,
     shipping: '0.00',
     notes: 'Thank you.',
-    terms: 'Payment due within 14 days unless otherwise agreed.',
-    paymentInstructions: 'Payment instructions to be confirmed before sending.',
+    terms: defaults.terms,
+    paymentInstructions: defaults.paymentInstructions,
     totals: {
       subtotalCents: 0,
       discountCents: 0,
@@ -136,8 +228,10 @@ function baseInvoice(invoiceNumber = '') {
 }
 
 function normalizeInvoice(input = {}, options = {}) {
-  const fallback = baseInvoice(options.invoiceNumber || input.invoiceNumber || '');
   const source = input && typeof input === 'object' ? input : {};
+  const entityId = cleanEntityId(source.entityId || source.entity_id || options.entityId || 'wawco');
+  const entityDefaults = entityInvoiceDefaults(entityId);
+  const fallback = baseInvoice(options.invoiceNumber || source.invoiceNumber || '', entityId);
   const status = STATUS_VALUES.has(cleanSingleLine(source.status || fallback.status, 40))
     ? cleanSingleLine(source.status || fallback.status, 40)
     : 'draft';
@@ -163,9 +257,12 @@ function normalizeInvoice(input = {}, options = {}) {
   const hasOwn = Object.prototype.hasOwnProperty;
   const invoiceDateSource = hasOwn.call(source, 'invoiceDate') ? source.invoiceDate : fallback.invoiceDate;
   const dueDateSource = hasOwn.call(source, 'dueDate') ? source.dueDate : fallback.dueDate;
+  const reportingScope = cleanReportingScope(source.payeeReportingScope, entityId);
 
   return {
     id: cleanSingleLine(source.id || options.id || '', 80),
+    entityId,
+    entity: publicEntity(entityId),
     invoiceNumber: cleanSingleLine(options.invoiceNumber || source.invoiceNumber || fallback.invoiceNumber, 80),
     status,
     currency: cleanCurrency(source.currency || fallback.currency),
@@ -178,13 +275,13 @@ function normalizeInvoice(input = {}, options = {}) {
     payeeProfileId: cleanSingleLine(source.payeeProfileId, 80),
     clientProfileId: cleanSingleLine(source.clientProfileId, 80),
     userProfileId: cleanSingleLine(source.userProfileId, 80),
-    payeeReportingScope: cleanSingleLine(source.payeeReportingScope, 40) === 'private' ? 'private' : 'wawco',
-    excludeFromWawcoDashboard: Boolean(source.excludeFromWawcoDashboard) || cleanSingleLine(source.payeeReportingScope, 40) === 'private',
+    payeeReportingScope: reportingScope,
+    excludeFromWawcoDashboard: Boolean(source.excludeFromWawcoDashboard) || reportingScope === 'private',
     from: {
-      name: cleanSingleLine(source.from?.name || fallback.from.name, 240),
-      company: cleanSingleLine(source.from?.company || fallback.from.company, 240),
-      email: cleanSingleLine(source.from?.email || fallback.from.email, 240),
-      address: cleanText(source.from?.address || fallback.from.address, 1000).trim(),
+      name: cleanSingleLine(source.from?.name || fallback.from.name || entityDefaults.from.name, 240),
+      company: cleanSingleLine(source.from?.company || fallback.from.company || entityDefaults.from.company, 240),
+      email: cleanSingleLine(source.from?.email || fallback.from.email || entityDefaults.from.email, 240),
+      address: cleanText(source.from?.address || fallback.from.address || entityDefaults.from.address, 1000).trim(),
       mercuryDestinationAccountId: cleanSingleLine(source.from?.mercuryDestinationAccountId || fallback.from.mercuryDestinationAccountId, 160),
     },
     client: {
@@ -211,8 +308,12 @@ function invoiceClientLabel(invoice) {
 }
 
 function invoiceListItem(row) {
+  const entityId = cleanEntityId(row.entity_id || row.entityId || 'wawco');
+  const entity = publicEntity(entityId);
   return {
     id: row.id,
+    entityId,
+    entityLabel: entity.label,
     invoiceNumber: row.invoice_number,
     status: row.status,
     clientLabel: row.client_label || 'Untitled client',
@@ -228,4 +329,9 @@ module.exports = {
   normalizeInvoice,
   invoiceClientLabel,
   invoiceListItem,
+  cleanEntityId,
+  entityById,
+  invoiceEntities,
+  publicEntity,
+  entityInvoiceDefaults,
 };

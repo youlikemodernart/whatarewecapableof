@@ -1,32 +1,94 @@
 import crypto from 'node:crypto';
-import { spawn, spawnSync } from 'node:child_process';
+import http from 'node:http';
+import { spawnSync } from 'node:child_process';
+import { readFile } from 'node:fs/promises';
 import { Readable } from 'node:stream';
 import { setTimeout as wait } from 'node:timers/promises';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const port = 3321;
-const child = spawn('vercel', ['dev', '--listen', String(port), '--yes'], {
-  cwd: new URL('..', import.meta.url),
-  stdio: ['ignore', 'pipe', 'pipe'],
-  env: {
-    ...process.env,
-    FIN_GOOGLE_CLIENT_ID: '',
-    FIN_GOOGLE_CLIENT_SECRET: '',
-    FIN_SESSION_SECRET: '',
-    FIN_ALLOWED_DOMAIN: 'whatarewecapableof.com',
-    FIN_ALLOWED_EMAILS: '',
-    FIN_STORAGE_MODE: '',
-    POSTGRES_URL: '',
-    DATABASE_URL: '',
-  },
+const appRoot = new URL('..', import.meta.url);
+const serverEnvBackup = {
+  FIN_GOOGLE_CLIENT_ID: process.env.FIN_GOOGLE_CLIENT_ID,
+  FIN_GOOGLE_CLIENT_SECRET: process.env.FIN_GOOGLE_CLIENT_SECRET,
+  FIN_SESSION_SECRET: process.env.FIN_SESSION_SECRET,
+  FIN_ALLOWED_DOMAIN: process.env.FIN_ALLOWED_DOMAIN,
+  FIN_ALLOWED_EMAILS: process.env.FIN_ALLOWED_EMAILS,
+  FIN_STORAGE_MODE: process.env.FIN_STORAGE_MODE,
+  POSTGRES_URL: process.env.POSTGRES_URL,
+  DATABASE_URL: process.env.DATABASE_URL,
+};
+Object.assign(process.env, {
+  FIN_GOOGLE_CLIENT_ID: '',
+  FIN_GOOGLE_CLIENT_SECRET: '',
+  FIN_SESSION_SECRET: '',
+  FIN_ALLOWED_DOMAIN: 'whatarewecapableof.com',
+  FIN_ALLOWED_EMAILS: '',
+  FIN_STORAGE_MODE: '',
+  POSTGRES_URL: '',
+  DATABASE_URL: '',
 });
 
-let output = '';
-child.stdout.on('data', (chunk) => { output += chunk.toString(); });
-child.stderr.on('data', (chunk) => { output += chunk.toString(); });
+const apiRoutes = new Map([
+  ['/api/health', '../api/health.js'],
+  ['/api/session', '../api/session.js'],
+  ['/api/invoices', '../api/invoices.js'],
+  ['/api/entities', '../api/entities.js'],
+  ['/api/finance/summary', '../api/finance/summary.js'],
+  ['/api/finance/imports', '../api/finance/imports.js'],
+]);
+
+const staticRoutes = new Map([
+  ['/', 'index.html'],
+  ['/invoices', 'invoices.html'],
+  ['/invoices.js', 'invoices.js'],
+  ['/pay', 'pay.html'],
+  ['/pay.js', 'pay.js'],
+  ['/finance', 'finance.html'],
+  ['/finance.js', 'finance.js'],
+]);
+
+function contentType(pathname) {
+  if (pathname.endsWith('.js')) return 'text/javascript; charset=utf-8';
+  if (pathname.endsWith('.css')) return 'text/css; charset=utf-8';
+  if (pathname.endsWith('.json')) return 'application/json; charset=utf-8';
+  return 'text/html; charset=utf-8';
+}
+
+const server = http.createServer(async (req, res) => {
+  try {
+    const url = new URL(req.url || '/', `http://127.0.0.1:${port}`);
+    if (apiRoutes.has(url.pathname)) {
+      const handler = require(apiRoutes.get(url.pathname));
+      await handler(req, res);
+      return;
+    }
+    const staticPath = staticRoutes.get(url.pathname);
+    if (staticPath) {
+      const data = await readFile(new URL(staticPath, appRoot));
+      res.statusCode = 200;
+      res.setHeader('Content-Type', contentType(staticPath));
+      res.end(data);
+      return;
+    }
+    res.statusCode = 404;
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    res.end(JSON.stringify({ error: 'Not found' }));
+  } catch (error) {
+    res.statusCode = error.status || 500;
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    res.end(JSON.stringify({ error: error.message || 'Smoke server error' }));
+  }
+});
+
+const serverReady = new Promise((resolve, reject) => {
+  server.once('error', reject);
+  server.listen(port, '127.0.0.1', resolve);
+});
 
 async function fetchWithRetry(pathname, tries = 30) {
+  await serverReady;
   let lastError;
   for (let i = 0; i < tries; i += 1) {
     try {
@@ -96,7 +158,7 @@ async function callHandler(handler, options) {
 }
 
 function installFakeFinDb() {
-  const { normalizeInvoice, invoiceClientLabel } = require('../api/_invoice.js');
+  const { normalizeInvoice, invoiceClientLabel, cleanEntityId, invoiceEntities, publicEntity, entityById } = require('../api/_invoice.js');
   const { normalizeFinanceImport, summarizeFinanceImport, fakeFinanceImportSummary } = require('../api/_finance_import.js');
   const { cleanPaymentMethod, customerPaymentMethods, paymentMethodQuote } = require('../api/_payment_pricing.js');
   const records = new Map();
@@ -110,10 +172,13 @@ function installFakeFinDb() {
   let financeImportSequence = 0;
   let paymentRequestSequence = 0;
   const dailySequences = new Map();
+  const entities = invoiceEntities();
   let numbering = {
     mode: 'client-date-daily',
+    sequenceScope: 'entity-date',
     sequencePadding: 2,
     example: 'SUBSTRATE-052626-01',
+    examples: { wawco: 'SUBSTRATE-052626-01', ndg: 'NDG-SUBSTRATE-052626-01' },
   };
 
   function userRow(user) {
@@ -141,12 +206,27 @@ function installFakeFinDb() {
     return source.replace(/[^A-Z0-9]+/g, '').slice(0, 24) || 'CLIENT';
   }
 
+  function numberingExamples(padding = numbering.sequencePadding) {
+    return {
+      wawco: `SUBSTRATE-052626-${String(1).padStart(padding, '0')}`,
+      ndg: `NDG-SUBSTRATE-052626-${String(1).padStart(padding, '0')}`,
+    };
+  }
+
+  function invoiceNumberPrefixForEntity(entityId) {
+    return String(entityById(entityId).invoiceCodePrefix || '').toUpperCase().replace(/[^A-Z0-9]+/g, '').slice(0, 12);
+  }
+
   function nextInvoiceNumber(invoice) {
+    const entityId = cleanEntityId(invoice.entityId || 'wawco');
     const dateKey = dateKeyForInvoiceDate(invoice.invoiceDate);
-    const sequence = dailySequences.get(dateKey) || 1;
-    dailySequences.set(dateKey, sequence + 1);
+    const sequenceKey = `${entityId}:${dateKey}`;
+    const sequence = dailySequences.get(sequenceKey) || 1;
+    dailySequences.set(sequenceKey, sequence + 1);
     const suffix = String(sequence).padStart(numbering.sequencePadding, '0');
-    return `${clientInvoiceCode(invoice)}-${dateKey}-${suffix}`;
+    const entityPrefix = invoiceNumberPrefixForEntity(entityId);
+    const prefixPart = entityPrefix ? `${entityPrefix}-` : '';
+    return `${prefixPart}${clientInvoiceCode(invoice)}-${dateKey}-${suffix}`;
   }
 
   function stableJson(value) {
@@ -190,6 +270,7 @@ function installFakeFinDb() {
   function invoicePaymentSnapshot(invoice = {}) {
     return {
       invoiceId: invoice.id || '',
+      entityId: cleanEntityId(invoice.entityId || 'wawco'),
       invoiceNumber: invoice.invoiceNumber || '',
       invoiceDate: invoice.invoiceDate || '',
       dueDate: invoice.dueDate || '',
@@ -241,6 +322,8 @@ function installFakeFinDb() {
     return {
       id: record.id,
       invoiceId: record.invoiceId,
+      entityId: cleanEntityId(record.entityId || 'wawco'),
+      stripeAccountKey: entityById(record.entityId || 'wawco').stripeAccountKey || 'default',
       invoiceNumber: record.invoiceNumber,
       snapshotSha256: record.snapshotSha256,
       mode: record.mode,
@@ -294,25 +377,32 @@ function installFakeFinDb() {
     return Number(object.amount_total ?? object.amount_received ?? object.amount ?? 0);
   }
 
-  function findPaymentForStripeObject(type, object = {}) {
+  function paymentMatchesEntity(payment, entityId) {
+    return payment && cleanEntityId(payment.entityId || payment.metadata?.fin_entity_id || 'wawco') === cleanEntityId(entityId || 'wawco');
+  }
+
+  function findPaymentForStripeObject(type, object = {}, entityId = 'wawco') {
     if (type.startsWith('checkout.session.')) {
-      const bySession = Array.from(paymentRequests.values()).find((payment) => !payment.deleted && payment.checkoutSessionId === object.id);
+      const bySession = Array.from(paymentRequests.values()).find((payment) => !payment.deleted && paymentMatchesEntity(payment, entityId) && payment.checkoutSessionId === object.id);
       if (bySession) return bySession;
     }
     if (type.startsWith('payment_intent.')) {
-      const byIntent = Array.from(paymentRequests.values()).find((payment) => !payment.deleted && payment.paymentIntentId === object.id);
+      const byIntent = Array.from(paymentRequests.values()).find((payment) => !payment.deleted && paymentMatchesEntity(payment, entityId) && payment.paymentIntentId === object.id);
       if (byIntent) return byIntent;
     }
     if (type.startsWith('charge.') && object.payment_intent) {
-      const byIntent = Array.from(paymentRequests.values()).find((payment) => !payment.deleted && payment.paymentIntentId === object.payment_intent);
+      const byIntent = Array.from(paymentRequests.values()).find((payment) => !payment.deleted && paymentMatchesEntity(payment, entityId) && payment.paymentIntentId === object.payment_intent);
       if (byIntent) return byIntent;
     }
     if (type.startsWith('charge.')) {
-      const byCharge = Array.from(paymentRequests.values()).find((payment) => !payment.deleted && payment.chargeId === object.id);
+      const byCharge = Array.from(paymentRequests.values()).find((payment) => !payment.deleted && paymentMatchesEntity(payment, entityId) && payment.chargeId === object.id);
       if (byCharge) return byCharge;
     }
     const metadataId = object.metadata?.fin_payment_request_id;
-    if (metadataId) return paymentRequests.get(String(metadataId)) || null;
+    if (metadataId) {
+      const byMetadata = paymentRequests.get(String(metadataId)) || null;
+      return paymentMatchesEntity(byMetadata, entityId) ? byMetadata : null;
+    }
     return null;
   }
 
@@ -326,7 +416,7 @@ function installFakeFinDb() {
   function normalizeProfile(type, input = {}) {
     const source = input && typeof input === 'object' ? input : {};
     if (type === 'payee') {
-      const reportingScope = source.reportingScope === 'private' ? 'private' : 'wawco';
+      const reportingScope = ['wawco', 'ndg', 'private'].includes(source.reportingScope) ? source.reportingScope : 'wawco';
       return {
         label: source.label || source.name || source.company || source.email || 'Untitled payee',
         name: source.name || source.company || '',
@@ -375,12 +465,12 @@ function installFakeFinDb() {
   }
 
   function isDashboardExcluded(invoice) {
-    const fromName = String(invoice.from?.name || '').trim().toLowerCase();
-    const fromCompany = String(invoice.from?.company || '').trim().toLowerCase();
-    return invoice.payeeReportingScope === 'private'
-      || invoice.excludeFromWawcoDashboard === true
-      || ['noah glynn', 'noah glenn'].includes(fromName)
-      || ['noah glynn', 'noah glenn'].includes(fromCompany);
+    return invoice.payeeReportingScope === 'private' || invoice.excludeFromWawcoDashboard === true;
+  }
+
+  function matchesEntityFilter(invoice, entityFilter) {
+    if (entityFilter === 'combined') return true;
+    return cleanEntityId(invoice.entityId || 'wawco') === entityFilter;
   }
 
   const fakeDb = {
@@ -389,16 +479,32 @@ function installFakeFinDb() {
       return userRow(user);
     },
     async numberingSettings() {
-      return { ...numbering, example: `SUBSTRATE-052626-${String(1).padStart(numbering.sequencePadding, '0')}` };
+      const examples = numberingExamples(numbering.sequencePadding);
+      return { ...numbering, sequenceScope: 'entity-date', example: examples.wawco, examples };
     },
     async updateNumberingSettings(input = {}) {
       const requestedPadding = Number(input.sequencePadding ?? input.padding ?? numbering.sequencePadding);
+      const sequencePadding = Math.max(1, Math.min(8, Number.isFinite(requestedPadding) ? requestedPadding : numbering.sequencePadding));
+      const examples = numberingExamples(sequencePadding);
       numbering = {
         mode: 'client-date-daily',
-        sequencePadding: Math.max(1, Math.min(8, Number.isFinite(requestedPadding) ? requestedPadding : numbering.sequencePadding)),
-        example: '',
+        sequenceScope: 'entity-date',
+        sequencePadding,
+        example: examples.wawco,
+        examples,
       };
-      return { ...numbering, example: `SUBSTRATE-052626-${String(1).padStart(numbering.sequencePadding, '0')}` };
+      return { ...numbering };
+    },
+    async listEntities(user) {
+      userRow(user);
+      return entities;
+    },
+    async invoiceEntityIdForUser(user, invoiceId) {
+      const currentUser = userRow(user);
+      const invoice = records.get(invoiceId);
+      if (!invoice || invoice.deleted) return '';
+      if (currentUser.role !== 'admin' && invoice.createdByUserId !== currentUser.id) return '';
+      return cleanEntityId(invoice.entityId || 'wawco');
     },
     async listProfiles(user, type) {
       userRow(user);
@@ -449,6 +555,8 @@ function installFakeFinDb() {
       const currentUser = userRow(user);
       return visibleInvoices().map((invoice) => ({
         id: invoice.id,
+        entityId: cleanEntityId(invoice.entityId || 'wawco'),
+        entityLabel: publicEntity(invoice.entityId || 'wawco').label,
         invoiceNumber: invoice.invoiceNumber,
         status: invoice.status,
         clientLabel: invoiceClientLabel(invoice),
@@ -471,7 +579,7 @@ function installFakeFinDb() {
       const invoiceNumber = nextInvoiceNumber(invoiceDraft);
       const invoice = normalizeInvoice({ ...invoiceDraft, invoiceNumber }, { id, invoiceNumber });
       const startsApproved = ['approved', 'issued', 'paid'].includes(invoice.status);
-      records.set(id, startsApproved ? { ...invoice, approvedByUserId: currentUser.id } : invoice);
+      records.set(id, startsApproved ? { ...invoice, createdByUserId: currentUser.id, approvedByUserId: currentUser.id } : { ...invoice, createdByUserId: currentUser.id });
       return records.get(id);
     },
     async getInvoice(user, id) {
@@ -487,7 +595,10 @@ function installFakeFinDb() {
       if (currentUser.role !== 'admin' && (['approved', 'issued', 'paid', 'void'].includes(requestedStatus) || ['approved', 'issued', 'paid', 'void'].includes(existing.status))) {
         throw makeError(403, 'Only Fin admins can approve, issue, mark paid, void, or edit approved invoices.');
       }
-      const invoice = normalizeInvoice({ ...existing, ...input, id, invoiceNumber: existing.invoiceNumber }, { id, invoiceNumber: existing.invoiceNumber });
+      const requestedEntityId = cleanEntityId(input.entityId || input.entity_id || existing.entityId || 'wawco');
+      const existingEntityId = cleanEntityId(existing.entityId || 'wawco');
+      if (requestedEntityId !== existingEntityId) throw makeError(409, 'Invoice entity cannot be changed after the invoice number is assigned. Duplicate the draft under the other entity instead.');
+      const invoice = normalizeInvoice({ ...existing, ...input, id, invoiceNumber: existing.invoiceNumber, entityId: existingEntityId }, { id, invoiceNumber: existing.invoiceNumber, entityId: existingEntityId });
       const activePayment = activePaymentRecord(id, 'test') || activePaymentRecord(id, 'live');
       if (activePayment && activePayment.snapshotSha256 !== paymentSnapshotHash(invoice)) {
         throw makeError(409, 'This invoice has an active Stripe payment link. Expire or supersede the link before changing payment terms, line items, totals, client, dates, or currency.');
@@ -555,16 +666,20 @@ function installFakeFinDb() {
       }
       paymentRequestSequence += 1;
       const id = `pay-${paymentRequestSequence}`;
+      const entityId = cleanEntityId(invoice.entityId || 'wawco');
       const metadata = {
         fin_invoice_id: invoiceId,
         fin_payment_request_id: id,
         fin_invoice_number: invoice.invoiceNumber,
         fin_invoice_snapshot_sha256: snapshotSha256,
         fin_environment: mode,
+        fin_entity_id: entityId,
+        fin_stripe_account_key: entityById(entityId).stripeAccountKey || 'default',
       };
       const record = {
         id,
         invoiceId,
+        entityId,
         invoiceNumber: invoice.invoiceNumber,
         snapshotSha256,
         mode,
@@ -632,6 +747,7 @@ function installFakeFinDb() {
       }
       paymentRequestSequence += 1;
       const id = `pay-page-${paymentRequestSequence}`;
+      const entityId = cleanEntityId(invoice.entityId || 'wawco');
       const token = `smoke-token-${paymentRequestSequence}-${crypto.randomBytes(8).toString('hex')}`;
       const publicUrl = `${String(baseUrl).replace(/\/$/, '')}/pay?t=${encodeURIComponent(token)}`;
       const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
@@ -641,11 +757,14 @@ function installFakeFinDb() {
         fin_invoice_number: invoice.invoiceNumber,
         fin_invoice_snapshot_sha256: snapshotSha256,
         fin_environment: mode,
+        fin_entity_id: entityId,
+        fin_stripe_account_key: entityById(entityId).stripeAccountKey || 'default',
         fin_payment_method_family: 'customer_choice',
       };
       const record = {
         id,
         invoiceId,
+        entityId,
         invoiceNumber: invoice.invoiceNumber,
         snapshotSha256,
         mode,
@@ -691,13 +810,15 @@ function installFakeFinDb() {
       return {
         page: { status: page.status, mode: page.mode, paymentStatus: invoice.paymentStatus || 'none', tokenHint: page.tokenHint, updatedAt: page.updatedAt },
         invoice: {
+          entityId: cleanEntityId(invoice.entityId || 'wawco'),
+          entity: publicEntity(invoice.entityId || 'wawco'),
           invoiceNumber: invoice.invoiceNumber,
           status: invoice.status,
           currency: invoice.currency || 'USD',
           project: invoice.project || '',
           invoiceDate: invoice.invoiceDate || '',
           dueDate: invoice.dueDate || '',
-          from: { name: invoice.from?.name || 'What are we capable of?', email: invoice.from?.email || 'hello@whatarewecapableof.com' },
+          from: { name: invoice.from?.name || entityById(invoice.entityId || 'wawco').name || 'What are we capable of?', email: invoice.from?.email || entityById(invoice.entityId || 'wawco').email || 'hello@whatarewecapableof.com' },
           client: { label: invoiceClientLabel(invoice), name: invoice.client?.name || '', company: invoice.client?.company || '', email: invoice.client?.email || '' },
           notes: invoice.notes || '',
           terms: invoice.terms || '',
@@ -760,12 +881,15 @@ function installFakeFinDb() {
       }
       paymentRequestSequence += 1;
       const id = `pay-${paymentRequestSequence}`;
+      const entityId = cleanEntityId(invoice.entityId || page.entityId || 'wawco');
       const metadata = {
         fin_invoice_id: page.invoiceId,
         fin_payment_request_id: id,
         fin_invoice_number: invoice.invoiceNumber,
         fin_invoice_snapshot_sha256: snapshotSha256,
         fin_environment: page.mode,
+        fin_entity_id: entityId,
+        fin_stripe_account_key: entityById(entityId).stripeAccountKey || 'default',
         fin_payment_method_family: quote.paymentMethodFamily,
         fin_payment_method_type: quote.paymentMethodType,
         fin_fee_policy: quote.feePolicy,
@@ -776,6 +900,7 @@ function installFakeFinDb() {
       const record = {
         id,
         invoiceId: page.invoiceId,
+        entityId,
         invoiceNumber: invoice.invoiceNumber,
         snapshotSha256,
         mode: page.mode,
@@ -839,10 +964,16 @@ function installFakeFinDb() {
       const mode = event.livemode ? 'live' : 'test';
       const type = String(event.type || '');
       const object = event.data?.object || {};
-      const payment = findPaymentForStripeObject(type, object);
+      const eventEntityId = cleanEntityId(event.finEntityId || object.metadata?.fin_entity_id || 'wawco');
+      const payment = findPaymentForStripeObject(type, object, eventEntityId);
       if (!payment) {
         stripeEvents.set(eventId, { status: 'ignored', reason: 'payment-request-not-found' });
         return { duplicate: false, status: 'ignored', reason: 'payment-request-not-found', eventId };
+      }
+      const paymentEntityId = cleanEntityId(payment.entityId || payment.metadata?.fin_entity_id || 'wawco');
+      if (eventEntityId !== paymentEntityId) {
+        stripeEvents.set(eventId, { status: 'failed', reason: 'entity-mismatch' });
+        throw makeError(400, 'Stripe event entity does not match the Fin payment request.');
       }
       if (payment.mode !== mode) {
         stripeEvents.set(eventId, { status: 'failed', reason: 'mode-mismatch' });
@@ -927,7 +1058,7 @@ function installFakeFinDb() {
           paymentStatus: invoicePaymentStatus,
         });
       }
-      stripeEvents.set(eventId, { status: 'processed', paymentRequestId: payment.id, invoiceId: payment.invoiceId, mode });
+      stripeEvents.set(eventId, { status: 'processed', paymentRequestId: payment.id, invoiceId: payment.invoiceId, mode, entityId: payment.entityId || 'wawco' });
       return { duplicate: false, status: 'processed', eventId, payment: paymentSummary(record) };
     },
     async createFinanceImport(user, input) {
@@ -1025,9 +1156,14 @@ function installFakeFinDb() {
     async financeSummary(user, options = {}) {
       const currentUser = userRow(user);
       const invoices = visibleInvoices();
-      const visible = invoices.filter((invoice) => !isDashboardExcluded(invoice));
-      const excluded = invoices.filter(isDashboardExcluded);
-      const importRows = currentUser.role === 'admin'
+      const requestedEntity = String(options.entity || options.entityId || 'wawco').toLowerCase();
+      const entityFilter = requestedEntity === 'combined' ? 'combined' : cleanEntityId(requestedEntity || 'wawco');
+      const entityScoped = invoices.filter((invoice) => matchesEntityFilter(invoice, entityFilter));
+      const visible = entityScoped.filter((invoice) => !isDashboardExcluded(invoice));
+      const excluded = entityScoped.filter(isDashboardExcluded);
+      const excludedEntityCount = invoices.length - entityScoped.length;
+      const entitySupportsFinanceImports = entityFilter === 'wawco' || entityFilter === 'combined';
+      const importRows = currentUser.role === 'admin' && entitySupportsFinanceImports
         ? Array.from(financeImports.values()).filter((item) => !item.deleted)
         : [];
       const importMonths = importRows.map((item) => item.month).filter(Boolean);
@@ -1048,6 +1184,9 @@ function installFakeFinDb() {
         const latestPayment = latestPaymentRecord(invoice.id);
         return {
           id: invoice.id,
+          entityId: cleanEntityId(invoice.entityId || 'wawco'),
+          entityLabel: publicEntity(invoice.entityId || 'wawco').label,
+          entityName: publicEntity(invoice.entityId || 'wawco').name,
           invoiceNumber: invoice.invoiceNumber,
           status: invoice.status,
           clientLabel: invoiceClientLabel(invoice),
@@ -1112,9 +1251,13 @@ function installFakeFinDb() {
         generatedAt: hasImport ? imported.generatedAt : '2026-05-28T00:00:00.000Z',
         month,
         months,
+        entityFilter,
+        entityLabel: entityFilter === 'combined' ? 'Combined' : publicEntity(entityFilter).label,
+        entities: [{ id: 'combined', label: 'Combined', name: 'Combined' }, ...entities],
         invoiceCount: visible.length,
         totalCents,
         readyForReviewCents,
+        excludedEntityCount,
         excludedPrivatePayeeCount: excluded.length,
         lastUpdatedAt: '2026-05-28T00:00:00.000Z',
         latestFinanceImport: hasImport ? summarizeFinanceImport(latestImport) : null,
@@ -1125,6 +1268,9 @@ function installFakeFinDb() {
         recurring: hasImport ? imported.recurring : { items: [], error: '', validationWarnings: [] },
         hostedInvoices: {
           visibleCount: visible.length,
+          entityFilter,
+          entityLabel: entityFilter === 'combined' ? 'Combined' : publicEntity(entityFilter).label,
+          excludedEntityCount,
           excludedPrivatePayeeCount: excluded.length,
           invoices: hostedRows,
           monthInvoices: hostedRows.filter((invoice) => invoice.month === month || !month),
@@ -1177,6 +1323,10 @@ async function runAuthenticatedRouteSmoke() {
     STRIPE_MODE: process.env.STRIPE_MODE,
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+    STRIPE_ACCOUNT_ID: process.env.STRIPE_ACCOUNT_ID,
+    STRIPE_SECRET_KEY_NDG: process.env.STRIPE_SECRET_KEY_NDG,
+    STRIPE_WEBHOOK_SECRET_NDG: process.env.STRIPE_WEBHOOK_SECRET_NDG,
+    STRIPE_ACCOUNT_ID_NDG: process.env.STRIPE_ACCOUNT_ID_NDG,
     FIN_STRIPE_TEST_LINKS_ENABLED: process.env.FIN_STRIPE_TEST_LINKS_ENABLED,
     FIN_STRIPE_LIVE_LINKS_ENABLED: process.env.FIN_STRIPE_LIVE_LINKS_ENABLED,
   };
@@ -1196,6 +1346,10 @@ async function runAuthenticatedRouteSmoke() {
   process.env.STRIPE_MODE = 'test';
   process.env.STRIPE_SECRET_KEY = '';
   process.env.STRIPE_WEBHOOK_SECRET = 'whsec_smoke_webhook_secret';
+  process.env.STRIPE_ACCOUNT_ID = 'acct_smoke_wawco';
+  process.env.STRIPE_SECRET_KEY_NDG = '';
+  process.env.STRIPE_WEBHOOK_SECRET_NDG = 'whsec_smoke_ndg_webhook_secret';
+  process.env.STRIPE_ACCOUNT_ID_NDG = 'acct_smoke_ndg';
   process.env.FIN_STRIPE_TEST_LINKS_ENABLED = '1';
   process.env.FIN_STRIPE_LIVE_LINKS_ENABLED = '1';
 
@@ -1211,6 +1365,7 @@ async function runAuthenticatedRouteSmoke() {
     require.resolve('../api/finance/imports.js'),
     require.resolve('../api/profiles.js'),
     require.resolve('../api/numbering.js'),
+    require.resolve('../api/entities.js'),
     require.resolve('../api/stripe/checkout.js'),
     require.resolve('../api/pay.js'),
     require.resolve('../api/pay/checkout.js'),
@@ -1227,6 +1382,7 @@ async function runAuthenticatedRouteSmoke() {
   const importsHandler = require('../api/finance/imports.js');
   const profileHandler = require('../api/profiles.js');
   const numberingHandler = require('../api/numbering.js');
+  const entitiesHandler = require('../api/entities.js');
   const fakeDb = require('../api/_db.js');
   const checkoutHandler = require('../api/stripe/checkout.js');
   const payHandler = require('../api/pay.js');
@@ -1295,9 +1451,13 @@ async function runAuthenticatedRouteSmoke() {
     assert(publicPayee.status === 201 && privatePayee.status === 201 && client.status === 201 && userProfile.status === 201, 'profile-backed fixture create smoke failed');
     assert(privatePayee.data.profile.data.excludeFromWawcoDashboard === true, 'private profile dashboard exclusion smoke failed');
 
+    const entitiesList = await callHandler(entitiesHandler, { method: 'GET', url: '/api/entities', cookie });
+    assert(entitiesList.status === 200 && entitiesList.data.entities.some((entity) => entity.id === 'ndg'), 'entities endpoint smoke failed');
+
     const numberingBefore = await callHandler(numberingHandler, { method: 'GET', url: '/api/numbering', cookie });
     assert(numberingBefore.status === 200 && numberingBefore.data.numbering.mode === 'client-date-daily', 'numbering GET smoke failed');
     assert(numberingBefore.data.numbering.example === 'SUBSTRATE-052626-01', 'numbering example smoke failed');
+    assert(numberingBefore.data.numbering.examples.ndg === 'NDG-SUBSTRATE-052626-01', 'NDG numbering example smoke failed');
 
     const numberingUpdated = await callHandler(numberingHandler, {
       method: 'PUT',
@@ -1355,8 +1515,25 @@ async function runAuthenticatedRouteSmoke() {
       },
     });
     assert(created.status === 201 && created.data.invoice.totals.totalCents === 30000, 'invoice create smoke failed');
+    assert(created.data.invoice.entityId === 'wawco', 'default WAWCO entity smoke failed');
     assert(created.data.invoice.invoiceNumber === 'SUBSTRATE-052626-01', 'client-date numbering-backed invoice create smoke failed');
     const id = created.data.invoice.id;
+
+    const ndgInvoice = await callHandler(invoiceHandler, {
+      method: 'POST',
+      url: '/api/invoices',
+      cookie,
+      body: {
+        entityId: 'ndg',
+        client: { company: 'Substrate', invoiceCode: 'SUBSTRATE' },
+        invoiceDate: '2026-05-26',
+        items: [{ description: 'NDG example service', quantity: 1, unitPrice: '120.00' }],
+      },
+    });
+    assert(ndgInvoice.status === 201 && ndgInvoice.data.invoice.entityId === 'ndg', 'NDG invoice entity create smoke failed');
+    assert(ndgInvoice.data.invoice.invoiceNumber === 'NDG-SUBSTRATE-052626-01', 'NDG per-entity numbering smoke failed');
+    const ndgEntityChange = await callHandler(invoiceHandler, { method: 'PUT', url: `/api/invoices?id=${encodeURIComponent(ndgInvoice.data.invoice.id)}`, cookie, body: { entityId: 'wawco' } });
+    assert(ndgEntityChange.status === 409, 'invoice entity immutability smoke failed');
 
     const numberingAfterCreate = await callHandler(numberingHandler, { method: 'GET', url: '/api/numbering', cookie });
     assert(numberingAfterCreate.data.numbering.sequencePadding === 2, 'numbering setting persistence smoke failed');
@@ -1379,7 +1556,7 @@ async function runAuthenticatedRouteSmoke() {
     assert(unauthCheckout.status === 401, 'Stripe Checkout unauthenticated smoke failed');
 
     const nonAdminCheckout = await callHandler(checkoutHandler, { method: 'POST', url: '/api/stripe/checkout', cookie: repCookie, body: { invoiceId: id, mode: 'test' }, headers: checkoutOrigin });
-    assert(nonAdminCheckout.status === 403, 'Stripe Checkout non-admin smoke failed');
+    assert([403, 404].includes(nonAdminCheckout.status), 'Stripe Checkout non-admin access gate smoke failed');
 
     const badOriginCheckout = await callHandler(checkoutHandler, { method: 'POST', url: '/api/stripe/checkout', cookie, body: { invoiceId: id, mode: 'test' }, headers: { origin: 'https://evil.example.test' } });
     assert(badOriginCheckout.status === 403, 'Stripe Checkout origin guard smoke failed');
@@ -1524,6 +1701,48 @@ async function runAuthenticatedRouteSmoke() {
     assert(chargeSucceeded.status === 200 && chargeSucceeded.data.result.payment.reconciliationStatus === 'reconciled', 'Stripe charge reconciliation smoke failed');
     assert(chargeSucceeded.data.result.payment.actualNetCents === payment.baseAmountCents, 'Stripe charge net reconciliation smoke failed');
 
+    const ndgApproved = await callHandler(invoiceHandler, { method: 'PUT', url: `/api/invoices?id=${encodeURIComponent(ndgInvoice.data.invoice.id)}`, cookie, body: { status: 'approved' } });
+    assert(ndgApproved.status === 200 && ndgApproved.data.invoice.status === 'approved', 'NDG invoice approval smoke failed');
+    const ndgFakeBefore = process.env.FIN_STRIPE_FAKE;
+    const ndgKeyBefore = process.env.STRIPE_SECRET_KEY_NDG;
+    const ndgWebhookBefore = process.env.STRIPE_WEBHOOK_SECRET_NDG;
+    process.env.FIN_STRIPE_FAKE = '0';
+    process.env.STRIPE_SECRET_KEY_NDG = 'sk_test_smoke_ndg_missing_webhook';
+    process.env.STRIPE_WEBHOOK_SECRET_NDG = '';
+    const ndgMissingWebhookSecretCheckout = await callHandler(checkoutHandler, { method: 'POST', url: '/api/stripe/checkout', cookie, body: { invoiceId: ndgInvoice.data.invoice.id, mode: 'test' }, headers: checkoutOrigin });
+    assert(ndgMissingWebhookSecretCheckout.status === 503, 'NDG Stripe Checkout webhook-secret gate smoke failed');
+    process.env.FIN_STRIPE_FAKE = ndgFakeBefore;
+    process.env.STRIPE_SECRET_KEY_NDG = ndgKeyBefore;
+    process.env.STRIPE_WEBHOOK_SECRET_NDG = ndgWebhookBefore;
+    const ndgCheckout = await callHandler(checkoutHandler, { method: 'POST', url: '/api/stripe/checkout', cookie, body: { invoiceId: ndgInvoice.data.invoice.id, mode: 'test' }, headers: checkoutOrigin });
+    assert(ndgCheckout.status === 201 && ndgCheckout.data.stripe.entityId === 'ndg' && ndgCheckout.data.payment.entityId === 'ndg', 'NDG customer payment page create smoke failed');
+    const ndgToken = new URL(ndgCheckout.data.payment.publicUrl).searchParams.get('t');
+    const ndgPublicPayPage = await callHandler(payHandler, { method: 'GET', url: `/api/pay?t=${encodeURIComponent(ndgToken)}` });
+    assert(ndgPublicPayPage.status === 200 && ndgPublicPayPage.data.paymentPage.invoice.entity.id === 'ndg', 'NDG public payment page entity branding smoke failed');
+    const ndgCardCheckout = await callHandler(payCheckoutHandler, { method: 'POST', url: '/api/pay/checkout', body: { token: ndgToken, method: 'card' }, headers: checkoutOrigin });
+    assert(ndgCardCheckout.status === 201 && ndgCardCheckout.data.stripe.entityId === 'ndg' && ndgCardCheckout.data.payment.entityId === 'ndg', 'NDG card checkout entity smoke failed');
+    const ndgWebhookBase = {
+      livemode: false,
+      created: Math.floor(Date.now() / 1000),
+      data: {
+        object: {
+          id: ndgCardCheckout.data.payment.checkoutSessionId,
+          amount_total: ndgCardCheckout.data.payment.amountCents,
+          currency: 'usd',
+          payment_status: 'paid',
+          payment_intent: ndgCardCheckout.data.payment.paymentIntentId,
+          payment_method_types: ['card'],
+          metadata: { fin_payment_request_id: ndgCardCheckout.data.payment.id, fin_entity_id: 'ndg' },
+        },
+      },
+    };
+    const wrongEntityWebhookRaw = JSON.stringify({ ...ndgWebhookBase, id: 'evt_smoke_ndg_wrong_entity', type: 'checkout.session.completed' });
+    const wrongEntityWebhook = await callHandler(webhookHandler, { method: 'POST', url: '/api/stripe/webhook', rawBody: wrongEntityWebhookRaw, headers: { 'stripe-signature': signTestWebhookPayload(wrongEntityWebhookRaw, process.env.STRIPE_WEBHOOK_SECRET) } });
+    assert(wrongEntityWebhook.status === 200 && wrongEntityWebhook.data.result.reason === 'payment-request-not-found', 'NDG webhook signed by WAWCO secret should not match an NDG payment smoke failed');
+    const ndgWebhookRaw = JSON.stringify({ ...ndgWebhookBase, id: 'evt_smoke_ndg_checkout_completed', type: 'checkout.session.completed' });
+    const ndgWebhook = await callHandler(webhookHandler, { method: 'POST', url: '/api/stripe/webhook', rawBody: ndgWebhookRaw, headers: { 'stripe-signature': signTestWebhookPayload(ndgWebhookRaw, process.env.STRIPE_WEBHOOK_SECRET_NDG) } });
+    assert(ndgWebhook.status === 200 && ndgWebhook.data.result.payment.entityId === 'ndg' && ndgWebhook.data.result.payment.status === 'paid', 'NDG webhook signature/entity smoke failed');
+
     const modeMismatchWebhookRaw = JSON.stringify({ ...webhookBase, id: 'evt_smoke_mode_mismatch', type: 'checkout.session.completed', livemode: true });
     const modeMismatchWebhook = await callHandler(webhookHandler, { method: 'POST', url: '/api/stripe/webhook', rawBody: modeMismatchWebhookRaw, headers: { 'stripe-signature': signTestWebhookPayload(modeMismatchWebhookRaw, process.env.STRIPE_WEBHOOK_SECRET) } });
     assert(modeMismatchWebhook.status === 400, 'Stripe webhook mode mismatch smoke failed');
@@ -1663,6 +1882,7 @@ async function runAuthenticatedRouteSmoke() {
       url: '/api/invoices',
       cookie,
       body: {
+        payeeReportingScope: 'private',
         from: { name: 'Noah Glynn', email: 'private@example.test' },
         client: { company: 'Fallback private example' },
         invoiceDate: '2026-05-27',
@@ -1682,7 +1902,18 @@ async function runAuthenticatedRouteSmoke() {
     assert(summary.data.summary.hostedInvoices.paymentPaidCount === 1, 'finance hosted payment status smoke failed');
     assert(summary.data.summary.hostedInvoices.paymentSummary.some((row) => row.status === 'paid'), 'finance hosted payment summary smoke failed');
     assert(summary.data.summary.metrics.hostedInvoiceReadyCents === 0, 'finance parity metrics smoke failed');
+    assert(summary.data.summary.excludedEntityCount === 1, 'finance summary excluded entity count smoke failed');
+    assert(summary.data.summary.entityFilter === 'wawco', 'finance summary default entity smoke failed');
     assert(summary.data.summary.mercury.observedCardExpenses.expenses.length === 0, 'finance parity empty imported snapshot smoke failed');
+
+    const ndgSummary = await callHandler(summaryHandler, { method: 'GET', url: '/api/finance/summary?entity=ndg', cookie });
+    assert(ndgSummary.status === 200 && ndgSummary.data.summary.entityFilter === 'ndg', 'NDG finance summary entity filter smoke failed');
+    assert(ndgSummary.data.summary.invoiceCount === 1 && ndgSummary.data.summary.totalCents === 12000, 'NDG finance summary totals smoke failed');
+    assert(ndgSummary.data.summary.hostedInvoices.paymentPaidCount === 1, 'NDG finance payment paid summary smoke failed');
+    const combinedSummary = await callHandler(summaryHandler, { method: 'GET', url: '/api/finance/summary?entity=combined', cookie });
+    assert(combinedSummary.status === 200 && combinedSummary.data.summary.entityFilter === 'combined', 'combined finance summary entity filter smoke failed');
+    assert(combinedSummary.data.summary.invoiceCount === 2 && combinedSummary.data.summary.totalCents === 39500, 'combined finance summary totals smoke failed');
+    assert(combinedSummary.data.summary.hostedInvoices.paymentPaidCount === 2, 'combined finance payment paid summary smoke failed');
 
     const fakeImport = fakeFinanceImportSummary('2099-12');
     const systemFakeImport = fakeFinanceImportSummary('2099-11');
@@ -1882,6 +2113,9 @@ async function runAuthenticatedRouteSmoke() {
     assert(importedSummary.data.summary.metrics.mercuryInvoiceOpenCents === 0, 'no double-count imported Mercury invoices smoke failed');
     assert(importedSummary.data.summary.mercury.recentTransactions.length === 1, 'imported recent transaction smoke failed');
     assert(importedSummary.data.summary.sources.contentSha256 && !String(importedSummary.data.summary.sources.contentSha256).includes('.finance'), 'imported source hash smoke failed');
+    const ndgImportedSummary = await callHandler(summaryHandler, { method: 'GET', url: '/api/finance/summary?entity=ndg&month=2099-12', cookie });
+    assert(ndgImportedSummary.status === 200 && ndgImportedSummary.data.summary.latestFinanceImport === null, 'NDG summary must not inherit WAWCO finance import smoke failed');
+    assert(ndgImportedSummary.data.summary.metrics.totalAvailableBalanceCents === 0, 'NDG summary imported cash isolation smoke failed');
 
     const nonAdminSummary = await callHandler(summaryHandler, { method: 'GET', url: '/api/finance/summary?month=2099-12', cookie: repCookie });
     assert(nonAdminSummary.status === 200, 'non-admin finance summary status smoke failed');
@@ -1931,8 +2165,10 @@ async function runAuthenticatedRouteSmoke() {
     await fakeDb.failCustomerCheckoutPaymentRequest(payment.id, 'synthetic cleanup failure');
     await fakeDb.failCustomerCheckoutPaymentRequest(bankCheckout.data.payment.id, 'synthetic cleanup failure');
     await fakeDb.failCustomerCheckoutPaymentRequest(checkoutCreated.data.payment.id, 'synthetic cleanup failure');
+    await fakeDb.failCustomerCheckoutPaymentRequest(ndgCardCheckout.data.payment.id, 'synthetic NDG cleanup failure');
+    await fakeDb.failCustomerCheckoutPaymentRequest(ndgCheckout.data.payment.id, 'synthetic NDG page cleanup failure');
 
-    for (const invoiceId of [id, privateInvoice.data.invoice.id, fallbackPrivateInvoice.data.invoice.id, optionalMetaInvoice.data.invoice.id]) {
+    for (const invoiceId of [id, ndgInvoice.data.invoice.id, privateInvoice.data.invoice.id, fallbackPrivateInvoice.data.invoice.id, optionalMetaInvoice.data.invoice.id]) {
       const deleted = await callHandler(invoiceHandler, { method: 'DELETE', url: `/api/invoices?id=${encodeURIComponent(invoiceId)}`, cookie });
       assert(deleted.status === 200 && deleted.data.deleted === true, 'invoice delete smoke failed');
     }
@@ -1972,7 +2208,7 @@ try {
   assert(invoicesHtml.includes('Saved user profiles'), 'missing user profile UI marker');
   assert(invoicesHtml.includes('Import JSON'), 'missing JSON import UI marker');
   assert(invoicesHtml.includes('Export Mercury plan'), 'missing Mercury plan UI marker');
-  assert(invoicesHtml.includes('Private, exclude from WAWCO dashboard'), 'missing private payee UI marker');
+  assert(invoicesHtml.includes('Private, exclude from entity dashboard'), 'missing private payee UI marker');
   assert(invoicesHtml.includes('SUBSTRATE-052626-01'), 'missing client-date numbering UI marker');
   assert(invoicesHtml.includes('client-invoice-code'), 'missing client invoice code UI marker');
   assert(invoicesHtml.includes('preview-due-date-field'), 'missing optional metadata preview wrappers');
@@ -1983,6 +2219,7 @@ try {
   const invoicesJs = await fetchWithRetry('/invoices.js');
   const invoicesJsText = await invoicesJs.text();
   assert(invoicesJsText.includes('/api/profiles?type=payee'), 'missing profile API client marker');
+  assert(invoicesJsText.includes('/api/entities'), 'missing entity API client marker');
   assert(invoicesJsText.includes('/api/numbering'), 'missing numbering API client marker');
   assert(invoicesJsText.includes('sequencePadding'), 'missing client-date numbering client marker');
   assert(invoicesJsText.includes('previewMeta.hidden'), 'missing optional metadata client marker');
@@ -2005,10 +2242,12 @@ try {
   assert(financeHtml.includes('Recurring stack forecast') && financeHtml.includes('Observed card expenses') && financeHtml.includes('Hosted invoice operations'), 'missing finance parity page copy');
   assert(financeHtml.includes('<th>Payment</th>'), 'missing hosted invoice payment column marker');
   assert(financeHtml.includes('Derived finance summary import') && financeHtml.includes('finance-import-file'), 'missing finance import UI marker');
+  assert(financeHtml.includes('entity-select'), 'missing finance entity selector UI marker');
 
   const financeJs = await fetchWithRetry('/finance.js');
   const financeJsText = await financeJs.text();
   assert(financeJsText.includes('/api/finance/import-summary') && financeJsText.includes('/api/finance/imports'), 'missing finance import client marker');
+  assert(financeJsText.includes('entity=') || financeJsText.includes("params.set('entity'"), 'missing finance entity query client marker');
   assert(financeJsText.includes('paymentLabel') && financeJsText.includes('Paid online'), 'missing finance payment-status client marker');
 
   const protectedRoute = await fetchWithRetry('/api/invoices');
@@ -2017,13 +2256,18 @@ try {
   const protectedSummaryRoute = await fetchWithRetry('/api/finance/summary');
   assert(protectedSummaryRoute.status === 401, `expected finance summary 401, got ${protectedSummaryRoute.status}`);
 
+  const protectedEntitiesRoute = await fetchWithRetry('/api/entities');
+  assert(protectedEntitiesRoute.status === 401, `expected entities 401, got ${protectedEntitiesRoute.status}`);
+
   const protectedImportsRoute = await fetchWithRetry('/api/finance/imports');
   assert(protectedImportsRoute.status === 401, `expected finance imports 401, got ${protectedImportsRoute.status}`);
-} finally {
-  child.kill('SIGTERM');
-  await wait(500);
-  if (!child.killed) child.kill('SIGKILL');
-}
 
-await runAuthenticatedRouteSmoke();
-console.log('fin-smoke-ok');
+  await runAuthenticatedRouteSmoke();
+  console.log('fin-smoke-ok');
+} finally {
+  await new Promise((resolve) => server.close(resolve));
+  for (const [key, value] of Object.entries(serverEnvBackup)) {
+    if (value === undefined) delete process.env[key];
+    else process.env[key] = value;
+  }
+}

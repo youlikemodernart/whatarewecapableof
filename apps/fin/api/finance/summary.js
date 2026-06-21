@@ -26,7 +26,7 @@ module.exports = async function handler(req, res) {
   try {
     const storage = ensureStorageReady();
     const params = queryFromRequest(req);
-    const summary = await financeSummary(user, { month: params.get('month') || '' });
+    const summary = await financeSummary(user, { month: params.get('month') || '', entity: params.get('entity') || '' });
     return json(res, 200, { ok: true, storage, summary });
   } catch (error) {
     return handleApiError(res, json, error);

@@ -23,11 +23,21 @@
     <header class="page-head finance-head">
       <div>
         <h1>Finance dashboard</h1>
-        <p class="page-note">Hosted version of the WAWCO finance dashboard. It is protected by Google login and currently reads hosted Fin invoice records plus approved hosted summary data only.</p>
+        <p class="page-note">Hosted finance dashboard for Fin's issuing entities. It is protected by Google login and currently reads hosted Fin invoice records plus approved hosted summary data only.</p>
       </div>
-      <div class="finance-controls" id="month-control" hidden>
-        <label for="month-select">Month</label>
-        <select id="month-select"></select>
+      <div class="finance-controls">
+        <div id="entity-control">
+          <label for="entity-select">Entity</label>
+          <select id="entity-select">
+            <option value="wawco">What are we capable of?</option>
+            <option value="ndg">Noah Development Group LLC</option>
+            <option value="combined">Combined</option>
+          </select>
+        </div>
+        <div id="month-control" hidden>
+          <label for="month-select">Month</label>
+          <select id="month-select"></select>
+        </div>
       </div>
     </header>
 
@@ -218,7 +228,7 @@
             <p class="eyebrow">Receivables</p>
             <h2>Hosted invoice operations</h2>
           </div>
-          <p>Live Fin invoice records, excluding private-payee drafts from WAWCO totals.</p>
+          <p>Live Fin invoice records, scoped by issuing entity and excluding private-payee drafts from entity totals.</p>
         </div>
         <div id="hosted-invoice-queues" class="finance-mini-grid"></div>
         <div class="finance-table-wrap finance-table-spaced">

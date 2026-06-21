@@ -1,6 +1,7 @@
 const $ = (selector) => document.querySelector(selector);
 
 const refs = {
+  entityEyebrow: $('#pay-entity-eyebrow'),
   title: $('#pay-title'),
   message: $('#pay-message'),
   invoice: $('#pay-invoice'),
@@ -17,6 +18,7 @@ const refs = {
   processing: $('#pay-processing'),
   total: $('#pay-total'),
   disclosure: $('#pay-disclosure'),
+  entityHelp: $('#pay-entity-help'),
   continueButton: $('#pay-continue'),
 };
 
@@ -112,7 +114,10 @@ function renderSummary() {
 
 function renderPage() {
   const invoice = paymentPage.invoice || {};
+  const entity = invoice.entity || {};
   const amountCents = Number(paymentPage.amountCents || invoice.totals?.totalCents || 0);
+  refs.entityEyebrow.textContent = entity.branding?.payPageEyebrow || entity.name || invoice.from?.name || 'Fin';
+  refs.entityHelp.textContent = `Stripe collects the payment details. ${entity.branding?.payPageHelp || `${entity.name || invoice.from?.name || 'The issuing entity'} updates the invoice after Stripe confirms the payment status.`}`;
   refs.title.textContent = invoice.status === 'paid' ? 'Invoice paid' : 'Pay this invoice';
   renderCheckoutMessage();
   refs.invoice.hidden = false;

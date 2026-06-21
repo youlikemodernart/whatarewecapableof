@@ -43,6 +43,7 @@ const refs = {
   applyClientProfile: $('#apply-client-profile'),
   saveClientProfile: $('#save-client-profile'),
   deleteClientProfile: $('#delete-client-profile'),
+  entityId: $('#entity-id'),
   invoiceNumber: $('#invoice-number'),
   status: $('#status'),
   invoiceDate: $('#invoice-date'),
@@ -103,7 +104,11 @@ let currentInvoice = null;
 let invoices = [];
 let items = [];
 let profiles = { payee: [], client: [], user: [] };
-let paymentSettings = { configured: false, mode: 'disabled', testLinksEnabled: false, liveLinksEnabled: false };
+let entities = [
+  { id: 'wawco', label: 'WAWCO', name: 'What are we capable of?', email: 'hello@whatarewecapableof.com', invoiceCodePrefix: '', reportingScope: 'wawco', stripeAccountKey: 'default', branding: {} },
+  { id: 'ndg', label: 'NDG', name: 'Noah Development Group LLC', email: '', invoiceCodePrefix: 'NDG', reportingScope: 'ndg', stripeAccountKey: 'ndg', branding: {} },
+];
+let paymentSettings = { configured: false, mode: 'disabled', testLinksEnabled: false, liveLinksEnabled: false, entities: {} };
 let formDirty = false;
 
 async function getJson(url, options = {}) {
@@ -152,6 +157,37 @@ function formatStatus(status) {
   return String(status || 'draft').replace(/[_-]/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
+function entityById(id) {
+  return entities.find((entity) => entity.id === id) || entities.find((entity) => entity.id === 'wawco') || entities[0];
+}
+
+function renderEntitySelect() {
+  const currentValue = refs.entityId?.value || currentInvoice?.entityId || 'wawco';
+  refs.entityId.replaceChildren(...entities.map((entity) => {
+    const option = document.createElement('option');
+    option.value = entity.id;
+    option.textContent = entity.name || entity.label || entity.id;
+    return option;
+  }));
+  refs.entityId.value = entities.some((entity) => entity.id === currentValue) ? currentValue : 'wawco';
+}
+
+function entityInvoiceDefaults(entityId) {
+  const entity = entityById(entityId);
+  return {
+    entityId: entity.id,
+    entity,
+    payeeReportingScope: entity.reportingScope || entity.id || 'wawco',
+    from: { name: entity.name || '', company: entity.legalName || entity.name || '', email: entity.email || '', address: entity.address || '', mercuryDestinationAccountId: '' },
+    terms: 'Payment due within 14 days unless otherwise agreed.',
+    paymentInstructions: entity.remitInstructions || 'Payment instructions to be confirmed before sending.',
+  };
+}
+
+function paymentSettingsForEntity(entityId) {
+  return paymentSettings.entities?.[entityId] || paymentSettings.entities?.wawco || paymentSettings;
+}
+
 function paymentLabel(payment) {
   if (!payment) return 'No page';
   if (payment.status === 'active' && payment.urlKind === 'customer_payment_page') return `${formatStatus(payment.mode)} payment page active`;
@@ -165,17 +201,20 @@ function paymentLabel(payment) {
   return formatStatus(payment.status || 'No page');
 }
 
-function checkoutModeAvailable(mode) {
-  if (!paymentSettings.configured) return false;
+function checkoutModeAvailable(mode, entityId = refs.entityId?.value || currentInvoice?.entityId || 'wawco') {
+  const entityPayment = paymentSettingsForEntity(entityId);
+  if (!entityPayment.checkoutConfigured || !entityPayment.webhookConfigured) return false;
   if (mode === 'test') return paymentSettings.mode === 'test' && paymentSettings.testLinksEnabled;
   if (mode === 'live') return paymentSettings.mode === 'live' && paymentSettings.liveLinksEnabled;
   return false;
 }
 
-function paymentModeCopy(payment) {
+function paymentModeCopy(payment, entityId = refs.entityId?.value || currentInvoice?.entityId || 'wawco') {
   if (payment?.paymentMethodFamily && payment.paymentMethodFamily !== 'customer_choice' && payment.paymentMethodFamily !== 'legacy') return `${formatStatus(payment.mode)} ${formatStatus(payment.paymentMethodFamily)}`;
   if (payment) return `${formatStatus(payment.mode)} mode`;
-  if (!paymentSettings.configured) return 'Not configured';
+  const entityPayment = paymentSettingsForEntity(entityId);
+  const entity = entityById(entityId);
+  if (!entityPayment.checkoutConfigured || !entityPayment.webhookConfigured) return `${entity.label || entity.name || 'Entity'} Stripe not configured`;
   if (paymentSettings.mode === 'live') return paymentSettings.liveLinksEnabled ? 'Live ready' : 'Live disabled';
   if (paymentSettings.mode === 'test') return paymentSettings.testLinksEnabled ? 'Test ready' : 'Test disabled';
   return formatStatus(paymentSettings.mode || 'disabled');
@@ -201,9 +240,12 @@ function blankItem() {
   return { id: crypto.randomUUID(), description: 'Consulting work', quantity: 1, unitPrice: '0.00' };
 }
 
-function baseInvoice() {
+function baseInvoice(entityId = 'wawco') {
+  const defaults = entityInvoiceDefaults(entityId);
   return {
     id: '',
+    entityId: defaults.entityId,
+    entity: defaults.entity,
     invoiceNumber: 'Assigned on save',
     status: 'draft',
     currency: 'USD',
@@ -216,17 +258,17 @@ function baseInvoice() {
     payeeProfileId: '',
     clientProfileId: '',
     userProfileId: '',
-    payeeReportingScope: 'wawco',
+    payeeReportingScope: defaults.payeeReportingScope,
     excludeFromWawcoDashboard: false,
-    from: { name: 'What are we capable of?', company: 'What are we capable of?', email: 'hello@whatarewecapableof.com', address: '', mercuryDestinationAccountId: '' },
+    from: defaults.from,
     client: { name: '', company: '', email: '', address: '', mercuryCustomerId: '', invoiceCode: '' },
     items: [blankItem()],
     discount: '0.00',
     taxRate: 0,
     shipping: '0.00',
     notes: 'Thank you.',
-    terms: 'Payment due within 14 days unless otherwise agreed.',
-    paymentInstructions: 'Payment instructions to be confirmed before sending.',
+    terms: defaults.terms,
+    paymentInstructions: defaults.paymentInstructions,
   };
 }
 
@@ -258,9 +300,13 @@ function currentFormInvoice(status = refs.status.value || 'draft') {
     quantity: Number(item.quantity || 0),
     unitPrice: item.unitPrice || '0.00',
   }));
-  const payeeReportingScope = refs.payeeReportingScope.value || 'wawco';
+  const entityId = refs.entityId.value || currentInvoice?.entityId || 'wawco';
+  const entity = entityById(entityId);
+  const payeeReportingScope = refs.payeeReportingScope.value || entity.reportingScope || entityId;
   return {
     ...(currentInvoice || {}),
+    entityId,
+    entity,
     invoiceNumber: refs.invoiceNumber.value || currentInvoice?.invoiceNumber || '',
     status,
     currency: 'USD',
@@ -330,6 +376,12 @@ function profileById(type, id) {
   return profiles[type].find((profile) => profile.id === id) || null;
 }
 
+async function loadEntities() {
+  const data = await getJson('/api/entities');
+  if (Array.isArray(data.entities) && data.entities.length) entities = data.entities;
+  renderEntitySelect();
+}
+
 async function loadProfiles() {
   const [payee, client, user] = await Promise.all([
     getJson('/api/profiles?type=payee'),
@@ -350,7 +402,7 @@ async function loadNumbering() {
   const data = await getJson('/api/numbering');
   const numbering = data.numbering || {};
   refs.numberPadding.value = numbering.sequencePadding || 2;
-  refs.numberExample.textContent = numbering.example || 'SUBSTRATE-052626-01';
+  refs.numberExample.textContent = numbering.examples?.ndg ? `${numbering.example || 'SUBSTRATE-052626-01'} / ${numbering.examples.ndg}` : numbering.example || 'SUBSTRATE-052626-01';
 }
 
 async function saveNumbering() {
@@ -412,10 +464,10 @@ function applyPayeeProfile(profile) {
   refs.fromEmail.value = data.email || '';
   refs.fromAddress.value = data.address || '';
   refs.fromMercuryAccount.value = data.mercuryDestinationAccountId || '';
-  refs.payeeReportingScope.value = data.reportingScope === 'private' || data.excludeFromWawcoDashboard ? 'private' : 'wawco';
+  refs.payeeReportingScope.value = data.reportingScope === 'private' || data.excludeFromWawcoDashboard ? 'private' : (['wawco', 'ndg'].includes(data.reportingScope) ? data.reportingScope : (currentInvoice?.entityId || refs.entityId.value || 'wawco'));
   if (data.defaultTerms) refs.terms.value = data.defaultTerms;
   if (data.defaultPaymentInstructions) refs.paymentInstructions.value = data.defaultPaymentInstructions;
-  currentInvoice = { ...(currentInvoice || baseInvoice()), payeeProfileId: profile.id, payeeReportingScope: refs.payeeReportingScope.value, excludeFromWawcoDashboard: refs.payeeReportingScope.value === 'private' };
+  currentInvoice = { ...(currentInvoice || baseInvoice(refs.entityId.value)), payeeProfileId: profile.id, payeeReportingScope: refs.payeeReportingScope.value, excludeFromWawcoDashboard: refs.payeeReportingScope.value === 'private' };
   formDirty = true;
   renderPreview();
 }
@@ -430,7 +482,7 @@ function applyClientProfile(profile) {
   refs.clientAddress.value = data.address || '';
   refs.clientMercuryCustomer.value = data.mercuryCustomerId || '';
   refs.clientInvoiceCode.value = data.invoiceCode || '';
-  currentInvoice = { ...(currentInvoice || baseInvoice()), clientProfileId: profile.id };
+  currentInvoice = { ...(currentInvoice || baseInvoice(refs.entityId.value)), clientProfileId: profile.id };
   formDirty = true;
   renderPreview();
 }
@@ -442,7 +494,7 @@ function applyUserProfile(profile) {
   refs.salesRep.value = data.salesRep || '';
   refs.salesRepEmail.value = data.salesRepEmail || '';
   refs.salesRole.value = data.salesRole || 'admin';
-  currentInvoice = { ...(currentInvoice || baseInvoice()), userProfileId: profile.id };
+  currentInvoice = { ...(currentInvoice || baseInvoice(refs.entityId.value)), userProfileId: profile.id };
   formDirty = true;
   renderPreview();
 }
@@ -503,9 +555,12 @@ function renderItemsEditor() {
   });
 }
 
-function fillForm(invoice = baseInvoice()) {
+function fillForm(invoice = baseInvoice(refs.entityId?.value || 'wawco')) {
   currentInvoice = invoice;
   formDirty = false;
+  renderEntitySelect();
+  refs.entityId.value = invoice.entityId || 'wawco';
+  refs.entityId.disabled = Boolean(invoice.id);
   refs.invoiceNumber.value = invoice.invoiceNumber || '';
   refs.status.value = invoice.status || 'draft';
   refs.invoiceDate.value = invoice.invoiceDate || '';
@@ -520,7 +575,7 @@ function fillForm(invoice = baseInvoice()) {
   refs.fromEmail.value = invoice.from?.email || 'hello@whatarewecapableof.com';
   refs.fromAddress.value = invoice.from?.address || '';
   refs.fromMercuryAccount.value = invoice.from?.mercuryDestinationAccountId || '';
-  refs.payeeReportingScope.value = invoice.payeeReportingScope === 'private' || invoice.excludeFromWawcoDashboard ? 'private' : 'wawco';
+  refs.payeeReportingScope.value = invoice.payeeReportingScope === 'private' || invoice.excludeFromWawcoDashboard ? 'private' : (invoice.payeeReportingScope || invoice.entityId || 'wawco');
   refs.clientProfileSelect.value = invoice.clientProfileId || '';
   refs.clientName.value = invoice.client?.name || '';
   refs.clientCompany.value = invoice.client?.company || '';
@@ -547,14 +602,17 @@ function fillForm(invoice = baseInvoice()) {
 
 function renderPaymentPanel(invoice) {
   const payment = invoice.payment || null;
+  const entityId = invoice.entityId || currentInvoice?.entityId || 'wawco';
+  const entity = entityById(entityId);
+  const entityPayment = paymentSettingsForEntity(entityId);
   const persistedApproved = Boolean(currentInvoice?.id && currentInvoice.status === 'approved' && invoice.status === 'approved' && !formDirty);
   const canCreateLink = Boolean(invoice.id && persistedApproved && !payment?.active && Number(invoice.totals?.totalCents || 0) > 0);
-  const canCreateTestLink = canCreateLink && checkoutModeAvailable('test');
-  const canCreateLiveLink = canCreateLink && checkoutModeAvailable('live');
+  const canCreateTestLink = canCreateLink && checkoutModeAvailable('test', entityId);
+  const canCreateLiveLink = canCreateLink && checkoutModeAvailable('live', entityId);
   refs.paymentStatusLabel.textContent = paymentLabel(payment);
   refs.paymentStatusLabel.classList.toggle('is-active', Boolean(payment?.active));
   refs.paymentStatusLabel.classList.toggle('is-paid', payment?.status === 'paid');
-  refs.paymentMode.textContent = paymentModeCopy(payment);
+  refs.paymentMode.textContent = paymentModeCopy(payment, entityId);
   refs.paymentAmount.textContent = formatCurrency(payment?.baseAmountCents ?? payment?.amountCents ?? invoice.totals?.totalCents ?? 0);
   const customerPaymentUrl = payment?.publicUrl || (payment?.urlKind === 'customer_payment_page' ? payment.url : '');
   refs.paymentUrl.value = customerPaymentUrl;
@@ -567,7 +625,7 @@ function renderPaymentPanel(invoice) {
   else if (payment?.active) refs.paymentHelp.textContent = payment.urlKind === 'customer_payment_page' ? 'This invoice already has an active customer payment page for the current snapshot.' : 'This invoice has active Stripe checkout activity for the current snapshot.';
   else if (canCreateLiveLink) refs.paymentHelp.textContent = 'Ready to create a live customer payment page. The page lets the client choose bank account or card before Stripe Checkout.';
   else if (canCreateTestLink) refs.paymentHelp.textContent = 'Ready to create a test customer payment page.';
-  else if (!paymentSettings.configured) refs.paymentHelp.textContent = 'Stripe Checkout is not configured for this workspace.';
+  else if (!entityPayment.checkoutConfigured || !entityPayment.webhookConfigured) refs.paymentHelp.textContent = `${entity.name || entity.label || 'This entity'} Stripe Checkout is not configured yet.`;
   else refs.paymentHelp.textContent = `Stripe is configured for ${formatStatus(paymentSettings.mode)}, but that link mode is disabled here.`;
 }
 
@@ -653,7 +711,7 @@ function renderDraftList() {
     const left = document.createElement('span');
     left.innerHTML = `<strong></strong><small></small>`;
     left.querySelector('strong').textContent = invoice.invoiceNumber || 'Draft';
-    left.querySelector('small').textContent = invoice.clientLabel || 'Untitled client';
+    left.querySelector('small').textContent = `${invoice.entityLabel || entityById(invoice.entityId || 'wawco')?.label || 'Entity'} · ${invoice.clientLabel || 'Untitled client'}`;
     const right = document.createElement('small');
     right.textContent = `${formatCurrency(invoice.totalCents)} · ${formatStatus(invoice.status)}`;
     button.append(left, right);
@@ -673,7 +731,7 @@ async function loadSession() {
   }
   refs.signinPanel.hidden = true;
   refs.workspace.hidden = false;
-  await Promise.all([loadProfiles(), loadNumbering()]);
+  await Promise.all([loadEntities(), loadProfiles(), loadNumbering()]);
   await loadInvoices();
 }
 
@@ -695,8 +753,10 @@ async function loadInvoice(id) {
 }
 
 async function createNewDraft() {
+  const entityId = refs.entityId.value || currentInvoice?.entityId || 'wawco';
   currentInvoice = null;
-  fillForm(baseInvoice());
+  fillForm(baseInvoice(entityId));
+  refs.entityId.disabled = false;
   setNotice('Blank draft ready. Save when you want to store it in Fin.');
 }
 
@@ -749,7 +809,8 @@ async function importJson(event) {
   if (!file) return;
   try {
     const parsed = JSON.parse(await file.text());
-    const invoice = { ...baseInvoice(), ...(parsed.invoice || parsed), id: '', invoiceNumber: 'Assigned on save' };
+    const source = parsed.invoice || parsed;
+    const invoice = { ...baseInvoice(source.entityId || refs.entityId.value || 'wawco'), ...source, id: '', invoiceNumber: 'Assigned on save' };
     fillForm(invoice);
     setNotice('JSON imported into the editor. Save draft to store it in Fin.');
   } catch (error) {
@@ -803,12 +864,34 @@ async function copyPaymentLink() {
   setNotice('Customer payment page copied.');
 }
 
+function applyEntitySelection() {
+  if (currentInvoice?.id) {
+    refs.entityId.value = currentInvoice.entityId || 'wawco';
+    setNotice('Duplicate the draft to change the issuing entity after a number has been assigned.');
+    return;
+  }
+  const defaults = entityInvoiceDefaults(refs.entityId.value || 'wawco');
+  refs.fromName.value = defaults.from.name || '';
+  refs.fromEmail.value = defaults.from.email || '';
+  refs.fromAddress.value = defaults.from.address || '';
+  refs.fromMercuryAccount.value = defaults.from.mercuryDestinationAccountId || '';
+  refs.payeeReportingScope.value = defaults.payeeReportingScope || defaults.entityId || 'wawco';
+  refs.terms.value = defaults.terms || refs.terms.value;
+  refs.paymentInstructions.value = defaults.paymentInstructions || refs.paymentInstructions.value;
+  currentInvoice = { ...(currentInvoice || baseInvoice(defaults.entityId)), entityId: defaults.entityId, entity: defaults.entity, from: defaults.from, payeeReportingScope: refs.payeeReportingScope.value };
+  formDirty = true;
+  renderPreview();
+  setNotice(`${defaults.entity?.name || 'Entity'} selected for this unsaved draft.`);
+}
+
 function exportMercuryPlan() {
   const invoice = currentFormInvoice();
   const lines = [
     '# Mercury invoice plan generated by WAWCO Fin',
     '# Review only. This file does not create, send, or update anything in Mercury.',
     'sendEmailOption: DontSend',
+    `entityId: ${yamlScalar(invoice.entityId || 'wawco')}`,
+    `entityName: ${yamlScalar(invoice.entity?.name || entityById(invoice.entityId || 'wawco')?.name || '')}`,
     `invoiceNumber: ${yamlScalar(invoice.invoiceNumber || 'unassigned')}`,
     `status: ${yamlScalar(invoice.status)}`,
     `invoiceDate: ${yamlScalar(invoice.invoiceDate)}`,
@@ -845,6 +928,8 @@ function exportMercuryPlan() {
   downloadText(`${safeFileName(invoice.invoiceNumber, 'wawco-mercury-plan')}.yaml`, `${lines.join('\n')}\n`, 'application/x-yaml');
   setNotice('Mercury plan downloaded. No Mercury API call was made.');
 }
+
+refs.entityId.addEventListener('change', applyEntitySelection);
 
 refs.form.addEventListener('input', (event) => {
   formDirty = true;

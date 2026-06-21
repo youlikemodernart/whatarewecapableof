@@ -1,4 +1,5 @@
 const state = {
+  entity: 'wawco',
   month: '',
   months: [],
   summary: null,
@@ -14,6 +15,8 @@ const refs = {
   dashboardPanel: $('#dashboard-panel'),
   state: $('#dashboard-state'),
   refresh: $('#refresh-summary'),
+  entityControl: $('#entity-control'),
+  entitySelect: $('#entity-select'),
   monthControl: $('#month-control'),
   monthSelect: $('#month-select'),
   metrics: $('#metrics'),
@@ -116,6 +119,31 @@ function paymentDetail(invoice = {}) {
   return [invoice.paymentRequestStatus ? titleize(invoice.paymentRequestStatus) : '', invoice.paymentExpiresAt ? `expires ${invoice.paymentExpiresAt.slice(0, 10)}` : ''].filter(Boolean).join(' · ');
 }
 
+function fallbackEntities() {
+  return [
+    { id: 'wawco', label: 'WAWCO', name: 'What are we capable of?' },
+    { id: 'ndg', label: 'NDG', name: 'Noah Development Group LLC' },
+    { id: 'combined', label: 'Combined', name: 'Combined' },
+  ];
+}
+
+function currentEntityLabel() {
+  return state.summary?.entityLabel || fallbackEntities().find((entity) => entity.id === state.entity)?.label || titleize(state.entity || 'wawco');
+}
+
+function renderEntitySelect() {
+  if (!refs.entitySelect) return;
+  const entities = Array.isArray(state.summary?.entities) && state.summary.entities.length ? state.summary.entities : fallbackEntities();
+  const selected = entities.some((entity) => entity.id === state.entity) ? state.entity : 'wawco';
+  refs.entitySelect.replaceChildren(...entities.map((entity) => {
+    const option = el('option', { value: entity.id, text: entity.name || entity.label || entity.id });
+    if (entity.id === selected) option.selected = true;
+    return option;
+  }));
+  refs.entitySelect.value = selected;
+  state.entity = selected;
+}
+
 function renderMonthSelect() {
   const months = state.months || [];
   refs.monthControl.hidden = !months.length;
@@ -136,7 +164,7 @@ function renderMetrics() {
     metricCard('Money out', money(metrics.outflowCents), `${summary.month || 'No month'} outflow`),
     metricCard('Net cash movement', money(metrics.netCents), `${metrics.transactionCount || 0} transactions`, netClass),
     metricCard('Future stack estimate', money(metrics.recurringKnownMonthlyCents), `${metrics.recurringTentativeCount || 0} tentative · ${metrics.recurringUnknownCount || 0} unknown`),
-    metricCard('Current recurring', money(metrics.recurringCurrentMonthlyCents), 'known WAWCO-incurred monthly costs'),
+    metricCard('Current recurring', money(metrics.recurringCurrentMonthlyCents), `known ${currentEntityLabel()}-incurred monthly costs`),
     metricCard('Card spend', money(metrics.cardSpendCents), `${metrics.cardExpenseCount || 0} vendor charges · ${money(metrics.possiblePersonalFundedCardCents)} possible personal-funded`),
     metricCard('Open invoices', money((metrics.mercuryInvoiceOpenCents || 0) + (metrics.hostedInvoiceOpenCents ?? metrics.localInvoiceOpenCents ?? 0)), 'Imported Mercury plus hosted Fin receivables'),
   );
@@ -253,12 +281,13 @@ function renderInvoices() {
     mini('Ready for review', money(hosted.readyForReviewCents || 0), `${hosted.readyForReviewCount || 0} invoice${hosted.readyForReviewCount === 1 ? '' : 's'}`),
     mini('Online links', money(hosted.paymentActiveCents || 0), `${hosted.paymentActiveCount || 0} active or processing link${hosted.paymentActiveCount === 1 ? '' : 's'}`),
     mini('Paid online', money(hosted.paymentPaidCents || 0), `${hosted.paymentPaidCount || 0} Stripe-paid invoice${hosted.paymentPaidCount === 1 ? '' : 's'}`),
-    mini('Private excluded', String(hosted.excludedPrivatePayeeCount || 0), 'private-payee records outside WAWCO totals'),
+    mini('Private excluded', String(hosted.excludedPrivatePayeeCount || 0), `private-payee records outside ${hosted.entityLabel || currentEntityLabel()} totals`),
   );
 
   const rows = (hosted.invoices || []).map((invoice) => el('tr', {}, [
     el('td', {}, [
       el('strong', { text: invoice.invoiceNumber || 'Invoice' }),
+      invoice.entityLabel ? el('small', { text: invoice.entityLabel }) : null,
       invoice.invoiceDate ? el('small', { text: `Invoice date ${invoice.invoiceDate}` }) : null,
     ]),
     el('td', { text: invoice.clientLabel || 'Untitled client' }),
@@ -447,6 +476,7 @@ async function deleteImport(id) {
 }
 
 function render() {
+  renderEntitySelect();
   renderMonthSelect();
   renderMetrics();
   renderRecurring();
@@ -463,13 +493,16 @@ function render() {
 
 async function loadSummary() {
   refs.state.textContent = 'Loading hosted finance summary...';
-  const monthParam = state.month ? `?month=${encodeURIComponent(state.month)}` : '';
-  const data = await getJson(`/api/finance/summary${monthParam}`);
+  const params = new URLSearchParams();
+  if (state.entity) params.set('entity', state.entity);
+  if (state.month) params.set('month', state.month);
+  const data = await getJson(`/api/finance/summary${params.toString() ? `?${params.toString()}` : ''}`);
   state.summary = data.summary || {};
+  state.entity = state.summary.entityFilter || state.entity || 'wawco';
   state.month = state.summary.month || state.month || '';
   state.months = state.summary.months || [];
   render();
-  refs.state.textContent = `Updated ${new Date(state.summary.generatedAt || Date.now()).toLocaleString()} · ${state.summary.month || 'no month'} · ${sourceKindLine()}`;
+  refs.state.textContent = `Updated ${new Date(state.summary.generatedAt || Date.now()).toLocaleString()} · ${currentEntityLabel()} · ${state.summary.month || 'no month'} · ${sourceKindLine()}`;
 }
 
 async function loadSession() {
@@ -489,6 +522,13 @@ async function loadSession() {
 refs.refresh.addEventListener('click', () => loadSummary().catch((error) => {
   refs.state.textContent = error.message;
 }));
+
+refs.entitySelect.addEventListener('change', () => {
+  state.entity = refs.entitySelect.value || 'wawco';
+  loadSummary().catch((error) => {
+    refs.state.textContent = error.message;
+  });
+});
 
 refs.monthSelect.addEventListener('change', () => {
   state.month = refs.monthSelect.value;

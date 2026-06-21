@@ -50,7 +50,7 @@ module.exports = async function handler(req, res) {
     const token = String(body.token || body.t || '').trim();
     const method = cleanPaymentMethod(body.method);
     const page = await getPublicPaymentPage(token);
-    const stripe = ensureStripeCheckoutEnabled(page.page.mode);
+    const stripe = ensureStripeCheckoutEnabled(page.page.mode, page.invoice?.entityId || 'wawco');
     const prepared = await createCustomerCheckoutPaymentRequest(token, method);
 
     if (prepared.reused) {

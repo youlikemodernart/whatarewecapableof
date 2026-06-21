@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const { stripePaymentConfig } = require('./_stripe');
 
 const SESSION_COOKIE = 'wawco_fin_session';
 const OAUTH_STATE_COOKIE = 'wawco_fin_oauth_state';
@@ -48,17 +49,7 @@ function storageConfig() {
 }
 
 function paymentConfig() {
-  const mode = env('STRIPE_MODE', 'disabled');
-  const secretKey = env('STRIPE_SECRET_KEY');
-  const webhookSecret = env('STRIPE_WEBHOOK_SECRET');
-  return {
-    configured: Boolean(secretKey && webhookSecret),
-    checkoutConfigured: Boolean(secretKey),
-    webhookConfigured: Boolean(webhookSecret),
-    mode,
-    testLinksEnabled: env('FIN_STRIPE_TEST_LINKS_ENABLED', '0') === '1',
-    liveLinksEnabled: env('FIN_STRIPE_LIVE_LINKS_ENABLED', '0') === '1',
-  };
+  return stripePaymentConfig();
 }
 
 function parseCookies(cookieHeader = '') {

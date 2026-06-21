@@ -1,9 +1,23 @@
 const crypto = require('crypto');
 const { makeHttpError } = require('./_http');
 const { paymentMethodQuote } = require('./_payment_pricing');
+const { cleanEntityId, entityById, invoiceEntities } = require('./_invoice');
 
 const STRIPE_API_BASE = 'https://api.stripe.com/v1';
 const WEBHOOK_TOLERANCE_SECONDS = 300;
+
+const STRIPE_ENV_BY_ACCOUNT_KEY = {
+  default: {
+    secretKey: 'STRIPE_SECRET_KEY',
+    webhookSecret: 'STRIPE_WEBHOOK_SECRET',
+    accountId: 'STRIPE_ACCOUNT_ID',
+  },
+  ndg: {
+    secretKey: 'STRIPE_SECRET_KEY_NDG',
+    webhookSecret: 'STRIPE_WEBHOOK_SECRET_NDG',
+    accountId: 'STRIPE_ACCOUNT_ID_NDG',
+  },
+};
 
 function env(name, fallback = '') {
   return String(process.env[name] ?? fallback).trim();
@@ -11,14 +25,6 @@ function env(name, fallback = '') {
 
 function paymentsMode() {
   return env('STRIPE_MODE', 'disabled').toLowerCase() || 'disabled';
-}
-
-function stripeSecretKey() {
-  return env('STRIPE_SECRET_KEY');
-}
-
-function stripeWebhookSecret() {
-  return env('STRIPE_WEBHOOK_SECRET');
 }
 
 function fakeStripeEnabled() {
@@ -33,14 +39,76 @@ function liveLinksEnabled() {
   return env('FIN_STRIPE_LIVE_LINKS_ENABLED', '0') === '1';
 }
 
+function stripeAccountKeyForEntity(entityId) {
+  return entityById(entityId).stripeAccountKey || 'default';
+}
+
+function stripeEnvNamesForEntity(entityId) {
+  const accountKey = stripeAccountKeyForEntity(entityId);
+  return STRIPE_ENV_BY_ACCOUNT_KEY[accountKey] || STRIPE_ENV_BY_ACCOUNT_KEY.default;
+}
+
+function stripeConfigForEntity(entityIdInput = 'wawco') {
+  const entityId = cleanEntityId(entityIdInput || 'wawco');
+  const entity = entityById(entityId);
+  const accountKey = stripeAccountKeyForEntity(entityId);
+  const envNames = stripeEnvNamesForEntity(entityId);
+  return {
+    entityId,
+    entityLabel: entity.label,
+    entityName: entity.name,
+    stripeAccountKey: accountKey,
+    secretKey: env(envNames.secretKey),
+    webhookSecret: env(envNames.webhookSecret),
+    accountId: env(envNames.accountId),
+    envNames,
+  };
+}
+
+function stripeEntityStatuses() {
+  return Object.fromEntries(invoiceEntities().map((entity) => {
+    const config = stripeConfigForEntity(entity.id);
+    return [entity.id, {
+      entityId: entity.id,
+      entityLabel: entity.label,
+      entityName: entity.name,
+      stripeAccountKey: config.stripeAccountKey,
+      configured: Boolean(config.secretKey && config.webhookSecret),
+      checkoutConfigured: Boolean(config.secretKey),
+      webhookConfigured: Boolean(config.webhookSecret),
+      accountConfigured: Boolean(config.accountId),
+      secretEnv: config.envNames.secretKey,
+      webhookEnv: config.envNames.webhookSecret,
+      accountEnv: config.envNames.accountId,
+    }];
+  }));
+}
+
+function stripePaymentConfig() {
+  const entities = stripeEntityStatuses();
+  const wawco = entities.wawco || {};
+  return {
+    configured: Boolean(wawco.configured),
+    checkoutConfigured: Boolean(wawco.checkoutConfigured),
+    webhookConfigured: Boolean(wawco.webhookConfigured),
+    mode: paymentsMode(),
+    fake: fakeStripeEnabled(),
+    testLinksEnabled: testLinksEnabled(),
+    liveLinksEnabled: liveLinksEnabled(),
+    entities,
+  };
+}
+
 function cleanMode(value) {
   const mode = String(value || '').trim().toLowerCase();
   if (mode !== 'test' && mode !== 'live') throw makeHttpError(400, 'Stripe mode must be test or live.');
   return mode;
 }
 
-function ensureStripeCheckoutEnabled(mode) {
+function ensureStripeCheckoutEnabled(mode, entityIdInput = 'wawco') {
   const requestedMode = cleanMode(mode);
+  const entityId = cleanEntityId(entityIdInput || 'wawco');
+  const config = stripeConfigForEntity(entityId);
   if (requestedMode === 'test' && !testLinksEnabled()) throw makeHttpError(403, 'Stripe test payment links are disabled.');
   if (requestedMode === 'live' && !liveLinksEnabled()) throw makeHttpError(403, 'Stripe live payment links are disabled.');
 
@@ -49,15 +117,22 @@ function ensureStripeCheckoutEnabled(mode) {
     throw makeHttpError(503, `Stripe is configured for ${configuredMode || 'disabled'} mode, not ${requestedMode} mode.`);
   }
 
-  const key = stripeSecretKey();
+  const key = config.secretKey;
   if (!fakeStripeEnabled()) {
-    if (!key) throw makeHttpError(503, 'Stripe secret key is not configured.');
-    if (!stripeWebhookSecret()) throw makeHttpError(503, 'Stripe webhook secret is not configured.');
-    if (requestedMode === 'test' && !key.startsWith('sk_test_')) throw makeHttpError(503, 'Stripe test mode requires a test secret key.');
-    if (requestedMode === 'live' && !key.startsWith('sk_live_')) throw makeHttpError(503, 'Stripe live mode requires a live secret key.');
+    if (!key) throw makeHttpError(503, `Stripe secret key is not configured for ${config.entityLabel}.`);
+    if (!config.webhookSecret) throw makeHttpError(503, `Stripe webhook secret is not configured for ${config.entityLabel}.`);
+    if (requestedMode === 'test' && !key.startsWith('sk_test_')) throw makeHttpError(503, `Stripe test mode requires a test secret key for ${config.entityLabel}.`);
+    if (requestedMode === 'live' && !key.startsWith('sk_live_')) throw makeHttpError(503, `Stripe live mode requires a live secret key for ${config.entityLabel}.`);
   }
 
-  return { mode: requestedMode, fake: fakeStripeEnabled() };
+  return {
+    mode: requestedMode,
+    fake: fakeStripeEnabled(),
+    entityId,
+    entityLabel: config.entityLabel,
+    stripeAccountKey: config.stripeAccountKey,
+    accountConfigured: Boolean(config.accountId),
+  };
 }
 
 function appendForm(form, key, value) {
@@ -110,8 +185,10 @@ function checkoutReturnUrls(paymentRequest, baseUrl) {
 }
 
 async function createCheckoutSession({ paymentRequest, invoice, baseUrl }) {
-  if (fakeStripeEnabled()) return fakeCheckoutSession(paymentRequest);
+  const entityId = cleanEntityId(paymentRequest.entityId || invoice.entityId || 'wawco');
+  if (fakeStripeEnabled()) return fakeCheckoutSession({ ...paymentRequest, entityId });
 
+  const config = stripeConfigForEntity(entityId);
   const form = new URLSearchParams();
   const quote = paymentRequest.paymentMethodFamily && paymentRequest.paymentMethodFamily !== 'legacy'
     ? paymentMethodQuote(paymentRequest.baseAmountCents || paymentRequest.amountCents, paymentRequest.paymentMethodFamily)
@@ -124,11 +201,12 @@ async function createCheckoutSession({ paymentRequest, invoice, baseUrl }) {
   appendForm(form, 'customer_email', invoice.client?.email || '');
   if (paymentRequest.paymentMethodType) appendForm(form, 'payment_method_types[0]', paymentRequest.paymentMethodType);
 
+  const entityName = invoice.entity?.name || invoice.from?.company || invoice.from?.name || config.entityName;
   addCheckoutLine(form, 0, {
     amountCents: quote ? quote.baseAmountCents : paymentRequest.amountCents,
     currency: paymentRequest.currency,
     name: checkoutLineName(paymentRequest),
-    description: `Payment for ${paymentRequest.invoiceNumber || 'What are we capable of? invoice'}`,
+    description: `Payment for ${paymentRequest.invoiceNumber || entityName || 'invoice'}`,
   });
   if (quote?.method === 'card' && quote.clientProcessingCostCents > 0) {
     addCheckoutLine(form, 1, {
@@ -139,7 +217,12 @@ async function createCheckoutSession({ paymentRequest, invoice, baseUrl }) {
     });
   }
 
-  for (const [key, value] of Object.entries(paymentRequest.metadata || {})) {
+  const metadata = {
+    ...(paymentRequest.metadata || {}),
+    fin_entity_id: entityId,
+    fin_stripe_account_key: config.stripeAccountKey,
+  };
+  for (const [key, value] of Object.entries(metadata)) {
     appendForm(form, `metadata[${key}]`, value);
     appendForm(form, `payment_intent_data[metadata][${key}]`, value);
   }
@@ -147,7 +230,7 @@ async function createCheckoutSession({ paymentRequest, invoice, baseUrl }) {
   const response = await fetch(`${STRIPE_API_BASE}/checkout/sessions`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${stripeSecretKey()}`,
+      Authorization: `Bearer ${config.secretKey}`,
       'Content-Type': 'application/x-www-form-urlencoded',
       'Idempotency-Key': paymentRequest.idempotencyKey,
     },
@@ -216,13 +299,13 @@ function reconciliationFromCharge(charge = {}) {
   };
 }
 
-async function retrieveChargeReconciliation(chargeId) {
+async function retrieveChargeReconciliation(chargeId, entityIdInput = 'wawco') {
   const id = String(chargeId || '').trim();
   if (!id || fakeStripeEnabled()) return null;
-  const key = stripeSecretKey();
-  if (!key) return null;
+  const config = stripeConfigForEntity(entityIdInput);
+  if (!config.secretKey) return null;
   const response = await fetch(`${STRIPE_API_BASE}/charges/${encodeURIComponent(id)}?expand[]=balance_transaction`, {
-    headers: { Authorization: `Bearer ${key}` },
+    headers: { Authorization: `Bearer ${config.secretKey}` },
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok) return { chargeId: id, reconciliationStatus: 'reconciliation_fetch_failed', error: data.error?.message || `Stripe charge fetch failed: ${response.status}` };
@@ -251,20 +334,31 @@ function timingSafeHexEqual(left, right) {
   return crypto.timingSafeEqual(a, b);
 }
 
-function verifyStripeWebhook(rawBody, signatureHeader) {
-  const secret = stripeWebhookSecret();
-  if (!secret) throw makeHttpError(503, 'Stripe webhook secret is not configured.');
+function webhookCandidates(entityIdInput = '') {
+  const specific = String(entityIdInput || '').trim() ? [stripeConfigForEntity(entityIdInput)] : invoiceEntities().map((entity) => stripeConfigForEntity(entity.id));
+  return specific.filter((config) => config.webhookSecret);
+}
+
+function verifyStripeWebhook(rawBody, signatureHeader, entityIdInput = '') {
   const parsed = parseStripeSignature(signatureHeader);
   const timestamp = Number(parsed.t?.[0] || 0);
   if (!Number.isFinite(timestamp) || timestamp <= 0) throw makeHttpError(401, 'Stripe webhook signature timestamp is missing.');
   const age = Math.abs(Math.floor(Date.now() / 1000) - timestamp);
   if (age > WEBHOOK_TOLERANCE_SECONDS) throw makeHttpError(401, 'Stripe webhook signature timestamp is stale.');
+  const candidates = webhookCandidates(entityIdInput);
+  if (!candidates.length) throw makeHttpError(503, 'Stripe webhook secret is not configured.');
   const signedPayload = Buffer.concat([Buffer.from(`${timestamp}.`, 'utf8'), Buffer.isBuffer(rawBody) ? rawBody : Buffer.from(String(rawBody), 'utf8')]);
-  const expected = crypto.createHmac('sha256', secret).update(signedPayload).digest('hex');
   const signatures = parsed.v1 || [];
-  if (!signatures.some((candidate) => timingSafeHexEqual(candidate, expected))) throw makeHttpError(401, 'Stripe webhook signature is invalid.');
+  const matched = candidates.find((candidate) => {
+    const expected = crypto.createHmac('sha256', candidate.webhookSecret).update(signedPayload).digest('hex');
+    return signatures.some((signature) => timingSafeHexEqual(signature, expected));
+  });
+  if (!matched) throw makeHttpError(401, 'Stripe webhook signature is invalid.');
   try {
-    return JSON.parse(Buffer.isBuffer(rawBody) ? rawBody.toString('utf8') : String(rawBody));
+    const event = JSON.parse(Buffer.isBuffer(rawBody) ? rawBody.toString('utf8') : String(rawBody));
+    event.finEntityId = matched.entityId;
+    event.finStripeAccountKey = matched.stripeAccountKey;
+    return event;
   } catch {
     throw makeHttpError(400, 'Stripe webhook payload is invalid JSON.');
   }
@@ -285,4 +379,6 @@ module.exports = {
   reconciliationFromCharge,
   verifyStripeWebhook,
   signTestWebhookPayload,
+  stripeConfigForEntity,
+  stripePaymentConfig,
 };

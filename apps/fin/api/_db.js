@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 const { neon } = require('@neondatabase/serverless');
-const { normalizeInvoice, invoiceClientLabel, invoiceListItem } = require('./_invoice');
+const { normalizeInvoice, invoiceClientLabel, invoiceListItem, cleanEntityId, invoiceEntities, publicEntity, entityById } = require('./_invoice');
 const { normalizeFinanceImport, stableFinanceImportContentSha256, summarizeFinanceImport } = require('./_finance_import');
 const { cleanPaymentMethod, customerPaymentMethods, paymentMethodQuote } = require('./_payment_pricing');
 const { reconciliationFromCharge, retrieveChargeReconciliation } = require('./_stripe');
@@ -100,6 +100,27 @@ function parseStoredInvoice(value) {
   return value;
 }
 
+function entitySeedRows() {
+  return invoiceEntities().map((entity) => ({
+    ...entity,
+    legalName: entity.legalName || entity.name,
+    remitInstructions: entityById(entity.id).remitInstructions || '',
+    branding: entity.branding || {},
+  }));
+}
+
+function stripeAccountKeyForEntity(entityId) {
+  return entityById(entityId).stripeAccountKey || 'default';
+}
+
+function invoiceNumberPrefixForEntity(entityId) {
+  return cleanSingleLine(entityById(entityId).invoiceCodePrefix, 20).toUpperCase().replace(/[^A-Z0-9]+/g, '').slice(0, 12);
+}
+
+function publicEntityForInvoice(invoice = {}) {
+  return publicEntity(cleanEntityId(invoice.entityId || invoice.entity_id || 'wawco'));
+}
+
 async function ensureSchema() {
   if (schemaReady) return;
   const db = sql();
@@ -132,14 +153,77 @@ async function ensureSchema() {
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
   )`;
 
-  await db`CREATE TABLE IF NOT EXISTS fin_invoice_daily_sequences (
-    date_key TEXT PRIMARY KEY,
-    next_number INTEGER NOT NULL DEFAULT 1,
+  await db`CREATE TABLE IF NOT EXISTS fin_entities (
+    id TEXT PRIMARY KEY,
+    key TEXT NOT NULL UNIQUE,
+    label TEXT NOT NULL DEFAULT '',
+    name TEXT NOT NULL DEFAULT '',
+    legal_name TEXT NOT NULL DEFAULT '',
+    address TEXT NOT NULL DEFAULT '',
+    email TEXT NOT NULL DEFAULT '',
+    invoice_code_prefix TEXT NOT NULL DEFAULT '',
+    reporting_scope TEXT NOT NULL DEFAULT 'wawco',
+    stripe_account_key TEXT NOT NULL DEFAULT 'default',
+    remit_instructions TEXT NOT NULL DEFAULT '',
+    branding_json JSONB NOT NULL DEFAULT '{}'::jsonb,
+    active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
   )`;
+  for (const entity of entitySeedRows()) {
+    await db`
+      INSERT INTO fin_entities (id, key, label, name, legal_name, address, email, invoice_code_prefix, reporting_scope, stripe_account_key, remit_instructions, branding_json, active, created_at, updated_at)
+      VALUES (${entity.id}, ${entity.key}, ${entity.label}, ${entity.name}, ${entity.legalName}, ${entity.address || ''}, ${entity.email || ''}, ${entity.invoiceCodePrefix || ''}, ${entity.reportingScope || entity.id}, ${entity.stripeAccountKey || 'default'}, ${entity.remitInstructions || ''}, ${JSON.stringify(entity.branding || {})}::jsonb, TRUE, now(), now())
+      ON CONFLICT (id) DO UPDATE SET
+        key = EXCLUDED.key,
+        label = EXCLUDED.label,
+        name = EXCLUDED.name,
+        legal_name = EXCLUDED.legal_name,
+        address = EXCLUDED.address,
+        email = EXCLUDED.email,
+        invoice_code_prefix = EXCLUDED.invoice_code_prefix,
+        reporting_scope = EXCLUDED.reporting_scope,
+        stripe_account_key = EXCLUDED.stripe_account_key,
+        remit_instructions = EXCLUDED.remit_instructions,
+        branding_json = EXCLUDED.branding_json,
+        active = TRUE,
+        updated_at = now()
+    `;
+  }
+
+  await db`CREATE TABLE IF NOT EXISTS fin_invoice_daily_sequences (
+    entity_id TEXT NOT NULL DEFAULT 'wawco',
+    date_key TEXT NOT NULL,
+    next_number INTEGER NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    PRIMARY KEY (entity_id, date_key)
+  )`;
+  await db`ALTER TABLE fin_invoice_daily_sequences ADD COLUMN IF NOT EXISTS entity_id TEXT NOT NULL DEFAULT 'wawco'`;
+  await db`UPDATE fin_invoice_daily_sequences SET entity_id = 'wawco' WHERE entity_id IS NULL OR entity_id = ''`;
+  await db`
+    DO $$
+    BEGIN
+      IF EXISTS (
+        SELECT 1 FROM pg_constraint
+        WHERE conrelid = 'fin_invoice_daily_sequences'::regclass
+          AND conname = 'fin_invoice_daily_sequences_pkey'
+          AND pg_get_constraintdef(oid) <> 'PRIMARY KEY (entity_id, date_key)'
+      ) THEN
+        ALTER TABLE fin_invoice_daily_sequences DROP CONSTRAINT fin_invoice_daily_sequences_pkey;
+      END IF;
+      IF NOT EXISTS (
+        SELECT 1 FROM pg_constraint
+        WHERE conrelid = 'fin_invoice_daily_sequences'::regclass
+          AND conname = 'fin_invoice_daily_sequences_pkey'
+      ) THEN
+        ALTER TABLE fin_invoice_daily_sequences ADD CONSTRAINT fin_invoice_daily_sequences_pkey PRIMARY KEY (entity_id, date_key);
+      END IF;
+    END $$;
+  `;
 
   await db`CREATE TABLE IF NOT EXISTS fin_invoices (
     id TEXT PRIMARY KEY,
+    entity_id TEXT NOT NULL DEFAULT 'wawco' REFERENCES fin_entities(id),
     invoice_number TEXT NOT NULL UNIQUE,
     status TEXT NOT NULL DEFAULT 'draft',
     client_label TEXT NOT NULL DEFAULT 'Untitled client',
@@ -164,6 +248,18 @@ async function ensureSchema() {
     deleted_at TIMESTAMPTZ
   )`;
 
+  await db`ALTER TABLE fin_invoices ADD COLUMN IF NOT EXISTS entity_id TEXT NOT NULL DEFAULT 'wawco'`;
+  await db`UPDATE fin_invoices SET entity_id = 'wawco' WHERE entity_id IS NULL OR entity_id = ''`;
+  await db`
+    DO $$
+    BEGIN
+      IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'fin_invoices_entity_id_fk' AND conrelid = 'fin_invoices'::regclass) THEN
+        ALTER TABLE fin_invoices ADD CONSTRAINT fin_invoices_entity_id_fk FOREIGN KEY (entity_id) REFERENCES fin_entities(id) NOT VALID;
+      END IF;
+    END $$;
+  `;
+  await db`ALTER TABLE fin_invoices VALIDATE CONSTRAINT fin_invoices_entity_id_fk`;
+  await db`UPDATE fin_invoices SET data_json = jsonb_set(data_json, '{entityId}', to_jsonb(entity_id), true) WHERE data_json->>'entityId' IS NULL OR data_json->>'entityId' = ''`;
   await db`ALTER TABLE fin_invoices ADD COLUMN IF NOT EXISTS payment_status TEXT NOT NULL DEFAULT 'none'`;
   await db`ALTER TABLE fin_invoices ADD COLUMN IF NOT EXISTS current_payment_request_id TEXT NOT NULL DEFAULT ''`;
   await db`ALTER TABLE fin_invoices ADD COLUMN IF NOT EXISTS paid_at TIMESTAMPTZ`;
@@ -171,6 +267,7 @@ async function ensureSchema() {
   await db`CREATE INDEX IF NOT EXISTS fin_invoices_updated_at_idx ON fin_invoices (updated_at DESC)`;
   await db`CREATE INDEX IF NOT EXISTS fin_invoices_status_idx ON fin_invoices (status)`;
   await db`CREATE INDEX IF NOT EXISTS fin_invoices_created_by_idx ON fin_invoices (created_by_user_id)`;
+  await db`CREATE INDEX IF NOT EXISTS fin_invoices_entity_idx ON fin_invoices (entity_id, updated_at DESC) WHERE deleted_at IS NULL`;
   await db`CREATE INDEX IF NOT EXISTS fin_invoices_payment_status_idx ON fin_invoices (payment_status)`;
 
   await db`CREATE TABLE IF NOT EXISTS fin_invoice_events (
@@ -188,6 +285,7 @@ async function ensureSchema() {
   await db`CREATE TABLE IF NOT EXISTS fin_invoice_payment_requests (
     id TEXT PRIMARY KEY,
     invoice_id TEXT NOT NULL REFERENCES fin_invoices(id),
+    entity_id TEXT NOT NULL DEFAULT 'wawco' REFERENCES fin_entities(id),
     invoice_number TEXT NOT NULL DEFAULT '',
     invoice_snapshot_sha256 TEXT NOT NULL DEFAULT '',
     stripe_mode TEXT NOT NULL DEFAULT 'test',
@@ -211,6 +309,17 @@ async function ensureSchema() {
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     deleted_at TIMESTAMPTZ
   )`;
+  await db`ALTER TABLE fin_invoice_payment_requests ADD COLUMN IF NOT EXISTS entity_id TEXT NOT NULL DEFAULT 'wawco'`;
+  await db`UPDATE fin_invoice_payment_requests pr SET entity_id = inv.entity_id FROM fin_invoices inv WHERE pr.invoice_id = inv.id AND (pr.entity_id IS NULL OR pr.entity_id = '' OR pr.entity_id = 'wawco')`;
+  await db`
+    DO $$
+    BEGIN
+      IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'fin_invoice_payment_requests_entity_id_fk' AND conrelid = 'fin_invoice_payment_requests'::regclass) THEN
+        ALTER TABLE fin_invoice_payment_requests ADD CONSTRAINT fin_invoice_payment_requests_entity_id_fk FOREIGN KEY (entity_id) REFERENCES fin_entities(id) NOT VALID;
+      END IF;
+    END $$;
+  `;
+  await db`ALTER TABLE fin_invoice_payment_requests VALIDATE CONSTRAINT fin_invoice_payment_requests_entity_id_fk`;
   await db`ALTER TABLE fin_invoice_payment_requests ADD COLUMN IF NOT EXISTS payment_method_family TEXT NOT NULL DEFAULT 'legacy'`;
   await db`ALTER TABLE fin_invoice_payment_requests ADD COLUMN IF NOT EXISTS payment_method_type TEXT NOT NULL DEFAULT ''`;
   await db`ALTER TABLE fin_invoice_payment_requests ADD COLUMN IF NOT EXISTS fee_policy TEXT NOT NULL DEFAULT 'legacy_invoice_total'`;
@@ -242,6 +351,7 @@ async function ensureSchema() {
 
   await db`CREATE TABLE IF NOT EXISTS fin_stripe_events (
     stripe_event_id TEXT PRIMARY KEY,
+    entity_id TEXT NOT NULL DEFAULT 'wawco',
     stripe_mode TEXT NOT NULL DEFAULT 'test',
     event_type TEXT NOT NULL DEFAULT '',
     stripe_created_at TIMESTAMPTZ,
@@ -252,8 +362,10 @@ async function ensureSchema() {
     status TEXT NOT NULL DEFAULT 'received',
     safe_summary_json JSONB NOT NULL DEFAULT '{}'::jsonb
   )`;
+  await db`ALTER TABLE fin_stripe_events ADD COLUMN IF NOT EXISTS entity_id TEXT NOT NULL DEFAULT 'wawco'`;
   await db`CREATE INDEX IF NOT EXISTS fin_stripe_events_invoice_idx ON fin_stripe_events (invoice_id, received_at DESC)`;
   await db`CREATE INDEX IF NOT EXISTS fin_stripe_events_payment_request_idx ON fin_stripe_events (payment_request_id, received_at DESC)`;
+  await db`CREATE INDEX IF NOT EXISTS fin_stripe_events_entity_idx ON fin_stripe_events (entity_id, received_at DESC)`;
 
   await db`CREATE TABLE IF NOT EXISTS fin_profiles (
     id TEXT PRIMARY KEY,
@@ -359,6 +471,13 @@ function clientInvoiceCode(invoice = {}) {
   return code || 'CLIENT';
 }
 
+function numberingExample(padding) {
+  return {
+    wawco: `SUBSTRATE-052626-${String(1).padStart(padding, '0')}`,
+    ndg: `NDG-SUBSTRATE-052626-${String(1).padStart(padding, '0')}`,
+  };
+}
+
 async function numberingSettings() {
   await ensureSchema();
   const db = sql();
@@ -369,13 +488,15 @@ async function numberingSettings() {
     RETURNING sequence_padding
   `;
   const padding = Math.max(1, Math.min(8, Number(rows[0]?.sequence_padding || 2)));
+  const examples = numberingExample(padding);
   return {
     mode: 'client-date-daily',
     clientSource: 'client.invoiceCode, then client company/name',
     dateFormat: 'MMDDYY',
-    sequenceScope: 'date-global',
+    sequenceScope: 'entity-date',
     sequencePadding: padding,
-    example: `SUBSTRATE-052626-${String(1).padStart(padding, '0')}`,
+    example: examples.wawco,
+    examples,
   };
 }
 
@@ -393,13 +514,15 @@ async function updateNumberingSettings(input = {}) {
     RETURNING sequence_padding
   `;
   const padding = Math.max(1, Math.min(8, Number(rows[0]?.sequence_padding || sequencePadding)));
+  const examples = numberingExample(padding);
   return {
     mode: 'client-date-daily',
     clientSource: 'client.invoiceCode, then client company/name',
     dateFormat: 'MMDDYY',
-    sequenceScope: 'date-global',
+    sequenceScope: 'entity-date',
     sequencePadding: padding,
-    example: `SUBSTRATE-052626-${String(1).padStart(padding, '0')}`,
+    example: examples.wawco,
+    examples,
   };
 }
 
@@ -407,23 +530,28 @@ async function nextInvoiceNumber(invoice = {}) {
   await ensureSchema();
   const db = sql();
   const settings = await numberingSettings();
+  const entityId = cleanEntityId(invoice.entityId || invoice.entity_id || 'wawco');
   const dateKey = dateKeyForInvoiceDate(invoice.invoiceDate);
   const clientCode = clientInvoiceCode(invoice);
+  const entityPrefix = invoiceNumberPrefixForEntity(entityId);
+  const prefixPart = entityPrefix ? `${entityPrefix}-` : '';
   const padding = Number(settings.sequencePadding || 2);
 
   for (let attempt = 0; attempt < 25; attempt += 1) {
-    const datePattern = `^[A-Z0-9]+-${dateKey}-(\\d+)$`;
-    const dateLike = `%-${dateKey}-%`;
+    const datePattern = entityPrefix
+      ? `^${entityPrefix}-[A-Z0-9]+-${dateKey}-(\\d+)$`
+      : `^[A-Z0-9]+-${dateKey}-(\\d+)$`;
+    const dateLike = entityPrefix ? `${entityPrefix}-%-${dateKey}-%` : `%-${dateKey}-%`;
     const rows = await db`
       WITH existing AS (
         SELECT COALESCE(MAX((substring(invoice_number FROM ${datePattern}))::int), 0) AS max_sequence
         FROM fin_invoices
-        WHERE invoice_number LIKE ${dateLike}
+        WHERE entity_id = ${entityId} AND invoice_number LIKE ${dateLike}
       ), allocated AS (
-        INSERT INTO fin_invoice_daily_sequences (date_key, next_number, updated_at)
-        SELECT ${dateKey}, existing.max_sequence + 2, now()
+        INSERT INTO fin_invoice_daily_sequences (entity_id, date_key, next_number, updated_at)
+        SELECT ${entityId}, ${dateKey}, existing.max_sequence + 2, now()
         FROM existing
-        ON CONFLICT (date_key) DO UPDATE SET
+        ON CONFLICT (entity_id, date_key) DO UPDATE SET
           next_number = GREATEST(fin_invoice_daily_sequences.next_number, (SELECT max_sequence + 1 FROM existing)) + 1,
           updated_at = now()
         RETURNING next_number - 1 AS sequence
@@ -432,7 +560,7 @@ async function nextInvoiceNumber(invoice = {}) {
     `;
     const sequence = Number(rows[0]?.sequence || 1);
     const suffix = String(sequence).padStart(padding, '0');
-    const candidate = `${clientCode}-${dateKey}-${suffix}`;
+    const candidate = `${prefixPart}${clientCode}-${dateKey}-${suffix}`;
     const collision = await db`SELECT id FROM fin_invoices WHERE invoice_number = ${candidate} LIMIT 1`;
     if (!collision[0]) return candidate;
   }
@@ -440,12 +568,47 @@ async function nextInvoiceNumber(invoice = {}) {
   throw makeError(409, 'Could not allocate a unique invoice number for that date.');
 }
 
+async function listEntities(user) {
+  await ensureUser(user);
+  await ensureSchema();
+  const db = sql();
+  const rows = await db`
+    SELECT id, key, label, name, legal_name, email, invoice_code_prefix, reporting_scope, stripe_account_key, branding_json, updated_at::text AS updated_at
+    FROM fin_entities
+    WHERE active = TRUE
+    ORDER BY CASE WHEN id = 'wawco' THEN 0 WHEN id = 'ndg' THEN 1 ELSE 2 END, label
+  `;
+  return rows.map((row) => ({
+    id: cleanEntityId(row.id),
+    key: row.key || row.id,
+    label: row.label || publicEntity(row.id).label,
+    name: row.name || publicEntity(row.id).name,
+    legalName: row.legal_name || row.name || publicEntity(row.id).legalName,
+    email: row.email || '',
+    invoiceCodePrefix: row.invoice_code_prefix || '',
+    reportingScope: row.reporting_scope || row.id,
+    stripeAccountKey: row.stripe_account_key || stripeAccountKeyForEntity(row.id),
+    branding: row.branding_json || {},
+    updatedAt: row.updated_at || '',
+  }));
+}
+
+async function invoiceEntityIdForUser(user, invoiceId) {
+  const currentUser = await ensureUser(user);
+  const db = sql();
+  const rows = currentUser.role === 'admin'
+    ? await db`SELECT entity_id FROM fin_invoices WHERE id = ${invoiceId} AND deleted_at IS NULL LIMIT 1`
+    : await db`SELECT entity_id FROM fin_invoices WHERE id = ${invoiceId} AND created_by_user_id = ${currentUser.id} AND deleted_at IS NULL LIMIT 1`;
+  if (!rows[0]) return '';
+  return cleanEntityId(rows[0].entity_id || 'wawco');
+}
+
 async function listInvoices(user) {
   const currentUser = await ensureUser(user);
   const db = sql();
   const rows = currentUser.role === 'admin'
     ? await db`
-      SELECT inv.id, inv.invoice_number, inv.status, inv.client_label,
+      SELECT inv.id, inv.entity_id, inv.invoice_number, inv.status, inv.client_label,
         inv.invoice_date::text AS invoice_date, inv.due_date::text AS due_date,
         inv.total_cents, inv.updated_at::text AS updated_at, usr.email AS created_by_email
       FROM fin_invoices inv
@@ -455,7 +618,7 @@ async function listInvoices(user) {
       LIMIT 100
     `
     : await db`
-      SELECT inv.id, inv.invoice_number, inv.status, inv.client_label,
+      SELECT inv.id, inv.entity_id, inv.invoice_number, inv.status, inv.client_label,
         inv.invoice_date::text AS invoice_date, inv.due_date::text AS due_date,
         inv.total_cents, inv.updated_at::text AS updated_at, usr.email AS created_by_email
       FROM fin_invoices inv
@@ -476,7 +639,8 @@ async function createInvoice(user, input = {}) {
     throw makeError(403, 'Only Fin admins can create approved, issued, paid, or void invoices.');
   }
   const invoiceNumber = await nextInvoiceNumber(invoiceDraft);
-  const invoice = normalizeInvoice({ ...invoiceDraft, invoiceNumber }, { id, invoiceNumber });
+  const invoice = normalizeInvoice({ ...invoiceDraft, invoiceNumber }, { id, invoiceNumber, entityId: invoiceDraft.entityId });
+  const entityId = cleanEntityId(invoice.entityId);
   const label = invoiceClientLabel(invoice);
   const invoiceDate = nullableDate(invoice.invoiceDate);
   const dueDate = nullableDate(invoice.dueDate);
@@ -486,11 +650,11 @@ async function createInvoice(user, input = {}) {
   const startsPaid = invoice.status === 'paid';
   const rows = await db`
     INSERT INTO fin_invoices (
-      id, invoice_number, status, client_label, invoice_date, due_date, currency, project, created_by_user_id,
+      id, entity_id, invoice_number, status, client_label, invoice_date, due_date, currency, project, created_by_user_id,
       approved_by_user_id, approved_at, issued_at, paid_at,
       subtotal_cents, discount_cents, taxable_cents, tax_cents, shipping_cents, total_cents, data_json, created_at, updated_at
     ) VALUES (
-      ${id}, ${invoice.invoiceNumber}, ${invoice.status}, ${label}, ${invoiceDate}, ${dueDate}, ${invoice.currency}, ${invoice.project}, ${currentUser.id},
+      ${id}, ${entityId}, ${invoice.invoiceNumber}, ${invoice.status}, ${label}, ${invoiceDate}, ${dueDate}, ${invoice.currency}, ${invoice.project}, ${currentUser.id},
       ${startsApproved ? currentUser.id : null}, ${startsApproved ? new Date().toISOString() : null}, ${startsIssued ? new Date().toISOString() : null}, ${startsPaid ? new Date().toISOString() : null},
       ${invoice.totals.subtotalCents}, ${invoice.totals.discountCents}, ${invoice.totals.taxableCents}, ${invoice.totals.taxCents}, ${invoice.totals.shippingCents}, ${invoice.totals.totalCents}, ${data}::jsonb, now(), now()
     )
@@ -518,7 +682,11 @@ async function updateInvoice(user, id, input = {}) {
   if (currentUser.role !== 'admin' && (adminOnlyStatuses.has(requestedStatus) || adminOnlyStatuses.has(existing.status))) {
     throw makeError(403, 'Only Fin admins can approve, issue, mark paid, void, or edit approved invoices.');
   }
-  const invoice = normalizeInvoice({ ...existing, ...input, id, invoiceNumber: existing.invoiceNumber }, { id, invoiceNumber: existing.invoiceNumber });
+  const requestedEntityId = cleanEntityId(input.entityId || input.entity_id || existing.entityId || 'wawco');
+  const existingEntityId = cleanEntityId(existing.entityId || 'wawco');
+  if (requestedEntityId !== existingEntityId) throw makeError(409, 'Invoice entity cannot be changed after the invoice number is assigned. Duplicate the draft under the other entity instead.');
+  const invoice = normalizeInvoice({ ...existing, ...input, id, invoiceNumber: existing.invoiceNumber, entityId: existingEntityId }, { id, invoiceNumber: existing.invoiceNumber, entityId: existingEntityId });
+  const entityId = cleanEntityId(invoice.entityId);
   const label = invoiceClientLabel(invoice);
   const invoiceDate = nullableDate(invoice.invoiceDate);
   const dueDate = nullableDate(invoice.dueDate);
@@ -542,7 +710,7 @@ async function updateInvoice(user, id, input = {}) {
   const rows = currentUser.role === 'admin'
     ? await db`
       UPDATE fin_invoices SET
-        status = ${invoice.status}, client_label = ${label}, invoice_date = ${invoiceDate}, due_date = ${dueDate}, currency = ${invoice.currency}, project = ${invoice.project},
+        entity_id = ${entityId}, status = ${invoice.status}, client_label = ${label}, invoice_date = ${invoiceDate}, due_date = ${dueDate}, currency = ${invoice.currency}, project = ${invoice.project},
         approved_by_user_id = CASE WHEN ${invoice.status} = 'approved' THEN ${currentUser.id} ELSE approved_by_user_id END,
         approved_at = CASE WHEN ${invoice.status} = 'approved' AND approved_at IS NULL THEN now() ELSE approved_at END,
         issued_at = CASE WHEN ${invoice.status} = 'issued' AND issued_at IS NULL THEN now() ELSE issued_at END,
@@ -553,7 +721,7 @@ async function updateInvoice(user, id, input = {}) {
     `
     : await db`
       UPDATE fin_invoices SET
-        status = ${invoice.status}, client_label = ${label}, invoice_date = ${invoiceDate}, due_date = ${dueDate}, currency = ${invoice.currency}, project = ${invoice.project},
+        entity_id = ${entityId}, status = ${invoice.status}, client_label = ${label}, invoice_date = ${invoiceDate}, due_date = ${dueDate}, currency = ${invoice.currency}, project = ${invoice.project},
         subtotal_cents = ${invoice.totals.subtotalCents}, discount_cents = ${invoice.totals.discountCents}, taxable_cents = ${invoice.totals.taxableCents}, tax_cents = ${invoice.totals.taxCents}, shipping_cents = ${invoice.totals.shippingCents}, total_cents = ${invoice.totals.totalCents},
         data_json = ${data}::jsonb, updated_at = now()
       WHERE id = ${id} AND created_by_user_id = ${currentUser.id} AND deleted_at IS NULL
@@ -623,6 +791,7 @@ function stableJson(value) {
 function invoicePaymentSnapshot(invoice = {}) {
   return {
     invoiceId: invoice.id || '',
+    entityId: cleanEntityId(invoice.entityId || 'wawco'),
     invoiceNumber: invoice.invoiceNumber || '',
     invoiceDate: invoice.invoiceDate || '',
     dueDate: invoice.dueDate || '',
@@ -702,7 +871,7 @@ function activePaymentStatuses() {
 
 function paymentRequestSelectFields(prefix = '') {
   const p = prefix ? `${prefix}.` : '';
-  return `id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+  return `id, invoice_id, entity_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
       payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_charge_id, stripe_customer_id,
       payment_method_family, payment_method_type, fee_policy, base_amount_cents, client_processing_cost_cents,
       collection_amount_cents, expected_stripe_fee_cents, expected_net_cents, expected_fee_formula_json,
@@ -720,6 +889,8 @@ function paymentRequestSummary(row) {
   return {
     id: row.id,
     invoiceId: row.invoice_id || row.invoiceId || '',
+    entityId: cleanEntityId(row.entity_id || row.entityId || row.metadata_json?.fin_entity_id || row.metadata?.fin_entity_id || 'wawco'),
+    stripeAccountKey: stripeAccountKeyForEntity(row.entity_id || row.entityId || row.metadata_json?.fin_entity_id || row.metadata?.fin_entity_id || 'wawco'),
     invoiceNumber: row.invoice_number || row.invoiceNumber || '',
     snapshotSha256: row.invoice_snapshot_sha256 || row.snapshotSha256 || '',
     mode: row.stripe_mode || row.mode || 'test',
@@ -765,7 +936,7 @@ async function latestPaymentRequestForInvoice(user, invoiceId) {
     : await db`SELECT id FROM fin_invoices WHERE id = ${invoiceId} AND created_by_user_id = ${currentUser.id} AND deleted_at IS NULL LIMIT 1`;
   if (!invoiceRows[0]) return null;
   const rows = await db`
-    SELECT id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+    SELECT id, invoice_id, entity_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
       payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_charge_id, stripe_customer_id,
       payment_method_family, payment_method_type, fee_policy, base_amount_cents, client_processing_cost_cents,
       collection_amount_cents, expected_stripe_fee_cents, expected_net_cents, expected_fee_formula_json,
@@ -783,7 +954,7 @@ async function latestPaymentRequestForInvoice(user, invoiceId) {
 async function loadApprovedInvoiceForPayment(invoiceId) {
   const db = sql();
   const invoiceRows = await db`
-    SELECT id, invoice_number, status, currency, total_cents, approved_by_user_id, data_json
+    SELECT id, entity_id, invoice_number, status, currency, total_cents, approved_by_user_id, data_json
     FROM fin_invoices
     WHERE id = ${invoiceId} AND deleted_at IS NULL
     LIMIT 1
@@ -808,7 +979,7 @@ async function createInvoicePaymentRequest(user, invoiceId, modeInput = 'test') 
   const mode = cleanStripeMode(modeInput);
   const db = sql();
   const invoiceRows = await db`
-    SELECT id, invoice_number, status, currency, total_cents, approved_by_user_id, data_json
+    SELECT id, entity_id, invoice_number, status, currency, total_cents, approved_by_user_id, data_json
     FROM fin_invoices
     WHERE id = ${invoiceId} AND deleted_at IS NULL
     LIMIT 1
@@ -829,7 +1000,7 @@ async function createInvoicePaymentRequest(user, invoiceId, modeInput = 'test') 
   `;
 
   const activeRows = await db`
-    SELECT id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+    SELECT id, invoice_id, entity_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
       payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_customer_id,
       idempotency_key, metadata_json,
       expires_at::text AS expires_at, paid_at::text AS paid_at, updated_at::text AS updated_at
@@ -871,7 +1042,7 @@ async function createInvoicePaymentRequest(user, invoiceId, modeInput = 'test') 
         paid_at = NULL,
         updated_at = now()
       WHERE id = ${existingRows[0].id} AND deleted_at IS NULL AND status IN ('failed', 'expired', 'canceled')
-      RETURNING id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+      RETURNING id, invoice_id, entity_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
         payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_customer_id,
         idempotency_key, metadata_json,
         expires_at::text AS expires_at, paid_at::text AS paid_at, updated_at::text AS updated_at
@@ -891,27 +1062,30 @@ async function createInvoicePaymentRequest(user, invoiceId, modeInput = 'test') 
 
   const id = crypto.randomUUID();
   const idempotencyKey = `fin-checkout-${mode}-${invoiceId}-${snapshotSha256}`;
+  const entityId = cleanEntityId(invoice.entityId || row.entity_id || 'wawco');
   const metadata = {
     fin_invoice_id: invoiceId,
     fin_payment_request_id: id,
     fin_invoice_number: row.invoice_number,
     fin_invoice_snapshot_sha256: snapshotSha256,
     fin_environment: mode,
+    fin_entity_id: entityId,
+    fin_stripe_account_key: stripeAccountKeyForEntity(entityId),
   };
   const insertRows = await db`
     INSERT INTO fin_invoice_payment_requests (
-      id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+      id, invoice_id, entity_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
       idempotency_key, created_by_user_id, approved_by_user_id, metadata_json, created_at, updated_at
     ) VALUES (
-      ${id}, ${invoiceId}, ${row.invoice_number}, ${snapshotSha256}, ${mode}, 'creating', ${amountCents}, ${invoice.currency || row.currency || 'USD'},
+      ${id}, ${invoiceId}, ${entityId}, ${row.invoice_number}, ${snapshotSha256}, ${mode}, 'creating', ${amountCents}, ${invoice.currency || row.currency || 'USD'},
       ${idempotencyKey}, ${currentUser.id}, ${currentUser.id}, ${JSON.stringify(metadata)}::jsonb, now(), now()
     )
-    RETURNING id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+    RETURNING id, invoice_id, entity_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
       payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_customer_id,
       expires_at::text AS expires_at, paid_at::text AS paid_at, updated_at::text AS updated_at
   `;
   await db`INSERT INTO fin_invoice_events (invoice_id, actor_user_id, event_type, summary, metadata) VALUES (${invoiceId}, ${currentUser.id}, 'stripe_checkout_requested', 'Stripe Checkout payment link requested', ${JSON.stringify({ mode, paymentRequestId: id, snapshotSha256 })}::jsonb)`;
-  const paymentRequest = { ...paymentRequestSummary(insertRows[0]), idempotencyKey, metadata };
+  const paymentRequest = { ...paymentRequestSummary(insertRows[0]), entityId, stripeAccountKey: stripeAccountKeyForEntity(entityId), idempotencyKey, metadata };
   return { invoice, paymentRequest, reused: false };
 }
 
@@ -929,7 +1103,7 @@ async function activateInvoicePaymentRequest(user, paymentRequestId, session = {
       expires_at = ${session.expiresAt || null},
       updated_at = now()
     WHERE id = ${paymentRequestId} AND deleted_at IS NULL
-    RETURNING id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+    RETURNING id, invoice_id, entity_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
       payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_customer_id,
       expires_at::text AS expires_at, paid_at::text AS paid_at, updated_at::text AS updated_at
   `;
@@ -969,7 +1143,7 @@ async function createInvoiceCustomerPaymentPage(user, invoiceId, modeInput = 'te
   `;
 
   const activeRows = await db`
-    SELECT id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+    SELECT id, invoice_id, entity_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
       payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_charge_id, stripe_customer_id,
       payment_method_family, payment_method_type, fee_policy, base_amount_cents, client_processing_cost_cents,
       collection_amount_cents, expected_stripe_fee_cents, expected_net_cents, expected_fee_formula_json,
@@ -1021,6 +1195,7 @@ async function createInvoiceCustomerPaymentPage(user, invoiceId, modeInput = 'te
   const tokenHash = paymentTokenHash(token);
   const tokenHint = token.slice(-8);
   const id = existingRows[0]?.id || crypto.randomUUID();
+  const entityId = cleanEntityId(invoice.entityId || row.entity_id || 'wawco');
   const idempotencyKey = `fin-paypage-${mode}-${invoiceId}-${snapshotSha256}`;
   const metadata = {
     fin_invoice_id: invoiceId,
@@ -1028,6 +1203,8 @@ async function createInvoiceCustomerPaymentPage(user, invoiceId, modeInput = 'te
     fin_invoice_number: row.invoice_number,
     fin_invoice_snapshot_sha256: snapshotSha256,
     fin_environment: mode,
+    fin_entity_id: entityId,
+    fin_stripe_account_key: stripeAccountKeyForEntity(entityId),
     fin_payment_method_family: methodFamily,
     fin_fee_policy: 'method_specific_choice',
   };
@@ -1035,7 +1212,7 @@ async function createInvoiceCustomerPaymentPage(user, invoiceId, modeInput = 'te
   const rows = existingRows[0]
     ? await db`
       UPDATE fin_invoice_payment_requests SET
-        status = 'active', amount_cents = ${amountCents}, currency = ${invoice.currency || row.currency || 'USD'},
+        entity_id = ${entityId}, status = 'active', amount_cents = ${amountCents}, currency = ${invoice.currency || row.currency || 'USD'},
         payment_url = ${publicUrl}, payment_url_kind = 'customer_payment_page', stripe_checkout_session_id = NULL,
         stripe_payment_intent_id = NULL, stripe_charge_id = '', stripe_customer_id = '',
         payment_method_family = ${methodFamily}, payment_method_type = '', fee_policy = 'method_specific_choice',
@@ -1047,7 +1224,7 @@ async function createInvoiceCustomerPaymentPage(user, invoiceId, modeInput = 'te
         reconciliation_status = 'not_started', reconciled_at = NULL, payment_method_details_json = '{}'::jsonb,
         idempotency_key = ${idempotencyKey}, metadata_json = ${JSON.stringify(metadata)}::jsonb, updated_at = now()
       WHERE id = ${existingRows[0].id} AND deleted_at IS NULL
-      RETURNING id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+      RETURNING id, invoice_id, entity_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
         payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_charge_id, stripe_customer_id,
         payment_method_family, payment_method_type, fee_policy, base_amount_cents, client_processing_cost_cents,
         collection_amount_cents, expected_stripe_fee_cents, expected_net_cents, expected_fee_formula_json,
@@ -1057,19 +1234,19 @@ async function createInvoiceCustomerPaymentPage(user, invoiceId, modeInput = 'te
     `
     : await db`
       INSERT INTO fin_invoice_payment_requests (
-        id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+        id, invoice_id, entity_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
         payment_url, payment_url_kind, payment_method_family, payment_method_type, fee_policy,
         base_amount_cents, client_processing_cost_cents, collection_amount_cents, expected_stripe_fee_cents,
         expected_net_cents, expected_fee_formula_json, fee_disclosure_text, public_token_hash, public_token_hint,
         public_url, idempotency_key, created_by_user_id, approved_by_user_id, metadata_json, created_at, updated_at
       ) VALUES (
-        ${id}, ${invoiceId}, ${row.invoice_number}, ${snapshotSha256}, ${mode}, 'active', ${amountCents}, ${invoice.currency || row.currency || 'USD'},
+        ${id}, ${invoiceId}, ${entityId}, ${row.invoice_number}, ${snapshotSha256}, ${mode}, 'active', ${amountCents}, ${invoice.currency || row.currency || 'USD'},
         ${publicUrl}, 'customer_payment_page', ${methodFamily}, '', 'method_specific_choice',
         ${amountCents}, 0, ${amountCents}, 0,
         ${amountCents}, ${JSON.stringify({ version: 'customer-choice', methods: ['bank_account', 'card'] })}::jsonb, 'Choose bank account or card before Stripe Checkout.', ${tokenHash}, ${tokenHint},
         ${publicUrl}, ${idempotencyKey}, ${currentUser.id}, ${currentUser.id}, ${JSON.stringify(metadata)}::jsonb, now(), now()
       )
-      RETURNING id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+      RETURNING id, invoice_id, entity_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
         payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_charge_id, stripe_customer_id,
         payment_method_family, payment_method_type, fee_policy, base_amount_cents, client_processing_cost_cents,
         collection_amount_cents, expected_stripe_fee_cents, expected_net_cents, expected_fee_formula_json,
@@ -1078,14 +1255,17 @@ async function createInvoiceCustomerPaymentPage(user, invoiceId, modeInput = 'te
         expires_at::text AS expires_at, paid_at::text AS paid_at, reconciled_at::text AS reconciled_at, updated_at::text AS updated_at
     `;
 
-  const payment = paymentRequestSummary(rows[0]);
+  const payment = { ...paymentRequestSummary(rows[0]), entityId, stripeAccountKey: stripeAccountKeyForEntity(entityId) };
   await db`UPDATE fin_invoices SET payment_status = 'link_ready', current_payment_request_id = ${payment.id}, payment_updated_at = now(), updated_at = now() WHERE id = ${payment.invoiceId} AND deleted_at IS NULL`;
   await db`INSERT INTO fin_invoice_events (invoice_id, actor_user_id, event_type, summary, metadata) VALUES (${invoiceId}, ${currentUser.id}, 'stripe_customer_payment_page_created', 'Customer payment page created', ${JSON.stringify({ mode, paymentRequestId: id, snapshotSha256 })}::jsonb)`;
   return { invoice, paymentRequest: payment, reused: false };
 }
 
 function safePublicInvoice(invoice = {}) {
+  const entity = publicEntityForInvoice(invoice);
   return {
+    entityId: entity.id,
+    entity,
     invoiceNumber: cleanSingleLine(invoice.invoiceNumber, 80),
     status: cleanSingleLine(invoice.status, 40),
     currency: cleanSingleLine(invoice.currency || 'USD', 10),
@@ -1093,8 +1273,8 @@ function safePublicInvoice(invoice = {}) {
     invoiceDate: cleanSingleLine(invoice.invoiceDate, 20),
     dueDate: cleanSingleLine(invoice.dueDate, 20),
     from: {
-      name: cleanSingleLine(invoice.from?.name || invoice.from?.company || 'What are we capable of?', 240),
-      email: cleanSingleLine(invoice.from?.email || 'hello@whatarewecapableof.com', 240),
+      name: cleanSingleLine(invoice.from?.name || invoice.from?.company || entity.name, 240),
+      email: cleanSingleLine(invoice.from?.email || entity.email || '', 240),
     },
     client: {
       label: invoiceClientLabel(invoice),
@@ -1155,7 +1335,7 @@ async function getPublicPaymentPage(token) {
   if (!['approved', 'issued', 'paid'].includes(invoice.status)) throw makeError(404, 'Payment page not found.');
   const pagePayment = paymentRequestSummary(row);
   const methodRows = await db`
-    SELECT id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+    SELECT id, invoice_id, entity_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
       payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_charge_id, stripe_customer_id,
       payment_method_family, payment_method_type, fee_policy, base_amount_cents, client_processing_cost_cents,
       collection_amount_cents, expected_stripe_fee_cents, expected_net_cents, expected_fee_formula_json,
@@ -1229,7 +1409,7 @@ async function createCustomerCheckoutPaymentRequest(token, methodInput) {
   `;
 
   const activeRows = await db`
-    SELECT id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+    SELECT id, invoice_id, entity_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
       payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_charge_id, stripe_customer_id,
       payment_method_family, payment_method_type, fee_policy, base_amount_cents, client_processing_cost_cents,
       collection_amount_cents, expected_stripe_fee_cents, expected_net_cents, expected_fee_formula_json,
@@ -1268,6 +1448,7 @@ async function createCustomerCheckoutPaymentRequest(token, methodInput) {
   `;
 
   const id = existingRows[0]?.id || crypto.randomUUID();
+  const entityId = cleanEntityId(invoice.entityId || pageRow.entity_id || 'wawco');
   const idempotencyKey = existingRows[0]?.idempotency_key || `fin-checkout-${pageRow.stripe_mode}-${method}-${pageRow.invoice_id}-${snapshotSha256}`;
   const metadata = {
     fin_invoice_id: pageRow.invoice_id,
@@ -1275,6 +1456,8 @@ async function createCustomerCheckoutPaymentRequest(token, methodInput) {
     fin_invoice_number: pageRow.invoice_number,
     fin_invoice_snapshot_sha256: snapshotSha256,
     fin_environment: pageRow.stripe_mode,
+    fin_entity_id: entityId,
+    fin_stripe_account_key: stripeAccountKeyForEntity(entityId),
     fin_payment_method_family: quote.paymentMethodFamily,
     fin_payment_method_type: quote.paymentMethodType,
     fin_fee_policy: quote.feePolicy,
@@ -1289,7 +1472,7 @@ async function createCustomerCheckoutPaymentRequest(token, methodInput) {
   const rows = existingRows[0]
     ? await db`
       UPDATE fin_invoice_payment_requests SET
-        status = 'creating', amount_cents = ${quote.collectionAmountCents}, currency = ${invoice.currency || pageRow.currency || 'USD'},
+        entity_id = ${entityId}, status = 'creating', amount_cents = ${quote.collectionAmountCents}, currency = ${invoice.currency || pageRow.currency || 'USD'},
         payment_url = '', payment_url_kind = 'checkout_session', stripe_checkout_session_id = NULL,
         stripe_payment_intent_id = NULL, stripe_charge_id = '', stripe_customer_id = '',
         payment_method_family = ${quote.paymentMethodFamily}, payment_method_type = ${quote.paymentMethodType}, fee_policy = ${quote.feePolicy},
@@ -1300,7 +1483,7 @@ async function createCustomerCheckoutPaymentRequest(token, methodInput) {
         reconciliation_status = 'pending_payment', reconciled_at = NULL, payment_method_details_json = '{}'::jsonb,
         idempotency_key = ${idempotencyKey}, metadata_json = ${JSON.stringify(metadata)}::jsonb, updated_at = now()
       WHERE id = ${existingRows[0].id} AND deleted_at IS NULL AND status IN ('failed', 'expired', 'canceled')
-      RETURNING id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+      RETURNING id, invoice_id, entity_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
         payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_charge_id, stripe_customer_id,
         payment_method_family, payment_method_type, fee_policy, base_amount_cents, client_processing_cost_cents,
         collection_amount_cents, expected_stripe_fee_cents, expected_net_cents, expected_fee_formula_json,
@@ -1310,19 +1493,19 @@ async function createCustomerCheckoutPaymentRequest(token, methodInput) {
     `
     : await db`
       INSERT INTO fin_invoice_payment_requests (
-        id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+        id, invoice_id, entity_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
         payment_url_kind, payment_method_family, payment_method_type, fee_policy,
         base_amount_cents, client_processing_cost_cents, collection_amount_cents, expected_stripe_fee_cents,
         expected_net_cents, expected_fee_formula_json, fee_disclosure_text, public_token_hash, public_token_hint,
         public_url, reconciliation_status, idempotency_key, created_by_user_id, approved_by_user_id, metadata_json, created_at, updated_at
       ) VALUES (
-        ${id}, ${pageRow.invoice_id}, ${pageRow.invoice_number}, ${snapshotSha256}, ${pageRow.stripe_mode}, 'creating', ${quote.collectionAmountCents}, ${invoice.currency || pageRow.currency || 'USD'},
+        ${id}, ${pageRow.invoice_id}, ${entityId}, ${pageRow.invoice_number}, ${snapshotSha256}, ${pageRow.stripe_mode}, 'creating', ${quote.collectionAmountCents}, ${invoice.currency || pageRow.currency || 'USD'},
         'checkout_session', ${quote.paymentMethodFamily}, ${quote.paymentMethodType}, ${quote.feePolicy},
         ${quote.baseAmountCents}, ${quote.clientProcessingCostCents}, ${quote.collectionAmountCents}, ${quote.expectedStripeFeeCents},
         ${quote.expectedNetCents}, ${JSON.stringify(quote.formula)}::jsonb, ${quote.disclosureText}, ${tokenHash}, ${pageRow.public_token_hint},
         ${pageRow.public_url}, 'pending_payment', ${idempotencyKey}, ${pageRow.created_by_user_id}, ${pageRow.approved_by_user_id}, ${JSON.stringify(metadata)}::jsonb, now(), now()
       )
-      RETURNING id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+      RETURNING id, invoice_id, entity_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
         payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_charge_id, stripe_customer_id,
         payment_method_family, payment_method_type, fee_policy, base_amount_cents, client_processing_cost_cents,
         collection_amount_cents, expected_stripe_fee_cents, expected_net_cents, expected_fee_formula_json,
@@ -1352,7 +1535,7 @@ async function activateCustomerCheckoutPaymentRequest(paymentRequestId, session 
       expires_at = ${session.expiresAt || null},
       updated_at = now()
     WHERE id = ${paymentRequestId} AND deleted_at IS NULL
-    RETURNING id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+    RETURNING id, invoice_id, entity_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
       payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_charge_id, stripe_customer_id,
       payment_method_family, payment_method_type, fee_policy, base_amount_cents, client_processing_cost_cents,
       collection_amount_cents, expected_stripe_fee_cents, expected_net_cents, expected_fee_formula_json,
@@ -1403,11 +1586,11 @@ function stripeEventMethodTypes(object = {}) {
   return new Set(values.map((value) => cleanSingleLine(value, 80)).filter(Boolean));
 }
 
-async function reconciliationForStripeEvent(type, object = {}) {
+async function reconciliationForStripeEvent(type, object = {}, entityId = 'wawco') {
   if (type.startsWith('charge.')) return reconciliationFromCharge(object);
   const chargeId = stripeChargeIdFromObject(type, object);
   if (!chargeId) return null;
-  return retrieveChargeReconciliation(chargeId);
+  return retrieveChargeReconciliation(chargeId, entityId);
 }
 
 async function processStripeEvent(event = {}) {
@@ -1418,10 +1601,11 @@ async function processStripeEvent(event = {}) {
   const mode = stripeEventMode(event);
   const type = cleanSingleLine(event.type, 160);
   const object = event.data?.object || {};
+  const eventEntityId = cleanEntityId(event.finEntityId || object.metadata?.fin_entity_id || 'wawco');
   const stripeCreatedAt = event.created ? new Date(Number(event.created) * 1000).toISOString() : null;
   const inserted = await db`
-    INSERT INTO fin_stripe_events (stripe_event_id, stripe_mode, event_type, stripe_created_at, status, safe_summary_json, received_at)
-    VALUES (${eventId}, ${mode}, ${type}, ${stripeCreatedAt}, 'received', ${JSON.stringify({ type, mode, objectId: object.id || '' })}::jsonb, now())
+    INSERT INTO fin_stripe_events (stripe_event_id, entity_id, stripe_mode, event_type, stripe_created_at, status, safe_summary_json, received_at)
+    VALUES (${eventId}, ${eventEntityId}, ${mode}, ${type}, ${stripeCreatedAt}, 'received', ${JSON.stringify({ type, mode, entityId: eventEntityId, objectId: object.id || '' })}::jsonb, now())
     ON CONFLICT (stripe_event_id) DO NOTHING
     RETURNING stripe_event_id
   `;
@@ -1434,19 +1618,19 @@ async function processStripeEvent(event = {}) {
 
   let paymentRows = [];
   if (type.startsWith('checkout.session.')) {
-    paymentRows = await db`SELECT * FROM fin_invoice_payment_requests WHERE stripe_checkout_session_id = ${cleanSingleLine(object.id, 160)} AND deleted_at IS NULL LIMIT 1`;
+    paymentRows = await db`SELECT * FROM fin_invoice_payment_requests WHERE entity_id = ${eventEntityId} AND stripe_checkout_session_id = ${cleanSingleLine(object.id, 160)} AND deleted_at IS NULL LIMIT 1`;
   }
   if (!paymentRows[0] && type.startsWith('payment_intent.')) {
-    paymentRows = await db`SELECT * FROM fin_invoice_payment_requests WHERE stripe_payment_intent_id = ${cleanSingleLine(object.id, 160)} AND deleted_at IS NULL LIMIT 1`;
+    paymentRows = await db`SELECT * FROM fin_invoice_payment_requests WHERE entity_id = ${eventEntityId} AND stripe_payment_intent_id = ${cleanSingleLine(object.id, 160)} AND deleted_at IS NULL LIMIT 1`;
   }
   if (!paymentRows[0] && type.startsWith('charge.') && object.payment_intent) {
-    paymentRows = await db`SELECT * FROM fin_invoice_payment_requests WHERE stripe_payment_intent_id = ${cleanSingleLine(object.payment_intent, 160)} AND deleted_at IS NULL LIMIT 1`;
+    paymentRows = await db`SELECT * FROM fin_invoice_payment_requests WHERE entity_id = ${eventEntityId} AND stripe_payment_intent_id = ${cleanSingleLine(object.payment_intent, 160)} AND deleted_at IS NULL LIMIT 1`;
   }
   if (!paymentRows[0] && type.startsWith('charge.')) {
-    paymentRows = await db`SELECT * FROM fin_invoice_payment_requests WHERE stripe_charge_id = ${cleanSingleLine(object.id, 160)} AND deleted_at IS NULL LIMIT 1`;
+    paymentRows = await db`SELECT * FROM fin_invoice_payment_requests WHERE entity_id = ${eventEntityId} AND stripe_charge_id = ${cleanSingleLine(object.id, 160)} AND deleted_at IS NULL LIMIT 1`;
   }
   if (!paymentRows[0] && object.metadata?.fin_payment_request_id) {
-    paymentRows = await db`SELECT * FROM fin_invoice_payment_requests WHERE id = ${cleanSingleLine(object.metadata.fin_payment_request_id, 120)} AND deleted_at IS NULL LIMIT 1`;
+    paymentRows = await db`SELECT * FROM fin_invoice_payment_requests WHERE entity_id = ${eventEntityId} AND id = ${cleanSingleLine(object.metadata.fin_payment_request_id, 120)} AND deleted_at IS NULL LIMIT 1`;
   }
   const paymentRow = paymentRows[0];
   if (!paymentRow) {
@@ -1455,6 +1639,10 @@ async function processStripeEvent(event = {}) {
   }
 
   const payment = paymentRequestSummary(paymentRow);
+  if (payment.entityId !== eventEntityId) {
+    await db`UPDATE fin_stripe_events SET status = 'failed', processed_at = now(), payment_request_id = ${payment.id}, invoice_id = ${payment.invoiceId}, safe_summary_json = ${JSON.stringify({ type, mode, objectId: object.id || '', reason: 'entity-mismatch', eventEntityId, paymentEntityId: payment.entityId })}::jsonb WHERE stripe_event_id = ${eventId}`;
+    throw makeError(400, 'Stripe event entity does not match the Fin payment request.');
+  }
   if (payment.mode !== mode) {
     await db`UPDATE fin_stripe_events SET status = 'failed', processed_at = now(), payment_request_id = ${payment.id}, invoice_id = ${payment.invoiceId}, safe_summary_json = ${JSON.stringify({ type, mode, objectId: object.id || '', reason: 'mode-mismatch', paymentMode: payment.mode })}::jsonb WHERE stripe_event_id = ${eventId}`;
     throw makeError(400, 'Stripe event mode does not match the Fin payment request.');
@@ -1525,7 +1713,7 @@ async function processStripeEvent(event = {}) {
 
   const paymentIntentId = cleanSingleLine(type.startsWith('payment_intent.') ? object.id : object.payment_intent || '', 160);
   const chargeId = stripeChargeIdFromObject(type, object);
-  const reconciliation = nextStatus === 'paid' || type.startsWith('charge.') ? await reconciliationForStripeEvent(type, object) : null;
+  const reconciliation = nextStatus === 'paid' || type.startsWith('charge.') ? await reconciliationForStripeEvent(type, object, payment.entityId) : null;
   const balanceTransactionId = cleanSingleLine(reconciliation?.balanceTransactionId, 160);
   const actualStripeFeeCents = Number.isFinite(Number(reconciliation?.actualStripeFeeCents)) ? Number(reconciliation.actualStripeFeeCents) : null;
   const actualNetCents = Number.isFinite(Number(reconciliation?.actualNetCents)) ? Number(reconciliation.actualNetCents) : null;
@@ -1547,7 +1735,7 @@ async function processStripeEvent(event = {}) {
       paid_at = CASE WHEN ${paidAt}::timestamptz IS NOT NULL THEN ${paidAt}::timestamptz ELSE paid_at END,
       updated_at = now()
     WHERE id = ${payment.id}
-    RETURNING id, invoice_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
+    RETURNING id, invoice_id, entity_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
       payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_charge_id, stripe_customer_id,
       payment_method_family, payment_method_type, fee_policy, base_amount_cents, client_processing_cost_cents,
       collection_amount_cents, expected_stripe_fee_cents, expected_net_cents, expected_fee_formula_json,
@@ -1585,7 +1773,8 @@ function profileLabel(profileType, data = {}) {
 function normalizeProfile(profileType, input = {}) {
   const source = input && typeof input === 'object' ? input : {};
   if (profileType === 'payee') {
-    const reportingScope = cleanSingleLine(source.reportingScope, 40) === 'private' ? 'private' : 'wawco';
+    const rawScope = cleanSingleLine(source.reportingScope, 40).toLowerCase();
+    const reportingScope = rawScope === 'private' ? 'private' : cleanEntityId(rawScope || 'wawco');
     return {
       label: cleanSingleLine(source.label || source.name || source.company || source.email || 'Untitled payee', 240),
       name: cleanSingleLine(source.name || source.company, 240),
@@ -1760,8 +1949,13 @@ function hostedInvoiceRow(row) {
     if (daysUntilDue < 0) dueState = 'overdue';
     else if (daysUntilDue <= 14) dueState = 'due_soon';
   }
+  const entityId = cleanEntityId(row.entity_id || invoice.entityId || 'wawco');
+  const entity = publicEntity(entityId);
   return {
     id: row.id,
+    entityId,
+    entityLabel: entity.label,
+    entityName: entity.name,
     invoiceNumber: row.invoice_number,
     status: row.status || 'draft',
     clientLabel: row.client_label || invoiceClientLabel(invoice) || 'Untitled client',
@@ -2192,7 +2386,7 @@ async function financeSummary(user, options = {}) {
   const scope = currentUser.role === 'admin' ? 'workspace' : 'own_drafts';
   const rawRows = currentUser.role === 'admin'
     ? await db`
-      SELECT inv.id, inv.invoice_number, inv.status, inv.client_label,
+      SELECT inv.id, inv.entity_id, inv.invoice_number, inv.status, inv.client_label,
         inv.invoice_date::text AS invoice_date, inv.due_date::text AS due_date,
         inv.total_cents, inv.payment_status, inv.current_payment_request_id,
         inv.updated_at::text AS updated_at, usr.email AS created_by_email, inv.data_json,
@@ -2212,7 +2406,7 @@ async function financeSummary(user, options = {}) {
       LIMIT 500
     `
     : await db`
-      SELECT inv.id, inv.invoice_number, inv.status, inv.client_label,
+      SELECT inv.id, inv.entity_id, inv.invoice_number, inv.status, inv.client_label,
         inv.invoice_date::text AS invoice_date, inv.due_date::text AS due_date,
         inv.total_cents, inv.payment_status, inv.current_payment_request_id,
         inv.updated_at::text AS updated_at, usr.email AS created_by_email, inv.data_json,
@@ -2232,24 +2426,29 @@ async function financeSummary(user, options = {}) {
       LIMIT 500
     `;
 
+  const entityOptions = invoiceEntities();
+  const requestedEntity = cleanSingleLine(options.entity || options.entityId || 'wawco', 40).toLowerCase();
+  const entityFilter = requestedEntity === 'combined' ? 'combined' : cleanEntityId(requestedEntity || 'wawco');
   const excludedRows = [];
+  const excludedEntityRows = [];
   const visibleRows = [];
   for (const row of rawRows) {
     const data = parseStoredInvoice(row.data_json) || {};
-    const fromName = String(data.from?.name || '').trim().toLowerCase();
-    const fromCompany = String(data.from?.company || '').trim().toLowerCase();
-    const excluded = data.payeeReportingScope === 'private'
-      || data.excludeFromWawcoDashboard === true
-      || ['noah glynn', 'noah glenn'].includes(fromName)
-      || ['noah glynn', 'noah glenn'].includes(fromCompany);
+    const entityId = cleanEntityId(row.entity_id || data.entityId || 'wawco');
+    if (entityFilter !== 'combined' && entityId !== entityFilter) {
+      excludedEntityRows.push(row);
+      continue;
+    }
+    const excluded = data.payeeReportingScope === 'private' || data.excludeFromWawcoDashboard === true;
     if (excluded) excludedRows.push(row);
-    else visibleRows.push(row);
+    else visibleRows.push({ ...row, entity_id: entityId });
   }
 
   const invoices = visibleRows.map(hostedInvoiceRow);
   const invoiceMonths = [...new Set(invoices.map((invoice) => invoice.month).filter(Boolean))].sort();
   const importMergeEnabled = financeImportsEnabled();
-  const importMonths = importMergeEnabled ? await financeImportMonths(currentUser) : [];
+  const entitySupportsFinanceImports = entityFilter === 'wawco' || entityFilter === 'combined';
+  const importMonths = importMergeEnabled && entitySupportsFinanceImports ? await financeImportMonths(currentUser) : [];
   const requestedMonth = cleanSingleLine(options.month, 7);
   if (requestedMonth && !/^\d{4}-\d{2}$/.test(requestedMonth)) throw makeError(400, 'Finance summary month must use YYYY-MM.');
   const months = [...new Set([...invoiceMonths, ...importMonths])].filter(Boolean).sort();
@@ -2280,7 +2479,10 @@ async function financeSummary(user, options = {}) {
   const hostedInvoices = {
     source: 'hosted_fin',
     scope,
+    entityFilter,
+    entityLabel: entityFilter === 'combined' ? 'Combined' : publicEntity(entityFilter).label,
     visibleCount: invoices.length,
+    excludedEntityCount: excludedEntityRows.length,
     excludedPrivatePayeeCount: excludedRows.length,
     invoices: invoices.slice(0, 100),
     monthInvoices,
@@ -2305,7 +2507,7 @@ async function financeSummary(user, options = {}) {
   };
 
   const baseImported = emptyImportedFinance({ hostedInvoices, month });
-  const importedRecord = importMergeEnabled && currentUser.role === 'admin' ? await latestFinanceImportForSummary(currentUser, month) : null;
+  const importedRecord = importMergeEnabled && entitySupportsFinanceImports && currentUser.role === 'admin' ? await latestFinanceImportForSummary(currentUser, month) : null;
   const { imported, importSummary } = mergeImportedFinance(baseImported, importedRecord, hostedInvoices, month);
   const exceptions = [...(imported.exceptions || [])];
   if (!importSummary) {
@@ -2319,7 +2521,7 @@ async function financeSummary(user, options = {}) {
     exceptions.push({
       severity: 'keep',
       label: 'Private payee invoices excluded',
-      detail: `${hostedInvoices.excludedPrivatePayeeCount} private-payee invoice${hostedInvoices.excludedPrivatePayeeCount === 1 ? '' : 's'} excluded from WAWCO totals.`,
+      detail: `${hostedInvoices.excludedPrivatePayeeCount} private-payee invoice${hostedInvoices.excludedPrivatePayeeCount === 1 ? '' : 's'} excluded from ${hostedInvoices.entityLabel || 'current'} totals.`,
     });
   }
   if (hostedInvoices.overdue.length) {
@@ -2336,9 +2538,13 @@ async function financeSummary(user, options = {}) {
     generatedAt: imported.generatedAt,
     month,
     months,
+    entityFilter,
+    entityLabel: hostedInvoices.entityLabel,
+    entities: [{ id: 'combined', label: 'Combined', name: 'Combined' }, ...entityOptions],
     invoiceCount: invoices.length,
     totalCents: sumCents(invoices),
     readyForReviewCents: hostedInvoices.readyForReviewCents,
+    excludedEntityCount: hostedInvoices.excludedEntityCount,
     excludedPrivatePayeeCount: hostedInvoices.excludedPrivatePayeeCount,
     lastUpdatedAt: hostedInvoices.lastUpdatedAt,
     latestFinanceImport: importSummary,
@@ -2354,6 +2560,7 @@ async function financeSummary(user, options = {}) {
       monthInvoices,
       summary,
       monthSummary,
+      excludedEntityCount: hostedInvoices.excludedEntityCount,
       excludedPrivatePayeeCount: hostedInvoices.excludedPrivatePayeeCount,
       error: '',
     },
@@ -2366,6 +2573,8 @@ module.exports = {
   ensureUser,
   numberingSettings,
   updateNumberingSettings,
+  listEntities,
+  invoiceEntityIdForUser,
   listProfiles,
   createProfile,
   updateProfile,

@@ -65,14 +65,41 @@ function methodByName(name) {
   return (paymentPage?.methods || []).find((method) => method.method === name) || paymentPage?.methods?.[0] || null;
 }
 
+function pagePaymentStatus() {
+  return String(paymentPage?.page?.paymentStatus || '').trim();
+}
+
+function activePaymentMethod() {
+  return (paymentPage?.methods || []).find((method) => ['processing', 'paid'].includes(method.status) || method.active) || null;
+}
+
+function paymentIsStartedOrComplete() {
+  const status = pagePaymentStatus();
+  const method = activePaymentMethod();
+  return ['processing', 'paid'].includes(status) || ['processing', 'paid'].includes(method?.status || '');
+}
+
+function methodLabel(method) {
+  if (method?.method === 'card') return 'card';
+  if (method?.method === 'bank_account') return 'bank account';
+  return 'payment';
+}
+
 function renderCheckoutMessage() {
   const state = checkoutState();
-  if (state === 'success') {
-    refs.message.textContent = 'Stripe received the checkout step. Bank account payments can stay processing while the transfer settles. The invoice updates after Stripe confirms the status.';
+  const status = pagePaymentStatus();
+  const method = activePaymentMethod();
+  const label = methodLabel(method);
+  if (status === 'paid' || method?.status === 'paid') {
+    refs.message.textContent = `Payment complete. Stripe confirmed the ${label} payment and this invoice is marked paid.`;
+  } else if (status === 'processing' || method?.status === 'processing') {
+    refs.message.textContent = `Payment started. Stripe received the ${label} checkout and this invoice is processing. Bank account payments can take a few business days to settle. You are done for now; do not start another checkout for this invoice unless we send a new link.`;
+  } else if (state === 'success') {
+    refs.message.textContent = 'Stripe returned you to Fin. We are checking the payment status. If Stripe or your bank is still open in another tab or window, finish there before starting again.';
   } else if (state === 'cancel') {
-    refs.message.textContent = 'Checkout was canceled. You can choose a payment method and continue again.';
+    refs.message.textContent = 'Checkout was canceled. No payment was started. You can choose a payment method and continue again.';
   } else {
-    refs.message.textContent = 'Choose a payment method. Each option opens its own Stripe Checkout path.';
+    refs.message.textContent = 'Choose a payment method, then continue to Stripe Checkout. Bank sign-in may open another tab or window and return you here after payment starts.';
   }
 }
 
@@ -109,20 +136,29 @@ function renderSummary() {
   refs.total.textContent = formatCurrency(method.collectionAmountCents, paymentPage.currency);
   refs.disclosure.textContent = method.disclosureText || '';
   refs.continueButton.textContent = method.method === 'bank_account' ? 'Continue to bank account checkout' : 'Continue to card checkout';
-  refs.continueButton.disabled = paymentPage.invoice.status === 'paid';
+  refs.continueButton.disabled = paymentPage.invoice.status === 'paid' || paymentIsStartedOrComplete();
 }
 
 function renderPage() {
   const invoice = paymentPage.invoice || {};
   const entity = invoice.entity || {};
   const amountCents = Number(paymentPage.amountCents || invoice.totals?.totalCents || 0);
+  const paymentStartedOrComplete = paymentIsStartedOrComplete();
+  const status = pagePaymentStatus();
   refs.entityEyebrow.textContent = entity.branding?.payPageEyebrow || entity.name || invoice.from?.name || 'Fin';
-  refs.entityHelp.textContent = `Stripe collects the payment details. ${entity.branding?.payPageHelp || `${entity.name || invoice.from?.name || 'The issuing entity'} updates the invoice after Stripe confirms the payment status.`}`;
-  refs.title.textContent = invoice.status === 'paid' ? 'Invoice paid' : 'Pay this invoice';
+  refs.entityHelp.textContent = paymentStartedOrComplete
+    ? `${entity.name || invoice.from?.name || 'The issuing entity'} updates the invoice after Stripe confirms the payment status. If you have questions, reply to the invoice email.`
+    : `Stripe collects the payment details. ${entity.branding?.payPageHelp || `${entity.name || invoice.from?.name || 'The issuing entity'} updates the invoice after Stripe confirms the payment status.`}`;
+  refs.title.textContent = status === 'paid' || invoice.status === 'paid'
+    ? 'Invoice paid'
+    : status === 'processing'
+      ? 'Payment processing'
+      : 'Pay this invoice';
   renderCheckoutMessage();
   refs.invoice.hidden = false;
-  refs.methods.hidden = invoice.status === 'paid';
-  refs.summary.hidden = invoice.status === 'paid';
+  refs.methods.hidden = invoice.status === 'paid' || paymentStartedOrComplete;
+  refs.summary.hidden = invoice.status === 'paid' || paymentStartedOrComplete;
+  refs.continueButton.hidden = invoice.status === 'paid' || paymentStartedOrComplete;
   refs.invoiceNumber.textContent = invoice.invoiceNumber || 'Invoice';
   refs.amount.textContent = formatCurrency(amountCents, paymentPage.currency);
   refs.client.textContent = invoice.client?.company || invoice.client?.name || invoice.client?.label || 'Client';

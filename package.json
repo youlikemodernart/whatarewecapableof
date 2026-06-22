@@ -17,7 +17,9 @@
     "fin": "cd apps/fin && vercel dev --listen 3187 --yes",
     "fin:smoke": "cd apps/fin && npm run smoke",
     "ask": "cd apps/ask && vercel dev --listen 3197 --yes",
-    "ask:smoke": "cd apps/ask && npm run smoke"
+    "ask:smoke": "cd apps/ask && npm run smoke",
+    "windex:audit": "cd apps/index && npm run audit",
+    "windex:check": "cd apps/index && npm run check"
   },
   "dependencies": {
     "googleapis": "^171.4.0"

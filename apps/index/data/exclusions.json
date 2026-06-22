@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "id": "apps-fin-root-source-route",
+      "path": "/apps/fin/",
+      "source": "repo:apps/fin/index.html",
+      "reason": "Fin is served from the authenticated fin.whatarewecapableof.com app. The root /apps/fin/ source route is blocked and should not be a Windex link.",
+      "reviewedAt": "2026-06-22"
+    },
+    {
+      "id": "proposal-template-source-route",
+      "path": "/proposals/_template/",
+      "source": "repo:proposals/_template/index.html",
+      "reason": "Proposal template source is blocked from production and should not be a Windex link.",
+      "reviewedAt": "2026-06-22"
+    }
+  ]
+}

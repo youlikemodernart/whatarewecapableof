@@ -4,6 +4,7 @@ const { normalizeInvoice, invoiceClientLabel, invoiceListItem, cleanEntityId, in
 const { normalizeFinanceImport, stableFinanceImportContentSha256, summarizeFinanceImport } = require('./_finance_import');
 const { cleanPaymentMethod, customerPaymentMethods, paymentMethodQuote } = require('./_payment_pricing');
 const { reconciliationFromCharge, retrieveChargeReconciliation } = require('./_stripe');
+const { cleanEmail, paymentEmailRuntimeStatus, sendPaymentNotificationEmail } = require('./_mail');
 
 let sqlClient = null;
 let schemaReady = false;
@@ -366,6 +367,28 @@ async function ensureSchema() {
   await db`CREATE INDEX IF NOT EXISTS fin_stripe_events_invoice_idx ON fin_stripe_events (invoice_id, received_at DESC)`;
   await db`CREATE INDEX IF NOT EXISTS fin_stripe_events_payment_request_idx ON fin_stripe_events (payment_request_id, received_at DESC)`;
   await db`CREATE INDEX IF NOT EXISTS fin_stripe_events_entity_idx ON fin_stripe_events (entity_id, received_at DESC)`;
+
+  await db`CREATE TABLE IF NOT EXISTS fin_invoice_payment_notifications (
+    id TEXT PRIMARY KEY,
+    payment_request_id TEXT NOT NULL REFERENCES fin_invoice_payment_requests(id),
+    invoice_id TEXT NOT NULL REFERENCES fin_invoices(id),
+    stripe_event_id TEXT REFERENCES fin_stripe_events(stripe_event_id),
+    entity_id TEXT NOT NULL DEFAULT 'wawco' REFERENCES fin_entities(id),
+    notification_type TEXT NOT NULL,
+    recipient_email TEXT NOT NULL DEFAULT '',
+    status TEXT NOT NULL DEFAULT 'sending',
+    attempt_count INTEGER NOT NULL DEFAULT 0,
+    gmail_message_id TEXT NOT NULL DEFAULT '',
+    gmail_thread_id TEXT NOT NULL DEFAULT '',
+    safe_summary_json JSONB NOT NULL DEFAULT '{}'::jsonb,
+    last_error TEXT NOT NULL DEFAULT '',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    sent_at TIMESTAMPTZ
+  )`;
+  await db`CREATE UNIQUE INDEX IF NOT EXISTS fin_invoice_payment_notifications_unique_idx ON fin_invoice_payment_notifications (payment_request_id, notification_type)`;
+  await db`CREATE INDEX IF NOT EXISTS fin_invoice_payment_notifications_invoice_idx ON fin_invoice_payment_notifications (invoice_id, updated_at DESC)`;
+  await db`CREATE INDEX IF NOT EXISTS fin_invoice_payment_notifications_status_idx ON fin_invoice_payment_notifications (status, updated_at DESC)`;
 
   await db`CREATE TABLE IF NOT EXISTS fin_profiles (
     id TEXT PRIMARY KEY,
@@ -1593,6 +1616,107 @@ async function reconciliationForStripeEvent(type, object = {}, entityId = 'wawco
   return retrieveChargeReconciliation(chargeId, entityId);
 }
 
+function paymentNotificationTypeForTransition(nextStatus, payment = {}, eventMethodTypes = new Set()) {
+  const methodFamily = cleanSingleLine(payment.paymentMethodFamily || payment.payment_method_family || '', 80);
+  const methodType = cleanSingleLine(payment.paymentMethodType || payment.payment_method_type || '', 80);
+  const isBank = methodFamily === 'bank_account' || methodType === 'us_bank_account' || eventMethodTypes.has('us_bank_account');
+  if (nextStatus === 'processing' && isBank) return 'payment_started';
+  if (nextStatus === 'paid') return 'payment_received';
+  if (['failed', 'canceled', 'expired', 'refunded', 'disputed'].includes(nextStatus)) return 'payment_issue';
+  return '';
+}
+
+function notificationSafeSummary({ notificationType, eventId, payment, invoice, runtime, reason = '' }) {
+  return {
+    notificationType,
+    stripeEventId: eventId,
+    paymentRequestId: payment?.id || '',
+    invoiceId: payment?.invoiceId || invoice?.id || '',
+    invoiceNumber: payment?.invoiceNumber || invoice?.invoiceNumber || '',
+    entityId: cleanEntityId(payment?.entityId || invoice?.entityId || 'wawco'),
+    paymentStatus: payment?.status || '',
+    paymentMethodFamily: payment?.paymentMethodFamily || '',
+    paymentMethodType: payment?.paymentMethodType || '',
+    emailRuntime: runtime ? { enabled: Boolean(runtime.enabled), fake: Boolean(runtime.fake), configured: Boolean(runtime.configured) } : undefined,
+    reason,
+  };
+}
+
+async function insertSkippedPaymentNotification(db, { notificationType, eventId, payment, invoice, reason }) {
+  const id = crypto.randomUUID();
+  const safeSummary = notificationSafeSummary({ notificationType, eventId, payment, invoice, runtime: paymentEmailRuntimeStatus(), reason });
+  const rows = await db`
+    INSERT INTO fin_invoice_payment_notifications (
+      id, payment_request_id, invoice_id, stripe_event_id, entity_id, notification_type, recipient_email, status, attempt_count, safe_summary_json, last_error, created_at, updated_at
+    ) VALUES (
+      ${id}, ${payment.id}, ${payment.invoiceId}, ${eventId}, ${payment.entityId}, ${notificationType}, '', 'skipped', 0, ${JSON.stringify(safeSummary)}::jsonb, ${cleanSingleLine(reason, 180)}, now(), now()
+    )
+    ON CONFLICT (payment_request_id, notification_type) DO NOTHING
+    RETURNING id, status, notification_type
+  `;
+  if (rows[0]) return { status: 'skipped', notificationType, reason, id: rows[0].id };
+  return { status: 'duplicate', notificationType, reason: 'notification-already-recorded' };
+}
+
+async function sendPaymentStateNotification(db, { notificationType, eventId, payment, invoice }) {
+  if (!notificationType || !payment?.id || !payment?.invoiceId) return null;
+  const runtime = paymentEmailRuntimeStatus();
+  if (!runtime.enabled) return { status: 'disabled', notificationType, reason: 'payment-email-disabled' };
+  if (!runtime.configured) return { status: 'disabled', notificationType, reason: 'payment-email-not-configured' };
+  const recipientEmail = cleanEmail(invoice?.client?.email || '');
+  if (!recipientEmail) return insertSkippedPaymentNotification(db, { notificationType, eventId, payment, invoice, reason: 'missing-recipient-email' });
+
+  const id = crypto.randomUUID();
+  const safeSummary = notificationSafeSummary({ notificationType, eventId, payment, invoice, runtime });
+  const claimRows = await db`
+    INSERT INTO fin_invoice_payment_notifications (
+      id, payment_request_id, invoice_id, stripe_event_id, entity_id, notification_type, recipient_email, status, attempt_count, safe_summary_json, created_at, updated_at
+    ) VALUES (
+      ${id}, ${payment.id}, ${payment.invoiceId}, ${eventId}, ${payment.entityId}, ${notificationType}, ${recipientEmail}, 'sending', 1, ${JSON.stringify(safeSummary)}::jsonb, now(), now()
+    )
+    ON CONFLICT (payment_request_id, notification_type) DO NOTHING
+    RETURNING id, status, notification_type, attempt_count
+  `;
+  const claim = claimRows[0];
+  if (!claim) {
+    const existing = await db`
+      SELECT id, status, notification_type, attempt_count
+      FROM fin_invoice_payment_notifications
+      WHERE payment_request_id = ${payment.id} AND notification_type = ${notificationType}
+      LIMIT 1
+    `;
+    return {
+      status: existing[0]?.status === 'failed' ? 'retry-exhausted' : 'duplicate',
+      notificationType,
+      id: existing[0]?.id || '',
+      attemptCount: Number(existing[0]?.attempt_count || 0),
+    };
+  }
+
+  try {
+    const result = await sendPaymentNotificationEmail({
+      to: recipientEmail,
+      notificationType,
+      invoice,
+      payment,
+      entity: publicEntity(payment.entityId || invoice?.entityId || 'wawco'),
+    });
+    await db`
+      UPDATE fin_invoice_payment_notifications
+      SET status = 'sent', gmail_message_id = ${cleanSingleLine(result.id, 160)}, gmail_thread_id = ${cleanSingleLine(result.threadId, 160)}, last_error = '', sent_at = now(), updated_at = now()
+      WHERE id = ${claim.id}
+    `;
+    return { status: 'sent', notificationType, id: claim.id, fake: Boolean(result.fake), gmailMessageId: cleanSingleLine(result.id, 160) };
+  } catch (error) {
+    await db`
+      UPDATE fin_invoice_payment_notifications
+      SET status = 'failed', last_error = ${cleanSingleLine(error?.message || 'payment-email-send-failed', 180)}, updated_at = now()
+      WHERE id = ${claim.id}
+    `;
+    return { status: 'failed', notificationType, id: claim.id, reason: 'payment-email-send-failed' };
+  }
+}
+
 async function processStripeEvent(event = {}) {
   await ensureSchema();
   const db = sql();
@@ -1686,6 +1810,9 @@ async function processStripeEvent(event = {}) {
   } else if (type === 'charge.succeeded') {
     nextStatus = 'paid';
     invoicePaymentStatus = 'paid';
+  } else if (type === 'charge.failed') {
+    nextStatus = 'failed';
+    invoicePaymentStatus = 'failed';
   } else if (type === 'charge.refunded') {
     nextStatus = 'refunded';
     invoicePaymentStatus = 'refunded';
@@ -1760,7 +1887,12 @@ async function processStripeEvent(event = {}) {
   `;
   await db`UPDATE fin_stripe_events SET status = 'processed', processed_at = now(), payment_request_id = ${payment.id}, invoice_id = ${payment.invoiceId}, safe_summary_json = ${JSON.stringify({ type, mode, objectId: object.id || '', paymentRequestId: payment.id, invoiceId: payment.invoiceId, nextStatus })}::jsonb WHERE stripe_event_id = ${eventId}`;
   await db`INSERT INTO fin_invoice_events (invoice_id, actor_user_id, event_type, summary, metadata) VALUES (${payment.invoiceId}, NULL, 'stripe_webhook_processed', ${`Stripe ${type} processed`}, ${JSON.stringify({ eventId, paymentRequestId: payment.id, paymentStatus: invoicePaymentStatus })}::jsonb)`;
-  return { duplicate: false, status: 'processed', eventId, payment: updatedPayment };
+  const notificationType = paymentNotificationTypeForTransition(nextStatus, updatedPayment, eventMethodTypes);
+  const notification = notificationType ? await sendPaymentStateNotification(db, { notificationType, eventId, payment: updatedPayment, invoice }) : null;
+  if (notification) {
+    await db`INSERT INTO fin_invoice_events (invoice_id, actor_user_id, event_type, summary, metadata) VALUES (${payment.invoiceId}, NULL, 'payment_notification_recorded', ${`Payment notification ${notification.status}`}, ${JSON.stringify({ eventId, paymentRequestId: payment.id, notificationType: notification.notificationType, notificationStatus: notification.status })}::jsonb)`;
+  }
+  return { duplicate: false, status: 'processed', eventId, payment: updatedPayment, notification };
 }
 
 function profileLabel(profileType, data = {}) {

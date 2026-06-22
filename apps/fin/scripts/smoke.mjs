@@ -166,6 +166,8 @@ function installFakeFinDb() {
   const financeImports = new Map();
   const paymentRequests = new Map();
   const stripeEvents = new Map();
+  const paymentNotifications = new Map();
+  const sentPaymentEmails = [];
   const systemImportNonces = new Set();
   let invoiceSequence = 0;
   let profileSequence = 0;
@@ -404,6 +406,36 @@ function installFakeFinDb() {
       return paymentMatchesEntity(byMetadata, entityId) ? byMetadata : null;
     }
     return null;
+  }
+
+  function paymentNotificationTypeForTransition(nextStatus, payment = {}, methodTypes = new Set()) {
+    const isBank = payment.paymentMethodFamily === 'bank_account' || payment.paymentMethodType === 'us_bank_account' || methodTypes.has('us_bank_account');
+    if (nextStatus === 'processing' && isBank) return 'payment_started';
+    if (nextStatus === 'paid') return 'payment_received';
+    if (['failed', 'canceled', 'expired', 'refunded', 'disputed'].includes(nextStatus)) return 'payment_issue';
+    return '';
+  }
+
+  function recordPaymentNotification({ notificationType, eventId, payment, invoice }) {
+    if (!notificationType) return null;
+    const key = `${payment.id}:${notificationType}`;
+    const existing = paymentNotifications.get(key);
+    if (existing && existing.status === 'sent') return { status: 'duplicate', notificationType, id: existing.id };
+    const recipientEmail = String(invoice?.client?.email || '').trim().toLowerCase();
+    const record = {
+      id: existing?.id || `note-${paymentNotifications.size + 1}`,
+      paymentRequestId: payment.id,
+      invoiceId: payment.invoiceId,
+      stripeEventId: eventId,
+      entityId: cleanEntityId(payment.entityId || invoice?.entityId || 'wawco'),
+      notificationType,
+      recipientEmail,
+      status: recipientEmail ? 'sent' : 'skipped',
+      attemptCount: (existing?.attemptCount || 0) + 1,
+    };
+    paymentNotifications.set(key, record);
+    if (recipientEmail) sentPaymentEmails.push({ notificationType, recipientEmail, paymentRequestId: payment.id, invoiceId: payment.invoiceId, eventId });
+    return { status: record.status, notificationType, id: record.id };
   }
 
   function profileLabel(type, data) {
@@ -989,6 +1021,10 @@ function installFakeFinDb() {
         stripeEvents.set(eventId, { status: 'failed', reason: 'currency-mismatch' });
         throw makeError(400, 'Stripe event currency does not match the Fin payment snapshot.');
       }
+      const eventMethodTypes = new Set([
+        ...(Array.isArray(object.payment_method_types) ? object.payment_method_types : []),
+        object.payment_method_details?.type,
+      ].filter(Boolean));
       let nextStatus = '';
       let invoicePaymentStatus = '';
       if (type === 'checkout.session.completed') {
@@ -1012,6 +1048,9 @@ function installFakeFinDb() {
       } else if (type === 'charge.succeeded') {
         nextStatus = 'paid';
         invoicePaymentStatus = 'paid';
+      } else if (type === 'charge.failed') {
+        nextStatus = 'failed';
+        invoicePaymentStatus = 'failed';
       } else if (type === 'charge.refunded') {
         nextStatus = 'refunded';
         invoicePaymentStatus = 'refunded';
@@ -1059,7 +1098,15 @@ function installFakeFinDb() {
         });
       }
       stripeEvents.set(eventId, { status: 'processed', paymentRequestId: payment.id, invoiceId: payment.invoiceId, mode, entityId: payment.entityId || 'wawco' });
-      return { duplicate: false, status: 'processed', eventId, payment: paymentSummary(record) };
+      const notificationType = paymentNotificationTypeForTransition(nextStatus, record, eventMethodTypes);
+      const notification = notificationType ? recordPaymentNotification({ notificationType, eventId, payment: record, invoice }) : null;
+      return { duplicate: false, status: 'processed', eventId, payment: paymentSummary(record), notification };
+    },
+    async listPaymentNotifications() {
+      return Array.from(paymentNotifications.values());
+    },
+    async listSentPaymentEmails() {
+      return sentPaymentEmails.slice();
     },
     async createFinanceImport(user, input) {
       if (process.env.FIN_FINANCE_IMPORTS_ENABLED === '0') {
@@ -2159,6 +2206,126 @@ async function runAuthenticatedRouteSmoke() {
     assert(optionalMetaInvoice.data.invoice.salesRep === '', 'optional sales rep smoke failed');
     const optionalMetaReadBack = await callHandler(invoiceHandler, { method: 'GET', url: `/api/invoices?id=${encodeURIComponent(optionalMetaInvoice.data.invoice.id)}`, cookie });
     assert(optionalMetaReadBack.status === 200 && optionalMetaReadBack.data.invoice.dueDate === '', 'optional metadata readback smoke failed');
+
+    const notificationInvoice = await callHandler(invoiceHandler, {
+      method: 'POST',
+      url: '/api/invoices',
+      cookie,
+      body: {
+        status: 'approved',
+        from: { name: 'What are we capable of?', email: 'hello@whatarewecapableof.com' },
+        client: { company: 'Notification client', email: 'notify@example.test', invoiceCode: 'NOTIFY' },
+        invoiceDate: '2099-05-01',
+        items: [{ description: 'Notification lifecycle work', quantity: 1, unitPrice: '10.00' }],
+      },
+    });
+    assert(notificationInvoice.status === 201, 'notification lifecycle invoice create smoke failed');
+    const notificationPage = await callHandler(checkoutHandler, { method: 'POST', url: '/api/stripe/checkout', cookie, body: { invoiceId: notificationInvoice.data.invoice.id, mode: 'test' }, headers: checkoutOrigin });
+    assert(notificationPage.status === 201, 'notification lifecycle payment page smoke failed');
+    const notificationToken = new URL(notificationPage.data.payment.publicUrl).searchParams.get('t');
+    const notificationBankCheckout = await callHandler(payCheckoutHandler, { method: 'POST', url: '/api/pay/checkout', body: { token: notificationToken, method: 'bank_account' }, headers: checkoutOrigin });
+    assert(notificationBankCheckout.status === 201, 'notification lifecycle bank checkout smoke failed');
+    const bankPayment = notificationBankCheckout.data.payment;
+    const bankStartedRaw = JSON.stringify({
+      id: 'evt_smoke_notification_bank_started',
+      type: 'checkout.session.completed',
+      livemode: false,
+      created: Math.floor(Date.now() / 1000),
+      data: { object: { id: bankPayment.checkoutSessionId, amount_total: bankPayment.amountCents, currency: 'usd', payment_status: 'unpaid', payment_intent: bankPayment.paymentIntentId, payment_method_types: ['us_bank_account'], metadata: { fin_payment_request_id: bankPayment.id } } },
+    });
+    const bankStarted = await callHandler(webhookHandler, { method: 'POST', url: '/api/stripe/webhook', rawBody: bankStartedRaw, headers: { 'stripe-signature': signTestWebhookPayload(bankStartedRaw, process.env.STRIPE_WEBHOOK_SECRET) } });
+    assert(bankStarted.status === 200 && bankStarted.data.result.notification.notificationType === 'payment_started' && bankStarted.data.result.notification.status === 'sent', 'bank processing acknowledgement smoke failed');
+    const bankStartedDuplicate = await callHandler(webhookHandler, { method: 'POST', url: '/api/stripe/webhook', rawBody: bankStartedRaw, headers: { 'stripe-signature': signTestWebhookPayload(bankStartedRaw, process.env.STRIPE_WEBHOOK_SECRET) } });
+    assert(bankStartedDuplicate.status === 200 && bankStartedDuplicate.data.result.duplicate === true, 'bank started webhook duplicate smoke failed');
+    const bankProcessingRaw = JSON.stringify({
+      id: 'evt_smoke_notification_bank_processing_sibling',
+      type: 'payment_intent.processing',
+      livemode: false,
+      created: Math.floor(Date.now() / 1000),
+      data: { object: { id: bankPayment.paymentIntentId, amount: bankPayment.amountCents, currency: 'usd', payment_method_types: ['us_bank_account'], metadata: { fin_payment_request_id: bankPayment.id } } },
+    });
+    const bankProcessingSibling = await callHandler(webhookHandler, { method: 'POST', url: '/api/stripe/webhook', rawBody: bankProcessingRaw, headers: { 'stripe-signature': signTestWebhookPayload(bankProcessingRaw, process.env.STRIPE_WEBHOOK_SECRET) } });
+    assert(bankProcessingSibling.status === 200 && bankProcessingSibling.data.result.notification.status === 'duplicate', 'bank processing notification idempotency smoke failed');
+    const bankPaidRaw = JSON.stringify({
+      id: 'evt_smoke_notification_bank_paid',
+      type: 'payment_intent.succeeded',
+      livemode: false,
+      created: Math.floor(Date.now() / 1000),
+      data: { object: { id: bankPayment.paymentIntentId, amount_received: bankPayment.amountCents, currency: 'usd', payment_method_types: ['us_bank_account'], metadata: { fin_payment_request_id: bankPayment.id } } },
+    });
+    const bankPaid = await callHandler(webhookHandler, { method: 'POST', url: '/api/stripe/webhook', rawBody: bankPaidRaw, headers: { 'stripe-signature': signTestWebhookPayload(bankPaidRaw, process.env.STRIPE_WEBHOOK_SECRET) } });
+    assert(bankPaid.status === 200 && bankPaid.data.result.notification.notificationType === 'payment_received' && bankPaid.data.result.notification.status === 'sent', 'bank paid receipt smoke failed');
+    const bankChargeRaw = JSON.stringify({
+      id: 'evt_smoke_notification_bank_charge_succeeded',
+      type: 'charge.succeeded',
+      livemode: false,
+      created: Math.floor(Date.now() / 1000),
+      data: { object: { id: 'ch_smoke_notification_bank', amount: bankPayment.amountCents, currency: 'usd', payment_intent: bankPayment.paymentIntentId, payment_method_details: { type: 'us_bank_account' }, metadata: { fin_payment_request_id: bankPayment.id } } },
+    });
+    const bankCharge = await callHandler(webhookHandler, { method: 'POST', url: '/api/stripe/webhook', rawBody: bankChargeRaw, headers: { 'stripe-signature': signTestWebhookPayload(bankChargeRaw, process.env.STRIPE_WEBHOOK_SECRET) } });
+    assert(bankCharge.status === 200 && bankCharge.data.result.notification.status === 'duplicate', 'bank paid receipt duplicate-by-charge smoke failed');
+    const bankRefundedRaw = JSON.stringify({
+      id: 'evt_smoke_notification_bank_refunded',
+      type: 'charge.refunded',
+      livemode: false,
+      created: Math.floor(Date.now() / 1000),
+      data: { object: { id: 'ch_smoke_notification_bank_refund', amount: bankPayment.amountCents, currency: 'usd', payment_intent: bankPayment.paymentIntentId, payment_method_details: { type: 'us_bank_account' }, metadata: { fin_payment_request_id: bankPayment.id } } },
+    });
+    const bankRefunded = await callHandler(webhookHandler, { method: 'POST', url: '/api/stripe/webhook', rawBody: bankRefundedRaw, headers: { 'stripe-signature': signTestWebhookPayload(bankRefundedRaw, process.env.STRIPE_WEBHOOK_SECRET) } });
+    assert(bankRefunded.status === 200 && bankRefunded.data.result.notification.notificationType === 'payment_issue' && bankRefunded.data.result.notification.status === 'sent', 'bank returned/refunded issue notification smoke failed');
+
+    const issueInvoice = await callHandler(invoiceHandler, {
+      method: 'POST',
+      url: '/api/invoices',
+      cookie,
+      body: {
+        status: 'approved',
+        from: { name: 'What are we capable of?', email: 'hello@whatarewecapableof.com' },
+        client: { company: 'Issue client', email: 'issue@example.test', invoiceCode: 'ISSUE' },
+        invoiceDate: '2099-05-02',
+        items: [{ description: 'Issue notification work', quantity: 1, unitPrice: '11.00' }],
+      },
+    });
+    assert(issueInvoice.status === 201, 'issue notification invoice create smoke failed');
+    const issuePage = await callHandler(checkoutHandler, { method: 'POST', url: '/api/stripe/checkout', cookie, body: { invoiceId: issueInvoice.data.invoice.id, mode: 'test' }, headers: checkoutOrigin });
+    const issueToken = new URL(issuePage.data.payment.publicUrl).searchParams.get('t');
+    const issueCheckout = await callHandler(payCheckoutHandler, { method: 'POST', url: '/api/pay/checkout', body: { token: issueToken, method: 'card' }, headers: checkoutOrigin });
+    assert(issueCheckout.status === 201, 'issue notification card checkout smoke failed');
+    const issuePayment = issueCheckout.data.payment;
+    const issueRaw = JSON.stringify({
+      id: 'evt_smoke_notification_issue',
+      type: 'payment_intent.payment_failed',
+      livemode: false,
+      created: Math.floor(Date.now() / 1000),
+      data: { object: { id: issuePayment.paymentIntentId, amount: issuePayment.amountCents, currency: 'usd', payment_method_types: ['card'], metadata: { fin_payment_request_id: issuePayment.id } } },
+    });
+    const issueNotice = await callHandler(webhookHandler, { method: 'POST', url: '/api/stripe/webhook', rawBody: issueRaw, headers: { 'stripe-signature': signTestWebhookPayload(issueRaw, process.env.STRIPE_WEBHOOK_SECRET) } });
+    assert(issueNotice.status === 200 && issueNotice.data.result.notification.notificationType === 'payment_issue' && issueNotice.data.result.notification.status === 'sent', 'payment issue notification smoke failed');
+    const issueChargeFailedRaw = JSON.stringify({
+      id: 'evt_smoke_notification_charge_failed',
+      type: 'charge.failed',
+      livemode: false,
+      created: Math.floor(Date.now() / 1000),
+      data: { object: { id: 'ch_smoke_notification_failed', amount: issuePayment.amountCents, currency: 'usd', payment_intent: issuePayment.paymentIntentId, payment_method_details: { type: 'card' }, metadata: { fin_payment_request_id: issuePayment.id } } },
+    });
+    const issueChargeFailed = await callHandler(webhookHandler, { method: 'POST', url: '/api/stripe/webhook', rawBody: issueChargeFailedRaw, headers: { 'stripe-signature': signTestWebhookPayload(issueChargeFailedRaw, process.env.STRIPE_WEBHOOK_SECRET) } });
+    assert(issueChargeFailed.status === 200 && issueChargeFailed.data.result.notification.status === 'duplicate', 'charge failed issue notification idempotency smoke failed');
+    const notificationRows = await fakeDb.listPaymentNotifications();
+    assert(notificationRows.filter((row) => row.paymentRequestId === bankPayment.id && row.notificationType === 'payment_started').length === 1, 'bank started notification unique smoke failed');
+    assert(notificationRows.filter((row) => row.paymentRequestId === bankPayment.id && row.notificationType === 'payment_received').length === 1, 'bank received notification unique smoke failed');
+    assert(notificationRows.filter((row) => row.paymentRequestId === bankPayment.id && row.notificationType === 'payment_issue').length === 1, 'bank issue notification unique smoke failed');
+    assert(notificationRows.filter((row) => row.paymentRequestId === issuePayment.id && row.notificationType === 'payment_issue').length === 1, 'issue notification unique smoke failed');
+    const sentPaymentEmails = await fakeDb.listSentPaymentEmails();
+    assert(sentPaymentEmails.filter((row) => row.paymentRequestId === bankPayment.id).length === 3, 'bank lifecycle sent-email count smoke failed');
+    assert(sentPaymentEmails.some((row) => row.paymentRequestId === issuePayment.id && row.notificationType === 'payment_issue'), 'issue sent-email smoke failed');
+    await fakeDb.failCustomerCheckoutPaymentRequest(bankPayment.id, 'synthetic notification cleanup failure');
+    await fakeDb.failCustomerCheckoutPaymentRequest(notificationPage.data.payment.id, 'synthetic notification page cleanup failure');
+    await fakeDb.failCustomerCheckoutPaymentRequest(issuePayment.id, 'synthetic issue cleanup failure');
+    await fakeDb.failCustomerCheckoutPaymentRequest(issuePage.data.payment.id, 'synthetic issue page cleanup failure');
+    for (const invoiceId of [notificationInvoice.data.invoice.id, issueInvoice.data.invoice.id]) {
+      const deleted = await callHandler(invoiceHandler, { method: 'DELETE', url: `/api/invoices?id=${encodeURIComponent(invoiceId)}`, cookie });
+      assert(deleted.status === 200 && deleted.data.deleted === true, 'notification invoice cleanup smoke failed');
+    }
 
     const paidActiveDelete = await callHandler(invoiceHandler, { method: 'DELETE', url: `/api/invoices?id=${encodeURIComponent(id)}`, cookie });
     assert(paidActiveDelete.status === 409, 'paid Stripe payment delete guard smoke failed');

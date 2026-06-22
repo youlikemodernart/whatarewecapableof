@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-06-20",
+  "generatedAt": "2026-06-22",
   "source": "Curated starter registry from repo routes and read-only Vercel scope observations. Rows marked needs_review require live verification before being treated as complete inventory.",
   "items": [
     {
@@ -330,6 +330,28 @@
       ],
       "description": "Internal meeting prep brief; not client-facing without review.",
       "lifecycle": "active"
+    },
+    {
+      "id": "brief-unitus-sms-email-first-look",
+      "title": "Unitus email/SMS first look",
+      "url": "https://whatarewecapableof.com/briefs/unitus/sms-email-first-look/",
+      "path": "/briefs/unitus/sms-email-first-look/",
+      "category": "brief",
+      "group": "Briefs",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:briefs/unitus/sms-email-first-look/index.html",
+      "tags": [
+        "brief",
+        "unitus",
+        "email-sms",
+        "first-look"
+      ],
+      "description": "Direct-link first-look brief for Unitus email and SMS program review.",
+      "lifecycle": "active",
+      "notes": "Reviewed from 2026-06-22 Windex candidate audit; live route is noindex,nofollow and client-facing by direct link."
     },
     {
       "id": "brief-unitus-offer",

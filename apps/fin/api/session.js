@@ -1,4 +1,5 @@
 const { authConfig, storageConfig, paymentConfig, getSession, json } = require('./_auth');
+const { userEntityPermissions } = require('./_db');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -19,5 +20,6 @@ module.exports = async function handler(req, res) {
     },
     storage: storageConfig(),
     payments: paymentConfig(),
+    permissions: user ? userEntityPermissions(user) : { visibleEntityIds: [], canViewAllInvoices: false, combinedEntityMode: 'signed_out' },
   });
 };

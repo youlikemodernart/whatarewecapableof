@@ -492,23 +492,76 @@ function installFakeFinDb() {
     };
   }
 
+  function visibleEntityIdsForUser(userOrRow = {}) {
+    const email = String(userOrRow.email || '').toLowerCase();
+    return email === 'noah@whatarewecapableof.com' ? ['wawco', 'ndg'] : ['wawco'];
+  }
+
+  function canViewAllInvoices(userOrRow = {}) {
+    return String(userOrRow.email || '').toLowerCase() === 'noah@whatarewecapableof.com';
+  }
+
+  function reportingEntityIdForInvoice(invoice = {}) {
+    const entityId = cleanEntityId(invoice.entityId || 'wawco');
+    const scope = String(invoice.payeeReportingScope || '').toLowerCase();
+    return cleanEntityId(invoice.reportingEntityId || (scope && scope !== 'private' ? scope : '') || entityId, entityId);
+  }
+
+  function canAccessInvoice(userOrRow = {}, invoice = {}) {
+    const ids = visibleEntityIdsForUser(userOrRow);
+    return ids.includes(cleanEntityId(invoice.entityId || 'wawco')) && ids.includes(reportingEntityIdForInvoice(invoice));
+  }
+
   function visibleInvoices() {
     return Array.from(records.values()).filter((invoice) => !invoice.deleted);
   }
 
   function isDashboardExcluded(invoice) {
-    return invoice.payeeReportingScope === 'private' || invoice.excludeFromWawcoDashboard === true;
+    return invoice.payeeReportingScope === 'private' || invoice.excludeFromWawcoDashboard === true || invoice.dashboardExcluded === true;
+  }
+
+  function isPaidInvoice(invoice) {
+    return invoice.status === 'paid' || invoice.paymentStatus === 'paid';
+  }
+
+  function isOpenInvoiceStatus(status) {
+    return !['paid', 'void', 'canceled', 'cancelled'].includes(String(status || '').toLowerCase());
+  }
+
+  function isRecentlyPaid(invoice) {
+    if (!isPaidInvoice(invoice)) return false;
+    const paidMs = new Date(invoice.paidAt || invoice.paymentUpdatedAt || invoice.updatedAt || '').getTime();
+    return Number.isFinite(paidMs) && Date.now() - paidMs <= 7 * 86_400_000;
+  }
+
+  function matchesInvoiceView(invoice, view = 'active') {
+    const visibilityState = invoice.visibilityState || 'active';
+    const isTest = invoice.isTest === true;
+    const paid = isPaidInvoice(invoice);
+    const recentPaid = isRecentlyPaid(invoice);
+    const processing = invoice.paymentStatus === 'processing' || latestPaymentRecord(invoice.id)?.status === 'processing';
+    if (view === 'all') return true;
+    if (visibilityState === 'hidden') return false;
+    if (view === 'tests') return isTest;
+    if (view === 'processing') return !isTest && visibilityState === 'active' && processing;
+    if (view === 'recently_paid') return !isTest && visibilityState === 'active' && paid && recentPaid;
+    if (view === 'archive') return visibilityState === 'archived' || isTest || invoice.status === 'void' || (paid && !recentPaid);
+    return !isTest && visibilityState === 'active' && invoice.status !== 'void' && (!paid || recentPaid);
   }
 
   function matchesEntityFilter(invoice, entityFilter) {
     if (entityFilter === 'combined') return true;
-    return cleanEntityId(invoice.entityId || 'wawco') === entityFilter;
+    return reportingEntityIdForInvoice(invoice) === entityFilter;
   }
 
   const fakeDb = {
     async ensureSchema() {},
     async ensureUser(user) {
       return userRow(user);
+    },
+    userEntityPermissions(user) {
+      const ids = visibleEntityIdsForUser(user);
+      return { visibleEntityIds: ids, canViewAllInvoices: canViewAllInvoices(user), combinedEntityMode: ids.length > 1 ? 'visible_entities' : 'wawco_only' };
     },
     async numberingSettings() {
       const examples = numberingExamples(numbering.sequencePadding);
@@ -528,14 +581,16 @@ function installFakeFinDb() {
       return { ...numbering };
     },
     async listEntities(user) {
-      userRow(user);
-      return entities;
+      const currentUser = userRow(user);
+      const visibleIds = visibleEntityIdsForUser(currentUser);
+      return entities.filter((entity) => visibleIds.includes(cleanEntityId(entity.id)));
     },
     async invoiceEntityIdForUser(user, invoiceId) {
       const currentUser = userRow(user);
       const invoice = records.get(invoiceId);
       if (!invoice || invoice.deleted) return '';
       if (currentUser.role !== 'admin' && invoice.createdByUserId !== currentUser.id) return '';
+      if (!canAccessInvoice(currentUser, invoice)) return '';
       return cleanEntityId(invoice.entityId || 'wawco');
     },
     async listProfiles(user, type) {
@@ -583,21 +638,43 @@ function installFakeFinDb() {
       profileRecords.set(id, { ...existing, deleted: true });
       return true;
     },
-    async listInvoices(user) {
+    async listInvoices(user, options = {}) {
       const currentUser = userRow(user);
-      return visibleInvoices().map((invoice) => ({
-        id: invoice.id,
-        entityId: cleanEntityId(invoice.entityId || 'wawco'),
-        entityLabel: publicEntity(invoice.entityId || 'wawco').label,
-        invoiceNumber: invoice.invoiceNumber,
-        status: invoice.status,
-        clientLabel: invoiceClientLabel(invoice),
-        invoiceDate: invoice.invoiceDate,
-        dueDate: invoice.dueDate,
-        totalCents: invoice.totals.totalCents,
-        updatedAt: '2026-05-28T00:00:00.000Z',
-        createdBy: currentUser.email,
-      }));
+      const view = String(options.view || 'active').toLowerCase();
+      if (view === 'all' && !canViewAllInvoices(currentUser)) throw makeError(403, 'All invoice view is restricted.');
+      const requestedEntity = String(options.entity || options.entityId || '').toLowerCase();
+      const entityFilter = requestedEntity && requestedEntity !== 'combined' ? cleanEntityId(requestedEntity) : requestedEntity;
+      if (entityFilter && entityFilter !== 'combined' && !visibleEntityIdsForUser(currentUser).includes(entityFilter)) throw makeError(403, 'Invoice entity is not available to this user.');
+      return visibleInvoices()
+        .filter((invoice) => currentUser.role === 'admin' || invoice.createdByUserId === currentUser.id)
+        .filter((invoice) => canAccessInvoice(currentUser, invoice))
+        .filter((invoice) => !entityFilter || entityFilter === 'combined' || reportingEntityIdForInvoice(invoice) === entityFilter)
+        .filter((invoice) => matchesInvoiceView(invoice, view))
+        .map((invoice) => {
+          const entityId = cleanEntityId(invoice.entityId || 'wawco');
+          const reportingEntityId = reportingEntityIdForInvoice(invoice);
+          return {
+            id: invoice.id,
+            entityId,
+            entityLabel: publicEntity(entityId).label,
+            reportingEntityId,
+            reportingEntityLabel: publicEntity(reportingEntityId).label,
+            invoiceNumber: invoice.invoiceNumber,
+            status: invoice.status,
+            clientLabel: invoiceClientLabel(invoice),
+            invoiceDate: invoice.invoiceDate,
+            dueDate: invoice.dueDate,
+            totalCents: invoice.totals.totalCents,
+            paymentStatus: invoice.paymentStatus || 'none',
+            visibilityState: invoice.visibilityState || 'active',
+            isTest: invoice.isTest === true,
+            testReason: invoice.testReason || '',
+            dashboardExcluded: isDashboardExcluded(invoice),
+            paidAt: invoice.paidAt || '',
+            updatedAt: invoice.updatedAt || '2026-05-28T00:00:00.000Z',
+            createdBy: currentUser.email,
+          };
+        });
     },
     async createInvoice(user, input) {
       userRow(user);
@@ -608,21 +685,34 @@ function installFakeFinDb() {
       if (currentUser.role !== 'admin' && ['approved', 'issued', 'paid', 'void'].includes(invoiceDraft.status)) {
         throw makeError(403, 'Only Fin admins can create approved, issued, paid, or void invoices.');
       }
+      if (!canAccessInvoice(currentUser, invoiceDraft)) throw makeError(403, 'Invoice entity is not available to this user.');
       const invoiceNumber = nextInvoiceNumber(invoiceDraft);
       const invoice = normalizeInvoice({ ...invoiceDraft, invoiceNumber }, { id, invoiceNumber });
+      if (!canAccessInvoice(currentUser, invoice)) throw makeError(403, 'Invoice entity is not available to this user.');
       const startsApproved = ['approved', 'issued', 'paid'].includes(invoice.status);
-      records.set(id, startsApproved ? { ...invoice, createdByUserId: currentUser.id, approvedByUserId: currentUser.id } : { ...invoice, createdByUserId: currentUser.id });
+      const stored = {
+        ...invoice,
+        createdByUserId: currentUser.id,
+        approvedByUserId: startsApproved ? currentUser.id : undefined,
+        paidAt: invoice.status === 'paid' ? new Date().toISOString() : invoice.paidAt || '',
+        updatedAt: new Date().toISOString(),
+      };
+      records.set(id, stored);
       return records.get(id);
     },
     async getInvoice(user, id) {
-      userRow(user);
+      const currentUser = userRow(user);
       const invoice = records.get(id);
-      return invoice && !invoice.deleted ? invoice : null;
+      if (!invoice || invoice.deleted) return null;
+      if (currentUser.role !== 'admin' && invoice.createdByUserId !== currentUser.id) return null;
+      return canAccessInvoice(currentUser, invoice) ? invoice : null;
     },
     async updateInvoice(user, id, input) {
       const currentUser = userRow(user);
       const existing = records.get(id);
       if (!existing || existing.deleted) return null;
+      if (currentUser.role !== 'admin' && existing.createdByUserId !== currentUser.id) return null;
+      if (!canAccessInvoice(currentUser, existing)) return null;
       const requestedStatus = String(input.status ?? existing.status ?? '').trim();
       if (currentUser.role !== 'admin' && (['approved', 'issued', 'paid', 'void'].includes(requestedStatus) || ['approved', 'issued', 'paid', 'void'].includes(existing.status))) {
         throw makeError(403, 'Only Fin admins can approve, issue, mark paid, void, or edit approved invoices.');
@@ -631,6 +721,7 @@ function installFakeFinDb() {
       const existingEntityId = cleanEntityId(existing.entityId || 'wawco');
       if (requestedEntityId !== existingEntityId) throw makeError(409, 'Invoice entity cannot be changed after the invoice number is assigned. Duplicate the draft under the other entity instead.');
       const invoice = normalizeInvoice({ ...existing, ...input, id, invoiceNumber: existing.invoiceNumber, entityId: existingEntityId }, { id, invoiceNumber: existing.invoiceNumber, entityId: existingEntityId });
+      if (!canAccessInvoice(currentUser, invoice)) throw makeError(403, 'Invoice reporting entity is not available to this user.');
       const activePayment = activePaymentRecord(id, 'test') || activePaymentRecord(id, 'live');
       if (activePayment && activePayment.snapshotSha256 !== paymentSnapshotHash(invoice)) {
         throw makeError(409, 'This invoice has an active Stripe payment link. Expire or supersede the link before changing payment terms, line items, totals, client, dates, or currency.');
@@ -640,23 +731,27 @@ function installFakeFinDb() {
         if (!linkedAllowedStatuses.has(invoice.status)) throw makeError(409, 'This invoice has an active Stripe payment link. Keep it approved, issued, or paid until the link is expired or superseded.');
         if (existing.status === 'paid' && invoice.status !== 'paid') throw makeError(409, 'Paid invoices cannot be moved back while a Stripe payment record is attached.');
       }
-      const storedInvoice = invoice.status === 'approved' ? { ...invoice, approvedByUserId: currentUser.id } : { ...invoice, approvedByUserId: existing.approvedByUserId };
+      const storedInvoice = invoice.status === 'approved' ? { ...invoice, approvedByUserId: currentUser.id, updatedAt: new Date().toISOString() } : { ...invoice, approvedByUserId: existing.approvedByUserId, paidAt: invoice.status === 'paid' ? (existing.paidAt || new Date().toISOString()) : existing.paidAt, updatedAt: new Date().toISOString() };
       records.set(id, storedInvoice);
       return storedInvoice;
     },
     async deleteInvoice(user, id) {
-      userRow(user);
+      const currentUser = userRow(user);
       const invoice = records.get(id);
       if (!invoice || invoice.deleted) return false;
+      if (currentUser.role !== 'admin' && invoice.createdByUserId !== currentUser.id) return false;
+      if (!canAccessInvoice(currentUser, invoice)) return false;
       const activePayment = activePaymentRecord(id, 'test') || activePaymentRecord(id, 'live');
       if (activePayment) throw makeError(409, 'This invoice has an active Stripe payment link. Expire, cancel, or supersede the link before deleting the invoice.');
       records.set(id, { ...invoice, deleted: true });
       return true;
     },
     async latestPaymentRequestForInvoice(user, invoiceId) {
-      userRow(user);
+      const currentUser = userRow(user);
       const invoice = records.get(invoiceId);
       if (!invoice || invoice.deleted) return null;
+      if (currentUser.role !== 'admin' && invoice.createdByUserId !== currentUser.id) return null;
+      if (!canAccessInvoice(currentUser, invoice)) return null;
       return paymentSummary(latestPaymentRecord(invoiceId));
     },
     async createInvoicePaymentRequest(user, invoiceId, mode = 'test') {
@@ -664,7 +759,7 @@ function installFakeFinDb() {
       if (currentUser.role !== 'admin') throw makeError(403, 'Only Fin admins can create Stripe payment links.');
       if (!['test', 'live'].includes(mode)) throw makeError(400, 'Stripe mode must be test or live.');
       const invoice = records.get(invoiceId);
-      if (!invoice || invoice.deleted) throw makeError(404, 'Invoice draft not found.');
+      if (!invoice || invoice.deleted || !canAccessInvoice(currentUser, invoice)) throw makeError(404, 'Invoice draft not found.');
       if (invoice.status !== 'approved' || !invoice.approvedByUserId) throw makeError(409, 'Approve the invoice before creating a Stripe payment link.');
       const amountCents = Number(invoice.totals?.totalCents || 0);
       if (!Number.isFinite(amountCents) || amountCents <= 0) throw makeError(409, 'Invoice total must be greater than zero before creating a payment link.');
@@ -762,7 +857,7 @@ function installFakeFinDb() {
       if (currentUser.role !== 'admin') throw makeError(403, 'Only Fin admins can create customer payment pages.');
       if (!['test', 'live'].includes(mode)) throw makeError(400, 'Stripe mode must be test or live.');
       const invoice = records.get(invoiceId);
-      if (!invoice || invoice.deleted) throw makeError(404, 'Invoice draft not found.');
+      if (!invoice || invoice.deleted || !canAccessInvoice(currentUser, invoice)) throw makeError(404, 'Invoice draft not found.');
       if (invoice.status !== 'approved' || !invoice.approvedByUserId) throw makeError(409, 'Approve the invoice before creating a payment link.');
       const amountCents = Number(invoice.totals?.totalCents || 0);
       if (!Number.isFinite(amountCents) || amountCents <= 0) throw makeError(409, 'Invoice total must be greater than zero before creating a payment link.');
@@ -1095,6 +1190,9 @@ function installFakeFinDb() {
           ...invoice,
           status: nextStatus === 'paid' ? 'paid' : invoice.status,
           paymentStatus: invoicePaymentStatus,
+          paidAt: nextStatus === 'paid' ? '2026-05-29T01:00:00.000Z' : invoice.paidAt,
+          paymentUpdatedAt: '2026-05-29T01:00:00.000Z',
+          updatedAt: '2026-05-29T01:00:00.000Z',
         });
       }
       stripeEvents.set(eventId, { status: 'processed', paymentRequestId: payment.id, invoiceId: payment.invoiceId, mode, entityId: payment.entityId || 'wawco' });
@@ -1202,14 +1300,15 @@ function installFakeFinDb() {
     },
     async financeSummary(user, options = {}) {
       const currentUser = userRow(user);
-      const invoices = visibleInvoices();
+      const accessibleInvoices = visibleInvoices().filter((invoice) => (currentUser.role === 'admin' || invoice.createdByUserId === currentUser.id) && canAccessInvoice(currentUser, invoice));
       const requestedEntity = String(options.entity || options.entityId || 'wawco').toLowerCase();
       const entityFilter = requestedEntity === 'combined' ? 'combined' : cleanEntityId(requestedEntity || 'wawco');
-      const entityScoped = invoices.filter((invoice) => matchesEntityFilter(invoice, entityFilter));
-      const visible = entityScoped.filter((invoice) => !isDashboardExcluded(invoice));
-      const excluded = entityScoped.filter(isDashboardExcluded);
-      const excludedEntityCount = invoices.length - entityScoped.length;
-      const entitySupportsFinanceImports = entityFilter === 'wawco' || entityFilter === 'combined';
+      if (entityFilter !== 'combined' && !visibleEntityIdsForUser(currentUser).includes(entityFilter)) throw makeError(403, 'Finance entity is not available to this user.');
+      const entityScoped = accessibleInvoices.filter((invoice) => matchesEntityFilter(invoice, entityFilter));
+      const visible = entityScoped.filter((invoice) => !isDashboardExcluded(invoice) && invoice.isTest !== true && invoice.visibilityState !== 'hidden');
+      const excluded = entityScoped.filter((invoice) => isDashboardExcluded(invoice) || invoice.isTest === true || invoice.visibilityState === 'hidden');
+      const excludedEntityCount = visibleInvoices().length - entityScoped.length;
+      const entitySupportsFinanceImports = entityFilter === 'wawco' || (entityFilter === 'combined' && visibleEntityIdsForUser(currentUser).length === 1);
       const importRows = currentUser.role === 'admin' && entitySupportsFinanceImports
         ? Array.from(financeImports.values()).filter((item) => !item.deleted)
         : [];
@@ -1234,6 +1333,8 @@ function installFakeFinDb() {
           entityId: cleanEntityId(invoice.entityId || 'wawco'),
           entityLabel: publicEntity(invoice.entityId || 'wawco').label,
           entityName: publicEntity(invoice.entityId || 'wawco').name,
+          reportingEntityId: reportingEntityIdForInvoice(invoice),
+          reportingEntityLabel: publicEntity(reportingEntityIdForInvoice(invoice)).label,
           invoiceNumber: invoice.invoiceNumber,
           status: invoice.status,
           clientLabel: invoiceClientLabel(invoice),
@@ -1251,6 +1352,8 @@ function installFakeFinDb() {
       });
       const readyForReviewCents = visible.filter((invoice) => invoice.status === 'ready_for_review').reduce((sum, invoice) => sum + invoice.totals.totalCents, 0);
       const totalCents = visible.reduce((sum, invoice) => sum + invoice.totals.totalCents, 0);
+      const openRows = hostedRows.filter((invoice) => isOpenInvoiceStatus(invoice.status));
+      const openReceivablesCents = openRows.reduce((sum, invoice) => sum + invoice.amountCents, 0);
       const paymentActiveRows = hostedRows.filter((invoice) => ['link_ready', 'processing'].includes(invoice.paymentStatus) || ['active', 'processing'].includes(invoice.paymentRequestStatus));
       const paymentPaidRows = hostedRows.filter((invoice) => invoice.paymentStatus === 'paid' || invoice.paymentRequestStatus === 'paid');
       const paymentSummary = Array.from(hostedRows.reduce((map, invoice) => {
@@ -1282,15 +1385,15 @@ function installFakeFinDb() {
         unmatchedCardExpenseCents: 0,
         transactionCount: 0,
         mercuryInvoiceOpenCents: 0,
-        hostedInvoiceOpenCents: totalCents,
+        hostedInvoiceOpenCents: openReceivablesCents,
         hostedInvoiceReadyCents: readyForReviewCents,
         hostedInvoiceOverdueCents: 0,
-        localInvoiceOpenCents: totalCents,
+        localInvoiceOpenCents: openReceivablesCents,
       };
       const imported = latestImport?.data || fakeFinanceImportSummary(month);
       const hasImport = Boolean(latestImport);
       const metrics = hasImport
-        ? { ...baseMetrics, ...imported.metrics, mercuryInvoiceOpenCents: 0, hostedInvoiceOpenCents: totalCents, hostedInvoiceReadyCents: readyForReviewCents, hostedInvoiceOverdueCents: 0, localInvoiceOpenCents: totalCents }
+        ? { ...baseMetrics, ...imported.metrics, mercuryInvoiceOpenCents: 0, hostedInvoiceOpenCents: openReceivablesCents, hostedInvoiceReadyCents: readyForReviewCents, hostedInvoiceOverdueCents: 0, localInvoiceOpenCents: openReceivablesCents }
         : baseMetrics;
       return {
         scope: currentUser.role === 'admin' ? 'workspace' : 'own_drafts',
@@ -1299,8 +1402,8 @@ function installFakeFinDb() {
         month,
         months,
         entityFilter,
-        entityLabel: entityFilter === 'combined' ? 'Combined' : publicEntity(entityFilter).label,
-        entities: [{ id: 'combined', label: 'Combined', name: 'Combined' }, ...entities],
+        entityLabel: entityFilter === 'combined' ? (visibleEntityIdsForUser(currentUser).length === 1 ? 'Combined (WAWCO visible)' : 'Combined') : publicEntity(entityFilter).label,
+        entities: [{ id: 'combined', label: 'Combined', name: visibleEntityIdsForUser(currentUser).length === 1 ? 'Combined (WAWCO visible)' : 'Combined' }, ...entities.filter((entity) => visibleEntityIdsForUser(currentUser).includes(cleanEntityId(entity.id)))],
         invoiceCount: visible.length,
         totalCents,
         readyForReviewCents,
@@ -1316,18 +1419,18 @@ function installFakeFinDb() {
         hostedInvoices: {
           visibleCount: visible.length,
           entityFilter,
-          entityLabel: entityFilter === 'combined' ? 'Combined' : publicEntity(entityFilter).label,
+          entityLabel: entityFilter === 'combined' ? (visibleEntityIdsForUser(currentUser).length === 1 ? 'Combined (WAWCO visible)' : 'Combined') : publicEntity(entityFilter).label,
           excludedEntityCount,
           excludedPrivatePayeeCount: excluded.length,
           invoices: hostedRows,
           monthInvoices: hostedRows.filter((invoice) => invoice.month === month || !month),
           summary: byStatus.map((row) => ({ status: row.status, count: row.invoiceCount, amountCents: row.totalCents })),
           monthSummary: byStatus.map((row) => ({ status: row.status, count: row.invoiceCount, amountCents: row.totalCents })),
-          openReceivablesCents: totalCents,
+          openReceivablesCents,
           overdue: [],
           overdueCents: 0,
-          dueSoon: hostedRows,
-          dueSoonCents: totalCents,
+          dueSoon: openRows,
+          dueSoonCents: openReceivablesCents,
           readyForReviewCount: visible.filter((invoice) => invoice.status === 'ready_for_review').length,
           readyForReviewCents,
           paymentSummary,
@@ -1382,7 +1485,7 @@ async function runAuthenticatedRouteSmoke() {
   process.env.FIN_GOOGLE_CLIENT_SECRET = 'fin-smoke-secret';
   process.env.FIN_SESSION_SECRET = 'fin-smoke-session-secret-32-bytes';
   process.env.FIN_ALLOWED_DOMAIN = 'whatarewecapableof.com';
-  process.env.FIN_ALLOWED_EMAILS = 'noah@whatarewecapableof.com,rep@whatarewecapableof.com';
+  process.env.FIN_ALLOWED_EMAILS = 'noah@whatarewecapableof.com,austin@whatarewecapableof.com,rep@whatarewecapableof.com';
   process.env.FIN_STORAGE_MODE = 'postgres';
   process.env.POSTGRES_URL = 'postgres://user:pass@127.0.0.1:5432/fin_smoke';
   process.env.FIN_FINANCE_IMPORTS_ENABLED = '1';
@@ -1401,6 +1504,7 @@ async function runAuthenticatedRouteSmoke() {
   process.env.FIN_STRIPE_LIVE_LINKS_ENABLED = '1';
 
   const cookie = sessionCookie(process.env.FIN_SESSION_SECRET);
+  const austinCookie = sessionCookie(process.env.FIN_SESSION_SECRET, { sub: 'fin-smoke-austin', email: 'austin@whatarewecapableof.com', name: 'Fin Smoke Austin' });
   const repCookie = sessionCookie(process.env.FIN_SESSION_SECRET, { sub: 'fin-smoke-rep', email: 'rep@whatarewecapableof.com', name: 'Fin Smoke Rep' });
   const { fakeFinanceImportSummary } = require('../api/_finance_import.js');
   const { signSystemImportRequest } = require('../api/_system_import_auth.js');
@@ -1500,6 +1604,8 @@ async function runAuthenticatedRouteSmoke() {
 
     const entitiesList = await callHandler(entitiesHandler, { method: 'GET', url: '/api/entities', cookie });
     assert(entitiesList.status === 200 && entitiesList.data.entities.some((entity) => entity.id === 'ndg'), 'entities endpoint smoke failed');
+    const austinEntitiesList = await callHandler(entitiesHandler, { method: 'GET', url: '/api/entities', cookie: austinCookie });
+    assert(austinEntitiesList.status === 200 && !austinEntitiesList.data.entities.some((entity) => entity.id === 'ndg'), 'non-Noah entity visibility smoke failed');
 
     const numberingBefore = await callHandler(numberingHandler, { method: 'GET', url: '/api/numbering', cookie });
     assert(numberingBefore.status === 200 && numberingBefore.data.numbering.mode === 'client-date-daily', 'numbering GET smoke failed');
@@ -1581,6 +1687,24 @@ async function runAuthenticatedRouteSmoke() {
     assert(ndgInvoice.data.invoice.invoiceNumber === 'NDG-SUBSTRATE-052626-01', 'NDG per-entity numbering smoke failed');
     const ndgEntityChange = await callHandler(invoiceHandler, { method: 'PUT', url: `/api/invoices?id=${encodeURIComponent(ndgInvoice.data.invoice.id)}`, cookie, body: { entityId: 'wawco' } });
     assert(ndgEntityChange.status === 409, 'invoice entity immutability smoke failed');
+    const austinNdgRead = await callHandler(invoiceHandler, { method: 'GET', url: `/api/invoices?id=${encodeURIComponent(ndgInvoice.data.invoice.id)}`, cookie: austinCookie });
+    assert(austinNdgRead.status === 404, 'non-Noah direct NDG invoice read gate smoke failed');
+    const austinNdgCreate = await callHandler(invoiceHandler, {
+      method: 'POST',
+      url: '/api/invoices',
+      cookie: austinCookie,
+      body: { entityId: 'ndg', client: { company: 'Blocked NDG', invoiceCode: 'BLOCKNDG' }, invoiceDate: '2026-05-26', items: [{ description: 'Blocked', quantity: 1, unitPrice: '10.00' }] },
+    });
+    assert(austinNdgCreate.status === 403, 'non-Noah NDG invoice create gate smoke failed');
+    const wawcoIssuedNdgReported = await callHandler(invoiceHandler, {
+      method: 'POST',
+      url: '/api/invoices',
+      cookie,
+      body: { entityId: 'wawco', reportingEntityId: 'ndg', payeeReportingScope: 'ndg', client: { company: 'Reporting split client', invoiceCode: 'REPORTSPLIT' }, invoiceDate: '2026-05-26', items: [{ description: 'Reporting split work', quantity: 1, unitPrice: '130.00' }] },
+    });
+    assert(wawcoIssuedNdgReported.status === 201 && wawcoIssuedNdgReported.data.invoice.entityId === 'wawco' && wawcoIssuedNdgReported.data.invoice.reportingEntityId === 'ndg', 'WAWCO-issued NDG-reported create smoke failed');
+    const austinSplitRead = await callHandler(invoiceHandler, { method: 'GET', url: `/api/invoices?id=${encodeURIComponent(wawcoIssuedNdgReported.data.invoice.id)}`, cookie: austinCookie });
+    assert(austinSplitRead.status === 404, 'non-Noah WAWCO-issued NDG-reported read gate smoke failed');
 
     const numberingAfterCreate = await callHandler(numberingHandler, { method: 'GET', url: '/api/numbering', cookie });
     assert(numberingAfterCreate.data.numbering.sequencePadding === 2, 'numbering setting persistence smoke failed');
@@ -1922,7 +2046,7 @@ async function runAuthenticatedRouteSmoke() {
       },
     });
     assert(privateInvoice.status === 201 && privateInvoice.data.invoice.excludeFromWawcoDashboard === true, 'private invoice create smoke failed');
-    assert(privateInvoice.data.invoice.invoiceNumber === 'OTHER-052626-02', 'date-global sequence smoke failed');
+    assert(privateInvoice.data.invoice.invoiceNumber === 'OTHER-052626-03', 'WAWCO issuing-entity sequence smoke failed');
 
     const fallbackPrivateInvoice = await callHandler(invoiceHandler, {
       method: 'POST',
@@ -1945,22 +2069,78 @@ async function runAuthenticatedRouteSmoke() {
     assert(summary.data.summary.totalCents === 27500, 'finance summary private-payee total smoke failed');
     assert(summary.data.summary.readyForReviewCents === 0, 'finance summary ready total smoke failed');
     assert(summary.data.summary.excludedPrivatePayeeCount === 2, 'finance summary excluded private count smoke failed');
-    assert(summary.data.summary.hostedInvoices.openReceivablesCents === 27500, 'finance hosted invoice operations smoke failed');
+    assert(summary.data.summary.hostedInvoices.openReceivablesCents === 0, 'finance hosted invoice operations smoke failed');
     assert(summary.data.summary.hostedInvoices.paymentPaidCount === 1, 'finance hosted payment status smoke failed');
     assert(summary.data.summary.hostedInvoices.paymentSummary.some((row) => row.status === 'paid'), 'finance hosted payment summary smoke failed');
     assert(summary.data.summary.metrics.hostedInvoiceReadyCents === 0, 'finance parity metrics smoke failed');
-    assert(summary.data.summary.excludedEntityCount === 1, 'finance summary excluded entity count smoke failed');
+    assert(summary.data.summary.excludedEntityCount === 2, 'finance summary excluded entity count smoke failed');
     assert(summary.data.summary.entityFilter === 'wawco', 'finance summary default entity smoke failed');
     assert(summary.data.summary.mercury.observedCardExpenses.expenses.length === 0, 'finance parity empty imported snapshot smoke failed');
 
     const ndgSummary = await callHandler(summaryHandler, { method: 'GET', url: '/api/finance/summary?entity=ndg', cookie });
     assert(ndgSummary.status === 200 && ndgSummary.data.summary.entityFilter === 'ndg', 'NDG finance summary entity filter smoke failed');
-    assert(ndgSummary.data.summary.invoiceCount === 1 && ndgSummary.data.summary.totalCents === 12000, 'NDG finance summary totals smoke failed');
+    assert(ndgSummary.data.summary.invoiceCount === 2 && ndgSummary.data.summary.totalCents === 25000, 'NDG finance summary totals smoke failed');
     assert(ndgSummary.data.summary.hostedInvoices.paymentPaidCount === 1, 'NDG finance payment paid summary smoke failed');
     const combinedSummary = await callHandler(summaryHandler, { method: 'GET', url: '/api/finance/summary?entity=combined', cookie });
     assert(combinedSummary.status === 200 && combinedSummary.data.summary.entityFilter === 'combined', 'combined finance summary entity filter smoke failed');
-    assert(combinedSummary.data.summary.invoiceCount === 2 && combinedSummary.data.summary.totalCents === 39500, 'combined finance summary totals smoke failed');
+    assert(combinedSummary.data.summary.invoiceCount === 3 && combinedSummary.data.summary.totalCents === 52500, 'combined finance summary totals smoke failed');
     assert(combinedSummary.data.summary.hostedInvoices.paymentPaidCount === 2, 'combined finance payment paid summary smoke failed');
+    const austinCombinedSummary = await callHandler(summaryHandler, { method: 'GET', url: '/api/finance/summary?entity=combined', cookie: austinCookie });
+    assert(austinCombinedSummary.status === 200 && austinCombinedSummary.data.summary.invoiceCount === 1 && austinCombinedSummary.data.summary.totalCents === 27500, 'non-Noah combined finance WAWCO-only smoke failed');
+
+    const recentPaidInvoice = await callHandler(invoiceHandler, {
+      method: 'POST',
+      url: '/api/invoices',
+      cookie,
+      body: { status: 'paid', client: { company: 'Recent paid client', invoiceCode: 'RECENTPAID' }, invoiceDate: new Date().toISOString().slice(0, 10), items: [{ description: 'Recent paid work', quantity: 1, unitPrice: '25.00' }] },
+    });
+    assert(recentPaidInvoice.status === 201 && recentPaidInvoice.data.invoice.status === 'paid', 'recently paid fixture create smoke failed');
+    const testInvoice = await callHandler(invoiceHandler, {
+      method: 'POST',
+      url: '/api/invoices',
+      cookie,
+      body: { isTest: true, visibilityState: 'archived', testReason: 'smoke test fixture', client: { company: 'Synthetic test client', invoiceCode: 'TESTONLY' }, invoiceDate: '2099-05-01', items: [{ description: 'Synthetic test work', quantity: 1, unitPrice: '5.00' }] },
+    });
+    assert(testInvoice.status === 201 && testInvoice.data.invoice.isTest === true, 'test invoice fixture create smoke failed');
+    const processingInvoice = await callHandler(invoiceHandler, {
+      method: 'POST',
+      url: '/api/invoices',
+      cookie,
+      body: { status: 'approved', client: { company: 'Processing client', invoiceCode: 'PROCESSING' }, invoiceDate: '2099-05-02', items: [{ description: 'Processing work', quantity: 1, unitPrice: '35.00' }] },
+    });
+    assert(processingInvoice.status === 201, 'processing fixture create smoke failed');
+    const processingPage = await callHandler(checkoutHandler, { method: 'POST', url: '/api/stripe/checkout', cookie, body: { invoiceId: processingInvoice.data.invoice.id, mode: 'test' }, headers: checkoutOrigin });
+    assert(processingPage.status === 201, 'processing fixture page create smoke failed');
+    const processingToken = new URL(processingPage.data.payment.publicUrl).searchParams.get('t');
+    const processingBankCheckout = await callHandler(payCheckoutHandler, { method: 'POST', url: '/api/pay/checkout', body: { token: processingToken, method: 'bank_account' }, headers: checkoutOrigin });
+    assert(processingBankCheckout.status === 201, 'processing fixture bank checkout smoke failed');
+    const processingWebhookRaw = JSON.stringify({
+      id: 'evt_smoke_processing_checkout_completed',
+      type: 'checkout.session.completed',
+      livemode: false,
+      created: Math.floor(Date.now() / 1000),
+      data: { object: { id: processingBankCheckout.data.payment.checkoutSessionId, amount_total: processingBankCheckout.data.payment.amountCents, currency: 'usd', payment_status: 'unpaid', payment_intent: processingBankCheckout.data.payment.paymentIntentId, payment_method_types: ['us_bank_account'], metadata: { fin_payment_request_id: processingBankCheckout.data.payment.id } } },
+    });
+    const processingWebhook = await callHandler(webhookHandler, { method: 'POST', url: '/api/stripe/webhook', rawBody: processingWebhookRaw, headers: { 'stripe-signature': signTestWebhookPayload(processingWebhookRaw, process.env.STRIPE_WEBHOOK_SECRET) } });
+    assert(processingWebhook.status === 200 && processingWebhook.data.result.payment.status === 'processing', 'processing fixture webhook smoke failed');
+
+    const activeView = await callHandler(invoiceHandler, { method: 'GET', url: '/api/invoices', cookie });
+    assert(activeView.status === 200 && activeView.data.invoices.some((invoice) => invoice.id === recentPaidInvoice.data.invoice.id), 'active view recently paid retention smoke failed');
+    assert(activeView.data.invoices.some((invoice) => invoice.id === processingInvoice.data.invoice.id), 'active view processing retention smoke failed');
+    assert(!activeView.data.invoices.some((invoice) => invoice.id === id), 'active view old paid exclusion smoke failed');
+    assert(!activeView.data.invoices.some((invoice) => invoice.id === testInvoice.data.invoice.id), 'active view test exclusion smoke failed');
+    const recentView = await callHandler(invoiceHandler, { method: 'GET', url: '/api/invoices?view=recently_paid', cookie });
+    assert(recentView.status === 200 && recentView.data.invoices.some((invoice) => invoice.id === recentPaidInvoice.data.invoice.id) && !recentView.data.invoices.some((invoice) => invoice.id === id), 'recently paid view window smoke failed');
+    const processingView = await callHandler(invoiceHandler, { method: 'GET', url: '/api/invoices?view=processing', cookie });
+    assert(processingView.status === 200 && processingView.data.invoices.some((invoice) => invoice.id === processingInvoice.data.invoice.id), 'processing view smoke failed');
+    const testsView = await callHandler(invoiceHandler, { method: 'GET', url: '/api/invoices?view=tests', cookie });
+    assert(testsView.status === 200 && testsView.data.invoices.some((invoice) => invoice.id === testInvoice.data.invoice.id), 'tests view smoke failed');
+    const archiveView = await callHandler(invoiceHandler, { method: 'GET', url: '/api/invoices?view=archive', cookie });
+    assert(archiveView.status === 200 && archiveView.data.invoices.some((invoice) => invoice.id === id) && archiveView.data.invoices.some((invoice) => invoice.id === testInvoice.data.invoice.id), 'archive view old paid plus tests smoke failed');
+    const allView = await callHandler(invoiceHandler, { method: 'GET', url: '/api/invoices?view=all', cookie });
+    assert(allView.status === 200 && allView.data.invoices.some((invoice) => invoice.entityId === 'ndg'), 'Noah all view NDG smoke failed');
+    const austinAllView = await callHandler(invoiceHandler, { method: 'GET', url: '/api/invoices?view=all', cookie: austinCookie });
+    assert(austinAllView.status === 403, 'non-Noah all view gate smoke failed');
 
     const fakeImport = fakeFinanceImportSummary('2099-12');
     const systemFakeImport = fakeFinanceImportSummary('2099-11');
@@ -2156,7 +2336,7 @@ async function runAuthenticatedRouteSmoke() {
     assert(importedSummary.status === 200, 'imported finance summary status smoke failed');
     assert(importedSummary.data.summary.latestFinanceImport.id === imported.data.import.id, 'imported finance summary latest import smoke failed');
     assert(importedSummary.data.summary.metrics.totalAvailableBalanceCents === 1250000, 'imported finance metrics smoke failed');
-    assert(importedSummary.data.summary.metrics.hostedInvoiceOpenCents === 27500, 'hosted invoice metric after import smoke failed');
+    assert(importedSummary.data.summary.metrics.hostedInvoiceOpenCents === 3500, 'hosted invoice metric after import smoke failed');
     assert(importedSummary.data.summary.metrics.mercuryInvoiceOpenCents === 0, 'no double-count imported Mercury invoices smoke failed');
     assert(importedSummary.data.summary.mercury.recentTransactions.length === 1, 'imported recent transaction smoke failed');
     assert(importedSummary.data.summary.sources.contentSha256 && !String(importedSummary.data.summary.sources.contentSha256).includes('.finance'), 'imported source hash smoke failed');
@@ -2332,10 +2512,12 @@ async function runAuthenticatedRouteSmoke() {
     await fakeDb.failCustomerCheckoutPaymentRequest(payment.id, 'synthetic cleanup failure');
     await fakeDb.failCustomerCheckoutPaymentRequest(bankCheckout.data.payment.id, 'synthetic cleanup failure');
     await fakeDb.failCustomerCheckoutPaymentRequest(checkoutCreated.data.payment.id, 'synthetic cleanup failure');
+    await fakeDb.failCustomerCheckoutPaymentRequest(processingBankCheckout.data.payment.id, 'synthetic processing cleanup failure');
+    await fakeDb.failCustomerCheckoutPaymentRequest(processingPage.data.payment.id, 'synthetic processing page cleanup failure');
     await fakeDb.failCustomerCheckoutPaymentRequest(ndgCardCheckout.data.payment.id, 'synthetic NDG cleanup failure');
     await fakeDb.failCustomerCheckoutPaymentRequest(ndgCheckout.data.payment.id, 'synthetic NDG page cleanup failure');
 
-    for (const invoiceId of [id, ndgInvoice.data.invoice.id, privateInvoice.data.invoice.id, fallbackPrivateInvoice.data.invoice.id, optionalMetaInvoice.data.invoice.id]) {
+    for (const invoiceId of [id, ndgInvoice.data.invoice.id, wawcoIssuedNdgReported.data.invoice.id, recentPaidInvoice.data.invoice.id, testInvoice.data.invoice.id, processingInvoice.data.invoice.id, privateInvoice.data.invoice.id, fallbackPrivateInvoice.data.invoice.id, optionalMetaInvoice.data.invoice.id]) {
       const deleted = await callHandler(invoiceHandler, { method: 'DELETE', url: `/api/invoices?id=${encodeURIComponent(invoiceId)}`, cookie });
       assert(deleted.status === 200 && deleted.data.deleted === true, 'invoice delete smoke failed');
     }

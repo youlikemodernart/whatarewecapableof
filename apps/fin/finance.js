@@ -287,7 +287,7 @@ function renderInvoices() {
   const rows = (hosted.invoices || []).map((invoice) => el('tr', {}, [
     el('td', {}, [
       el('strong', { text: invoice.invoiceNumber || 'Invoice' }),
-      invoice.entityLabel ? el('small', { text: invoice.entityLabel }) : null,
+      invoice.entityLabel ? el('small', { text: invoice.reportingEntityLabel && invoice.reportingEntityLabel !== invoice.entityLabel ? `${invoice.entityLabel} · reports ${invoice.reportingEntityLabel}` : invoice.entityLabel }) : null,
       invoice.invoiceDate ? el('small', { text: `Invoice date ${invoice.invoiceDate}` }) : null,
     ]),
     el('td', { text: invoice.clientLabel || 'Untitled client' }),

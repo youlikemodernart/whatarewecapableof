@@ -2,9 +2,12 @@ const { getSession, storageConfig, json } = require('./_auth');
 const { makeHttpError, readJsonBody, handleApiError } = require('./_http');
 const { listInvoices, createInvoice, getInvoice, updateInvoice, deleteInvoice, latestPaymentRequestForInvoice } = require('./_db');
 
+function requestParams(req) {
+  return new URL(req.url || '/api/invoices', 'http://127.0.0.1').searchParams;
+}
+
 function invoiceIdFromRequest(req) {
-  const url = new URL(req.url || '/api/invoices', 'http://127.0.0.1');
-  const id = String(url.searchParams.get('id') || '').trim();
+  const id = String(requestParams(req).get('id') || '').trim();
   return id || '';
 }
 
@@ -32,8 +35,11 @@ async function handleGet(req, res, user, storage) {
     return json(res, 200, { ok: true, storage, invoice: await attachPayment(user, invoice) });
   }
 
-  const invoices = await listInvoices(user);
-  return json(res, 200, { ok: true, storage, invoices });
+  const params = requestParams(req);
+  const view = String(params.get('view') || 'active').trim();
+  const entity = String(params.get('entity') || '').trim();
+  const invoices = await listInvoices(user, { view, entity });
+  return json(res, 200, { ok: true, storage, view: view || 'active', entity, invoices });
 }
 
 async function handlePost(req, res, user, storage) {

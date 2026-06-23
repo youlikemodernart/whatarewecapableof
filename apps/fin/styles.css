@@ -617,6 +617,27 @@ label {
   gap: 0;
 }
 
+.invoice-view-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-block: var(--space-3) var(--space-2);
+}
+
+.invoice-view-tabs button {
+  min-height: auto;
+  padding: 0.35rem 0.55rem;
+  border-color: var(--line);
+  background: var(--paper);
+  color: var(--muted);
+  font-size: var(--text-xs);
+}
+
+.invoice-view-tabs button.active {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
 .invoice-list-empty {
   color: var(--muted);
   font-size: var(--text-sm);

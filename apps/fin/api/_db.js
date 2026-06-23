@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 const { neon } = require('@neondatabase/serverless');
-const { normalizeInvoice, invoiceClientLabel, invoiceListItem, cleanEntityId, invoiceEntities, publicEntity, entityById } = require('./_invoice');
+const { normalizeInvoice, invoiceClientLabel, invoiceListItem, cleanEntityId, cleanReportingEntityId, cleanVisibilityState, invoiceEntities, publicEntity, entityById } = require('./_invoice');
 const { normalizeFinanceImport, stableFinanceImportContentSha256, summarizeFinanceImport } = require('./_finance_import');
 const { cleanPaymentMethod, customerPaymentMethods, paymentMethodQuote } = require('./_payment_pricing');
 const { reconciliationFromCharge, retrieveChargeReconciliation } = require('./_stripe');
@@ -34,6 +34,39 @@ function adminEmails() {
 
 function roleForUser(user) {
   return adminEmails().has(String(user.email || '').toLowerCase()) ? 'admin' : 'sales_rep';
+}
+
+function noahEntityEmails() {
+  const configured = env('FIN_NDG_ENTITY_EMAILS');
+  const fallback = 'noah@whatarewecapableof.com';
+  return new Set((configured || fallback).split(',').map((email) => email.trim().toLowerCase()).filter(Boolean));
+}
+
+function userVisibleEntityIds(userOrRow = {}) {
+  const email = String(userOrRow.email || '').toLowerCase();
+  const ids = noahEntityEmails().has(email) ? invoiceEntities().map((entity) => entity.id) : ['wawco'];
+  return [...new Set(ids.map((id) => cleanEntityId(id)))];
+}
+
+function userCanSeeAllInvoiceViews(userOrRow = {}) {
+  return noahEntityEmails().has(String(userOrRow.email || '').toLowerCase());
+}
+
+function userEntityPermissions(userOrRow = {}) {
+  const visibleEntityIds = userVisibleEntityIds(userOrRow);
+  return {
+    visibleEntityIds,
+    canViewAllInvoices: userCanSeeAllInvoiceViews(userOrRow),
+    combinedEntityMode: visibleEntityIds.length > 1 ? 'visible_entities' : 'wawco_only',
+  };
+}
+
+function userCanAccessEntity(userOrRow = {}, entityId) {
+  return userVisibleEntityIds(userOrRow).includes(cleanEntityId(entityId));
+}
+
+function enforceEntityAccess(userOrRow = {}, entityId, message = 'Invoice entity is not available to this user.') {
+  if (!userCanAccessEntity(userOrRow, entityId)) throw makeError(403, message);
 }
 
 function financeImportsEnabled() {
@@ -120,6 +153,120 @@ function invoiceNumberPrefixForEntity(entityId) {
 
 function publicEntityForInvoice(invoice = {}) {
   return publicEntity(cleanEntityId(invoice.entityId || invoice.entity_id || 'wawco'));
+}
+
+function cleanBoolean(value) {
+  if (value === true || value === 1) return true;
+  if (typeof value === 'string') return ['1', 'true', 'yes', 'y', 'on'].includes(value.trim().toLowerCase());
+  return false;
+}
+
+function canonicalInvoiceFields(invoice = {}, fallbackEntityId = 'wawco') {
+  const entityId = cleanEntityId(invoice.entityId || invoice.entity_id || fallbackEntityId || 'wawco');
+  const reportingScope = cleanSingleLine(invoice.payeeReportingScope, 40).toLowerCase();
+  const reportingEntityId = cleanReportingEntityId(invoice.reportingEntityId || invoice.reporting_entity_id || (reportingScope && reportingScope !== 'private' ? reportingScope : '') || entityId, entityId);
+  const dashboardExcluded = cleanBoolean(invoice.dashboardExcluded ?? invoice.dashboard_excluded ?? invoice.excludeFromWawcoDashboard) || reportingScope === 'private';
+  return {
+    entityId,
+    reportingEntityId,
+    visibilityState: cleanVisibilityState(invoice.visibilityState || invoice.visibility_state || 'active'),
+    visibilityReason: cleanSingleLine(invoice.visibilityReason || invoice.visibility_reason, 240),
+    isTest: cleanBoolean(invoice.isTest ?? invoice.is_test),
+    testReason: cleanSingleLine(invoice.testReason || invoice.test_reason, 240),
+    dashboardExcluded,
+  };
+}
+
+function invoiceFromRow(row) {
+  if (!row) return null;
+  const invoice = parseStoredInvoice(row.data_json) || {};
+  const fields = canonicalInvoiceFields({
+    ...invoice,
+    entityId: row.entity_id || invoice.entityId,
+    reportingEntityId: row.reporting_entity_id || invoice.reportingEntityId,
+    visibilityState: row.visibility_state || invoice.visibilityState,
+    visibilityReason: row.visibility_reason || invoice.visibilityReason,
+    visibilityUpdatedAt: row.visibility_updated_at || invoice.visibilityUpdatedAt,
+    isTest: row.is_test ?? invoice.isTest,
+    testReason: row.test_reason || invoice.testReason,
+    dashboardExcluded: row.dashboard_excluded ?? invoice.dashboardExcluded ?? invoice.excludeFromWawcoDashboard,
+  }, row.entity_id || invoice.entityId || 'wawco');
+  const payeeReportingScope = invoice.payeeReportingScope === 'private' || fields.dashboardExcluded && invoice.payeeReportingScope === 'private' ? 'private' : fields.reportingEntityId;
+  return {
+    ...invoice,
+    id: row.id || invoice.id || '',
+    entityId: fields.entityId,
+    entity: publicEntity(fields.entityId),
+    reportingEntityId: fields.reportingEntityId,
+    reportingEntity: publicEntity(fields.reportingEntityId),
+    visibilityState: fields.visibilityState,
+    visibilityReason: fields.visibilityReason,
+    visibilityUpdatedAt: row.visibility_updated_at || invoice.visibilityUpdatedAt || '',
+    visibilityUpdatedByUserId: row.visibility_updated_by_user_id || invoice.visibilityUpdatedByUserId || '',
+    isTest: fields.isTest,
+    testReason: fields.testReason,
+    dashboardExcluded: fields.dashboardExcluded,
+    payeeReportingScope,
+    excludeFromWawcoDashboard: fields.dashboardExcluded,
+    status: row.status || invoice.status || 'draft',
+    paymentStatus: row.payment_status || invoice.paymentStatus || 'none',
+    currentPaymentRequestId: row.current_payment_request_id || invoice.currentPaymentRequestId || '',
+    paidAt: row.paid_at || invoice.paidAt || '',
+    paymentUpdatedAt: row.payment_updated_at || invoice.paymentUpdatedAt || '',
+  };
+}
+
+function rowReportingEntityId(row) {
+  const invoice = parseStoredInvoice(row.data_json) || {};
+  const entityId = cleanEntityId(row.entity_id || invoice.entityId || 'wawco');
+  return cleanReportingEntityId(row.reporting_entity_id || invoice.reportingEntityId || (invoice.payeeReportingScope && invoice.payeeReportingScope !== 'private' ? invoice.payeeReportingScope : '') || entityId, entityId);
+}
+
+function userCanAccessInvoiceRow(currentUser, row) {
+  const invoice = parseStoredInvoice(row.data_json) || {};
+  const entityId = cleanEntityId(row.entity_id || invoice.entityId || 'wawco');
+  return userCanAccessEntity(currentUser, entityId) && userCanAccessEntity(currentUser, rowReportingEntityId(row));
+}
+
+const INVOICE_LIST_VIEWS = new Set(['active', 'recently_paid', 'processing', 'archive', 'tests', 'all']);
+const RECENTLY_PAID_DAYS = 7;
+
+function cleanInvoiceListView(value) {
+  const view = cleanSingleLine(value || 'active', 40).toLowerCase();
+  return INVOICE_LIST_VIEWS.has(view) ? view : 'active';
+}
+
+function timestampMs(value) {
+  if (!value) return NaN;
+  const ms = new Date(value).getTime();
+  return Number.isFinite(ms) ? ms : NaN;
+}
+
+function invoiceRowIsPaid(row) {
+  return row.status === 'paid' || row.payment_status === 'paid' || row.payment_request_status === 'paid';
+}
+
+function invoiceRowIsRecentlyPaid(row) {
+  if (!invoiceRowIsPaid(row)) return false;
+  const paidMs = timestampMs(row.paid_at || row.payment_updated_at || row.updated_at);
+  if (!Number.isFinite(paidMs)) return false;
+  return Date.now() - paidMs <= RECENTLY_PAID_DAYS * 86_400_000;
+}
+
+function invoiceMatchesListView(row, view) {
+  const visibilityState = cleanVisibilityState(row.visibility_state || 'active');
+  const isTest = cleanBoolean(row.is_test);
+  const status = cleanSingleLine(row.status, 40).toLowerCase();
+  const paid = invoiceRowIsPaid(row);
+  const recentlyPaid = invoiceRowIsRecentlyPaid(row);
+  const processing = row.payment_status === 'processing' || row.payment_request_status === 'processing';
+  if (view === 'all') return true;
+  if (visibilityState === 'hidden') return false;
+  if (view === 'tests') return isTest;
+  if (view === 'processing') return !isTest && visibilityState === 'active' && processing;
+  if (view === 'recently_paid') return !isTest && visibilityState === 'active' && paid && recentlyPaid;
+  if (view === 'archive') return visibilityState === 'archived' || isTest || status === 'void' || (paid && !recentlyPaid);
+  return !isTest && visibilityState === 'active' && status !== 'void' && (!paid || recentlyPaid);
 }
 
 async function ensureSchema() {
@@ -225,6 +372,14 @@ async function ensureSchema() {
   await db`CREATE TABLE IF NOT EXISTS fin_invoices (
     id TEXT PRIMARY KEY,
     entity_id TEXT NOT NULL DEFAULT 'wawco' REFERENCES fin_entities(id),
+    reporting_entity_id TEXT NOT NULL DEFAULT 'wawco' REFERENCES fin_entities(id),
+    visibility_state TEXT NOT NULL DEFAULT 'active',
+    visibility_reason TEXT NOT NULL DEFAULT '',
+    visibility_updated_at TIMESTAMPTZ,
+    visibility_updated_by_user_id TEXT REFERENCES fin_users(id),
+    is_test BOOLEAN NOT NULL DEFAULT FALSE,
+    test_reason TEXT NOT NULL DEFAULT '',
+    dashboard_excluded BOOLEAN NOT NULL DEFAULT FALSE,
     invoice_number TEXT NOT NULL UNIQUE,
     status TEXT NOT NULL DEFAULT 'draft',
     client_label TEXT NOT NULL DEFAULT 'Untitled client',
@@ -260,7 +415,49 @@ async function ensureSchema() {
     END $$;
   `;
   await db`ALTER TABLE fin_invoices VALIDATE CONSTRAINT fin_invoices_entity_id_fk`;
+  await db`ALTER TABLE fin_invoices ADD COLUMN IF NOT EXISTS reporting_entity_id TEXT`;
+  await db`
+    UPDATE fin_invoices SET reporting_entity_id = CASE
+      WHEN data_json->>'reportingEntityId' IN ('wawco', 'ndg') THEN data_json->>'reportingEntityId'
+      WHEN data_json->>'payeeReportingScope' IN ('wawco', 'ndg') THEN data_json->>'payeeReportingScope'
+      ELSE entity_id
+    END
+    WHERE reporting_entity_id IS NULL OR reporting_entity_id = ''
+  `;
+  await db`UPDATE fin_invoices SET reporting_entity_id = entity_id WHERE reporting_entity_id NOT IN (SELECT id FROM fin_entities)`;
+  await db`ALTER TABLE fin_invoices ALTER COLUMN reporting_entity_id SET DEFAULT 'wawco'`;
+  await db`ALTER TABLE fin_invoices ALTER COLUMN reporting_entity_id SET NOT NULL`;
+  await db`
+    DO $$
+    BEGIN
+      IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'fin_invoices_reporting_entity_id_fk' AND conrelid = 'fin_invoices'::regclass) THEN
+        ALTER TABLE fin_invoices ADD CONSTRAINT fin_invoices_reporting_entity_id_fk FOREIGN KEY (reporting_entity_id) REFERENCES fin_entities(id) NOT VALID;
+      END IF;
+    END $$;
+  `;
+  await db`ALTER TABLE fin_invoices VALIDATE CONSTRAINT fin_invoices_reporting_entity_id_fk`;
+  await db`ALTER TABLE fin_invoices ADD COLUMN IF NOT EXISTS visibility_state TEXT NOT NULL DEFAULT 'active'`;
+  await db`ALTER TABLE fin_invoices ADD COLUMN IF NOT EXISTS visibility_reason TEXT NOT NULL DEFAULT ''`;
+  await db`ALTER TABLE fin_invoices ADD COLUMN IF NOT EXISTS visibility_updated_at TIMESTAMPTZ`;
+  await db`ALTER TABLE fin_invoices ADD COLUMN IF NOT EXISTS visibility_updated_by_user_id TEXT REFERENCES fin_users(id)`;
+  await db`ALTER TABLE fin_invoices ADD COLUMN IF NOT EXISTS is_test BOOLEAN NOT NULL DEFAULT FALSE`;
+  await db`ALTER TABLE fin_invoices ADD COLUMN IF NOT EXISTS test_reason TEXT NOT NULL DEFAULT ''`;
+  await db`ALTER TABLE fin_invoices ADD COLUMN IF NOT EXISTS dashboard_excluded BOOLEAN NOT NULL DEFAULT FALSE`;
+  await db`UPDATE fin_invoices SET visibility_state = 'active' WHERE visibility_state NOT IN ('active', 'archived', 'hidden')`;
+  await db`
+    UPDATE fin_invoices SET dashboard_excluded = TRUE
+    WHERE dashboard_excluded = FALSE
+      AND (
+        data_json->>'payeeReportingScope' = 'private'
+        OR lower(COALESCE(data_json->>'excludeFromWawcoDashboard', 'false')) IN ('true', '1', 'yes', 'on')
+        OR lower(COALESCE(data_json->>'dashboardExcluded', 'false')) IN ('true', '1', 'yes', 'on')
+      )
+  `;
   await db`UPDATE fin_invoices SET data_json = jsonb_set(data_json, '{entityId}', to_jsonb(entity_id), true) WHERE data_json->>'entityId' IS NULL OR data_json->>'entityId' = ''`;
+  await db`UPDATE fin_invoices SET data_json = jsonb_set(data_json, '{reportingEntityId}', to_jsonb(reporting_entity_id), true) WHERE data_json->>'reportingEntityId' IS NULL OR data_json->>'reportingEntityId' = ''`;
+  await db`UPDATE fin_invoices SET data_json = jsonb_set(data_json, '{visibilityState}', to_jsonb(visibility_state), true) WHERE data_json->>'visibilityState' IS NULL OR data_json->>'visibilityState' = ''`;
+  await db`UPDATE fin_invoices SET data_json = jsonb_set(data_json, '{isTest}', to_jsonb(is_test), true) WHERE data_json->>'isTest' IS NULL OR data_json->>'isTest' = ''`;
+  await db`UPDATE fin_invoices SET data_json = jsonb_set(data_json, '{dashboardExcluded}', to_jsonb(dashboard_excluded), true) WHERE data_json->>'dashboardExcluded' IS NULL OR data_json->>'dashboardExcluded' = ''`;
   await db`ALTER TABLE fin_invoices ADD COLUMN IF NOT EXISTS payment_status TEXT NOT NULL DEFAULT 'none'`;
   await db`ALTER TABLE fin_invoices ADD COLUMN IF NOT EXISTS current_payment_request_id TEXT NOT NULL DEFAULT ''`;
   await db`ALTER TABLE fin_invoices ADD COLUMN IF NOT EXISTS paid_at TIMESTAMPTZ`;
@@ -269,6 +466,8 @@ async function ensureSchema() {
   await db`CREATE INDEX IF NOT EXISTS fin_invoices_status_idx ON fin_invoices (status)`;
   await db`CREATE INDEX IF NOT EXISTS fin_invoices_created_by_idx ON fin_invoices (created_by_user_id)`;
   await db`CREATE INDEX IF NOT EXISTS fin_invoices_entity_idx ON fin_invoices (entity_id, updated_at DESC) WHERE deleted_at IS NULL`;
+  await db`CREATE INDEX IF NOT EXISTS fin_invoices_reporting_entity_idx ON fin_invoices (reporting_entity_id, updated_at DESC) WHERE deleted_at IS NULL`;
+  await db`CREATE INDEX IF NOT EXISTS fin_invoices_visibility_idx ON fin_invoices (visibility_state, is_test, updated_at DESC) WHERE deleted_at IS NULL`;
   await db`CREATE INDEX IF NOT EXISTS fin_invoices_payment_status_idx ON fin_invoices (payment_status)`;
 
   await db`CREATE TABLE IF NOT EXISTS fin_invoice_events (
@@ -592,16 +791,17 @@ async function nextInvoiceNumber(invoice = {}) {
 }
 
 async function listEntities(user) {
-  await ensureUser(user);
+  const currentUser = await ensureUser(user);
   await ensureSchema();
   const db = sql();
+  const visibleEntityIds = userVisibleEntityIds(currentUser);
   const rows = await db`
     SELECT id, key, label, name, legal_name, email, invoice_code_prefix, reporting_scope, stripe_account_key, branding_json, updated_at::text AS updated_at
     FROM fin_entities
     WHERE active = TRUE
     ORDER BY CASE WHEN id = 'wawco' THEN 0 WHEN id = 'ndg' THEN 1 ELSE 2 END, label
   `;
-  return rows.map((row) => ({
+  return rows.filter((row) => visibleEntityIds.includes(cleanEntityId(row.id))).map((row) => ({
     id: cleanEntityId(row.id),
     key: row.key || row.id,
     label: row.label || publicEntity(row.id).label,
@@ -620,37 +820,67 @@ async function invoiceEntityIdForUser(user, invoiceId) {
   const currentUser = await ensureUser(user);
   const db = sql();
   const rows = currentUser.role === 'admin'
-    ? await db`SELECT entity_id FROM fin_invoices WHERE id = ${invoiceId} AND deleted_at IS NULL LIMIT 1`
-    : await db`SELECT entity_id FROM fin_invoices WHERE id = ${invoiceId} AND created_by_user_id = ${currentUser.id} AND deleted_at IS NULL LIMIT 1`;
-  if (!rows[0]) return '';
+    ? await db`SELECT id, entity_id, reporting_entity_id, data_json FROM fin_invoices WHERE id = ${invoiceId} AND deleted_at IS NULL LIMIT 1`
+    : await db`SELECT id, entity_id, reporting_entity_id, data_json FROM fin_invoices WHERE id = ${invoiceId} AND created_by_user_id = ${currentUser.id} AND deleted_at IS NULL LIMIT 1`;
+  if (!rows[0] || !userCanAccessInvoiceRow(currentUser, rows[0])) return '';
   return cleanEntityId(rows[0].entity_id || 'wawco');
 }
 
-async function listInvoices(user) {
+async function listInvoices(user, options = {}) {
   const currentUser = await ensureUser(user);
+  const view = cleanInvoiceListView(options.view || options.status || 'active');
+  if (view === 'all' && !userCanSeeAllInvoiceViews(currentUser)) throw makeError(403, 'All invoice view is restricted.');
+  const requestedEntity = cleanSingleLine(options.entity || options.entityId || '', 40).toLowerCase();
+  const entityFilter = requestedEntity && requestedEntity !== 'combined' ? cleanEntityId(requestedEntity) : requestedEntity;
+  if (entityFilter && entityFilter !== 'combined' && !userCanAccessEntity(currentUser, entityFilter)) throw makeError(403, 'Invoice entity is not available to this user.');
   const db = sql();
   const rows = currentUser.role === 'admin'
     ? await db`
-      SELECT inv.id, inv.entity_id, inv.invoice_number, inv.status, inv.client_label,
+      SELECT inv.id, inv.entity_id, inv.reporting_entity_id, inv.visibility_state, inv.visibility_reason,
+        inv.is_test, inv.test_reason, inv.dashboard_excluded, inv.invoice_number, inv.status, inv.client_label,
         inv.invoice_date::text AS invoice_date, inv.due_date::text AS due_date,
-        inv.total_cents, inv.updated_at::text AS updated_at, usr.email AS created_by_email
+        inv.total_cents, inv.payment_status, inv.paid_at::text AS paid_at, inv.payment_updated_at::text AS payment_updated_at,
+        inv.updated_at::text AS updated_at, usr.email AS created_by_email, inv.data_json,
+        pay.status AS payment_request_status
       FROM fin_invoices inv
       JOIN fin_users usr ON usr.id = inv.created_by_user_id
+      LEFT JOIN LATERAL (
+        SELECT status
+        FROM fin_invoice_payment_requests pr
+        WHERE pr.invoice_id = inv.id AND pr.deleted_at IS NULL
+        ORDER BY pr.updated_at DESC
+        LIMIT 1
+      ) pay ON true
       WHERE inv.deleted_at IS NULL
       ORDER BY inv.updated_at DESC
-      LIMIT 100
+      LIMIT 500
     `
     : await db`
-      SELECT inv.id, inv.entity_id, inv.invoice_number, inv.status, inv.client_label,
+      SELECT inv.id, inv.entity_id, inv.reporting_entity_id, inv.visibility_state, inv.visibility_reason,
+        inv.is_test, inv.test_reason, inv.dashboard_excluded, inv.invoice_number, inv.status, inv.client_label,
         inv.invoice_date::text AS invoice_date, inv.due_date::text AS due_date,
-        inv.total_cents, inv.updated_at::text AS updated_at, usr.email AS created_by_email
+        inv.total_cents, inv.payment_status, inv.paid_at::text AS paid_at, inv.payment_updated_at::text AS payment_updated_at,
+        inv.updated_at::text AS updated_at, usr.email AS created_by_email, inv.data_json,
+        pay.status AS payment_request_status
       FROM fin_invoices inv
       JOIN fin_users usr ON usr.id = inv.created_by_user_id
+      LEFT JOIN LATERAL (
+        SELECT status
+        FROM fin_invoice_payment_requests pr
+        WHERE pr.invoice_id = inv.id AND pr.deleted_at IS NULL
+        ORDER BY pr.updated_at DESC
+        LIMIT 1
+      ) pay ON true
       WHERE inv.deleted_at IS NULL AND inv.created_by_user_id = ${currentUser.id}
       ORDER BY inv.updated_at DESC
-      LIMIT 100
+      LIMIT 500
     `;
-  return rows.map(invoiceListItem);
+  return rows
+    .filter((row) => userCanAccessInvoiceRow(currentUser, row))
+    .filter((row) => !entityFilter || entityFilter === 'combined' || rowReportingEntityId(row) === entityFilter)
+    .filter((row) => invoiceMatchesListView(row, view))
+    .slice(0, 100)
+    .map(invoiceListItem);
 }
 
 async function createInvoice(user, input = {}) {
@@ -661,9 +891,13 @@ async function createInvoice(user, input = {}) {
   if (currentUser.role !== 'admin' && ['approved', 'issued', 'paid', 'void'].includes(invoiceDraft.status)) {
     throw makeError(403, 'Only Fin admins can create approved, issued, paid, or void invoices.');
   }
+  const draftFields = canonicalInvoiceFields(invoiceDraft);
+  enforceEntityAccess(currentUser, draftFields.entityId, 'Invoice issuing entity is not available to this user.');
+  enforceEntityAccess(currentUser, draftFields.reportingEntityId, 'Invoice reporting entity is not available to this user.');
   const invoiceNumber = await nextInvoiceNumber(invoiceDraft);
   const invoice = normalizeInvoice({ ...invoiceDraft, invoiceNumber }, { id, invoiceNumber, entityId: invoiceDraft.entityId });
-  const entityId = cleanEntityId(invoice.entityId);
+  const fields = canonicalInvoiceFields(invoice);
+  const entityId = fields.entityId;
   const label = invoiceClientLabel(invoice);
   const invoiceDate = nullableDate(invoice.invoiceDate);
   const dueDate = nullableDate(invoice.dueDate);
@@ -673,27 +907,45 @@ async function createInvoice(user, input = {}) {
   const startsPaid = invoice.status === 'paid';
   const rows = await db`
     INSERT INTO fin_invoices (
-      id, entity_id, invoice_number, status, client_label, invoice_date, due_date, currency, project, created_by_user_id,
+      id, entity_id, reporting_entity_id, visibility_state, visibility_reason, visibility_updated_at, visibility_updated_by_user_id,
+      is_test, test_reason, dashboard_excluded, invoice_number, status, client_label, invoice_date, due_date, currency, project, created_by_user_id,
       approved_by_user_id, approved_at, issued_at, paid_at,
       subtotal_cents, discount_cents, taxable_cents, tax_cents, shipping_cents, total_cents, data_json, created_at, updated_at
     ) VALUES (
-      ${id}, ${entityId}, ${invoice.invoiceNumber}, ${invoice.status}, ${label}, ${invoiceDate}, ${dueDate}, ${invoice.currency}, ${invoice.project}, ${currentUser.id},
+      ${id}, ${entityId}, ${fields.reportingEntityId}, ${fields.visibilityState}, ${fields.visibilityReason}, NULL, NULL,
+      ${fields.isTest}, ${fields.testReason}, ${fields.dashboardExcluded}, ${invoice.invoiceNumber}, ${invoice.status}, ${label}, ${invoiceDate}, ${dueDate}, ${invoice.currency}, ${invoice.project}, ${currentUser.id},
       ${startsApproved ? currentUser.id : null}, ${startsApproved ? new Date().toISOString() : null}, ${startsIssued ? new Date().toISOString() : null}, ${startsPaid ? new Date().toISOString() : null},
       ${invoice.totals.subtotalCents}, ${invoice.totals.discountCents}, ${invoice.totals.taxableCents}, ${invoice.totals.taxCents}, ${invoice.totals.shippingCents}, ${invoice.totals.totalCents}, ${data}::jsonb, now(), now()
     )
-    RETURNING data_json
+    RETURNING id, entity_id, reporting_entity_id, visibility_state, visibility_reason, visibility_updated_at::text AS visibility_updated_at, visibility_updated_by_user_id,
+      is_test, test_reason, dashboard_excluded, status, payment_status, current_payment_request_id, paid_at::text AS paid_at, payment_updated_at::text AS payment_updated_at, data_json
   `;
   await db`INSERT INTO fin_invoice_events (invoice_id, actor_user_id, event_type, summary, metadata) VALUES (${id}, ${currentUser.id}, 'created', 'Invoice draft created', '{}'::jsonb)`;
-  return parseStoredInvoice(rows[0].data_json);
+  return invoiceFromRow(rows[0]);
 }
 
 async function getInvoice(user, id) {
   const currentUser = await ensureUser(user);
   const db = sql();
   const rows = currentUser.role === 'admin'
-    ? await db`SELECT data_json FROM fin_invoices WHERE id = ${id} AND deleted_at IS NULL`
-    : await db`SELECT data_json FROM fin_invoices WHERE id = ${id} AND created_by_user_id = ${currentUser.id} AND deleted_at IS NULL`;
-  return parseStoredInvoice(rows[0]?.data_json);
+    ? await db`
+      SELECT id, entity_id, reporting_entity_id, visibility_state, visibility_reason, visibility_updated_at::text AS visibility_updated_at,
+        visibility_updated_by_user_id, is_test, test_reason, dashboard_excluded, status, payment_status,
+        current_payment_request_id, paid_at::text AS paid_at, payment_updated_at::text AS payment_updated_at, data_json
+      FROM fin_invoices
+      WHERE id = ${id} AND deleted_at IS NULL
+      LIMIT 1
+    `
+    : await db`
+      SELECT id, entity_id, reporting_entity_id, visibility_state, visibility_reason, visibility_updated_at::text AS visibility_updated_at,
+        visibility_updated_by_user_id, is_test, test_reason, dashboard_excluded, status, payment_status,
+        current_payment_request_id, paid_at::text AS paid_at, payment_updated_at::text AS payment_updated_at, data_json
+      FROM fin_invoices
+      WHERE id = ${id} AND created_by_user_id = ${currentUser.id} AND deleted_at IS NULL
+      LIMIT 1
+    `;
+  if (!rows[0] || !userCanAccessInvoiceRow(currentUser, rows[0])) return null;
+  return invoiceFromRow(rows[0]);
 }
 
 async function updateInvoice(user, id, input = {}) {
@@ -709,11 +961,15 @@ async function updateInvoice(user, id, input = {}) {
   const existingEntityId = cleanEntityId(existing.entityId || 'wawco');
   if (requestedEntityId !== existingEntityId) throw makeError(409, 'Invoice entity cannot be changed after the invoice number is assigned. Duplicate the draft under the other entity instead.');
   const invoice = normalizeInvoice({ ...existing, ...input, id, invoiceNumber: existing.invoiceNumber, entityId: existingEntityId }, { id, invoiceNumber: existing.invoiceNumber, entityId: existingEntityId });
-  const entityId = cleanEntityId(invoice.entityId);
+  const fields = canonicalInvoiceFields(invoice, existingEntityId);
+  const entityId = fields.entityId;
+  enforceEntityAccess(currentUser, entityId, 'Invoice issuing entity is not available to this user.');
+  enforceEntityAccess(currentUser, fields.reportingEntityId, 'Invoice reporting entity is not available to this user.');
   const label = invoiceClientLabel(invoice);
   const invoiceDate = nullableDate(invoice.invoiceDate);
   const dueDate = nullableDate(invoice.dueDate);
   const data = JSON.stringify(invoice);
+  const visibilityChanged = fields.visibilityState !== cleanVisibilityState(existing.visibilityState) || fields.visibilityReason !== cleanSingleLine(existing.visibilityReason, 240);
   const db = sql();
   const activePaymentRows = await db`
     SELECT invoice_snapshot_sha256, status
@@ -733,31 +989,47 @@ async function updateInvoice(user, id, input = {}) {
   const rows = currentUser.role === 'admin'
     ? await db`
       UPDATE fin_invoices SET
-        entity_id = ${entityId}, status = ${invoice.status}, client_label = ${label}, invoice_date = ${invoiceDate}, due_date = ${dueDate}, currency = ${invoice.currency}, project = ${invoice.project},
+        entity_id = ${entityId}, reporting_entity_id = ${fields.reportingEntityId}, visibility_state = ${fields.visibilityState}, visibility_reason = ${fields.visibilityReason},
+        visibility_updated_at = CASE WHEN ${visibilityChanged} THEN now() ELSE visibility_updated_at END,
+        visibility_updated_by_user_id = CASE WHEN ${visibilityChanged} THEN ${currentUser.id} ELSE visibility_updated_by_user_id END,
+        is_test = ${fields.isTest}, test_reason = ${fields.testReason}, dashboard_excluded = ${fields.dashboardExcluded},
+        status = ${invoice.status}, client_label = ${label}, invoice_date = ${invoiceDate}, due_date = ${dueDate}, currency = ${invoice.currency}, project = ${invoice.project},
         approved_by_user_id = CASE WHEN ${invoice.status} = 'approved' THEN ${currentUser.id} ELSE approved_by_user_id END,
         approved_at = CASE WHEN ${invoice.status} = 'approved' AND approved_at IS NULL THEN now() ELSE approved_at END,
         issued_at = CASE WHEN ${invoice.status} = 'issued' AND issued_at IS NULL THEN now() ELSE issued_at END,
+        paid_at = CASE WHEN ${invoice.status} = 'paid' AND paid_at IS NULL THEN now() ELSE paid_at END,
         subtotal_cents = ${invoice.totals.subtotalCents}, discount_cents = ${invoice.totals.discountCents}, taxable_cents = ${invoice.totals.taxableCents}, tax_cents = ${invoice.totals.taxCents}, shipping_cents = ${invoice.totals.shippingCents}, total_cents = ${invoice.totals.totalCents},
         data_json = ${data}::jsonb, updated_at = now()
       WHERE id = ${id} AND deleted_at IS NULL
-      RETURNING data_json
+      RETURNING id, entity_id, reporting_entity_id, visibility_state, visibility_reason, visibility_updated_at::text AS visibility_updated_at, visibility_updated_by_user_id,
+        is_test, test_reason, dashboard_excluded, status, payment_status, current_payment_request_id, paid_at::text AS paid_at, payment_updated_at::text AS payment_updated_at, data_json
     `
     : await db`
       UPDATE fin_invoices SET
-        entity_id = ${entityId}, status = ${invoice.status}, client_label = ${label}, invoice_date = ${invoiceDate}, due_date = ${dueDate}, currency = ${invoice.currency}, project = ${invoice.project},
+        entity_id = ${entityId}, reporting_entity_id = ${fields.reportingEntityId}, visibility_state = ${fields.visibilityState}, visibility_reason = ${fields.visibilityReason},
+        visibility_updated_at = CASE WHEN ${visibilityChanged} THEN now() ELSE visibility_updated_at END,
+        visibility_updated_by_user_id = CASE WHEN ${visibilityChanged} THEN ${currentUser.id} ELSE visibility_updated_by_user_id END,
+        is_test = ${fields.isTest}, test_reason = ${fields.testReason}, dashboard_excluded = ${fields.dashboardExcluded},
+        status = ${invoice.status}, client_label = ${label}, invoice_date = ${invoiceDate}, due_date = ${dueDate}, currency = ${invoice.currency}, project = ${invoice.project},
+        paid_at = CASE WHEN ${invoice.status} = 'paid' AND paid_at IS NULL THEN now() ELSE paid_at END,
         subtotal_cents = ${invoice.totals.subtotalCents}, discount_cents = ${invoice.totals.discountCents}, taxable_cents = ${invoice.totals.taxableCents}, tax_cents = ${invoice.totals.taxCents}, shipping_cents = ${invoice.totals.shippingCents}, total_cents = ${invoice.totals.totalCents},
         data_json = ${data}::jsonb, updated_at = now()
       WHERE id = ${id} AND created_by_user_id = ${currentUser.id} AND deleted_at IS NULL
-      RETURNING data_json
+      RETURNING id, entity_id, reporting_entity_id, visibility_state, visibility_reason, visibility_updated_at::text AS visibility_updated_at, visibility_updated_by_user_id,
+        is_test, test_reason, dashboard_excluded, status, payment_status, current_payment_request_id, paid_at::text AS paid_at, payment_updated_at::text AS payment_updated_at, data_json
     `;
   if (!rows[0]) return null;
   await db`INSERT INTO fin_invoice_events (invoice_id, actor_user_id, event_type, summary, metadata) VALUES (${id}, ${currentUser.id}, 'updated', 'Invoice draft updated', '{}'::jsonb)`;
-  return parseStoredInvoice(rows[0].data_json);
+  return invoiceFromRow(rows[0]);
 }
 
 async function deleteInvoice(user, id) {
   const currentUser = await ensureUser(user);
   const db = sql();
+  const accessRows = currentUser.role === 'admin'
+    ? await db`SELECT id, entity_id, reporting_entity_id, data_json FROM fin_invoices WHERE id = ${id} AND deleted_at IS NULL LIMIT 1`
+    : await db`SELECT id, entity_id, reporting_entity_id, data_json FROM fin_invoices WHERE id = ${id} AND created_by_user_id = ${currentUser.id} AND deleted_at IS NULL LIMIT 1`;
+  if (!accessRows[0] || !userCanAccessInvoiceRow(currentUser, accessRows[0])) return false;
   const rows = currentUser.role === 'admin'
     ? await db`
       UPDATE fin_invoices SET deleted_at = now(), updated_at = now()
@@ -955,9 +1227,9 @@ async function latestPaymentRequestForInvoice(user, invoiceId) {
   const currentUser = await ensureUser(user);
   const db = sql();
   const invoiceRows = currentUser.role === 'admin'
-    ? await db`SELECT id FROM fin_invoices WHERE id = ${invoiceId} AND deleted_at IS NULL LIMIT 1`
-    : await db`SELECT id FROM fin_invoices WHERE id = ${invoiceId} AND created_by_user_id = ${currentUser.id} AND deleted_at IS NULL LIMIT 1`;
-  if (!invoiceRows[0]) return null;
+    ? await db`SELECT id, entity_id, reporting_entity_id, data_json FROM fin_invoices WHERE id = ${invoiceId} AND deleted_at IS NULL LIMIT 1`
+    : await db`SELECT id, entity_id, reporting_entity_id, data_json FROM fin_invoices WHERE id = ${invoiceId} AND created_by_user_id = ${currentUser.id} AND deleted_at IS NULL LIMIT 1`;
+  if (!invoiceRows[0] || !userCanAccessInvoiceRow(currentUser, invoiceRows[0])) return null;
   const rows = await db`
     SELECT id, invoice_id, entity_id, invoice_number, invoice_snapshot_sha256, stripe_mode, status, amount_cents, currency,
       payment_url, payment_url_kind, stripe_checkout_session_id, stripe_payment_intent_id, stripe_charge_id, stripe_customer_id,
@@ -977,14 +1249,14 @@ async function latestPaymentRequestForInvoice(user, invoiceId) {
 async function loadApprovedInvoiceForPayment(invoiceId) {
   const db = sql();
   const invoiceRows = await db`
-    SELECT id, entity_id, invoice_number, status, currency, total_cents, approved_by_user_id, data_json
+    SELECT id, entity_id, reporting_entity_id, invoice_number, status, currency, total_cents, approved_by_user_id, data_json
     FROM fin_invoices
     WHERE id = ${invoiceId} AND deleted_at IS NULL
     LIMIT 1
   `;
   const row = invoiceRows[0];
   if (!row) throw makeError(404, 'Invoice draft not found.');
-  const invoice = parseStoredInvoice(row.data_json);
+  const invoice = invoiceFromRow(row);
   if (!invoice) throw makeError(500, 'Invoice data is unavailable.');
   if (invoice.status !== 'approved' || row.status !== 'approved' || !row.approved_by_user_id) throw makeError(409, 'Approve the invoice before creating a payment link.');
   const amountCents = Number(row.total_cents || invoice.totals?.totalCents || 0);
@@ -1002,14 +1274,14 @@ async function createInvoicePaymentRequest(user, invoiceId, modeInput = 'test') 
   const mode = cleanStripeMode(modeInput);
   const db = sql();
   const invoiceRows = await db`
-    SELECT id, entity_id, invoice_number, status, currency, total_cents, approved_by_user_id, data_json
+    SELECT id, entity_id, reporting_entity_id, invoice_number, status, currency, total_cents, approved_by_user_id, data_json
     FROM fin_invoices
     WHERE id = ${invoiceId} AND deleted_at IS NULL
     LIMIT 1
   `;
   const row = invoiceRows[0];
-  if (!row) throw makeError(404, 'Invoice draft not found.');
-  const invoice = parseStoredInvoice(row.data_json);
+  if (!row || !userCanAccessInvoiceRow(currentUser, row)) throw makeError(404, 'Invoice draft not found.');
+  const invoice = invoiceFromRow(row);
   if (!invoice) throw makeError(500, 'Invoice data is unavailable.');
   if (invoice.status !== 'approved' || row.status !== 'approved' || !row.approved_by_user_id) throw makeError(409, 'Approve the invoice before creating a Stripe payment link.');
   const amountCents = Number(row.total_cents || invoice.totals?.totalCents || 0);
@@ -1156,6 +1428,7 @@ async function createInvoiceCustomerPaymentPage(user, invoiceId, modeInput = 'te
   const mode = cleanStripeMode(modeInput);
   const db = sql();
   const { row, invoice, amountCents, snapshotSha256 } = await loadApprovedInvoiceForPayment(invoiceId);
+  if (!userCanAccessInvoiceRow(currentUser, row)) throw makeError(404, 'Invoice draft not found.');
   const methodFamily = 'customer_choice';
 
   await db`
@@ -2083,11 +2356,18 @@ function hostedInvoiceRow(row) {
   }
   const entityId = cleanEntityId(row.entity_id || invoice.entityId || 'wawco');
   const entity = publicEntity(entityId);
+  const reportingEntityId = cleanReportingEntityId(row.reporting_entity_id || invoice.reportingEntityId || (invoice.payeeReportingScope && invoice.payeeReportingScope !== 'private' ? invoice.payeeReportingScope : '') || entityId, entityId);
+  const reportingEntity = publicEntity(reportingEntityId);
   return {
     id: row.id,
     entityId,
     entityLabel: entity.label,
     entityName: entity.name,
+    reportingEntityId,
+    reportingEntityLabel: reportingEntity.label,
+    reportingEntityName: reportingEntity.name,
+    visibilityState: cleanVisibilityState(row.visibility_state || invoice.visibilityState || 'active'),
+    isTest: row.is_test === true || invoice.isTest === true,
     invoiceNumber: row.invoice_number,
     status: row.status || 'draft',
     clientLabel: row.client_label || invoiceClientLabel(invoice) || 'Untitled client',
@@ -2516,11 +2796,14 @@ async function financeSummary(user, options = {}) {
   const currentUser = userIdentity(user);
   const db = sql();
   const scope = currentUser.role === 'admin' ? 'workspace' : 'own_drafts';
+  const visibleEntityIds = userVisibleEntityIds(currentUser);
   const rawRows = currentUser.role === 'admin'
     ? await db`
-      SELECT inv.id, inv.entity_id, inv.invoice_number, inv.status, inv.client_label,
+      SELECT inv.id, inv.entity_id, inv.reporting_entity_id, inv.visibility_state, inv.visibility_reason,
+        inv.is_test, inv.test_reason, inv.dashboard_excluded, inv.invoice_number, inv.status, inv.client_label,
         inv.invoice_date::text AS invoice_date, inv.due_date::text AS due_date,
         inv.total_cents, inv.payment_status, inv.current_payment_request_id,
+        inv.paid_at::text AS paid_at, inv.payment_updated_at::text AS payment_updated_at,
         inv.updated_at::text AS updated_at, usr.email AS created_by_email, inv.data_json,
         pay.stripe_mode AS payment_mode, pay.status AS payment_request_status,
         pay.expires_at::text AS payment_expires_at, pay.updated_at::text AS payment_updated_at
@@ -2538,9 +2821,11 @@ async function financeSummary(user, options = {}) {
       LIMIT 500
     `
     : await db`
-      SELECT inv.id, inv.entity_id, inv.invoice_number, inv.status, inv.client_label,
+      SELECT inv.id, inv.entity_id, inv.reporting_entity_id, inv.visibility_state, inv.visibility_reason,
+        inv.is_test, inv.test_reason, inv.dashboard_excluded, inv.invoice_number, inv.status, inv.client_label,
         inv.invoice_date::text AS invoice_date, inv.due_date::text AS due_date,
         inv.total_cents, inv.payment_status, inv.current_payment_request_id,
+        inv.paid_at::text AS paid_at, inv.payment_updated_at::text AS payment_updated_at,
         inv.updated_at::text AS updated_at, usr.email AS created_by_email, inv.data_json,
         pay.stripe_mode AS payment_mode, pay.status AS payment_request_status,
         pay.expires_at::text AS payment_expires_at, pay.updated_at::text AS payment_updated_at
@@ -2558,28 +2843,34 @@ async function financeSummary(user, options = {}) {
       LIMIT 500
     `;
 
-  const entityOptions = invoiceEntities();
+  const entityOptions = invoiceEntities().filter((entity) => visibleEntityIds.includes(cleanEntityId(entity.id)));
   const requestedEntity = cleanSingleLine(options.entity || options.entityId || 'wawco', 40).toLowerCase();
   const entityFilter = requestedEntity === 'combined' ? 'combined' : cleanEntityId(requestedEntity || 'wawco');
+  if (entityFilter !== 'combined' && !userCanAccessEntity(currentUser, entityFilter)) throw makeError(403, 'Finance entity is not available to this user.');
   const excludedRows = [];
   const excludedEntityRows = [];
   const visibleRows = [];
   for (const row of rawRows) {
-    const data = parseStoredInvoice(row.data_json) || {};
-    const entityId = cleanEntityId(row.entity_id || data.entityId || 'wawco');
-    if (entityFilter !== 'combined' && entityId !== entityFilter) {
+    if (!userCanAccessInvoiceRow(currentUser, row)) {
       excludedEntityRows.push(row);
       continue;
     }
-    const excluded = data.payeeReportingScope === 'private' || data.excludeFromWawcoDashboard === true;
+    const data = parseStoredInvoice(row.data_json) || {};
+    const entityId = cleanEntityId(row.entity_id || data.entityId || 'wawco');
+    const reportingEntityId = rowReportingEntityId(row);
+    if (entityFilter !== 'combined' && reportingEntityId !== entityFilter) {
+      excludedEntityRows.push(row);
+      continue;
+    }
+    const excluded = row.visibility_state === 'hidden' || row.is_test === true || row.dashboard_excluded === true || data.payeeReportingScope === 'private' || data.excludeFromWawcoDashboard === true || data.dashboardExcluded === true;
     if (excluded) excludedRows.push(row);
-    else visibleRows.push({ ...row, entity_id: entityId });
+    else visibleRows.push({ ...row, entity_id: entityId, reporting_entity_id: reportingEntityId });
   }
 
   const invoices = visibleRows.map(hostedInvoiceRow);
   const invoiceMonths = [...new Set(invoices.map((invoice) => invoice.month).filter(Boolean))].sort();
   const importMergeEnabled = financeImportsEnabled();
-  const entitySupportsFinanceImports = entityFilter === 'wawco' || entityFilter === 'combined';
+  const entitySupportsFinanceImports = entityFilter === 'wawco' || (entityFilter === 'combined' && visibleEntityIds.length === 1 && visibleEntityIds.includes('wawco'));
   const importMonths = importMergeEnabled && entitySupportsFinanceImports ? await financeImportMonths(currentUser) : [];
   const requestedMonth = cleanSingleLine(options.month, 7);
   if (requestedMonth && !/^\d{4}-\d{2}$/.test(requestedMonth)) throw makeError(400, 'Finance summary month must use YYYY-MM.');
@@ -2612,7 +2903,7 @@ async function financeSummary(user, options = {}) {
     source: 'hosted_fin',
     scope,
     entityFilter,
-    entityLabel: entityFilter === 'combined' ? 'Combined' : publicEntity(entityFilter).label,
+    entityLabel: entityFilter === 'combined' ? (visibleEntityIds.length === 1 ? 'Combined (WAWCO visible)' : 'Combined') : publicEntity(entityFilter).label,
     visibleCount: invoices.length,
     excludedEntityCount: excludedEntityRows.length,
     excludedPrivatePayeeCount: excludedRows.length,
@@ -2672,7 +2963,7 @@ async function financeSummary(user, options = {}) {
     months,
     entityFilter,
     entityLabel: hostedInvoices.entityLabel,
-    entities: [{ id: 'combined', label: 'Combined', name: 'Combined' }, ...entityOptions],
+    entities: [{ id: 'combined', label: 'Combined', name: visibleEntityIds.length === 1 ? 'Combined (WAWCO visible)' : 'Combined' }, ...entityOptions],
     invoiceCount: invoices.length,
     totalCents: sumCents(invoices),
     readyForReviewCents: hostedInvoices.readyForReviewCents,
@@ -2703,6 +2994,7 @@ async function financeSummary(user, options = {}) {
 module.exports = {
   ensureSchema,
   ensureUser,
+  userEntityPermissions,
   numberingSettings,
   updateNumberingSettings,
   listEntities,

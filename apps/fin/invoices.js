@@ -9,6 +9,7 @@ const refs = {
   list: $('#invoice-list'),
   form: $('#invoice-form'),
   newInvoice: $('#new-invoice'),
+  invoiceViewTabs: [...document.querySelectorAll('[data-invoice-view]')],
   addItem: $('#add-item'),
   saveInvoice: $('#save-invoice'),
   duplicateInvoice: $('#duplicate-invoice'),
@@ -109,6 +110,8 @@ let entities = [
   { id: 'ndg', label: 'NDG', name: 'Noah Development Group LLC', email: '', invoiceCodePrefix: 'NDG', reportingScope: 'ndg', stripeAccountKey: 'ndg', branding: {} },
 ];
 let paymentSettings = { configured: false, mode: 'disabled', testLinksEnabled: false, liveLinksEnabled: false, entities: {} };
+let permissions = { visibleEntityIds: ['wawco'], canViewAllInvoices: false, combinedEntityMode: 'wawco_only' };
+let invoiceView = 'active';
 let formDirty = false;
 
 async function getJson(url, options = {}) {
@@ -186,6 +189,20 @@ function entityInvoiceDefaults(entityId) {
 
 function paymentSettingsForEntity(entityId) {
   return paymentSettings.entities?.[entityId] || paymentSettings.entities?.wawco || paymentSettings;
+}
+
+function invoiceViewLabel(view = invoiceView) {
+  if (view === 'recently_paid') return 'Recently paid';
+  return formatStatus(view || 'active');
+}
+
+function renderInvoiceViewTabs() {
+  refs.invoiceViewTabs.forEach((button) => {
+    const view = button.dataset.invoiceView || 'active';
+    button.hidden = view === 'all' && !permissions.canViewAllInvoices;
+    button.classList.toggle('active', view === invoiceView);
+    button.setAttribute('aria-pressed', view === invoiceView ? 'true' : 'false');
+  });
 }
 
 function paymentLabel(payment) {
@@ -697,10 +714,11 @@ function renderPreview() {
 
 function renderDraftList() {
   refs.list.replaceChildren();
+  renderInvoiceViewTabs();
   if (!invoices.length) {
     const empty = document.createElement('p');
     empty.className = 'invoice-list-empty';
-    empty.textContent = 'No hosted drafts yet.';
+    empty.textContent = `No ${invoiceViewLabel(invoiceView).toLowerCase()} invoices in this view.`;
     refs.list.append(empty);
     return;
   }
@@ -711,9 +729,14 @@ function renderDraftList() {
     const left = document.createElement('span');
     left.innerHTML = `<strong></strong><small></small>`;
     left.querySelector('strong').textContent = invoice.invoiceNumber || 'Draft';
-    left.querySelector('small').textContent = `${invoice.entityLabel || entityById(invoice.entityId || 'wawco')?.label || 'Entity'} · ${invoice.clientLabel || 'Untitled client'}`;
+    const entityParts = [invoice.entityLabel || entityById(invoice.entityId || 'wawco')?.label || 'Entity'];
+    if (invoice.reportingEntityLabel && invoice.reportingEntityLabel !== invoice.entityLabel) entityParts.push(`reports ${invoice.reportingEntityLabel}`);
+    if (invoice.isTest) entityParts.push('test');
+    if (invoice.visibilityState && invoice.visibilityState !== 'active') entityParts.push(invoice.visibilityState);
+    left.querySelector('small').textContent = `${entityParts.join(' · ')} · ${invoice.clientLabel || 'Untitled client'}`;
     const right = document.createElement('small');
-    right.textContent = `${formatCurrency(invoice.totalCents)} · ${formatStatus(invoice.status)}`;
+    const payment = invoice.paymentStatus && invoice.paymentStatus !== 'none' ? ` · ${formatStatus(invoice.paymentStatus)}` : '';
+    right.textContent = `${formatCurrency(invoice.totalCents)} · ${formatStatus(invoice.status)}${payment}`;
     button.append(left, right);
     button.addEventListener('click', () => loadInvoice(invoice.id));
     refs.list.append(button);
@@ -723,6 +746,7 @@ function renderDraftList() {
 async function loadSession() {
   const session = await getJson('/api/session');
   paymentSettings = session.payments || paymentSettings;
+  permissions = session.permissions || permissions;
   if (!session.auth.configured || !session.user) {
     refs.signinPanel.hidden = false;
     refs.workspace.hidden = true;
@@ -736,12 +760,13 @@ async function loadSession() {
 }
 
 async function loadInvoices() {
-  setState('Loading hosted drafts...');
-  const data = await getJson('/api/invoices');
+  setState(`Loading ${invoiceViewLabel(invoiceView).toLowerCase()} invoices...`);
+  const params = new URLSearchParams({ view: invoiceView });
+  const data = await getJson(`/api/invoices?${params.toString()}`);
   invoices = data.invoices || [];
   renderDraftList();
   if (!currentInvoice) fillForm(baseInvoice());
-  setState(invoices.length ? `${invoices.length} hosted draft${invoices.length === 1 ? '' : 's'}.` : 'No hosted drafts yet.');
+  setState(invoices.length ? `${invoices.length} ${invoiceViewLabel(invoiceView).toLowerCase()} invoice${invoices.length === 1 ? '' : 's'}.` : `No ${invoiceViewLabel(invoiceView).toLowerCase()} invoices in this view.`);
 }
 
 async function loadInvoice(id) {
@@ -960,6 +985,12 @@ refs.addItem.addEventListener('click', () => {
   renderPreview();
 });
 
+refs.invoiceViewTabs.forEach((button) => {
+  button.addEventListener('click', () => {
+    invoiceView = button.dataset.invoiceView || 'active';
+    loadInvoices().catch((error) => setNotice(error.message));
+  });
+});
 refs.newInvoice.addEventListener('click', createNewDraft);
 refs.saveInvoice.addEventListener('click', () => saveInvoice('draft').catch((error) => setNotice(error.message)));
 refs.markReady.addEventListener('click', () => saveInvoice('ready_for_review').catch((error) => setNotice(error.message)));

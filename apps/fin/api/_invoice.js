@@ -1,6 +1,7 @@
 const crypto = require('crypto');
 
 const STATUS_VALUES = new Set(['draft', 'ready_for_review', 'approved', 'issued', 'paid', 'void']);
+const VISIBILITY_STATES = new Set(['active', 'archived', 'hidden']);
 const MAX_ITEMS = 50;
 
 const ENTITY_DEFINITIONS = [
@@ -81,6 +82,23 @@ function cleanEntityId(value, fallback = 'wawco') {
   const id = cleanSingleLine(value, 40).toLowerCase();
   if (ENTITY_BY_ID.has(id)) return id;
   return ENTITY_BY_ID.has(fallback) ? fallback : 'wawco';
+}
+
+function cleanReportingEntityId(value, entityId = 'wawco') {
+  const id = cleanSingleLine(value, 40).toLowerCase();
+  if (ENTITY_BY_ID.has(id)) return id;
+  return cleanEntityId(entityId || 'wawco');
+}
+
+function cleanVisibilityState(value) {
+  const state = cleanSingleLine(value, 40).toLowerCase();
+  return VISIBILITY_STATES.has(state) ? state : 'active';
+}
+
+function cleanBoolean(value) {
+  if (value === true || value === 1) return true;
+  if (typeof value === 'string') return ['1', 'true', 'yes', 'y', 'on'].includes(value.trim().toLowerCase());
+  return false;
 }
 
 function entityById(value) {
@@ -191,6 +209,14 @@ function baseInvoice(invoiceNumber = '', entityIdInput = 'wawco') {
     payeeProfileId: '',
     clientProfileId: '',
     userProfileId: '',
+    reportingEntityId: defaults.entityId,
+    reportingEntity: publicEntity(defaults.entityId),
+    visibilityState: 'active',
+    visibilityReason: '',
+    visibilityUpdatedAt: '',
+    isTest: false,
+    testReason: '',
+    dashboardExcluded: false,
     payeeReportingScope: defaults.payeeReportingScope,
     excludeFromWawcoDashboard: false,
     from: defaults.from,
@@ -257,7 +283,10 @@ function normalizeInvoice(input = {}, options = {}) {
   const hasOwn = Object.prototype.hasOwnProperty;
   const invoiceDateSource = hasOwn.call(source, 'invoiceDate') ? source.invoiceDate : fallback.invoiceDate;
   const dueDateSource = hasOwn.call(source, 'dueDate') ? source.dueDate : fallback.dueDate;
-  const reportingScope = cleanReportingScope(source.payeeReportingScope, entityId);
+  const rawReportingScope = cleanReportingScope(source.payeeReportingScope, entityId);
+  const reportingEntityId = cleanReportingEntityId(source.reportingEntityId || source.reporting_entity_id || (rawReportingScope === 'private' ? '' : rawReportingScope), entityId);
+  const reportingScope = rawReportingScope === 'private' ? 'private' : reportingEntityId;
+  const dashboardExcluded = cleanBoolean(source.dashboardExcluded ?? source.dashboard_excluded ?? source.excludeFromWawcoDashboard) || reportingScope === 'private';
 
   return {
     id: cleanSingleLine(source.id || options.id || '', 80),
@@ -275,8 +304,16 @@ function normalizeInvoice(input = {}, options = {}) {
     payeeProfileId: cleanSingleLine(source.payeeProfileId, 80),
     clientProfileId: cleanSingleLine(source.clientProfileId, 80),
     userProfileId: cleanSingleLine(source.userProfileId, 80),
+    reportingEntityId,
+    reportingEntity: publicEntity(reportingEntityId),
+    visibilityState: cleanVisibilityState(source.visibilityState || source.visibility_state || fallback.visibilityState),
+    visibilityReason: cleanSingleLine(source.visibilityReason || source.visibility_reason || fallback.visibilityReason, 240),
+    visibilityUpdatedAt: cleanSingleLine(source.visibilityUpdatedAt || source.visibility_updated_at || fallback.visibilityUpdatedAt, 80),
+    isTest: cleanBoolean(source.isTest ?? source.is_test ?? fallback.isTest),
+    testReason: cleanSingleLine(source.testReason || source.test_reason || fallback.testReason, 240),
+    dashboardExcluded,
     payeeReportingScope: reportingScope,
-    excludeFromWawcoDashboard: Boolean(source.excludeFromWawcoDashboard) || reportingScope === 'private',
+    excludeFromWawcoDashboard: dashboardExcluded,
     from: {
       name: cleanSingleLine(source.from?.name || fallback.from.name || entityDefaults.from.name, 240),
       company: cleanSingleLine(source.from?.company || fallback.from.company || entityDefaults.from.company, 240),
@@ -310,16 +347,29 @@ function invoiceClientLabel(invoice) {
 function invoiceListItem(row) {
   const entityId = cleanEntityId(row.entity_id || row.entityId || 'wawco');
   const entity = publicEntity(entityId);
+  const reportingEntityId = cleanReportingEntityId(row.reporting_entity_id || row.reportingEntityId || entityId, entityId);
+  const reportingEntity = publicEntity(reportingEntityId);
+  const dashboardExcluded = cleanBoolean(row.dashboard_excluded ?? row.dashboardExcluded);
   return {
     id: row.id,
     entityId,
     entityLabel: entity.label,
+    reportingEntityId,
+    reportingEntityLabel: reportingEntity.label,
     invoiceNumber: row.invoice_number,
     status: row.status,
     clientLabel: row.client_label || 'Untitled client',
     invoiceDate: row.invoice_date || '',
     dueDate: row.due_date || '',
     totalCents: Number(row.total_cents || 0),
+    paymentStatus: row.payment_status || row.paymentStatus || 'none',
+    visibilityState: cleanVisibilityState(row.visibility_state || row.visibilityState),
+    visibilityReason: row.visibility_reason || row.visibilityReason || '',
+    isTest: cleanBoolean(row.is_test ?? row.isTest),
+    testReason: row.test_reason || row.testReason || '',
+    dashboardExcluded,
+    paidAt: row.paid_at || row.paidAt || '',
+    paymentUpdatedAt: row.payment_updated_at || row.paymentUpdatedAt || '',
     updatedAt: row.updated_at || '',
     createdBy: row.created_by_email || '',
   };
@@ -330,6 +380,8 @@ module.exports = {
   invoiceClientLabel,
   invoiceListItem,
   cleanEntityId,
+  cleanReportingEntityId,
+  cleanVisibilityState,
   entityById,
   invoiceEntities,
   publicEntity,

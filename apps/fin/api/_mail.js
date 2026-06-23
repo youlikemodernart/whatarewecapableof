@@ -78,7 +78,11 @@ function parseServiceAccount() {
   try {
     parsed = JSON.parse(raw);
   } catch {
-    throw new Error('gmail-service-account-invalid-json');
+    try {
+      parsed = JSON.parse(Buffer.from(raw, 'base64').toString('utf8'));
+    } catch {
+      throw new Error('gmail-service-account-invalid-json');
+    }
   }
   const clientEmail = cleanSingleLine(parsed.client_email, 320);
   const privateKey = String(parsed.private_key || '').replace(/\\n/g, '\n');

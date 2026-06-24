@@ -112,6 +112,7 @@ body.keynote-deck-v2.is-keyboarding {
   background: var(--slide-bg, var(--kdeck-bg));
 }
 
+.kdeck-image-shell picture { display: contents; }
 .kdeck-image-shell img {
   display: block;
   width: 100%;

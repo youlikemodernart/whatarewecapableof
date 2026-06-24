@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Shop My Warehouse, a look at search | What are we capable of?</title>
+  <meta property="og:title" content="Shop My Warehouse, a look at search">
+  <meta property="og:type" content="website">
+  <style>
+    :root{
+      --ink:#1a1a1a; --ink-2:#44474a; --ink-3:#686d71; --rule:#e6e6e3; --bg:#ffffff;
+      --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    }
+    *{box-sizing:border-box;}
+    html{-webkit-text-size-adjust:100%;}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-feature-settings:"kern" 1,"liga" 1;}
+    @media (max-width:600px){body{font-size:17px;}}
+    em{font-style:italic;}
+    :focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:1px;}
+    a{color:var(--ink);}
+
+    .page{max-width:760px;margin:0 auto;padding:28px 24px 96px;}
+    .site-header{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding-bottom:16px;border-bottom:1px solid var(--rule);margin-bottom:clamp(48px,9vh,96px);font-size:14px;}
+    .site-header a{color:var(--ink);text-decoration:none;}
+    .site-header .mark{font-weight:500;}
+    .site-header .mail{color:var(--ink-3);}
+    .site-header .mail:hover{color:var(--ink);}
+    .site-footer{margin-top:clamp(64px,10vh,104px);padding-top:20px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:14px;color:var(--ink-3);}
+    .site-footer a{color:var(--ink-3);text-decoration:none;}
+    .site-footer a:hover{color:var(--ink);}
+
+    p{margin:0 0 1em;max-width:60ch;text-wrap:pretty;}
+    p:last-child{margin-bottom:0;}
+    section{margin-top:clamp(56px,9vh,92px);}
+    h2{font-size:23px;line-height:1.2;letter-spacing:-0.01em;font-weight:600;margin:0 0 20px;}
+
+    .p-meta{font-size:13px;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:0 0 18px;}
+    .p-title{font-size:clamp(30px,4.6vw,46px);line-height:1.1;letter-spacing:-0.018em;font-weight:600;margin:0;max-width:22ch;text-wrap:balance;}
+    .p-lede{font-size:20px;line-height:1.5;color:var(--ink-2);max-width:58ch;margin:24px 0 0;text-wrap:pretty;}
+    .eyebrow{font-size:13px;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-3);margin:0 0 10px;}
+
+    .finding{display:grid;grid-template-columns:40px 1fr;gap:4px 16px;margin-bottom:clamp(28px,4vh,40px);}
+    .finding:last-child{margin-bottom:0;}
+    .finding .n{font-size:18px;font-weight:500;color:var(--ink-3);padding-top:2px;}
+    .finding>div>p,.finding>p{margin:0;max-width:58ch;}
+    .finding h3{font-size:19px;font-weight:600;margin:0 0 8px;}
+
+    .layer{display:grid;grid-template-columns:150px 1fr;gap:8px 20px;padding:18px 0;border-top:1px solid var(--rule);}
+    .layer:last-of-type{border-bottom:1px solid var(--rule);}
+    .layer .label{font-size:14px;color:var(--ink-3);padding-top:2px;}
+    .layer p{margin:0;max-width:54ch;}
+
+    .p-table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+    .p-table{width:100%;border-collapse:collapse;margin:8px 0 0;font-size:16px;}
+    .p-table th{text-align:left;font-size:13px;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);font-weight:600;padding:0 18px 10px 0;vertical-align:bottom;border-bottom:1px solid var(--ink);}
+    .p-table td{text-align:left;padding:14px 18px 14px 0;vertical-align:top;border-bottom:1px solid var(--rule);}
+    .p-table td:last-child,.p-table th:last-child{padding-right:0;}
+    .p-table td.lead-cell{font-weight:600;color:var(--ink);white-space:nowrap;}
+
+    .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:22px 24px;border-top:1px solid var(--rule);padding-top:20px;margin-top:32px;}
+    .stat .num{font-size:28px;line-height:1.1;letter-spacing:-0.01em;}
+    .stat .label{font-size:13px;color:var(--ink-3);margin-top:4px;max-width:22ch;}
+
+    .close-line{font-size:22px;line-height:1.35;font-weight:500;max-width:42ch;text-wrap:balance;}
+    .cta{margin-top:28px;}
+    .cta a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--ink);padding-bottom:2px;font-size:18px;}
+    .cta a:hover{border-bottom-width:2px;}
+
+    @media (max-width:600px){
+      .page{padding-bottom:48px;}
+      .site-header{font-size:13px;flex-wrap:wrap;row-gap:4px;}
+      .site-header .mark{white-space:nowrap;}
+      .site-footer{margin-top:48px;}
+      section{margin-top:48px;}
+      .finding{grid-template-columns:32px 1fr;}
+      .layer{grid-template-columns:1fr;gap:4px;}
+      .p-table{font-size:15px;}
+      .p-table td.lead-cell{white-space:normal;}
+      .p-table-stack thead{display:none;}
+      .p-table-stack,.p-table-stack tbody,.p-table-stack tr,.p-table-stack td{display:block;width:100%;}
+      .p-table-stack tr{padding:14px 0;border-bottom:1px solid var(--rule);}
+      .p-table-stack tr:first-child{border-top:1px solid var(--ink);}
+      .p-table-stack td{border-bottom:0;padding:6px 0;}
+      .p-table-stack td::before{content:attr(data-label);display:block;font-size:12px;line-height:1.2;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:2px;}
+      .p-table-stack td.lead-cell{padding-top:0;margin-bottom:6px;}
+      .p-table-stack td.lead-cell::before{display:none;}
+    }
+  </style>
+</head>
+<body class="page-proposal">
+  <main class="page" id="main">
+    <header class="site-header">
+      <a class="mark" href="/">What are we capable of?</a>
+      <a class="mail" href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a>
+    </header>
+
+    <p class="p-meta">Prepared for the Kaitlyn Wolfe team · June 2026</p>
+    <h1 class="p-title">Shop My Warehouse, and how it shows up in&nbsp;search.</h1>
+    <p class="p-lede">We looked at Shop My Warehouse the way a search engine does: what we can already see from the outside, what a little read-only access would show, and a simple way to go further.</p>
+
+    <section>
+      <p class="eyebrow">The short version</p>
+      <h2>One-of-a-kind inventory</h2>
+      <p>Shop My Warehouse sells one-of-a-kind pieces. Each is listed once, sells, and is gone, so most product pages are temporary. Search engines give the most weight to pages that stay put, which here means the collection and category pages rather than the individual products.</p>
+
+      <div class="stats">
+        <div class="stat"><div class="num">1,464</div><div class="label">live product pages today</div></div>
+        <div class="stat"><div class="num">50&ndash;110</div><div class="label">new pieces added a month</div></div>
+        <div class="stat"><div class="num">1 in 4</div><div class="label">live pages are pieces already sold</div></div>
+        <div class="stat"><div class="num">71</div><div class="label">collection pages, the durable ones</div></div>
+      </div>
+    </section>
+
+    <section>
+      <p class="eyebrow">Layer one &middot; from the outside</p>
+      <h2>What we can already see</h2>
+      <p>We looked only at what is public, the same view search engines have.</p>
+
+      <div class="finding" style="margin-top:32px;"><div class="n">01</div><div><h3>Sold pieces stay online</h3><p>More than a quarter of the live product pages are items that already sold but are still online. They cannot be bought, so each should redirect to its collection when it sells, which keeps the search value it earned.</p></div></div>
+
+      <div class="finding"><div class="n">02</div><div><h3>Collection pages have no text</h3><p>Collection pages like Furniture, Lighting, and Vases keep the same address even as the products inside them change, so they are the best place to rank for a search like &ldquo;vintage brass lamp.&rdquo; Right now they have no description text for Google to read. This is the biggest opportunity.</p></div></div>
+
+      <div class="finding"><div class="n">03</div><div><h3>Titles miss the search words</h3><p>A page title is a top ranking signal, and the first words count most. Most titles read <em>Name [VINTAGE] &ndash; Kaitlyn Wolfe</em>, so the opening goes to the bracket and the brand instead of the words people search: the material, the era, the kind of object.</p></div></div>
+
+      <div class="finding"><div class="n">04</div><div><h3>Photos have no alt text</h3><p>Alt text is the short description attached to a photo that tells Google and screen readers what it shows. Every product image is missing it, so the photos cannot show in Google Images, where much vintage shopping starts.</p></div></div>
+
+      <div class="finding"><div class="n">05</div><div><h3>Internal pages are visible in search</h3><p>A few internal and quote-only collections, meant for staff or private sales, are open to Google alongside the public pages. They should be hidden so the public pages rank on their own.</p></div></div>
+
+      <div class="finding"><div class="n">06</div><div><h3>What is already working</h3><p>Much of the hard part is done. The store loads fast, the technical setup is solid, and it is already wired for the new AI shopping assistants. A strong base to build on.</p></div></div>
+    </section>
+
+    <section>
+      <p class="eyebrow">Layer two &middot; with access</p>
+      <h2>What we could see with a little access</h2>
+      <p>Everything above we found from outside the store. Read-only access to a few tools would show the inside: the real search and visitor data. Each is free to grant and view-only.</p>
+
+      <div class="layer" style="margin-top:32px;"><div class="label">Search Console</div><div><p>The most useful by far. It shows the exact searches bringing people in, which pages Google indexes or skips, and where the store ranks just below page one.</p></div></div>
+
+      <div class="layer"><div class="label">Analytics</div><div><p>Where search visitors land, and which pages lead to a sale.</p></div></div>
+
+      <div class="layer"><div class="label">Business Profile</div><div><p>How the Scottsdale showroom shows up in local search and on the map.</p></div></div>
+
+      <div class="layer"><div class="label">Bing &amp; AI search</div><div><p>The same picture on Bing, which also feeds the AI assistants starting to recommend stores.</p></div></div>
+    </section>
+
+    <section>
+      <p class="eyebrow">If it is useful</p>
+      <h2>A focused intake audit</h2>
+      <p>If you want the full picture, we do a complete audit with that access in place and hand back a short, prioritized plan, yours to keep.</p>
+
+      <div class="p-table-scroll">
+        <table class="p-table p-table-stack">
+          <thead><tr><th>Item</th><th>What it means</th></tr></thead>
+          <tbody>
+            <tr><td class="lead-cell" data-label="Item">What it is</td><td data-label="What it means">A full search audit of Shop My Warehouse, inside and out.</td></tr>
+            <tr><td class="lead-cell" data-label="Item">What you get</td><td data-label="What it means">A short, prioritized plan in plain language, yours to keep.</td></tr>
+            <tr><td class="lead-cell" data-label="Item">What we need</td><td data-label="What it means">The read-only windows above. We handle the rest.</td></tr>
+            <tr><td class="lead-cell" data-label="Item">The cost</td><td data-label="What it means">$800 once, credited toward the work if we continue.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>Where this can go later</h2>
+      <p>Later, we could automate this so every new item is added with a strong title, alt text, and the right category already filled in. That is a bigger build, and the audit comes first.</p>
+    </section>
+
+    <section>
+      <p class="eyebrow">The next step</p>
+      <p class="close-line">We would rather show what we can do than talk about it, so we started with the work. The rest is a short step when you are ready.</p>
+      <p class="cta"><a href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a></p>
+    </section>
+
+    <footer class="site-footer">
+      <a href="/">What are we capable of?</a>
+      <span>Prepared from a public review of Shop My Warehouse, June 2026.</span>
+    </footer>
+  </main>
+</body>
+</html>

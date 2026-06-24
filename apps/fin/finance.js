@@ -14,6 +14,7 @@ const refs = {
   signinHelp: $('#signin-help'),
   dashboardPanel: $('#dashboard-panel'),
   state: $('#dashboard-state'),
+  freshnessNote: $('#finance-freshness-note'),
   refresh: $('#refresh-summary'),
   entityControl: $('#entity-control'),
   entitySelect: $('#entity-select'),
@@ -60,6 +61,48 @@ function text(value, fallback = '') {
 
 function titleize(value) {
   return String(value || 'unknown').replace(/_/g, ' ').replace(/-/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function parseTime(value) {
+  if (typeof value === 'number') return Number.isFinite(value) ? value : null;
+  const time = value ? Date.parse(value) : NaN;
+  return Number.isFinite(time) ? time : null;
+}
+
+function dateStamp(value) {
+  const time = parseTime(value);
+  return time ? new Date(time).toLocaleString() : '';
+}
+
+function daysBetween(start, end = Date.now()) {
+  if (!start) return null;
+  return Math.max(0, Math.floor((end - start) / 86_400_000));
+}
+
+function financeFreshness(summary = state.summary || {}) {
+  const latest = summary.latestFinanceImport || null;
+  const importedAt = parseTime(latest?.importedAt);
+  const generatedAt = parseTime(summary.generatedAt);
+  const mercurySnapshotAt = parseTime(summary.mercury?.snapshot?.generatedAt);
+  const coverageEnd = summary.sources?.coverageEnd || '';
+  const coverageEndAt = coverageEnd ? parseTime(`${coverageEnd}T23:59:59Z`) : null;
+  const providerAt = mercurySnapshotAt || coverageEndAt;
+  const daysOld = daysBetween(providerAt);
+  let stateLabel = 'No provider refresh metadata loaded';
+  if (mercurySnapshotAt && daysOld !== null && daysOld <= 1) stateLabel = 'Mercury snapshot refreshed recently';
+  else if (mercurySnapshotAt && daysOld !== null) stateLabel = 'Mercury snapshot may be stale';
+  else if (coverageEndAt && daysOld !== null && daysOld <= 3) stateLabel = 'Provider coverage is recent';
+  else if (coverageEndAt && daysOld !== null) stateLabel = 'Provider coverage may be stale';
+  const parts = [];
+  if (importedAt) parts.push(`hosted import ${dateStamp(importedAt)}`);
+  if (generatedAt) parts.push(`summary generated ${dateStamp(generatedAt)}`);
+  if (mercurySnapshotAt) parts.push(`Mercury snapshot ${dateStamp(mercurySnapshotAt)}`);
+  if (coverageEnd) parts.push(`coverage through ${coverageEnd}`);
+  return {
+    stateLabel,
+    daysOld,
+    detail: parts.join(' · ') || 'No hosted provider-refresh metadata is available.',
+  };
 }
 
 function el(tag, attrs = {}, children = []) {
@@ -334,10 +377,15 @@ function sourceKindLine(summary = state.summary || {}) {
 function renderSources() {
   const summary = state.summary || {};
   const sources = summary.sources || {};
+  const latest = summary.latestFinanceImport || null;
+  const freshness = financeFreshness(summary);
   const pairs = [
+    ['Freshness', `${freshness.stateLabel}${freshness.detail ? ` · ${freshness.detail}` : ''}`],
     ['Generated', summary.generatedAt || ''],
+    ['Imported', latest?.importedAt || 'not imported'],
     ['Hosted invoice store', sources.hostedInvoiceStore || 'Neon fin_invoices'],
     ['Finance snapshot', sources.financeSnapshot || 'none'],
+    ['Mercury snapshot', summary.mercury?.snapshot?.generatedAt || 'not imported'],
     ['Coverage', [sources.coverageStart, sources.coverageEnd].filter(Boolean).join(' to ') || 'not imported'],
     ['Source kinds', Array.isArray(sources.sourceKinds) ? sources.sourceKinds.join(', ') : 'not imported'],
     ['Validator', sources.validatorVersion || 'not imported'],
@@ -350,6 +398,11 @@ function renderSources() {
   ]));
 }
 
+function renderFreshnessNote() {
+  if (!refs.freshnessNote) return;
+  const freshness = financeFreshness();
+  refs.freshnessNote.textContent = `${freshness.stateLabel}. ${freshness.detail}`;
+}
 
 function importSummaryLine(item) {
   const hash = item.contentSha256 ? `${item.contentSha256.slice(0, 12)}...` : 'no hash';
@@ -487,12 +540,13 @@ function render() {
   renderExceptions();
   renderTransactions();
   renderSources();
+  renderFreshnessNote();
   renderImportAdminSummary();
   renderCurrentImport();
 }
 
 async function loadSummary() {
-  refs.state.textContent = 'Loading hosted finance summary...';
+  refs.state.textContent = 'Reloading hosted summary from Fin. This does not run Mercury or provider refresh.';
   const params = new URLSearchParams();
   if (state.entity) params.set('entity', state.entity);
   if (state.month) params.set('month', state.month);
@@ -502,7 +556,8 @@ async function loadSummary() {
   state.month = state.summary.month || state.month || '';
   state.months = state.summary.months || [];
   render();
-  refs.state.textContent = `Updated ${new Date(state.summary.generatedAt || Date.now()).toLocaleString()} · ${currentEntityLabel()} · ${state.summary.month || 'no month'} · ${sourceKindLine()}`;
+  const freshness = financeFreshness();
+  refs.state.textContent = `Hosted summary loaded · ${currentEntityLabel()} · ${state.summary.month || 'no month'} · ${sourceKindLine()} · ${freshness.stateLabel}`;
 }
 
 async function loadSession() {

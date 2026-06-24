@@ -53,8 +53,11 @@
 
     <section id="dashboard-panel" class="dash" hidden>
       <div class="dash-toolbar dash-full">
-        <p class="help" id="dashboard-state">Checking finance summary...</p>
-        <button type="button" class="secondary" id="refresh-summary">Refresh</button>
+        <div>
+          <p class="help" id="dashboard-state">Checking finance summary...</p>
+          <p class="help" id="finance-freshness-note">Provider-refresh status appears after the hosted summary loads.</p>
+        </div>
+        <button type="button" class="secondary" id="refresh-summary">Reload hosted summary</button>
       </div>
 
       <section class="dash-metrics" id="metrics" aria-label="Finance metrics"></section>
@@ -305,6 +308,6 @@
     </section>
   </main>
 
-  <script src="/finance.js?v=20260623a" type="module"></script>
+  <script src="/finance.js?v=20260624a" type="module"></script>
 </body>
 </html>

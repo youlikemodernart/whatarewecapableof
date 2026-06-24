@@ -322,6 +322,47 @@ function defaultReceiptPath(summary) {
   return path.join(RECEIPT_DIR, `fin-refresh-${summary.month}-${stamp}.json`);
 }
 
+function sanitizeErrorMessage(error) {
+  return String(error?.message || error || 'Unknown error')
+    .replace(/secret-token:mercury_[A-Za-z0-9_-]+/g, 'secret-token:mercury_<redacted>')
+    .replace(/(FIN_FINANCE_SYSTEM_IMPORT_SECRET=)\S+/g, '$1<redacted>')
+    .replace(/(MERCURY_API_KEY=)\S+/g, '$1<redacted>')
+    .slice(0, 1000);
+}
+
+function failureReceiptTarget(args) {
+  try {
+    return safeTarget(args.target || env('FIN_FINANCE_SYSTEM_IMPORT_URL', DEFAULT_TARGET));
+  } catch {
+    return 'invalid-target';
+  }
+}
+
+function writeFailureReceipt(error, argv = process.argv.slice(2)) {
+  let args;
+  try {
+    args = parseArgs(argv);
+  } catch {
+    return;
+  }
+  if (!args.receipt) return;
+  const receiptPath = path.resolve(expandHome(args.receipt));
+  const receipt = {
+    ok: false,
+    dryRun: Boolean(args['dry-run']),
+    sourceRefresh: (() => {
+      try { return sourceRefreshMode(args); } catch { return String(args['source-refresh'] || 'none'); }
+    })(),
+    month: String(args.month || ''),
+    target: failureReceiptTarget(args),
+    skipped: true,
+    reason: 'refresh-failed',
+    error: sanitizeErrorMessage(error),
+    createdAt: new Date().toISOString(),
+  };
+  writeJson(receiptPath, receipt);
+}
+
 async function pushSummary({ args, summary }) {
   const target = safeTarget(args.target || env('FIN_FINANCE_SYSTEM_IMPORT_URL', DEFAULT_TARGET));
   const targetUrl = new URL(target);
@@ -438,6 +479,7 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.error(error.message);
+  writeFailureReceipt(error);
+  console.error(sanitizeErrorMessage(error));
   process.exit(1);
 });

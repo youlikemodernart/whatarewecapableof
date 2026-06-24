@@ -26,7 +26,7 @@ Read these first:
 For proposal pages, also read:
 
 1. `PROPOSALS.md`
-2. `proposals/_template/index.html`
+2. `_templates/proposal/index.html`
 3. The active proposal file, for example `proposals/compassion/index.html`.
 4. `design/proposal-composition-system.md` and `docs/proposal-composition-partner.md` when the task touches visual rhythm, media placement, images, video, diagrams, or proposal pacing.
 
@@ -175,7 +175,7 @@ Migrate a Base44 proposal into the static whatarewecapableof proposal system.
 Read:
 - Source repo `src/pages/Home.jsx` or the page containing the embedded proposal HTML
 - PROPOSALS.md
-- proposals/_template/index.html
+- _templates/proposal/index.html
 - docs/directory-map.md
 
 Rules:
@@ -278,7 +278,7 @@ Read:
 - docs/asset-inventory.md
 - design/system-constraints.md
 - design/taste-profile/profile.md
-- proposals/_template/index.html
+- _templates/proposal/index.html
 - proposals/<slug>/index.html
 
 Task:

@@ -12,11 +12,13 @@
   <link rel="stylesheet" href="/css/proposal.css">
 </head>
 <body class="page-proposal">
-  <main class="page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="page">
     <header class="site-header">
       <a class="mark" href="/">What are we capable of?</a>
       <a class="mail" href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a>
     </header>
+    <main id="main">
 
     <p class="p-meta">Prepared for Teaspressa · April 2026</p>
     <h1 class="p-title">What Teaspressa's public infrastructure is already&nbsp;showing.</h1>
@@ -97,7 +99,7 @@
     <section>
       <h2>Product catalog</h2>
       <table class="p-table">
-        <thead><tr><th>Category</th><th>Examples</th><th>Price</th></tr></thead>
+        <thead><tr><th scope="col">Category</th><th scope="col">Examples</th><th scope="col">Price</th></tr></thead>
         <tbody>
           <tr><td class="lead-cell">Mixer Cube (Mini)</td><td>Rose, Vanilla Bean, Salted Caramel</td><td>$9 / 6 cubes</td></tr>
           <tr><td class="lead-cell">Mixer Cube (Stick)</td><td>Rose, Espresso Martini</td><td>$17 / 12 cubes</td></tr>
@@ -120,7 +122,7 @@
       <h2>Wholesale</h2>
       <p>A separate Shopify store runs at wholesale.teaspressa.com (teaspressawholesale.myshopify.com), using a different theme, "Moments 2.0." Pricing requires login. Visible wholesale case-pack pricing from the product API:</p>
       <table class="p-table">
-        <thead><tr><th>Product</th><th>Wholesale</th><th>Retail</th></tr></thead>
+        <thead><tr><th scope="col">Product</th><th scope="col">Wholesale</th><th scope="col">Retail</th></tr></thead>
         <tbody>
           <tr><td class="lead-cell">London Fog Cube, case of 12</td><td>$54 ($4.50/unit)</td><td>$9/mini</td></tr>
           <tr><td class="lead-cell">Mimosa Trio, case of 6</td><td>$90 ($15/unit)</td><td>$28-$30/kit</td></tr>
@@ -134,7 +136,7 @@
     <section>
       <h2>Technology</h2>
       <table class="p-table">
-        <thead><tr><th>Layer</th><th>Tool</th><th>Detail</th></tr></thead>
+        <thead><tr><th scope="col">Layer</th><th scope="col">Tool</th><th scope="col">Detail</th></tr></thead>
         <tbody>
           <tr><td class="lead-cell">E-commerce (DTC)</td><td>Shopify</td><td>Shop ID 7797937, custom theme</td></tr>
           <tr><td class="lead-cell">E-commerce (B2B)</td><td>Shopify (separate)</td><td>Login-gated pricing</td></tr>
@@ -156,7 +158,7 @@
       <h2>Content and social</h2>
       <p>The blog, "C'est La Tea Blog," has 133+ posts across four categories. Most recent update: April 13, 2026. Early content from 2016-2018 featured interview series, community spotlights, and DIY tutorials. Recent content is primarily seasonal recipes and gift guides.</p>
       <table class="p-table p-table-stack">
-        <thead><tr><th>Platform</th><th>Handle</th><th>Followers</th><th>Signal</th></tr></thead>
+        <thead><tr><th scope="col">Platform</th><th scope="col">Handle</th><th scope="col">Followers</th><th scope="col">Signal</th></tr></thead>
         <tbody>
           <tr><td class="lead-cell" data-label="Platform">Instagram</td><td data-label="Handle">@teaspressa</td><td data-label="Followers">31K</td><td data-label="Signal">3,777 posts. Strongest channel. Bio: "The Original Luxe Mixer Cube."</td></tr>
           <tr><td class="lead-cell" data-label="Platform">TikTok</td><td data-label="Handle">@teaspressa</td><td data-label="Followers">5,181</td><td data-label="Signal">475 videos, 19,600 total likes</td></tr>
@@ -204,10 +206,11 @@
       <p class="cta"><a href="/book">Book a call</a></p>
     </section>
 
+    </main>
     <footer class="site-footer">
       <a href="/">What are we capable of?</a>
       <span>Research conducted April 22, 2026. All findings from publicly available sources.</span>
     </footer>
-  </main>
+  </div>
 </body>
 </html>

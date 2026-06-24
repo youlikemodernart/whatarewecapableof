@@ -190,9 +190,10 @@ footer a:hover {
   margin-bottom: var(--space-1);
 }
 
-.booking-form input:focus,
-.booking-form textarea:focus {
-  outline: none;
+.booking-form input:focus-visible,
+.booking-form textarea:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
   border-bottom-color: var(--color-accent);
 }
 

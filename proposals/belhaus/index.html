@@ -14,11 +14,13 @@
   <link rel="stylesheet" href="/css/proposal.css">
 </head>
 <body class="page-proposal">
-  <main class="page" id="main">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="page">
     <header class="site-header">
       <a class="mark" href="/">What are we capable of?</a>
       <a class="mail" href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a>
     </header>
+    <main id="main">
 
     <p class="p-meta">Prepared for BELHAUS · April 2026</p>
     <h1 class="p-title">A private collector system for&nbsp;BELHAUS.</h1>
@@ -79,7 +81,7 @@
       <div class="finding"><div class="n">01</div><div><p>Neither has a real API. Data goes in through Excel or CSV files and comes out the same way. The AI can prepare the file, but a person still imports it. After the initial load, every update runs the same loop: export, edit, import. That is the loop this system is meant to avoid.</p></div></div>
       <div class="finding"><div class="n">02</div><div><p>Neither platform stores collector intelligence at the depth you described: relationship notes, passed-on works, fair context, and outreach timing. Connecting a Paris conversation to a piece coming back on consignment takes a data model built to your practice.</p></div></div>
       <table class="p-table p-table-stack">
-        <thead><tr><th>Dimension</th><th>Artlogic</th><th>ArtCloud</th><th>Composable stack</th></tr></thead>
+        <thead><tr><th scope="col">Dimension</th><th scope="col">Artlogic</th><th scope="col">ArtCloud</th><th scope="col">Composable stack</th></tr></thead>
         <tbody>
           <tr><td class="lead-cell" data-label="Dimension">API</td><td data-label="Artlogic">Excel import/export</td><td data-label="ArtCloud">CSV import/export</td><td data-label="Composable stack">Full REST API</td></tr>
           <tr><td class="lead-cell" data-label="Dimension">Custom fields</td><td data-label="Artlogic">Fixed schema, 150+ fields</td><td data-label="ArtCloud">Limited</td><td data-label="Composable stack">Fields you define</td></tr>
@@ -112,7 +114,7 @@
       <h2>Data model</h2>
       <p>Five connected tables in Airtable.</p>
       <table class="p-table">
-        <thead><tr><th>Table</th><th>What it holds</th></tr></thead>
+        <thead><tr><th scope="col">Table</th><th scope="col">What it holds</th></tr></thead>
         <tbody>
           <tr><td class="lead-cell">Artworks</td><td>Artist, title, year, medium, dimensions, edition, provenance, pricing, consignment terms, current location, status, exhibition history, images.</td></tr>
           <tr><td class="lead-cell">Collectors and contacts</td><td>Name, email, phone, shipping address, cities, source, artists they collect, fairs met at, price range, purchase history, passed-on history, referral source, conversation notes, last contact date.</td></tr>
@@ -127,7 +129,7 @@
       <h2>Relationships table</h2>
       <p>The Relationships table is a connective index for the other four tables. Each relationship record connects two things the gallery already tracks.</p>
       <table class="p-table">
-        <thead><tr><th>Relationship record</th><th>Connects</th></tr></thead>
+        <thead><tr><th scope="col">Relationship record</th><th scope="col">Connects</th></tr></thead>
         <tbody>
           <tr><td class="lead-cell">Artist interest</td><td>Person + artist</td></tr>
           <tr><td class="lead-cell">Inquiry, purchase, or passed-on work</td><td>Collector + artwork</td></tr>
@@ -180,7 +182,7 @@
     <section>
       <h2>Integrations</h2>
       <table class="p-table">
-        <thead><tr><th>Integration</th><th>How it works</th></tr></thead>
+        <thead><tr><th scope="col">Integration</th><th scope="col">How it works</th></tr></thead>
         <tbody>
           <tr><td class="lead-cell">Artsy</td><td>If Georgie confirms the route, the Partner API can keep your Artsy profile synced with Airtable artwork records. Scripted sync, run when you want it to.</td></tr>
           <tr><td class="lead-cell">Email</td><td>Outbound drafted by the agent, sent by you from your existing email. Resend or similar handles transactional email. Marketing email stays on whatever tool you pick; the system feeds segments to the tool.</td></tr>
@@ -225,7 +227,7 @@
     <section>
       <h2>Phase 1 source packet</h2>
       <table class="p-table">
-        <thead><tr><th>Source</th><th>Use</th></tr></thead>
+        <thead><tr><th scope="col">Source</th><th scope="col">Use</th></tr></thead>
         <tbody>
           <tr><td class="lead-cell">Current belhaus.co listings</td><td>Artworks, artists, exhibitions.</td></tr>
           <tr><td class="lead-cell">Artlogic exports</td><td>Any exports from the brief populate attempt.</td></tr>
@@ -242,7 +244,7 @@
     <section>
       <h2>Division of labor</h2>
       <table class="p-table">
-        <thead><tr><th>Role</th><th>Responsibility</th></tr></thead>
+        <thead><tr><th scope="col">Role</th><th scope="col">Responsibility</th></tr></thead>
         <tbody>
           <tr><td class="lead-cell">Gino</td><td>Strategic input during build. Approval of the schema and field choices. Review of the initial data before it goes live. After launch: approval of AI-prepared records, direction for capabilities that get added, and the decision on every collector-facing action.</td></tr>
           <tr><td class="lead-cell">Chloe</td><td>Data cleanup during Phase 1, field validation during Phase 2, ongoing record review. The system reduces her entry burden.</td></tr>
@@ -267,10 +269,11 @@
       <p class="cta"><a href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a></p>
     </section>
 
+    </main>
     <footer class="site-footer">
       <a href="/">What are we capable of?</a>
       <span>Prepared April 2026.</span>
     </footer>
-  </main>
+  </div>
 </body>
 </html>

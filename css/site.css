@@ -36,6 +36,15 @@ em { font-style: italic; }
 :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 1px; }
 a { color: var(--ink); }
 
+/* Skip link — off-screen until keyboard focus; targets <main id="main"> (impl-01; WCAG 2.4.1). */
+.skip-link { position: absolute; left: -9999px; top: 0; z-index: 100; background: var(--ink); color: var(--bg); padding: 10px 16px; text-decoration: none; }
+.skip-link:focus { left: 8px; top: 8px; }
+
+/* Honor reduced motion globally for this system (impl-01 "respected globally"; WCAG 2.3.3). */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+
 .page { max-width: 720px; margin: 0 auto; padding: 28px 24px 96px; }
 
 /* header / footer */
@@ -60,6 +69,10 @@ a { color: var(--ink); }
 /* shared prose */
 p { margin: 0 0 1em; max-width: 60ch; text-wrap: pretty; }
 p:last-child { margin-bottom: 0; }
+/* Links inside running prose are underlined so they never rely on color alone
+   (WCAG 1.4.1; impl-09 §4). Apparatus links keep their own treatment via higher
+   specificity (.post-eyebrow a) or by not living inside <p> (action links). */
+p a { text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
 section { margin-top: clamp(56px, 9vh, 92px); }
 h2 { font-size: 23px; line-height: 1.2; letter-spacing: -0.01em; font-weight: 600; margin: 0 0 20px; }
 
@@ -91,8 +104,11 @@ h2 { font-size: 23px; line-height: 1.2; letter-spacing: -0.01em; font-weight: 60
 }
 .home-support { font-size: 18px; color: var(--ink-2); max-width: 54ch; margin: 24px 0 0; text-wrap: pretty; }
 .home-actions { margin-top: clamp(36px, 6vh, 64px); display: flex; gap: 28px; align-items: baseline; flex-wrap: wrap; }
-.home-actions a { color: var(--ink); text-decoration: none; font-size: 18px; border-bottom: 1px solid var(--ink); padding-bottom: 2px; }
-.home-actions a:hover { border-bottom-width: 2px; }
+/* Shared inline action links — used by home (.home-actions) and where-we-help (.actions).
+   On hover the underline thickens via box-shadow (paint-only: no Layout reflow, so siblings
+   like the homepage image strip do not shift) — impl-08 rendering pipeline, impl-09 §9. */
+.home-actions a, .actions a { color: var(--ink); text-decoration: none; font-size: 18px; border-bottom: 1px solid var(--ink); padding-bottom: 2px; }
+.home-actions a:hover, .actions a:hover { box-shadow: 0 1px 0 var(--ink); }
 /* ===== mobile reflow — DEFAULT POSTURE for the site.css template (home / how-we-work / question) =====
    Narrow viewports: compress hierarchy contrast, tighten leading on the short measure, keep a
    consistent vertical rhythm, let content flow (no forced-bottom footer), and give real tap targets. */
@@ -113,7 +129,7 @@ h2 { font-size: 23px; line-height: 1.2; letter-spacing: -0.01em; font-weight: 60
   .home-offer { font-size: 19px; line-height: 1.3; margin-top: 22px; }
   .home-support { font-size: 16px; margin-top: 14px; }
   .home-actions { margin-top: 32px; gap: 6px 24px; }
-  .home-actions a { font-size: 17px; padding: 11px 0 3px; }
+  .home-actions a, .actions a { font-size: 17px; padding: 14px 0 6px; } /* ~44px tap target — WCAG 2.5.5 */
   .post-list { gap: 40px; margin-top: 36px; }
   .post-item__title { font-size: 22px; line-height: 1.2; }
   .post-item__title a { display: inline-block; padding: 2px 0; }
@@ -159,10 +175,8 @@ h2 { font-size: 23px; line-height: 1.2; letter-spacing: -0.01em; font-weight: 60
 .area .meta.start { color: var(--ink); }
 .area > :last-child { margin-bottom: 0; }
 .actions { margin-top: clamp(28px, 4vh, 40px); display: flex; gap: 28px; align-items: baseline; flex-wrap: wrap; }
-.actions a { color: var(--ink); text-decoration: none; font-size: 18px; border-bottom: 1px solid var(--ink); padding-bottom: 2px; }
-.actions a:hover { border-bottom-width: 2px; }
+/* .actions link styling is shared with .home-actions a above (see "Shared inline action links"). */
 @media (max-width: 600px) {
   .areas { gap: 30px; }
   .actions { gap: 6px 24px; }
-  .actions a { font-size: 17px; padding: 11px 0 3px; }
 }

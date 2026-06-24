@@ -67,7 +67,7 @@
 .close-line { font-size: 22px; line-height: 1.35; font-weight: 500; max-width: 36ch; text-wrap: balance; }
 .cta { margin-top: 28px; }
 .cta a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--ink); padding-bottom: 2px; font-size: 18px; }
-.cta a:hover { border-bottom-width: 2px; }
+.cta a:hover { box-shadow: 0 1px 0 var(--ink); } /* paint-only underline thicken; no reflow — impl-08, impl-09 §9 */
 
 @media (max-width: 600px) {
   .page-proposal p { line-height: 1.5; }

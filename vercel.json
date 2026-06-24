@@ -17,7 +17,7 @@
     { "src": "/apps/fin(?:/.*)?", "status": 404, "dest": "/404.html" },
     { "src": "/apps/index(?:/.*)?", "status": 404, "dest": "/404.html" },
     { "src": "/internal/pickingindustry(?:/.*)?", "status": 404, "dest": "/404.html" },
-    { "src": "/proposals/_template(?:/.*)?", "status": 404, "dest": "/404.html" },
+    { "src": "/_templates(?:/.*)?", "status": 404, "dest": "/404.html" },
     { "src": "/proposals/sales-school/diagrams/toolchain(?:/.*)?", "status": 404, "dest": "/404.html" },
     { "src": "/different(?:/index\\.html)?/?", "status": 308, "headers": { "Location": "/blog/different" } },
     { "src": "/blog/wearedifferent/?", "status": 308, "headers": { "Location": "/blog/different" } },

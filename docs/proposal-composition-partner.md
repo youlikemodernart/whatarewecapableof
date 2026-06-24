@@ -14,7 +14,7 @@ Before any proposal composition work, read:
 4. `design/system-constraints.md`
 5. `design/rules-and-dividers.md`
 6. `design/proposal-composition-system.md`
-7. `proposals/_template/index.html`
+7. `_templates/proposal/index.html` (the editorial proposal template; see `_templates/README.md`)
 8. The active proposal file, for example `proposals/teaspressa/index.html`
 9. Any client-specific source docs, screenshots, assets, or research notes named in `PROPOSALS.md`
 

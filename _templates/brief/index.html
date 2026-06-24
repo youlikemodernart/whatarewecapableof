@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Project Brief: CLIENT</title>
+  <meta name="description" content="Internal project brief.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <!-- Briefs are self-contained internal documents (single column, inline styles). -->
+  <style>
+    :root { color-scheme: light; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; max-width: 680px; margin: 56px auto; padding: 0 24px 96px; color: #1a1a1a; line-height: 1.55; font-size: 15px; background: #fff; -webkit-text-size-adjust: 100%; }
+    .meta { font-size: 12px; color: #777; border-bottom: 1px solid #eee; padding-bottom: 12px; margin-bottom: 30px; }
+    .meta b { color: #444; font-weight: 600; }
+    .note { font-size: 12px; color: #999; margin-top: 4px; }
+    h1 { font-size: 22px; line-height: 1.2; margin: 0 0 .35em; letter-spacing: -0.01em; }
+    .sub { font-size: 15px; color: #555; margin: 0; }
+    h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: #888; margin: 2.6em 0 .8em; font-weight: 600; }
+    h3 { font-size: 15px; line-height: 1.35; margin: 1.4em 0 .45em; font-weight: 600; color: #333; }
+    p { margin: 0 0 1em; }
+    ul { margin: 0 0 1em; padding-left: 1.3em; } li { margin-bottom: .35em; }
+    section { margin: 0 0 6px; }
+    a { color: #1a5fb4; text-decoration: underline; }
+    figure { margin: 1.4em 0 .4em; }
+    figure img { display: block; width: 100%; height: auto; border: 1px solid #ededed; border-radius: 2px; }
+    figcaption { font-size: 12px; color: #777; margin-top: 8px; line-height: 1.45; }
+    .spec { border-top: 1px solid #eee; margin: 1.2em 0; font-size: 14px; }
+    .spec div { display: flex; gap: 16px; padding: 8px 0; border-bottom: 1px solid #eee; }
+    .spec dt { flex: 0 0 132px; color: #888; margin: 0; } .spec dd { margin: 0; color: #1a1a1a; }
+    footer { margin-top: 48px; padding-top: 14px; border-top: 1px solid #eee; font-size: 12px; color: #999; display: flex; justify-content: space-between; }
+    @media (max-width: 600px) {
+      body { margin: 28px auto; padding: 0 18px 64px; }
+      h1 { font-size: 20px; }
+      .spec div { flex-direction: column; gap: 2px; } .spec dt { flex-basis: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="meta">
+    <b>Project Brief</b> &nbsp; CLIENT &nbsp;&middot;&nbsp; subject<br>
+    Prepared by Noah Glynn, What are we capable of? &nbsp;&middot;&nbsp; DATE<br>
+    <span class="note">Internal team brief. Direct link only.</span>
+  </div>
+
+  <main>
+    <h1>Project title</h1>
+    <p class="sub">One-line framing of the work.</p>
+
+    <section>
+      <h2>The opportunity</h2>
+      <p>What this is and why it matters.</p>
+    </section>
+
+    <section>
+      <h2>What we are making</h2>
+      <dl class="spec">
+        <div><dt>Field</dt><dd>Value</dd></div>
+      </dl>
+    </section>
+
+    <section>
+      <h2>Reference</h2>
+      <figure>
+        <!-- Always set real width/height (intrinsic px) so the box is reserved (CLS). -->
+        <img src="img/example.jpg" width="1600" height="1066" alt="Describe what the image shows.">
+        <figcaption>Caption.</figcaption>
+      </figure>
+    </section>
+  </main>
+
+  <footer>
+    <span>What are we capable of?</span>
+    <span>2026</span>
+  </footer>
+</body>
+</html>

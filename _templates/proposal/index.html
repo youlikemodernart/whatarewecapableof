@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>CLIENT: proposal headline | What are we capable of?</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <!-- Editorial proposal system (the default for client proposals): site.css supplies tokens,
+       base, landmarks, and focus; proposal.css supplies the proposal blocks. Single-scroll, no tabs. -->
+  <link rel="stylesheet" href="/css/site.css">
+  <link rel="stylesheet" href="/css/proposal.css">
+</head>
+<body class="page-proposal">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="page">
+    <header class="site-header">
+      <a class="mark" href="/">What are we capable of?</a>
+      <a class="mail" href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a>
+    </header>
+    <main id="main">
+
+      <p class="p-meta">Prepared for CLIENT | MONTH YEAR | Private draft</p>
+      <h1 class="p-title">The headline, one line.</h1>
+      <p class="p-lede">One or two sentences framing what this is and what we examined.</p>
+
+      <!-- Optional media plate. Always set real width/height (intrinsic px) so the box is reserved (CLS). -->
+      <!--
+      <figure class="p-media">
+        <img src="img/example.jpg" width="1600" height="900" alt="Describe what the image shows.">
+        <figcaption>Caption.</figcaption>
+      </figure>
+      -->
+
+      <section>
+        <p class="eyebrow">Section label</p>
+        <h2>Section heading</h2>
+        <p>Body copy. Measure is handled by proposal.css; keep prose readable.</p>
+      </section>
+
+      <section>
+        <p class="eyebrow">What we noticed</p>
+        <h2>Findings</h2>
+        <div class="finding">
+          <div class="n">01</div>
+          <div>
+            <h3>Finding title</h3>
+            <p>Observation with specific evidence.</p>
+          </div>
+        </div>
+        <!-- repeat .finding -->
+      </section>
+
+      <section>
+        <p class="eyebrow">Where we would help</p>
+        <h2>Scope</h2>
+        <div class="layer">
+          <div class="label">Area 1</div>
+          <div>
+            <h3>Area name</h3>
+            <p>Description, framed as a conditional where outside observation has limits.</p>
+            <p class="deliv">Deliverable.</p>
+          </div>
+        </div>
+        <!-- repeat .layer -->
+      </section>
+
+      <!-- Optional data table. Real headers required: a <caption> (may be visually hidden) and
+           <th scope="col"> on column headers; first-column row labels use <td class="lead-cell">. -->
+      <!--
+      <div class="p-table-scroll">
+        <table class="p-table">
+          <caption>What this table shows.</caption>
+          <thead><tr><th scope="col">Column</th><th scope="col">Column</th></tr></thead>
+          <tbody><tr><td class="lead-cell">Row label</td><td>Cell</td></tr></tbody>
+        </table>
+      </div>
+      -->
+
+      <section>
+        <p class="close-line">Closing line.</p>
+        <p class="cta"><a href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a></p>
+      </section>
+
+    </main>
+    <footer class="site-footer">
+      <a href="/">What are we capable of?</a>
+      <span>Prepared for CLIENT. Private draft, not for distribution.</span>
+    </footer>
+  </div>
+</body>
+</html>

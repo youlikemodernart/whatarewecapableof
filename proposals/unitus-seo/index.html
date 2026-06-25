@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="A private Unitus proposal for an SEO and traffic-readiness review of the Shopify redesign.">
+  <title>Unitus SEO and traffic-readiness review | What are we capable of?</title>
+  <meta property="og:title" content="Unitus SEO and traffic-readiness review">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="stylesheet" href="/css/site.css">
+  <link rel="stylesheet" href="/css/proposal.css">
+  <style>
+    .page-unitus-seo .p-title { max-width: 21ch; }
+    .page-unitus-seo .p-lede { max-width: 57ch; }
+    .page-unitus-seo .layer { grid-template-columns: 150px 1fr; }
+    .proposal-note { color: var(--ink-2); margin: 22px 0 0; max-width: 56ch; }
+    .proposal-list { list-style: none; margin: 26px 0 0; padding: 0; display: grid; gap: 12px; max-width: 58ch; }
+    .proposal-list li { position: relative; padding-left: 18px; }
+    .proposal-list li::before { content: ""; position: absolute; left: 0; top: 0.66em; width: 7px; height: 1px; background: var(--ink); }
+    @media (max-width: 600px) {
+      .page-unitus-seo .layer { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="page-proposal page-unitus-seo">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="page">
+    <header class="site-header">
+      <a class="mark" href="/">What are we capable of?</a>
+      <a class="mail" href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a>
+    </header>
+    <main id="main">
+
+    <p class="p-meta">Prepared for John and Unitus &middot; Private proposal &middot; June 2026</p>
+    <h1 class="p-title">Unitus SEO and traffic-readiness&nbsp;review.</h1>
+    <p class="p-lede">We ran the first layer of the review using the access already available: the draft Shopify redesign, a read-only Shopify inventory, and the storefront pages a search engine can read. The next layer connects that work to real search and visitor data.</p>
+
+    <section aria-labelledby="short-version-title">
+      <p class="eyebrow">The short version</p>
+      <h2 id="short-version-title">The redesign is close enough to evaluate</h2>
+      <p>The current evidence points to a practical sequence: clean up the Shopify theme, catalog, landing paths, and measurement baseline before deciding whether Unitus needs a larger build change.</p>
+      <p>That gives the work two layers. The first layer finds the traffic-readiness issues visible now. The second layer uses GA4, Search Console, and aggregate Shopify data to decide what matters most commercially.</p>
+      <p class="proposal-note">No platform changes were made in the first layer. The review was read-only.</p>
+    </section>
+
+    <section aria-labelledby="first-layer-title">
+      <p class="eyebrow">Layer one</p>
+      <h2 id="first-layer-title">What we can already see</h2>
+
+      <div class="finding" style="margin-top:32px;"><div class="n">01</div><div><h3>The launch story needs one source of truth</h3><p>Sale language, seasonal language, collection roles, and product state need to agree before search, email, SMS, and paid traffic all point at the same storefront.</p></div></div>
+
+      <div class="finding"><div class="n">02</div><div><h3>Navigation and landing paths need sharper intent</h3><p>Some calls to action and navigation routes send shoppers to broad collection views. SEO and campaign traffic work better when each link lands on a page with a clear job.</p></div></div>
+
+      <div class="finding"><div class="n">03</div><div><h3>Product pages need stronger page structure</h3><p>The product template appears to have a semantic heading issue. That affects accessibility and the way search engines understand the main product topic.</p></div></div>
+
+      <div class="finding"><div class="n">04</div><div><h3>Metadata and image context need a priority pass</h3><p>Important pages need custom titles and descriptions, and product media needs descriptive context. That supports snippets, image search, accessibility, and AI shopping surfaces.</p></div></div>
+
+      <div class="finding"><div class="n">05</div><div><h3>The catalog model should be tightened before traffic scales</h3><p>Product types, options, SKU discipline, and collection roles all feed filters, search, campaign segmentation, feeds, and reporting. Small inconsistencies compound once the store is live.</p></div></div>
+
+      <div class="finding"><div class="n">06</div><div><h3>Measurement is the current ceiling</h3><p>The first layer identifies structural issues with confidence. Access-backed data ranks the work by search demand, traffic value, conversion paths, and revenue impact.</p></div></div>
+    </section>
+
+    <section aria-labelledby="second-layer-title">
+      <p class="eyebrow">Layer two</p>
+      <h2 id="second-layer-title">What read-only access would add</h2>
+      <p>The second layer should answer different questions than the first. It should tell us where demand already exists, which pages are closest to moving, and which fixes deserve the first implementation slot.</p>
+
+      <div class="layer" style="margin-top:32px;"><div class="label">Search Console</div><div><p>The queries, impressions, clicks, and pages Google already associates with Unitus. This shows page-two opportunities, weak click-through snippets, indexation problems, and overlap between pages.</p></div></div>
+
+      <div class="layer"><div class="label">GA4</div><div><p>Where visitors land, which channels bring them in, how mobile compares with desktop, and which paths lead toward product views, cart, and purchase.</p></div></div>
+
+      <div class="layer"><div class="label">Shopify</div><div><p>Aggregate product, collection, channel, and discount reporting to rank SEO work by commercial importance. Customer and order rows would stay out of scope unless a separate reason and approval exist.</p></div></div>
+
+      <div class="layer"><div class="label">Feed surfaces</div><div><p>Merchant Center or feed diagnostics, if available, to see whether Shopify product data issues also appear in Google Shopping and product-discovery surfaces.</p></div></div>
+    </section>
+
+    <section aria-labelledby="platform-title">
+      <p class="eyebrow">Build approach</p>
+      <h2 id="platform-title">The platform question belongs beside the audit</h2>
+      <p>The right question is whether the current Shopify build gives Unitus enough control for SEO, structured data, landing pages, performance, and measurement.</p>
+      <p>The evidence so far favors a Shopify-first cleanup: theme semantics, collection roles, product metadata, image context, taxonomy, and measurement. A headless or hybrid build only belongs on the table if we find a clear ceiling that Shopify theme work, Online Store 2.0, sections, metafields, metaobjects, or light middleware cannot solve cleanly.</p>
+
+      <div class="layer" style="margin-top:32px;"><div class="label">Theme cleanup</div><div><p>Fix page structure, headings, metadata patterns, schema details, internal links, and app weight inside the current Shopify path.</p></div></div>
+
+      <div class="layer"><div class="label">Native Shopify</div><div><p>Use sections, metafields, metaobjects, Search and Discovery, better templates, and a controlled content model before proposing a different storefront architecture.</p></div></div>
+
+      <div class="layer"><div class="label">Hybrid or headless</div><div><p>Evaluate only if the data proves that Unitus needs landing pages, performance control, experimentation, or content systems the current Shopify path cannot support without fragility.</p></div></div>
+    </section>
+
+    <section aria-labelledby="work-title">
+      <p class="eyebrow">Proposed work</p>
+      <h2 id="work-title">What we would do next</h2>
+      <div class="timeline">
+        <div class="t-step"><div class="t-rail"><span class="t-dot"></span><span class="t-line"></span></div><div><p class="t-when">Step 01</p><p class="t-title">Set the access boundary</p><p>Confirm read-only GA4 and Search Console access, plus aggregate Shopify reports if available. Keep customer rows, order rows, platform edits, and campaign sends out of scope unless separately approved.</p></div></div>
+        <div class="t-step"><div class="t-rail"><span class="t-dot"></span><span class="t-line"></span></div><div><p class="t-when">Step 02</p><p class="t-title">Build the baseline</p><p>Map current search demand, landing pages, channel paths, indexed URLs, priority collections, product families, and measurement gaps.</p></div></div>
+        <div class="t-step"><div class="t-rail"><span class="t-dot"></span><span class="t-line"></span></div><div><p class="t-when">Step 03</p><p class="t-title">Turn the audit into a queue</p><p>Separate quick fixes from theme work, catalog operations, content work, measurement setup, and platform constraints. Each item gets an owner, a reason, and a clear point where Unitus approves any change.</p></div></div>
+        <div class="t-step"><div class="t-rail"><span class="t-dot"></span></div><div><p class="t-when">Step 04</p><p class="t-title">Decide the build path</p><p>Make a clear recommendation: current theme cleanup, Shopify-native enhancement, a small middleware/tooling layer, or a deeper build investigation if the evidence justifies it.</p></div></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="need-title">
+      <p class="eyebrow">What we need</p>
+      <h2 id="need-title">A short access list</h2>
+      <ul class="proposal-list">
+        <li>GA4 read-only access.</li>
+        <li>Google Search Console read-only access.</li>
+        <li>Aggregate Shopify reports or admin summaries if they are easy to share.</li>
+        <li>Merchant Center or product-feed diagnostics if Unitus uses them.</li>
+        <li>The current Shopify implementation owner and whether the build team is still active.</li>
+      </ul>
+      <p class="proposal-note">The first pass should stay aggregate and view-only. If a later question requires protected customer or order data, that becomes a separate decision.</p>
+    </section>
+
+    <section aria-labelledby="next-step-title">
+      <p class="eyebrow">The next step</p>
+      <h2 id="next-step-title">Start with the second layer</h2>
+      <p class="close-line">If this direction is useful, the next step is read-only access and a short call to agree on the first set of priorities.</p>
+      <p class="cta"><a href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a></p>
+    </section>
+
+    </main>
+    <footer class="site-footer">
+      <a href="/">What are we capable of?</a>
+      <span>Prepared from a read-only review of the Unitus Shopify redesign, June 2026.</span>
+    </footer>
+  </div>
+</body>
+</html>

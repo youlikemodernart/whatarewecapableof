@@ -180,6 +180,38 @@ Central record of all proposals in the whatarewecapableof system. Each entry tra
 
 ---
 
+### BELHAUS Publishing Imprint (artist's books)
+
+| | |
+|---|---|
+| URL | [whatarewecapableof.com/proposals/belhaus-publishing/](https://whatarewecapableof.com/proposals/belhaus-publishing/) |
+| Prepared | June 2026 |
+| Status | Production live + private (noindex) 2026-06-27; for Noah's review; not shared with Gino; send gated |
+| Relationship | Gino Belassen (BELHAUS, Phoenix gallery); existing relationship, Noah is the gallery's Channel 6 Documentarian |
+| Tabs | Overview / The Sherri book |
+| Source | Built from the publishing-house skill onboarding deliverables (BELHAUS house profile, the "what a publishing house is" overview, the Sherri Belassen discovery questions), revised via a six-lens advisory review on 2026-06-27 |
+
+**Distinct lane:** This is the BELHAUS PUBLISHING imprint engagement (white-label artist's-book publishing). It is separate from the BELHAUS entry above, which is the BELHAUS AI-operations and collector-database proposal. Do not conflate the two.
+
+**Client:** Gino Belassen / BELHAUS. A white-label artist's-book publishing arm modeled on Night Gallery's publications program: Noah operates the publishing apparatus (imprint of record, ISBN and metadata, production management and print-buying, distribution access, the operating system); BELHAUS owns the content, the brand, and the design (Gino and Chloe, in-house). First two titles: a monograph for the painter Sherri Belassen (Gino's mother) and a book of Gino's own "lists" work.
+
+**What we're proposing:** A two-tab onboarding proposal. Tab one (Overview) explains what it would mean for the gallery to publish its own program: selection and design stay theirs, we run the machinery, the art-book funding stack, and what a coherent backlist looks like. Tab two (The Sherri book) is the 13 discovery questions that scope the first title, with the three that gate the budget and schedule flagged first.
+
+**Public boundaries:** Private and noindex; for Noah's review, not yet shared with Gino. No pricing, deal structure, or fixed dates on the page (the service tier and deal are undecided pending Gino). Channel posture carried: own the ISBN from book one (trade-ready), sell gallery-direct first.
+
+**History:**
+- 2026-06-25: Onboarding deliverables drafted via the publishing-house skill (house profile number two, the overview, the Sherri discovery questions).
+- 2026-06-27: Six-lens advisory review (the expert-lens-review pilot) returned ready-with-minor-edits; the fix list was applied (medium contradiction, a register pass, two gating questions folded in, the service-tier label). The Night Gallery comp was web-verified.
+- 2026-06-27: Two-tab proposal built and deployed to production (commit `fa670b7`), source-persisted via a clean worktree off `origin/main`, smoked HTTP 200. A Gmail draft to Noah with the link was created (not sent).
+
+**Open questions (Gino's discovery answers):** imprint name; book scope; photography availability and reproduction rights; funding model and reachable-buyer base; who writes the essay; edition strategy; timeline against a show.
+
+**Next:** Noah reviews the live page, then decides whether and how to share the discovery questions with Gino. The send to Gino is gated (route through Pi).
+
+**Deep docs:** live page at `~/Projects/whatarewecapableof/proposals/belhaus-publishing/index.html`; deploy receipt at `~/Projects/whatarewecapableof/.pi/deploy/belhaus-publishing-proposal-2026-06-27.md`; house profile at `~/.pi/agent/skills/publishing-house/profiles/belhaus/master.md`; onboarding workboard `~/.pi/.pi/workboards/belhaus-publishing-onboarding-2026-06-25.md`; advisory synthesis `~/.pi/.pi/teammate-layer-2026-06-20/belhaus-onboarding-lens-pilot/synthesis.md`; memory `project_belhaus.md`
+
+---
+
 ### Compassion
 
 | | |

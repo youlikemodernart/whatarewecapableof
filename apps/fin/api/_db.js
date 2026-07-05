@@ -5,6 +5,7 @@ const { normalizeFinanceImport, stableFinanceImportContentSha256, summarizeFinan
 const { cleanPaymentMethod, customerPaymentMethods, paymentMethodQuote } = require('./_payment_pricing');
 const { reconciliationFromCharge, retrieveChargeReconciliation } = require('./_stripe');
 const { cleanEmail, paymentEmailRuntimeStatus, sendPaymentNotificationEmail } = require('./_mail');
+const { normalizeRecurringInvoiceTemplate, recurringTemplateSafeSummary, recurringTemplateListItem, buildRecurringInvoiceForRun, nextRecurringRunDate, recurringRunSummary, cleanDate: cleanRecurringDate } = require('./_recurring');
 
 let sqlClient = null;
 let schemaReady = false;
@@ -588,6 +589,56 @@ async function ensureSchema() {
   await db`CREATE UNIQUE INDEX IF NOT EXISTS fin_invoice_payment_notifications_unique_idx ON fin_invoice_payment_notifications (payment_request_id, notification_type)`;
   await db`CREATE INDEX IF NOT EXISTS fin_invoice_payment_notifications_invoice_idx ON fin_invoice_payment_notifications (invoice_id, updated_at DESC)`;
   await db`CREATE INDEX IF NOT EXISTS fin_invoice_payment_notifications_status_idx ON fin_invoice_payment_notifications (status, updated_at DESC)`;
+
+  await db`CREATE TABLE IF NOT EXISTS fin_recurring_invoice_templates (
+    id TEXT PRIMARY KEY,
+    entity_id TEXT NOT NULL DEFAULT 'wawco' REFERENCES fin_entities(id),
+    reporting_entity_id TEXT NOT NULL DEFAULT 'wawco' REFERENCES fin_entities(id),
+    status TEXT NOT NULL DEFAULT 'active',
+    label TEXT NOT NULL DEFAULT '',
+    cadence TEXT NOT NULL DEFAULT 'weekly',
+    interval_count INTEGER NOT NULL DEFAULT 1,
+    day_of_week INTEGER NOT NULL DEFAULT 1,
+    next_run_date DATE,
+    due_days INTEGER NOT NULL DEFAULT 0,
+    send_mode TEXT NOT NULL DEFAULT 'prepare_for_approval',
+    payment_page_mode TEXT NOT NULL DEFAULT 'manual_after_approval',
+    invoice_template_json JSONB NOT NULL DEFAULT '{}'::jsonb,
+    email_template_json JSONB NOT NULL DEFAULT '{}'::jsonb,
+    safe_summary_json JSONB NOT NULL DEFAULT '{}'::jsonb,
+    created_by_user_id TEXT NOT NULL REFERENCES fin_users(id),
+    updated_by_user_id TEXT REFERENCES fin_users(id),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    deleted_at TIMESTAMPTZ
+  )`;
+  await db`ALTER TABLE fin_recurring_invoice_templates ADD COLUMN IF NOT EXISTS entity_id TEXT NOT NULL DEFAULT 'wawco'`;
+  await db`ALTER TABLE fin_recurring_invoice_templates ADD COLUMN IF NOT EXISTS reporting_entity_id TEXT NOT NULL DEFAULT 'wawco'`;
+  await db`ALTER TABLE fin_recurring_invoice_templates ADD COLUMN IF NOT EXISTS payment_page_mode TEXT NOT NULL DEFAULT 'manual_after_approval'`;
+  await db`ALTER TABLE fin_recurring_invoice_templates ADD COLUMN IF NOT EXISTS safe_summary_json JSONB NOT NULL DEFAULT '{}'::jsonb`;
+  await db`CREATE INDEX IF NOT EXISTS fin_recurring_invoice_templates_next_run_idx ON fin_recurring_invoice_templates (status, next_run_date) WHERE deleted_at IS NULL`;
+  await db`CREATE INDEX IF NOT EXISTS fin_recurring_invoice_templates_entity_idx ON fin_recurring_invoice_templates (entity_id, updated_at DESC) WHERE deleted_at IS NULL`;
+
+  await db`CREATE TABLE IF NOT EXISTS fin_recurring_invoice_runs (
+    id TEXT PRIMARY KEY,
+    template_id TEXT NOT NULL REFERENCES fin_recurring_invoice_templates(id),
+    run_date DATE NOT NULL,
+    period_start DATE,
+    period_end DATE,
+    status TEXT NOT NULL DEFAULT 'creating',
+    invoice_id TEXT REFERENCES fin_invoices(id),
+    payment_request_id TEXT REFERENCES fin_invoice_payment_requests(id),
+    send_mode TEXT NOT NULL DEFAULT 'prepare_for_approval',
+    safe_summary_json JSONB NOT NULL DEFAULT '{}'::jsonb,
+    last_error TEXT NOT NULL DEFAULT '',
+    created_by_user_id TEXT NOT NULL REFERENCES fin_users(id),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    deleted_at TIMESTAMPTZ
+  )`;
+  await db`CREATE UNIQUE INDEX IF NOT EXISTS fin_recurring_invoice_runs_template_date_idx ON fin_recurring_invoice_runs (template_id, run_date) WHERE deleted_at IS NULL`;
+  await db`CREATE INDEX IF NOT EXISTS fin_recurring_invoice_runs_template_idx ON fin_recurring_invoice_runs (template_id, updated_at DESC) WHERE deleted_at IS NULL`;
+  await db`CREATE INDEX IF NOT EXISTS fin_recurring_invoice_runs_invoice_idx ON fin_recurring_invoice_runs (invoice_id) WHERE deleted_at IS NULL`;
 
   await db`CREATE TABLE IF NOT EXISTS fin_profiles (
     id TEXT PRIMARY KEY,
@@ -2991,6 +3042,258 @@ async function financeSummary(user, options = {}) {
   };
 }
 
+function recurringTemplateFromRow(row) {
+  if (!row) return null;
+  const invoiceTemplate = parseStoredInvoice(row.invoice_template_json) || {};
+  const emailTemplate = parseStoredInvoice(row.email_template_json) || {};
+  const entityId = cleanEntityId(row.entity_id || invoiceTemplate.entityId || 'wawco');
+  const reportingEntityId = cleanReportingEntityId(row.reporting_entity_id || invoiceTemplate.reportingEntityId || entityId, entityId);
+  return {
+    id: row.id,
+    status: cleanSingleLine(row.status || 'active', 40).toLowerCase() === 'paused' ? 'paused' : 'active',
+    label: cleanSingleLine(row.label, 160),
+    entityId,
+    entity: publicEntity(entityId),
+    reportingEntityId,
+    reportingEntity: publicEntity(reportingEntityId),
+    cadence: cleanSingleLine(row.cadence || 'weekly', 40).toLowerCase(),
+    intervalCount: Number(row.interval_count || 1),
+    dayOfWeek: Number(row.day_of_week || 1),
+    nextRunDate: row.next_run_date || '',
+    dueDays: Number(row.due_days || 0),
+    sendMode: cleanSingleLine(row.send_mode || 'prepare_for_approval', 40).toLowerCase(),
+    paymentPageMode: cleanSingleLine(row.payment_page_mode || 'manual_after_approval', 40).toLowerCase(),
+    invoiceTemplate,
+    emailTemplate,
+    safeSummary: parseStoredInvoice(row.safe_summary_json) || {},
+    createdAt: row.created_at || '',
+    updatedAt: row.updated_at || '',
+  };
+}
+
+function recurringRunFromRow(row, template = {}) {
+  if (!row) return null;
+  return {
+    id: row.id,
+    templateId: row.template_id,
+    templateLabel: template.label || '',
+    runDate: row.run_date || '',
+    periodStart: row.period_start || '',
+    periodEnd: row.period_end || '',
+    status: cleanSingleLine(row.status || 'created', 40).toLowerCase(),
+    invoiceId: row.invoice_id || '',
+    paymentRequestId: row.payment_request_id || '',
+    sendMode: cleanSingleLine(row.send_mode || template.sendMode || 'prepare_for_approval', 40).toLowerCase(),
+    safeSummary: parseStoredInvoice(row.safe_summary_json) || {},
+    lastError: cleanSingleLine(row.last_error, 500),
+    createdAt: row.created_at || '',
+    updatedAt: row.updated_at || '',
+  };
+}
+
+function ensureRecurringAdmin(currentUser) {
+  if (currentUser.role !== 'admin') throw makeError(403, 'Only Fin admins can manage recurring invoices.');
+}
+
+async function listRecurringInvoiceTemplates(user, options = {}) {
+  const currentUser = await ensureUser(user);
+  ensureRecurringAdmin(currentUser);
+  const db = sql();
+  const includePaused = cleanBoolean(options.includePaused ?? options.include_paused);
+  const rows = includePaused
+    ? await db`
+      SELECT id, entity_id, reporting_entity_id, status, label, cadence, interval_count, day_of_week, next_run_date::text AS next_run_date,
+        due_days, send_mode, payment_page_mode, invoice_template_json, email_template_json, safe_summary_json, created_at::text AS created_at, updated_at::text AS updated_at
+      FROM fin_recurring_invoice_templates
+      WHERE deleted_at IS NULL
+      ORDER BY next_run_date NULLS LAST, updated_at DESC
+      LIMIT 200
+    `
+    : await db`
+      SELECT id, entity_id, reporting_entity_id, status, label, cadence, interval_count, day_of_week, next_run_date::text AS next_run_date,
+        due_days, send_mode, payment_page_mode, invoice_template_json, email_template_json, safe_summary_json, created_at::text AS created_at, updated_at::text AS updated_at
+      FROM fin_recurring_invoice_templates
+      WHERE deleted_at IS NULL AND status = 'active'
+      ORDER BY next_run_date NULLS LAST, updated_at DESC
+      LIMIT 200
+    `;
+  return rows.map(recurringTemplateFromRow)
+    .filter((template) => userCanAccessEntity(currentUser, template.entityId) && userCanAccessEntity(currentUser, template.reportingEntityId))
+    .map((template) => ({ ...template, listItem: recurringTemplateListItem(template) }));
+}
+
+async function getRecurringInvoiceTemplate(user, id) {
+  const currentUser = await ensureUser(user);
+  ensureRecurringAdmin(currentUser);
+  const db = sql();
+  const rows = await db`
+    SELECT id, entity_id, reporting_entity_id, status, label, cadence, interval_count, day_of_week, next_run_date::text AS next_run_date,
+      due_days, send_mode, payment_page_mode, invoice_template_json, email_template_json, safe_summary_json, created_at::text AS created_at, updated_at::text AS updated_at
+    FROM fin_recurring_invoice_templates
+    WHERE id = ${id} AND deleted_at IS NULL
+    LIMIT 1
+  `;
+  const template = recurringTemplateFromRow(rows[0]);
+  if (!template || !userCanAccessEntity(currentUser, template.entityId) || !userCanAccessEntity(currentUser, template.reportingEntityId)) return null;
+  return { ...template, listItem: recurringTemplateListItem(template) };
+}
+
+async function createRecurringInvoiceTemplate(user, input = {}) {
+  const currentUser = await ensureUser(user);
+  ensureRecurringAdmin(currentUser);
+  const id = crypto.randomUUID();
+  const template = normalizeRecurringInvoiceTemplate(input, { id });
+  enforceEntityAccess(currentUser, template.entityId, 'Recurring invoice issuing entity is not available to this user.');
+  enforceEntityAccess(currentUser, template.reportingEntityId, 'Recurring invoice reporting entity is not available to this user.');
+  const db = sql();
+  const summary = recurringTemplateSafeSummary(template);
+  const rows = await db`
+    INSERT INTO fin_recurring_invoice_templates (
+      id, entity_id, reporting_entity_id, status, label, cadence, interval_count, day_of_week, next_run_date, due_days,
+      send_mode, payment_page_mode, invoice_template_json, email_template_json, safe_summary_json, created_by_user_id, updated_by_user_id, created_at, updated_at
+    ) VALUES (
+      ${id}, ${template.entityId}, ${template.reportingEntityId}, ${template.status}, ${template.label}, ${template.cadence}, ${template.intervalCount}, ${template.dayOfWeek}, ${template.nextRunDate}, ${template.dueDays},
+      ${template.sendMode}, ${template.paymentPageMode}, ${JSON.stringify(template.invoiceTemplate)}::jsonb, ${JSON.stringify(template.emailTemplate)}::jsonb, ${JSON.stringify(summary)}::jsonb, ${currentUser.id}, ${currentUser.id}, now(), now()
+    )
+    RETURNING id, entity_id, reporting_entity_id, status, label, cadence, interval_count, day_of_week, next_run_date::text AS next_run_date,
+      due_days, send_mode, payment_page_mode, invoice_template_json, email_template_json, safe_summary_json, created_at::text AS created_at, updated_at::text AS updated_at
+  `;
+  return { ...recurringTemplateFromRow(rows[0]), listItem: recurringTemplateListItem(template) };
+}
+
+async function updateRecurringInvoiceTemplate(user, id, input = {}) {
+  const currentUser = await ensureUser(user);
+  ensureRecurringAdmin(currentUser);
+  const existing = await getRecurringInvoiceTemplate(user, id);
+  if (!existing) return null;
+  const template = normalizeRecurringInvoiceTemplate({ ...existing, ...input, id, invoiceTemplate: input.invoiceTemplate || input.invoice || existing.invoiceTemplate, emailTemplate: input.emailTemplate || input.email || existing.emailTemplate }, { id });
+  if (template.entityId !== existing.entityId) throw makeError(409, 'Recurring invoice entity cannot be changed after creation. Create a new template instead.');
+  enforceEntityAccess(currentUser, template.entityId, 'Recurring invoice issuing entity is not available to this user.');
+  enforceEntityAccess(currentUser, template.reportingEntityId, 'Recurring invoice reporting entity is not available to this user.');
+  const db = sql();
+  const summary = recurringTemplateSafeSummary(template);
+  const rows = await db`
+    UPDATE fin_recurring_invoice_templates SET
+      reporting_entity_id = ${template.reportingEntityId}, status = ${template.status}, label = ${template.label}, cadence = ${template.cadence},
+      interval_count = ${template.intervalCount}, day_of_week = ${template.dayOfWeek}, next_run_date = ${template.nextRunDate}, due_days = ${template.dueDays},
+      send_mode = ${template.sendMode}, payment_page_mode = ${template.paymentPageMode}, invoice_template_json = ${JSON.stringify(template.invoiceTemplate)}::jsonb,
+      email_template_json = ${JSON.stringify(template.emailTemplate)}::jsonb, safe_summary_json = ${JSON.stringify(summary)}::jsonb, updated_by_user_id = ${currentUser.id}, updated_at = now()
+    WHERE id = ${id} AND deleted_at IS NULL
+    RETURNING id, entity_id, reporting_entity_id, status, label, cadence, interval_count, day_of_week, next_run_date::text AS next_run_date,
+      due_days, send_mode, payment_page_mode, invoice_template_json, email_template_json, safe_summary_json, created_at::text AS created_at, updated_at::text AS updated_at
+  `;
+  const updated = recurringTemplateFromRow(rows[0]);
+  return updated ? { ...updated, listItem: recurringTemplateListItem(updated) } : null;
+}
+
+async function deleteRecurringInvoiceTemplate(user, id) {
+  const currentUser = await ensureUser(user);
+  ensureRecurringAdmin(currentUser);
+  const existing = await getRecurringInvoiceTemplate(user, id);
+  if (!existing) return false;
+  const db = sql();
+  await db`UPDATE fin_recurring_invoice_templates SET deleted_at = now(), updated_by_user_id = ${currentUser.id}, updated_at = now() WHERE id = ${id} AND deleted_at IS NULL`;
+  return true;
+}
+
+async function listRecurringInvoiceRuns(user, templateId, options = {}) {
+  const currentUser = await ensureUser(user);
+  ensureRecurringAdmin(currentUser);
+  const template = await getRecurringInvoiceTemplate(user, templateId);
+  if (!template) return [];
+  const db = sql();
+  const rows = await db`
+    SELECT id, template_id, run_date::text AS run_date, period_start::text AS period_start, period_end::text AS period_end,
+      status, invoice_id, payment_request_id, send_mode, safe_summary_json, last_error, created_at::text AS created_at, updated_at::text AS updated_at
+    FROM fin_recurring_invoice_runs
+    WHERE template_id = ${templateId} AND deleted_at IS NULL
+    ORDER BY run_date DESC, updated_at DESC
+    LIMIT ${Math.max(1, Math.min(200, Number(options.limit || 50)))}
+  `;
+  return rows.map((row) => recurringRunFromRow(row, template));
+}
+
+async function generateRecurringInvoiceRun(user, templateId, options = {}) {
+  const currentUser = await ensureUser(user);
+  ensureRecurringAdmin(currentUser);
+  const template = await getRecurringInvoiceTemplate(user, templateId);
+  if (!template) throw makeError(404, 'Recurring invoice template not found.');
+  if (template.status !== 'active' && !cleanBoolean(options.allowPaused)) throw makeError(409, 'Recurring invoice template is paused.');
+  const runDate = cleanRecurringDate(options.runDate || options.run_date || template.nextRunDate);
+  const db = sql();
+  const existingRows = await db`
+    SELECT id, template_id, run_date::text AS run_date, period_start::text AS period_start, period_end::text AS period_end,
+      status, invoice_id, payment_request_id, send_mode, safe_summary_json, last_error, created_at::text AS created_at, updated_at::text AS updated_at
+    FROM fin_recurring_invoice_runs
+    WHERE template_id = ${templateId} AND run_date = ${runDate} AND deleted_at IS NULL
+    LIMIT 1
+  `;
+  if (existingRows[0]) return { template, run: recurringRunFromRow(existingRows[0], template), created: false };
+
+  const built = buildRecurringInvoiceForRun(template, { runDate, invoiceStatus: options.invoiceStatus || options.invoice_status });
+  const runId = crypto.randomUUID();
+  const initialSummary = recurringRunSummary({ id: runId, templateId, runDate: built.runDate, periodStart: built.periodStart, periodEnd: built.periodEnd, status: 'creating', sendMode: template.sendMode }, template);
+  const insertedRows = await db`
+    INSERT INTO fin_recurring_invoice_runs (id, template_id, run_date, period_start, period_end, status, send_mode, safe_summary_json, created_by_user_id, created_at, updated_at)
+    VALUES (${runId}, ${templateId}, ${built.runDate}, ${built.periodStart}, ${built.periodEnd}, 'creating', ${template.sendMode}, ${JSON.stringify(initialSummary)}::jsonb, ${currentUser.id}, now(), now())
+    ON CONFLICT (template_id, run_date) WHERE deleted_at IS NULL DO NOTHING
+    RETURNING id
+  `;
+  if (!insertedRows[0]) {
+    const racedRows = await db`
+      SELECT id, template_id, run_date::text AS run_date, period_start::text AS period_start, period_end::text AS period_end,
+        status, invoice_id, payment_request_id, send_mode, safe_summary_json, last_error, created_at::text AS created_at, updated_at::text AS updated_at
+      FROM fin_recurring_invoice_runs
+      WHERE template_id = ${templateId} AND run_date = ${built.runDate} AND deleted_at IS NULL
+      LIMIT 1
+    `;
+    if (racedRows[0]) return { template, run: recurringRunFromRow(racedRows[0], template), created: false };
+  }
+
+  try {
+    const invoice = await createInvoice(user, {
+      ...built.invoice,
+      recurring: {
+        ...(built.invoice.recurring || {}),
+        templateId,
+        runId,
+      },
+    });
+    const nextRunDate = nextRecurringRunDate(template, built.runDate);
+    const finalSummary = recurringRunSummary({
+      id: runId,
+      templateId,
+      runDate: built.runDate,
+      periodStart: built.periodStart,
+      periodEnd: built.periodEnd,
+      status: 'prepared',
+      invoiceId: invoice.id,
+      invoiceNumber: invoice.invoiceNumber,
+      sendMode: template.sendMode,
+      emailStatus: 'not_sent',
+      paymentPageStatus: 'requires_invoice_approval',
+    }, template);
+    const runRows = await db`
+      UPDATE fin_recurring_invoice_runs SET status = 'prepared', invoice_id = ${invoice.id}, safe_summary_json = ${JSON.stringify(finalSummary)}::jsonb, updated_at = now()
+      WHERE id = ${runId}
+      RETURNING id, template_id, run_date::text AS run_date, period_start::text AS period_start, period_end::text AS period_end,
+        status, invoice_id, payment_request_id, send_mode, safe_summary_json, last_error, created_at::text AS created_at, updated_at::text AS updated_at
+    `;
+    await db`
+      UPDATE fin_recurring_invoice_templates SET next_run_date = CASE
+        WHEN next_run_date IS NULL OR next_run_date <= ${built.runDate} THEN ${nextRunDate}
+        ELSE next_run_date
+      END, updated_at = now()
+      WHERE id = ${templateId}
+    `;
+    return { template: await getRecurringInvoiceTemplate(user, templateId), run: recurringRunFromRow(runRows[0], template), invoice, created: true };
+  } catch (error) {
+    const failedSummary = recurringRunSummary({ id: runId, templateId, runDate: built.runDate, periodStart: built.periodStart, periodEnd: built.periodEnd, status: 'failed', sendMode: template.sendMode }, template);
+    await db`UPDATE fin_recurring_invoice_runs SET status = 'failed', safe_summary_json = ${JSON.stringify(failedSummary)}::jsonb, last_error = ${cleanSingleLine(error.message, 500)}, updated_at = now() WHERE id = ${runId}`;
+    throw error;
+  }
+}
+
 module.exports = {
   ensureSchema,
   ensureUser,
@@ -3008,6 +3311,13 @@ module.exports = {
   getInvoice,
   updateInvoice,
   deleteInvoice,
+  listRecurringInvoiceTemplates,
+  getRecurringInvoiceTemplate,
+  createRecurringInvoiceTemplate,
+  updateRecurringInvoiceTemplate,
+  deleteRecurringInvoiceTemplate,
+  listRecurringInvoiceRuns,
+  generateRecurringInvoiceRun,
   latestPaymentRequestForInvoice,
   createInvoicePaymentRequest,
   createInvoiceCustomerPaymentPage,

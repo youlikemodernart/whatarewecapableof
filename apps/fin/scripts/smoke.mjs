@@ -34,6 +34,7 @@ const apiRoutes = new Map([
   ['/api/health', '../api/health.js'],
   ['/api/session', '../api/session.js'],
   ['/api/invoices', '../api/invoices.js'],
+  ['/api/recurring-invoices', '../api/recurring-invoices.js'],
   ['/api/entities', '../api/entities.js'],
   ['/api/finance/summary', '../api/finance/summary.js'],
   ['/api/finance/imports', '../api/finance/imports.js'],
@@ -161,18 +162,23 @@ function installFakeFinDb() {
   const { normalizeInvoice, invoiceClientLabel, cleanEntityId, invoiceEntities, publicEntity, entityById } = require('../api/_invoice.js');
   const { normalizeFinanceImport, summarizeFinanceImport, fakeFinanceImportSummary } = require('../api/_finance_import.js');
   const { cleanPaymentMethod, customerPaymentMethods, paymentMethodQuote } = require('../api/_payment_pricing.js');
+  const { normalizeRecurringInvoiceTemplate, recurringTemplateListItem, recurringTemplateSafeSummary, buildRecurringInvoiceForRun, nextRecurringRunDate, recurringRunSummary, cleanDate: cleanRecurringDate } = require('../api/_recurring.js');
   const records = new Map();
   const profileRecords = new Map();
   const financeImports = new Map();
   const paymentRequests = new Map();
   const stripeEvents = new Map();
   const paymentNotifications = new Map();
+  const recurringTemplates = new Map();
+  const recurringRuns = new Map();
   const sentPaymentEmails = [];
   const systemImportNonces = new Set();
   let invoiceSequence = 0;
   let profileSequence = 0;
   let financeImportSequence = 0;
   let paymentRequestSequence = 0;
+  let recurringTemplateSequence = 0;
+  let recurringRunSequence = 0;
   const dailySequences = new Map();
   const entities = invoiceEntities();
   let numbering = {
@@ -745,6 +751,127 @@ function installFakeFinDb() {
       if (activePayment) throw makeError(409, 'This invoice has an active Stripe payment link. Expire, cancel, or supersede the link before deleting the invoice.');
       records.set(id, { ...invoice, deleted: true });
       return true;
+    },
+    async listRecurringInvoiceTemplates(user, options = {}) {
+      const currentUser = userRow(user);
+      if (currentUser.role !== 'admin') throw makeError(403, 'Only Fin admins can manage recurring invoices.');
+      const includePaused = ['1', 'true', 'yes', 'on'].includes(String(options.includePaused ?? options.include_paused ?? '').toLowerCase());
+      return Array.from(recurringTemplates.values())
+        .filter((template) => !template.deleted && (includePaused || template.status === 'active'))
+        .filter((template) => visibleEntityIdsForUser(currentUser).includes(cleanEntityId(template.entityId || 'wawco')) && visibleEntityIdsForUser(currentUser).includes(cleanEntityId(template.reportingEntityId || template.entityId || 'wawco')))
+        .sort((a, b) => String(a.nextRunDate || '').localeCompare(String(b.nextRunDate || '')) || String(b.updatedAt || '').localeCompare(String(a.updatedAt || '')))
+        .map((template) => ({ ...template, listItem: recurringTemplateListItem(template) }));
+    },
+    async getRecurringInvoiceTemplate(user, id) {
+      const currentUser = userRow(user);
+      if (currentUser.role !== 'admin') throw makeError(403, 'Only Fin admins can manage recurring invoices.');
+      const template = recurringTemplates.get(id);
+      if (!template || template.deleted) return null;
+      const visibleIds = visibleEntityIdsForUser(currentUser);
+      if (!visibleIds.includes(cleanEntityId(template.entityId || 'wawco')) || !visibleIds.includes(cleanEntityId(template.reportingEntityId || template.entityId || 'wawco'))) return null;
+      return { ...template, listItem: recurringTemplateListItem(template) };
+    },
+    async createRecurringInvoiceTemplate(user, input = {}) {
+      const currentUser = userRow(user);
+      if (currentUser.role !== 'admin') throw makeError(403, 'Only Fin admins can manage recurring invoices.');
+      recurringTemplateSequence += 1;
+      const id = `recurring-template-${recurringTemplateSequence}`;
+      const template = normalizeRecurringInvoiceTemplate(input, { id });
+      const visibleIds = visibleEntityIdsForUser(currentUser);
+      if (!visibleIds.includes(cleanEntityId(template.entityId || 'wawco')) || !visibleIds.includes(cleanEntityId(template.reportingEntityId || template.entityId || 'wawco'))) throw makeError(403, 'Recurring invoice entity is not available to this user.');
+      const record = {
+        ...template,
+        id,
+        safeSummary: recurringTemplateSafeSummary(template),
+        createdByUserId: currentUser.id,
+        updatedByUserId: currentUser.id,
+        createdAt: '2026-07-05T12:30:00.000Z',
+        updatedAt: '2026-07-05T12:30:00.000Z',
+      };
+      recurringTemplates.set(id, record);
+      return { ...record, listItem: recurringTemplateListItem(record) };
+    },
+    async updateRecurringInvoiceTemplate(user, id, input = {}) {
+      const currentUser = userRow(user);
+      if (currentUser.role !== 'admin') throw makeError(403, 'Only Fin admins can manage recurring invoices.');
+      const existing = await fakeDb.getRecurringInvoiceTemplate(user, id);
+      if (!existing) return null;
+      const template = normalizeRecurringInvoiceTemplate({ ...existing, ...input, id, invoiceTemplate: input.invoiceTemplate || input.invoice || existing.invoiceTemplate, emailTemplate: input.emailTemplate || input.email || existing.emailTemplate }, { id });
+      if (cleanEntityId(template.entityId) !== cleanEntityId(existing.entityId)) throw makeError(409, 'Recurring invoice entity cannot be changed after creation. Create a new template instead.');
+      const visibleIds = visibleEntityIdsForUser(currentUser);
+      if (!visibleIds.includes(cleanEntityId(template.entityId || 'wawco')) || !visibleIds.includes(cleanEntityId(template.reportingEntityId || template.entityId || 'wawco'))) throw makeError(403, 'Recurring invoice entity is not available to this user.');
+      const record = { ...existing, ...template, safeSummary: recurringTemplateSafeSummary(template), updatedByUserId: currentUser.id, updatedAt: '2026-07-05T12:31:00.000Z' };
+      recurringTemplates.set(id, record);
+      return { ...record, listItem: recurringTemplateListItem(record) };
+    },
+    async deleteRecurringInvoiceTemplate(user, id) {
+      const currentUser = userRow(user);
+      if (currentUser.role !== 'admin') throw makeError(403, 'Only Fin admins can manage recurring invoices.');
+      const existing = await fakeDb.getRecurringInvoiceTemplate(user, id);
+      if (!existing) return false;
+      recurringTemplates.set(id, { ...existing, deleted: true, updatedAt: '2026-07-05T12:32:00.000Z' });
+      return true;
+    },
+    async listRecurringInvoiceRuns(user, templateId, options = {}) {
+      const currentUser = userRow(user);
+      if (currentUser.role !== 'admin') throw makeError(403, 'Only Fin admins can manage recurring invoices.');
+      const template = await fakeDb.getRecurringInvoiceTemplate(user, templateId);
+      if (!template) return [];
+      const limit = Math.max(1, Math.min(200, Number(options.limit || 50)));
+      return Array.from(recurringRuns.values())
+        .filter((run) => !run.deleted && run.templateId === templateId)
+        .sort((a, b) => String(b.runDate || '').localeCompare(String(a.runDate || '')) || String(b.updatedAt || '').localeCompare(String(a.updatedAt || '')))
+        .slice(0, limit)
+        .map((run) => ({ ...run, safeSummary: recurringRunSummary(run, template) }));
+    },
+    async generateRecurringInvoiceRun(user, templateId, options = {}) {
+      const currentUser = userRow(user);
+      if (currentUser.role !== 'admin') throw makeError(403, 'Only Fin admins can manage recurring invoices.');
+      const template = await fakeDb.getRecurringInvoiceTemplate(user, templateId);
+      if (!template) throw makeError(404, 'Recurring invoice template not found.');
+      const allowPaused = ['1', 'true', 'yes', 'on'].includes(String(options.allowPaused || '').toLowerCase());
+      if (template.status !== 'active' && !allowPaused) throw makeError(409, 'Recurring invoice template is paused.');
+      const runDate = cleanRecurringDate(options.runDate || options.run_date || template.nextRunDate);
+      const existing = Array.from(recurringRuns.values()).find((run) => !run.deleted && run.templateId === templateId && run.runDate === runDate);
+      if (existing) return { template, run: existing, created: false };
+      recurringRunSequence += 1;
+      const runId = `recurring-run-${recurringRunSequence}`;
+      const built = buildRecurringInvoiceForRun(template, { runDate, invoiceStatus: options.invoiceStatus || options.invoice_status });
+      const creatingRun = {
+        id: runId,
+        templateId,
+        templateLabel: template.label,
+        runDate: built.runDate,
+        periodStart: built.periodStart,
+        periodEnd: built.periodEnd,
+        status: 'creating',
+        invoiceId: '',
+        paymentRequestId: '',
+        sendMode: template.sendMode,
+        createdByUserId: currentUser.id,
+        createdAt: '2026-07-05T12:33:00.000Z',
+        updatedAt: '2026-07-05T12:33:00.000Z',
+      };
+      recurringRuns.set(runId, creatingRun);
+      try {
+        const invoice = await fakeDb.createInvoice(user, built.invoice);
+        const run = {
+          ...creatingRun,
+          status: 'prepared',
+          invoiceId: invoice.id,
+          invoiceNumber: invoice.invoiceNumber,
+          safeSummary: recurringRunSummary({ ...creatingRun, status: 'prepared', invoiceId: invoice.id, invoiceNumber: invoice.invoiceNumber, paymentPageStatus: 'requires_invoice_approval' }, template),
+          updatedAt: '2026-07-05T12:34:00.000Z',
+        };
+        recurringRuns.set(runId, run);
+        const nextRunDate = nextRecurringRunDate(template, built.runDate);
+        recurringTemplates.set(templateId, { ...template, nextRunDate, updatedAt: '2026-07-05T12:34:00.000Z' });
+        return { template: recurringTemplates.get(templateId), run, invoice, created: true };
+      } catch (error) {
+        const failed = { ...creatingRun, status: 'failed', lastError: error.message, updatedAt: '2026-07-05T12:35:00.000Z' };
+        recurringRuns.set(runId, failed);
+        throw error;
+      }
     },
     async latestPaymentRequestForInvoice(user, invoiceId) {
       const currentUser = userRow(user);
@@ -1510,6 +1637,7 @@ async function runAuthenticatedRouteSmoke() {
   const { signSystemImportRequest } = require('../api/_system_import_auth.js');
   const routePaths = [
     require.resolve('../api/invoices.js'),
+    require.resolve('../api/recurring-invoices.js'),
     require.resolve('../api/finance/summary.js'),
     require.resolve('../api/finance/import-summary.js'),
     require.resolve('../api/finance/system-import-summary.js'),
@@ -1527,6 +1655,7 @@ async function runAuthenticatedRouteSmoke() {
   routePaths.forEach((path) => delete require.cache[path]);
   installFakeFinDb();
   const invoiceHandler = require('../api/invoices.js');
+  const recurringHandler = require('../api/recurring-invoices.js');
   const summaryHandler = require('../api/finance/summary.js');
   const importSummaryHandler = require('../api/finance/import-summary.js');
   const systemImportSummaryHandler = require('../api/finance/system-import-summary.js');
@@ -1721,6 +1850,64 @@ async function runAuthenticatedRouteSmoke() {
     assert(updated.status === 200 && updated.data.invoice.status === 'ready_for_review', 'invoice update smoke failed');
     assert(updated.data.invoice.invoiceNumber === 'SUBSTRATE-052626-01', 'invoice number stability on update smoke failed');
     assert(updated.data.invoice.totals.totalCents === 27500, 'invoice total recalculation smoke failed');
+
+    const recurringListBefore = await callHandler(recurringHandler, { method: 'GET', url: '/api/recurring-invoices', cookie });
+    assert(recurringListBefore.status === 200 && Array.isArray(recurringListBefore.data.templates), 'recurring template list smoke failed');
+    const nonAdminRecurring = await callHandler(recurringHandler, { method: 'POST', url: '/api/recurring-invoices', cookie: repCookie, body: { label: 'Blocked recurring', invoiceTemplate: { client: { company: 'Blocked', invoiceCode: 'BLOCKED' }, items: [{ description: 'Blocked', quantity: 1, unitPrice: '10.00' }] } } });
+    assert(nonAdminRecurring.status === 403, 'recurring non-admin create gate smoke failed');
+    const autoSendRecurring = await callHandler(recurringHandler, { method: 'POST', url: '/api/recurring-invoices', cookie, body: { sendMode: 'auto_send', invoiceTemplate: { client: { company: 'Unsafe', invoiceCode: 'UNSAFE' }, items: [{ description: 'Unsafe', quantity: 1, unitPrice: '10.00' }] } } });
+    assert(autoSendRecurring.status === 400, 'recurring auto-send gate smoke failed');
+    const unitusRecurring = await callHandler(recurringHandler, {
+      method: 'POST',
+      url: '/api/recurring-invoices',
+      cookie,
+      body: {
+        label: 'Unitus weekly email/SMS support',
+        entityId: 'wawco',
+        reportingEntityId: 'wawco',
+        cadence: 'weekly',
+        intervalCount: 1,
+        dayOfWeek: 1,
+        nextRunDate: '2026-07-06',
+        dueDays: 0,
+        sendMode: 'prepare_for_approval',
+        paymentPageMode: 'manual_after_approval',
+        invoiceTemplate: {
+          entityId: 'wawco',
+          reportingEntityId: 'wawco',
+          project: 'Unitus weekly email/SMS support',
+          client: { company: 'Unitus', name: 'John', email: 'john@weareunitus.com', invoiceCode: 'UNITUS' },
+          items: [{ description: 'Weekly email/SMS execution support, week of {period_start}', quantity: 1, unitPrice: '480.00' }],
+          notes: 'Thank you.',
+          terms: 'Due on receipt.',
+        },
+        emailTemplate: {
+          fromEmail: 'hello@whatarewecapableof.com',
+          fromName: 'Noah Glynn',
+          recipientEmails: ['john@weareunitus.com'],
+          subject: 'Unitus weekly email/SMS support invoice',
+          body: 'Hi John,\n\nAttached is this week\'s invoice for email/SMS support. Payment link: {payment_link}\n\nThank you,\nNoah',
+          attachPdf: true,
+          includePaymentLink: true,
+        },
+      },
+    });
+    assert(unitusRecurring.status === 201, 'Unitus recurring template create smoke failed');
+    assert(unitusRecurring.data.template.listItem.totalCents === 48000, 'Unitus recurring template total smoke failed');
+    assert(unitusRecurring.data.template.sendMode === 'prepare_for_approval', 'Unitus recurring send mode smoke failed');
+    const unitusRun = await callHandler(recurringHandler, { method: 'POST', url: '/api/recurring-invoices', cookie, body: { action: 'generate_run', templateId: unitusRecurring.data.template.id, runDate: '2026-07-06' } });
+    assert(unitusRun.status === 201 && unitusRun.data.created === true, 'Unitus recurring run create smoke failed');
+    assert(unitusRun.data.invoice.status === 'ready_for_review', 'Unitus recurring run invoice approval state smoke failed');
+    assert(unitusRun.data.invoice.invoiceNumber === 'UNITUS-070626-01', 'Unitus recurring run numbering smoke failed');
+    assert(unitusRun.data.invoice.totals.totalCents === 48000, 'Unitus recurring run total smoke failed');
+    assert(unitusRun.data.invoice.items[0].description.includes('2026-07-06'), 'Unitus recurring period placeholder smoke failed');
+    assert(!unitusRun.data.run.paymentRequestId, 'Unitus recurring run should not create payment page by default');
+    const duplicateUnitusRun = await callHandler(recurringHandler, { method: 'POST', url: '/api/recurring-invoices', cookie, body: { action: 'generate_run', templateId: unitusRecurring.data.template.id, runDate: '2026-07-06' } });
+    assert(duplicateUnitusRun.status === 200 && duplicateUnitusRun.data.created === false, 'Unitus recurring run idempotency smoke failed');
+    const unitusRuns = await callHandler(recurringHandler, { method: 'GET', url: `/api/recurring-invoices?id=${encodeURIComponent(unitusRecurring.data.template.id)}&runs=1`, cookie });
+    assert(unitusRuns.status === 200 && unitusRuns.data.runs.length === 1, 'Unitus recurring run list smoke failed');
+    const unitusRecurringInvoiceCleanup = await callHandler(invoiceHandler, { method: 'DELETE', url: `/api/invoices?id=${encodeURIComponent(unitusRun.data.invoice.id)}`, cookie });
+    assert(unitusRecurringInvoiceCleanup.status === 200 && unitusRecurringInvoiceCleanup.data.deleted === true, 'Unitus recurring invoice cleanup smoke failed');
 
     const checkoutOrigin = { origin: 'http://127.0.0.1:3321' };
     const unauthCheckout = await callHandler(checkoutHandler, { method: 'POST', url: '/api/stripe/checkout', body: { invoiceId: id, mode: 'test' }, headers: checkoutOrigin });

@@ -34,7 +34,6 @@ const apiRoutes = new Map([
   ['/api/health', '../api/health.js'],
   ['/api/session', '../api/session.js'],
   ['/api/invoices', '../api/invoices.js'],
-  ['/api/recurring-invoices', '../api/recurring-invoices.js'],
   ['/api/entities', '../api/entities.js'],
   ['/api/finance/summary', '../api/finance/summary.js'],
   ['/api/finance/imports', '../api/finance/imports.js'],
@@ -1637,7 +1636,6 @@ async function runAuthenticatedRouteSmoke() {
   const { signSystemImportRequest } = require('../api/_system_import_auth.js');
   const routePaths = [
     require.resolve('../api/invoices.js'),
-    require.resolve('../api/recurring-invoices.js'),
     require.resolve('../api/finance/summary.js'),
     require.resolve('../api/finance/import-summary.js'),
     require.resolve('../api/finance/system-import-summary.js'),
@@ -1655,7 +1653,7 @@ async function runAuthenticatedRouteSmoke() {
   routePaths.forEach((path) => delete require.cache[path]);
   installFakeFinDb();
   const invoiceHandler = require('../api/invoices.js');
-  const recurringHandler = require('../api/recurring-invoices.js');
+  const recurringHandler = invoiceHandler;
   const summaryHandler = require('../api/finance/summary.js');
   const importSummaryHandler = require('../api/finance/import-summary.js');
   const systemImportSummaryHandler = require('../api/finance/system-import-summary.js');
@@ -1851,15 +1849,15 @@ async function runAuthenticatedRouteSmoke() {
     assert(updated.data.invoice.invoiceNumber === 'SUBSTRATE-052626-01', 'invoice number stability on update smoke failed');
     assert(updated.data.invoice.totals.totalCents === 27500, 'invoice total recalculation smoke failed');
 
-    const recurringListBefore = await callHandler(recurringHandler, { method: 'GET', url: '/api/recurring-invoices', cookie });
+    const recurringListBefore = await callHandler(recurringHandler, { method: 'GET', url: '/api/invoices?recurring=1', cookie });
     assert(recurringListBefore.status === 200 && Array.isArray(recurringListBefore.data.templates), 'recurring template list smoke failed');
-    const nonAdminRecurring = await callHandler(recurringHandler, { method: 'POST', url: '/api/recurring-invoices', cookie: repCookie, body: { label: 'Blocked recurring', invoiceTemplate: { client: { company: 'Blocked', invoiceCode: 'BLOCKED' }, items: [{ description: 'Blocked', quantity: 1, unitPrice: '10.00' }] } } });
+    const nonAdminRecurring = await callHandler(recurringHandler, { method: 'POST', url: '/api/invoices?recurring=1', cookie: repCookie, body: { label: 'Blocked recurring', invoiceTemplate: { client: { company: 'Blocked', invoiceCode: 'BLOCKED' }, items: [{ description: 'Blocked', quantity: 1, unitPrice: '10.00' }] } } });
     assert(nonAdminRecurring.status === 403, 'recurring non-admin create gate smoke failed');
-    const autoSendRecurring = await callHandler(recurringHandler, { method: 'POST', url: '/api/recurring-invoices', cookie, body: { sendMode: 'auto_send', invoiceTemplate: { client: { company: 'Unsafe', invoiceCode: 'UNSAFE' }, items: [{ description: 'Unsafe', quantity: 1, unitPrice: '10.00' }] } } });
+    const autoSendRecurring = await callHandler(recurringHandler, { method: 'POST', url: '/api/invoices?recurring=1', cookie, body: { sendMode: 'auto_send', invoiceTemplate: { client: { company: 'Unsafe', invoiceCode: 'UNSAFE' }, items: [{ description: 'Unsafe', quantity: 1, unitPrice: '10.00' }] } } });
     assert(autoSendRecurring.status === 400, 'recurring auto-send gate smoke failed');
     const unitusRecurring = await callHandler(recurringHandler, {
       method: 'POST',
-      url: '/api/recurring-invoices',
+      url: '/api/invoices?recurring=1',
       cookie,
       body: {
         label: 'Unitus weekly email/SMS support',
@@ -1895,16 +1893,16 @@ async function runAuthenticatedRouteSmoke() {
     assert(unitusRecurring.status === 201, 'Unitus recurring template create smoke failed');
     assert(unitusRecurring.data.template.listItem.totalCents === 48000, 'Unitus recurring template total smoke failed');
     assert(unitusRecurring.data.template.sendMode === 'prepare_for_approval', 'Unitus recurring send mode smoke failed');
-    const unitusRun = await callHandler(recurringHandler, { method: 'POST', url: '/api/recurring-invoices', cookie, body: { action: 'generate_run', templateId: unitusRecurring.data.template.id, runDate: '2026-07-06' } });
+    const unitusRun = await callHandler(recurringHandler, { method: 'POST', url: '/api/invoices?recurring=1', cookie, body: { action: 'generate_run', templateId: unitusRecurring.data.template.id, runDate: '2026-07-06' } });
     assert(unitusRun.status === 201 && unitusRun.data.created === true, 'Unitus recurring run create smoke failed');
     assert(unitusRun.data.invoice.status === 'ready_for_review', 'Unitus recurring run invoice approval state smoke failed');
     assert(unitusRun.data.invoice.invoiceNumber === 'UNITUS-070626-01', 'Unitus recurring run numbering smoke failed');
     assert(unitusRun.data.invoice.totals.totalCents === 48000, 'Unitus recurring run total smoke failed');
     assert(unitusRun.data.invoice.items[0].description.includes('2026-07-06'), 'Unitus recurring period placeholder smoke failed');
     assert(!unitusRun.data.run.paymentRequestId, 'Unitus recurring run should not create payment page by default');
-    const duplicateUnitusRun = await callHandler(recurringHandler, { method: 'POST', url: '/api/recurring-invoices', cookie, body: { action: 'generate_run', templateId: unitusRecurring.data.template.id, runDate: '2026-07-06' } });
+    const duplicateUnitusRun = await callHandler(recurringHandler, { method: 'POST', url: '/api/invoices?recurring=1', cookie, body: { action: 'generate_run', templateId: unitusRecurring.data.template.id, runDate: '2026-07-06' } });
     assert(duplicateUnitusRun.status === 200 && duplicateUnitusRun.data.created === false, 'Unitus recurring run idempotency smoke failed');
-    const unitusRuns = await callHandler(recurringHandler, { method: 'GET', url: `/api/recurring-invoices?id=${encodeURIComponent(unitusRecurring.data.template.id)}&runs=1`, cookie });
+    const unitusRuns = await callHandler(recurringHandler, { method: 'GET', url: `/api/invoices?recurring=1&id=${encodeURIComponent(unitusRecurring.data.template.id)}&runs=1`, cookie });
     assert(unitusRuns.status === 200 && unitusRuns.data.runs.length === 1, 'Unitus recurring run list smoke failed');
     const unitusRecurringInvoiceCleanup = await callHandler(invoiceHandler, { method: 'DELETE', url: `/api/invoices?id=${encodeURIComponent(unitusRun.data.invoice.id)}`, cookie });
     assert(unitusRecurringInvoiceCleanup.status === 200 && unitusRecurringInvoiceCleanup.data.deleted === true, 'Unitus recurring invoice cleanup smoke failed');

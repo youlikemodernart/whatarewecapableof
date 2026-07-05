@@ -394,16 +394,16 @@ function profileById(type, id) {
 }
 
 async function loadEntities() {
-  const data = await getJson('/api/entities');
+  const data = await getJson('/api/invoices?resource=entities');
   if (Array.isArray(data.entities) && data.entities.length) entities = data.entities;
   renderEntitySelect();
 }
 
 async function loadProfiles() {
   const [payee, client, user] = await Promise.all([
-    getJson('/api/profiles?type=payee'),
-    getJson('/api/profiles?type=client'),
-    getJson('/api/profiles?type=user'),
+    getJson('/api/invoices?resource=profiles&type=payee'),
+    getJson('/api/invoices?resource=profiles&type=client'),
+    getJson('/api/invoices?resource=profiles&type=user'),
   ]);
   profiles = {
     payee: payee.profiles || [],
@@ -416,7 +416,7 @@ async function loadProfiles() {
 }
 
 async function loadNumbering() {
-  const data = await getJson('/api/numbering');
+  const data = await getJson('/api/invoices?resource=numbering');
   const numbering = data.numbering || {};
   refs.numberPadding.value = numbering.sequencePadding || 2;
   refs.numberExample.textContent = numbering.examples?.ndg ? `${numbering.example || 'SUBSTRATE-052626-01'} / ${numbering.examples.ndg}` : numbering.example || 'SUBSTRATE-052626-01';
@@ -426,7 +426,7 @@ async function saveNumbering() {
   const numbering = {
     sequencePadding: Number(refs.numberPadding.value),
   };
-  await getJson('/api/numbering', { method: 'PUT', body: JSON.stringify({ numbering }) });
+  await getJson('/api/invoices?resource=numbering', { method: 'PUT', body: JSON.stringify({ numbering }) });
   await loadNumbering();
   setNotice('Numbering rule saved.');
 }
@@ -528,8 +528,8 @@ async function saveProfile(type) {
   const id = refs[`${type}ProfileSelect`].value;
   const body = { profile: profileFromForm(type) };
   const data = id
-    ? await getJson(`/api/profiles?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`, { method: 'PUT', body: JSON.stringify(body) })
-    : await getJson(`/api/profiles?type=${encodeURIComponent(type)}`, { method: 'POST', body: JSON.stringify(body) });
+    ? await getJson(`/api/invoices?resource=profiles&type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`, { method: 'PUT', body: JSON.stringify(body) })
+    : await getJson(`/api/invoices?resource=profiles&type=${encodeURIComponent(type)}`, { method: 'POST', body: JSON.stringify(body) });
   await loadProfiles();
   refs[`${type}ProfileSelect`].value = data.profile.id;
   setNotice(`${formatStatus(type)} profile saved.`);
@@ -542,7 +542,7 @@ async function deleteProfile(type) {
     return;
   }
   if (!window.confirm(`Delete this ${type} profile? Existing invoice drafts will keep their saved fields.`)) return;
-  await getJson(`/api/profiles?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`, { method: 'DELETE' });
+  await getJson(`/api/invoices?resource=profiles&type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`, { method: 'DELETE' });
   await loadProfiles();
   refs[`${type}ProfileSelect`].value = '';
   setNotice(`${formatStatus(type)} profile deleted.`);
@@ -744,7 +744,7 @@ function renderDraftList() {
 }
 
 async function loadSession() {
-  const session = await getJson('/api/session');
+  const session = await getJson('/api/invoices?resource=session');
   paymentSettings = session.payments || paymentSettings;
   permissions = session.permissions || permissions;
   if (!session.auth.configured || !session.user) {

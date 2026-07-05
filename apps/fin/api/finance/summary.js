@@ -6,6 +6,12 @@ function queryFromRequest(req) {
   return new URL(req.url || '/api/finance/summary', 'http://fin.local').searchParams;
 }
 
+function resourceHandlerFromRequest(req) {
+  const resource = String(queryFromRequest(req).get('resource') || '').trim().toLowerCase();
+  if (resource === 'imports') return require('./_imports_route');
+  return null;
+}
+
 function ensureStorageReady() {
   const storage = storageConfig();
   if (!storage.configured) throw makeHttpError(503, 'Hosted database is not configured yet.');
@@ -14,6 +20,9 @@ function ensureStorageReady() {
 }
 
 module.exports = async function handler(req, res) {
+  const resourceHandler = resourceHandlerFromRequest(req);
+  if (resourceHandler) return await resourceHandler(req, res);
+
   res.setHeader('Cache-Control', 'no-store');
   const user = getSession(req);
   if (!user) return json(res, 401, { error: 'Sign in required.' });

@@ -25,6 +25,15 @@ function invoiceIdFromRequest(req) {
   return id || '';
 }
 
+function resourceHandlerFromRequest(req) {
+  const resource = String(requestParams(req).get('resource') || '').trim().toLowerCase();
+  if (resource === 'session') return require('./_session_route');
+  if (resource === 'entities') return require('./_entities_route');
+  if (resource === 'profiles') return require('./_profiles_route');
+  if (resource === 'numbering') return require('./_numbering_route');
+  return null;
+}
+
 function ensureStorageReady() {
   const storage = storageConfig();
   if (!storage.configured) {
@@ -141,6 +150,9 @@ async function handleDelete(req, res, user, storage) {
 }
 
 module.exports = async function handler(req, res) {
+  const resourceHandler = resourceHandlerFromRequest(req);
+  if (resourceHandler) return await resourceHandler(req, res);
+
   const user = getSession(req);
   if (!user) return json(res, 401, { error: 'Sign in required.' });
 

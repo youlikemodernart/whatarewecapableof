@@ -470,7 +470,7 @@ function renderImports() {
 
 async function loadImports() {
   try {
-    const data = await getJson('/api/finance/imports');
+    const data = await getJson('/api/finance/summary?resource=imports');
     state.imports = data.imports || [];
     refs.importPanel.hidden = false;
     renderImports();
@@ -523,7 +523,7 @@ async function deleteImport(id) {
   if (!id) return;
   if (!window.confirm('Delete this derived finance summary import? The row will be soft-deleted and /finance will fall back to the next import or empty state.')) return;
   refs.state.textContent = 'Deleting derived finance summary...';
-  await getJson(`/api/finance/imports?id=${encodeURIComponent(id)}&reason=${encodeURIComponent('deleted from finance import panel')}`, { method: 'DELETE' });
+  await getJson(`/api/finance/summary?resource=imports&id=${encodeURIComponent(id)}&reason=${encodeURIComponent('deleted from finance import panel')}`, { method: 'DELETE' });
   await loadImports();
   await loadSummary();
 }
@@ -561,7 +561,7 @@ async function loadSummary() {
 }
 
 async function loadSession() {
-  const session = await getJson('/api/session');
+  const session = await getJson('/api/invoices?resource=session');
   if (!session.auth.configured || !session.user) {
     refs.signinPanel.hidden = false;
     refs.dashboardPanel.hidden = true;

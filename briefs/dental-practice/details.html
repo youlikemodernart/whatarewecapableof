@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>The detailed map | What are we capable of?</title>
+  <meta name="description" content="The full breakdown: how a general dental practice is organized, and what AI can take from each role.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="The detailed map: a dental practice and AI">
+  <meta property="og:description" content="The team, the org chart, and where AI fits, role by role.">
+  <meta property="og:image" content="/og.png">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1a1a1a; --ink-2: #44474a; --ink-3: #686d71;
+      --rule: #e6e6e3; --bg: #ffffff; --soft: #f7f7f5;
+      --run: #3f7d5c; --assist: #b7862f; --human: #5b6470;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 17px; line-height: 1.55; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; font-feature-settings: "kern" 1, "liga" 1; }
+    .skip-link { position: absolute; left: -9999px; top: 0; z-index: 100; background: var(--ink); color: var(--bg); padding: 10px 16px; text-decoration: none; }
+    .skip-link:focus { left: 8px; top: 8px; }
+    .page { max-width: 760px; margin: 0 auto; padding: 40px 24px 92px; }
+    a { color: var(--human); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+    a:hover { color: var(--ink); }
+    .back { font-family: var(--mono); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; display: inline-block; margin-bottom: 30px; }
+    .eyebrow { margin: 0 0 12px; color: var(--ink-3); font-family: var(--mono); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+    h1 { margin: 0; max-width: 22ch; font-size: clamp(30px, 5vw, 46px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 650; text-wrap: balance; }
+    .lede { margin: 22px 0 0; max-width: 60ch; color: var(--ink-2); font-size: 18px; line-height: 1.45; text-wrap: pretty; }
+    main { display: block; }
+    section { padding: 32px 0; border-top: 1px solid var(--rule); }
+    h2 { margin: 0 0 14px; font-size: 20px; line-height: 1.2; letter-spacing: -0.01em; font-weight: 650; }
+    h3 { margin: 22px 0 8px; font-size: 15px; line-height: 1.3; font-weight: 650; }
+    p { margin: 0 0 14px; max-width: 62ch; text-wrap: pretty; }
+    p:last-child { margin-bottom: 0; }
+    strong { font-weight: 650; }
+    ul.roles { list-style: none; margin: 10px 0 8px; padding: 0; max-width: 64ch; }
+    ul.roles li { padding: 0 0 10px; border-bottom: 1px solid var(--rule); margin-bottom: 10px; font-size: 16px; color: var(--ink-2); }
+    ul.roles li:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+    ul.roles .role { font-weight: 650; color: var(--ink); }
+    ul.roles .law { color: var(--ink-3); font-size: 14.5px; }
+    pre.chart { margin: 8px 0 18px; padding: 15px 16px; border: 1px solid var(--rule); background: var(--soft); font-family: var(--mono); font-size: 12px; line-height: 1.55; color: var(--ink-2); overflow-x: auto; max-width: none; }
+    .tset { margin: 6px 0 20px; }
+    .tcap { display: flex; align-items: center; gap: 8px; font-weight: 650; margin: 20px 0 8px; font-size: 16px; }
+    .tag { display: inline-block; font-size: 11px; font-weight: 650; letter-spacing: .02em; padding: 1px 7px; border-radius: 2px; border: 1px solid var(--c); color: var(--c); }
+    .tset.run { --c: var(--run); } .tset.assist { --c: var(--assist); } .tset.human { --c: var(--human); }
+    table { width: 100%; border-collapse: collapse; font-size: 15px; border-left: 3px solid var(--c); }
+    th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--rule); }
+    th { font-family: var(--mono); font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-3); font-weight: 650; }
+    td.rl { font-weight: 650; color: var(--ink); white-space: nowrap; }
+    td { color: var(--ink-2); }
+    footer { margin-top: 30px; padding-top: 16px; border-top: 1px solid var(--rule); color: var(--ink-3); display: flex; justify-content: space-between; gap: 16px; font-size: 12px; }
+    @media (max-width: 640px) {
+      body { font-size: 16px; }
+      .page { padding: 28px 18px 64px; }
+      h1 { font-size: 29px; }
+      .lede { font-size: 16px; }
+      section { padding: 26px 0; }
+      table { font-size: 14px; }
+      th, td { padding: 8px 8px; }
+      td.rl { white-space: normal; }
+      pre.chart { font-size: 10.5px; }
+      footer { display: block; }
+      footer span { display: block; margin-bottom: 4px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <div class="page">
+    <a class="back" href="/briefs/dental-practice/">Back to the summary</a>
+
+    <header>
+      <p class="eyebrow">The detailed map | July 7, 2026</p>
+      <h1>How a practice is organized, and where AI fits</h1>
+      <p class="lede">The full breakdown behind the summary: the team, the org chart, and what AI can take from each role. General dentistry, a new independent practice.</p>
+    </header>
+
+    <main id="main">
+      <section>
+        <h2>Three lanes</h2>
+        <p>Every general practice divides into three lanes, and the line between them is what the law lets you delegate. That line is also the automation line.</p>
+        <ul class="roles">
+          <li><span class="role">Clinical.</span> The chair work. Licensed, and delegated down a ladder (dentist, then hygienist, then assistant). Diagnosis and any irreversible treatment are yours alone.</li>
+          <li><span class="role">Front office.</span> Phones, schedule, insurance, billing, treatment presentation, marketing. Almost none of it requires a license, so almost all of it is open to automation.</li>
+          <li><span class="role">Management.</span> The office manager plus you wearing the owner hat: hiring, payroll, compliance, supply, the numbers.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>The team, role by role</h2>
+        <h3>Clinical</h3>
+        <ul class="roles">
+          <li><span class="role">Dentist / owner.</span> Exam, diagnosis, the treatment plan, and all treatment. <span class="law">Yours by law: diagnosis, planning, prescribing, and anything that cuts tissue.</span></li>
+          <li><span class="role">Associate dentist.</span> Same clinical scope, no ownership. Added once one dentist fills the schedule. <span class="law">Same legal boundary as the owner.</span></li>
+          <li><span class="role">Hygienist.</span> Cleanings, scaling, perio, x-rays, and the recall engine. <span class="law">Works under your supervision; cannot diagnose or treatment-plan.</span></li>
+          <li><span class="role">Expanded-function assistant (EFDA).</span> Places and finishes fillings after you prep, plus sealants and impressions. <span class="law">Reversible work only; scope varies by state.</span></li>
+          <li><span class="role">Dental assistant.</span> Four-handed chairside, sterilization, x-rays, temporaries. <span class="law">The least-regulated clinical role; cannot place restorations or diagnose.</span></li>
+          <li><span class="role">Sterilization tech.</span> Instrument processing and logs. Often folded into the assistant role early on. <span class="law">No license required.</span></li>
+        </ul>
+        <h3>Front office</h3>
+        <ul class="roles">
+          <li><span class="role">Front desk / patient coordinator.</span> Greeting, phones, booking, intake, insurance, copays. At launch, one person wears every admin hat.</li>
+          <li><span class="role">Scheduling coordinator.</span> Owns the book: fills gaps, manages no-shows.</li>
+          <li><span class="role">Treatment coordinator.</span> Presents the plan, explains financing, converts the consult into a scheduled case.</li>
+          <li><span class="role">Insurance / billing coordinator.</span> Verification, claims, posting, follow-up on aging accounts.</li>
+          <li><span class="role">Marketing coordinator.</span> Reviews, referrals, new-patient flow. Usually outsourced or owner-run early.</li>
+        </ul>
+        <h3>Management</h3>
+        <ul class="roles">
+          <li><span class="role">Office manager.</span> Runs the business: hiring, payroll, supply, compliance, the KPIs. Often not a separate hire at open; you or the lead front-desk person covers it.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>The org chart</h2>
+        <p>What it looks like the day you open, and once the practice is full.</p>
+        <h3>At launch (1 dentist, 2-4 chairs, a few staff)</h3>
+<pre class="chart">                 OWNER-DENTIST (you)
+             clinical + owner / manager
+                        |
+      ------------------+------------------
+      |                 |                  |
+  Dental          Hygienist          Front desk /
+  Assistant       (added as          coordinator
+  (+ steri)       recall builds)     (all admin in one seat)</pre>
+        <h3>Once full (owner, maybe an associate, 7-11 staff)</h3>
+<pre class="chart">                    OWNER-DENTIST
+              diagnosis - treatment - vision
+                /                       \
+    OFFICE MANAGER                   CLINICAL TEAM
+    (runs the business)           (reports to the dentist)
+          |                              |
+   -------+--------              --------+---------------
+   |   |      |    |             |        |        |     |
+ Front Ins/  Treat Mktg      Hygienist  Dental   EFDA  Steri
+ desk  bill  coord           (x1-2)     assistant       tech
+       coord                            (x1-2)</pre>
+        <p>A common full build is roughly one dentist, two assistants, one or two hygienists, and two or three admin staff, over two to four chairs.</p>
+      </section>
+
+      <section>
+        <h2>Where AI fits, role by role</h2>
+        <p>The same three buckets from the summary, mapped onto each role: what AI can carry, and what stays with a person.</p>
+
+        <div class="tset run">
+          <div class="tcap">Front office <span class="tag">most automatable</span></div>
+          <table>
+            <thead><tr><th>Role</th><th>AI can take</th><th>Stays with a person</th></tr></thead>
+            <tbody>
+              <tr><td class="rl">Front desk</td><td>Answering calls, booking, reminders, intake forms, review requests</td><td>Judgment calls, warm greeting</td></tr>
+              <tr><td class="rl">Scheduling</td><td>Optimizing the book, filling cancellations from a waitlist</td><td>Exceptions</td></tr>
+              <tr><td class="rl">Insurance / billing</td><td>Eligibility checks, claim submission, posting, follow-up on aging accounts</td><td>Sign-off on denials and appeals</td></tr>
+              <tr><td class="rl">Treatment coordinator</td><td>Prepping estimates, options, and financing before the conversation</td><td>Closing the case, the human conversation</td></tr>
+              <tr><td class="rl">Marketing</td><td>Review requests, follow-up, first drafts</td><td>Brand voice and strategy</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tset human">
+          <div class="tcap">Clinical <span class="tag">mostly yours</span></div>
+          <table>
+            <thead><tr><th>Role</th><th>AI can assist</th><th>Stays with a person</th></tr></thead>
+            <tbody>
+              <tr><td class="rl">Dentist</td><td>Flagging findings on x-rays, drafting notes, drafting the plan</td><td>Diagnosis, the plan itself, all treatment</td></tr>
+              <tr><td class="rl">Hygienist</td><td>Capturing perio charting from dictation, building recall lists</td><td>The cleaning, the physical exam</td></tr>
+              <tr><td class="rl">Assistant / EFDA</td><td>Charting, sterilization logging</td><td>The hands in the room, placing restorations</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tset assist">
+          <div class="tcap">Management <span class="tag">mixed</span></div>
+          <table>
+            <thead><tr><th>Role</th><th>AI can take</th><th>Stays with a person</th></tr></thead>
+            <tbody>
+              <tr><td class="rl">Office manager</td><td>KPI dashboards, supply reordering, compliance logs, payroll admin</td><td>Hiring, leadership, signing off on compliance</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>What sets the exact line</h2>
+        <p>Two things decide precisely where automation stops for your practice.</p>
+        <ul class="roles">
+          <li><span class="role">Your state.</span> The non-delegable core is the same everywhere: only a dentist diagnoses, plans, prescribes, or does irreversible work. What varies by state is the rest, and it moves the line: what an expanded-function assistant may do, whether a hygienist can give local anesthesia and under what supervision, and who may take x-rays. We pull your state's rules before setting anything up.</li>
+          <li><span class="role">Patient privacy.</span> Anything that touches real patient records has to run on privacy-compliant systems that will sign a business-associate agreement. Ordinary consumer AI tools will not. That is exactly why the agent-team idea starts as a simulation on made-up data.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>The order to do it in</h2>
+        <p>For a new practice, sequence beats scope. A full schedule is the year-three problem; an empty one is the year-one problem.</p>
+        <ul class="roles">
+          <li><span class="role">Before you open.</span> Pick the practice-management software, then stand up scheduling, patient messaging, reviews, and insurance verification.</li>
+          <li><span class="role">Year one: fill chairs.</span> Never miss a call, book online, confirm, win back anyone who lapses, and gather reviews. This is the revenue lever while the schedule has room.</li>
+          <li><span class="role">Once you have volume.</span> Add the back-office automation (claims, aging accounts) and the clinical-paperwork tools (note capture, x-ray flagging).</li>
+          <li><span class="role">Later.</span> Deeper clinical assistance, each tool earning more independence only after it has proven itself on low-risk work first.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>The agent-team version</h2>
+        <p>The most ambitious form of this replaces a stack of separate tools with a single coordinated team of AI agents that mirrors the org chart you would otherwise hire.</p>
+<pre class="chart">              OWNER-DENTIST (you, final say)
+                        |
+            OFFICE-MANAGER AGENT
+     (coordinates the team, surfaces the numbers,
+      asks you before anything leaves the building)
+                        |
+   ---------------------+----------------------
+   |        |        |         |        |
+ Reception Insurance Billing   Recall   Reviews
+ &amp; booking                              &amp; marketing
+                    |
+          Treatment-coordination agent
+        (preps the case; you close it)</pre>
+        <p>Two ways to run it, and the order is not optional:</p>
+        <ul class="roles">
+          <li><span class="role">Step one: a simulation.</span> We build the whole team on made-up patients and let it run, so you can watch your practice's operation work before you have hired anyone. It runs on ordinary infrastructure because no real patient data is involved, and it doubles as the blueprint for the real thing.</li>
+          <li><span class="role">Step two, if you want it: the real thing.</span> A version that touches live patient records has to move onto privacy-compliant infrastructure and connect to your real software. It is a bigger build, and for a single new practice, buying proven tools first is usually the smarter first move. The agent team is most powerful if it becomes a repeatable model across practices.</li>
+        </ul>
+        <p>Either way, every agent starts by drafting and asking for your approval, and earns more independence only as it proves out, beginning with the reversible, low-stakes work.</p>
+      </section>
+    </main>
+
+    <a class="back" href="/briefs/dental-practice/">Back to the summary</a>
+
+    <footer>
+      <span>What are we capable of?</span>
+      <span>dental-practice</span>
+    </footer>
+  </div>
+</body>
+</html>

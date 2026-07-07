@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>How much of a dental practice can AI run? | What are we capable of?</title>
+  <meta name="description" content="A map of how much of a new dental practice's work AI can automate: what it can run, what it assists, and what stays human.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="How much of a dental practice can AI run?">
+  <meta property="og:description" content="What AI can run, what it assists, and what stays human in a dental practice. An early map.">
+  <meta property="og:image" content="/og.png">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1a1a1a;
+      --ink-2: #44474a;
+      --ink-3: #686d71;
+      --rule: #e6e6e3;
+      --bg: #ffffff;
+      --soft: #f7f7f5;
+      --run: #3f7d5c;
+      --assist: #b7862f;
+      --human: #5b6470;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0; background: var(--bg); color: var(--ink);
+      font-family: var(--sans); font-size: 17px; line-height: 1.55;
+      -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+      font-feature-settings: "kern" 1, "liga" 1;
+    }
+    .skip-link { position: absolute; left: -9999px; top: 0; z-index: 100; background: var(--ink); color: var(--bg); padding: 10px 16px; text-decoration: none; }
+    .skip-link:focus { left: 8px; top: 8px; }
+    .page { max-width: 760px; margin: 0 auto; padding: 52px 24px 92px; }
+    header { margin-bottom: 12px; }
+    .eyebrow { margin: 0 0 12px; color: var(--ink-3); font-family: var(--mono); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+    h1 { margin: 0; max-width: 20ch; font-size: clamp(34px, 6vw, 56px); line-height: .99; letter-spacing: -0.035em; font-weight: 650; text-wrap: balance; }
+    .lede { margin: 24px 0 0; max-width: 60ch; color: var(--ink-2); font-size: 19px; line-height: 1.45; text-wrap: pretty; }
+    main { display: block; }
+    section { padding: 34px 0; border-top: 1px solid var(--rule); }
+    section:first-child { border-top: 0; padding-top: 30px; }
+    h2 { margin: 0 0 16px; font-size: 20px; line-height: 1.2; letter-spacing: -0.01em; font-weight: 650; }
+    p { margin: 0 0 14px; max-width: 62ch; text-wrap: pretty; }
+    p:last-child { margin-bottom: 0; }
+    strong { font-weight: 650; }
+    .lead-line { font-size: 19px; color: var(--ink); max-width: 60ch; }
+    a { color: var(--human); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+    a:hover { color: var(--ink); }
+    .buckets { margin: 20px 0 18px; display: flex; flex-direction: column; gap: 12px; }
+    .bucket { border: 1px solid var(--rule); border-left: 3px solid var(--c); background: var(--soft); padding: 15px 18px; }
+    .bucket.run { --c: var(--run); }
+    .bucket.assist { --c: var(--assist); }
+    .bucket.human { --c: var(--human); }
+    .bucket .lbl { font-weight: 650; margin: 0 0 2px; }
+    .bucket .note { color: var(--ink-3); font-weight: 400; font-size: 15px; }
+    .bucket ul { margin: 9px 0 0; padding: 0; list-style: none; color: var(--ink-2); font-size: 15.5px; }
+    .bucket li { position: relative; padding: 2px 0 2px 15px; }
+    .bucket li::before { content: ""; position: absolute; left: 0; top: 11px; width: 5px; height: 5px; border-radius: 50%; background: var(--c); opacity: .75; }
+    .more { margin: 20px 0 0; font-size: 16px; }
+    ul.plain { margin: 14px 0 14px; padding: 0; list-style: none; max-width: 62ch; }
+    ul.plain li { padding: 0 0 12px; border-bottom: 1px solid var(--rule); margin-bottom: 12px; }
+    ul.plain li:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+    footer { margin-top: 30px; padding-top: 16px; border-top: 1px solid var(--rule); color: var(--ink-3); display: flex; justify-content: space-between; gap: 16px; font-size: 12px; }
+    @media (max-width: 640px) {
+      body { font-size: 16px; }
+      .page { padding: 32px 18px 64px; }
+      h1 { font-size: 34px; }
+      .lede { font-size: 17px; line-height: 1.42; }
+      .lead-line { font-size: 17px; }
+      section { padding: 26px 0; }
+      footer { display: block; }
+      footer span { display: block; margin-bottom: 4px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <div class="page">
+    <header>
+      <p class="eyebrow">Direct-link brief | July 7, 2026</p>
+      <h1>How much of a dental practice can AI run?</h1>
+      <p class="lede">A first map for your practice, Mohi. It is built on outside research into how a general practice works, not a read of your specific plan, so treat the details as a starting point we calibrate together.</p>
+    </header>
+
+    <main id="main">
+      <section>
+        <h2>The short answer</h2>
+        <p class="lead-line">A practice is really two businesses stacked on top of each other.</p>
+        <p>One is the clinical work. A licensed person has to be in the room, and the law reserves diagnosis and any irreversible treatment to you. Software cannot do that part. The other is the operation wrapped around it: the phones, the schedule, insurance, billing, treatment presentation, marketing, the back office. Almost none of that requires a license.</p>
+        <p>So the answer splits. AI can carry a large share of the administrative operation, and it can lift the paperwork off the clinical work (charting, reading x-rays, designing crowns) while you still make every call. It cannot automate the billable clinical act, which is where the revenue is physically produced. The win is leverage and a much smaller admin load.</p>
+        <p>One thing worth saying up front, because it changes what to automate first: a new practice's real problem in year one is filling chairs. In the ADA's own 2025 data, about a third of dentists said they were not busy enough. Efficiency is a year-three problem. So the first automation to reach for is the front of the funnel, the part that turns a stranger's phone call into a booked, kept appointment.</p>
+      </section>
+
+      <section>
+        <h2>The whole operation, in three buckets</h2>
+        <p>Sorted by how much AI can take off your plate today.</p>
+        <div class="buckets">
+          <div class="bucket run">
+            <p class="lbl">AI can run it <span class="note">you set the rules and handle the exceptions</span></p>
+            <ul>
+              <li>Answering the phone, booking, and after-hours calls</li>
+              <li>Online scheduling and filling cancellations</li>
+              <li>Appointment reminders and confirmations</li>
+              <li>Winning back lapsed patients (recall and reactivation)</li>
+              <li>New-patient intake and forms</li>
+              <li>Insurance eligibility checks (one of the biggest front-desk time sinks)</li>
+              <li>Submitting claims, review requests, patient statements</li>
+            </ul>
+          </div>
+          <div class="bucket assist">
+            <p class="lbl">AI assists, you decide <span class="note">the law and good judgment keep you in the loop</span></p>
+            <ul>
+              <li>Reading x-rays: it flags, you diagnose</li>
+              <li>Clinical notes and perio charting: it captures, you sign</li>
+              <li>Crown and aligner design: it drafts, you approve</li>
+              <li>Presenting treatment plans and financing: it preps, you close</li>
+              <li>Insurance denials and appeals: it assembles, you send</li>
+            </ul>
+          </div>
+          <div class="bucket human">
+            <p class="lbl">Stays human <span class="note">licensed, physical, yours</span></p>
+            <ul>
+              <li>Diagnosis and the treatment plan itself</li>
+              <li>The exam, anesthesia, drilling and prep</li>
+              <li>Extractions, implants, root canals, cementation</li>
+              <li>Hygiene: the actual cleaning and scaling</li>
+            </ul>
+          </div>
+        </div>
+        <p>For a new practice the order matters. Start with the front of the funnel: a system that never misses a call, books online, confirms, and wins back lapsed patients, plus automated insurance verification. Add the back-office and clinical-paperwork tools once you have real volume.</p>
+        <p class="more"><a href="/briefs/dental-practice/details.html">See the detailed map: the team, the org chart, and the agent-team version in full.</a></p>
+      </section>
+
+      <section>
+        <h2>The more ambitious version</h2>
+        <p>This is the part we are most interested in building for you.</p>
+        <p>Instead of buying six separate tools, you can model your entire front office as a small team of AI agents: one on reception and booking, one on insurance, one on billing, one on recall, one on reviews, with an office-manager agent coordinating them and you as the owner on top. It is the same org chart you would hire, run by software.</p>
+        <p>The honest catch: anything touching real patient records has to run on privacy-compliant infrastructure, which an ordinary AI subscription is not. So the right first step is a simulation. We build the whole agent team on made-up patients and let it run, so you can watch your practice's operation work before you have hired anyone or seen a patient. That costs almost nothing, and it doubles as the blueprint for the real thing if you decide to build it.</p>
+      </section>
+
+      <section>
+        <h2>What would make this real for you</h2>
+        <p>A fair caveat: this is an outside look at how a general practice works, not a read on your specific plan. Four things would sharpen it into something built for you.</p>
+        <ul class="plain">
+          <li><strong>Your state.</strong> What a hygienist or assistant may legally do, and how insurance works, varies by state. That sets the exact line between what is automatable and what is not.</li>
+          <li><strong>Hygiene from day one, or not.</strong> That changes your staffing and your whole recall engine.</li>
+          <li><strong>Which practice-management software you will run.</strong> It decides what connects to what.</li>
+          <li><strong>What a win looks like to you.</strong> Running with a smaller team, buying back your own time, a smoother patient experience, or lower cost. Each one points at a different first move.</li>
+        </ul>
+        <p>Whenever you want, let's sit down and we will tailor this to your actual practice. If it is useful, we will build the simulation so you can see it running.</p>
+      </section>
+    </main>
+
+    <footer>
+      <span>What are we capable of?</span>
+      <span>dental-practice</span>
+    </footer>
+  </div>
+</body>
+</html>

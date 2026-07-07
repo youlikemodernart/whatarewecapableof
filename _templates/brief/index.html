@@ -4,76 +4,235 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>Project Brief: CLIENT</title>
-  <meta name="description" content="Internal project brief.">
+  <title>Brief: CLIENT</title>
+  <meta name="description" content="Direct-link project brief.">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <!-- Briefs are self-contained internal documents (single column, inline styles). -->
+  <!--
+    Template class: prose document / review memo.
+    Default posture: System Minimalism.
+
+    Use this for direct-link briefs, internal/public-safe memos, review packets,
+    and advisory pages that should read like documents.
+
+    Keep by default:
+    - about 62ch document measure, with 640px as the outer bound if text measure is constrained.
+    - small document heading, quiet lede, muted metadata.
+    - ordinary prose as prose.
+    - tables only when the content needs rows and columns.
+    - color only for links, warnings, status, or source state.
+
+    Do not add by default:
+    - hero headers, stat strips, decorative card grids, pill badges, app shells,
+      gradient backgrounds, ornamental image blocks, or editorial display type.
+
+    If the workboard says the artifact is a public brand page, proposal, deck,
+    marketing page, or other brand-polished artifact, use the proposal template
+    or a named taste profile instead of this brief template.
+  -->
   <style>
-    :root { color-scheme: light; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; max-width: 680px; margin: 56px auto; padding: 0 24px 96px; color: #1a1a1a; line-height: 1.55; font-size: 15px; background: #fff; -webkit-text-size-adjust: 100%; }
-    .meta { font-size: 12px; color: #777; border-bottom: 1px solid #eee; padding-bottom: 12px; margin-bottom: 30px; }
-    .meta b { color: #444; font-weight: 600; }
-    .note { font-size: 12px; color: #999; margin-top: 4px; }
-    h1 { font-size: 22px; line-height: 1.2; margin: 0 0 .35em; letter-spacing: -0.01em; }
-    .sub { font-size: 15px; color: #555; margin: 0; }
-    h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: #888; margin: 2.6em 0 .8em; font-weight: 600; }
-    h3 { font-size: 15px; line-height: 1.35; margin: 1.4em 0 .45em; font-weight: 600; color: #333; }
-    p { margin: 0 0 1em; }
-    ul { margin: 0 0 1em; padding-left: 1.3em; } li { margin-bottom: .35em; }
-    section { margin: 0 0 6px; }
-    a { color: #1a5fb4; text-decoration: underline; }
-    figure { margin: 1.4em 0 .4em; }
-    figure img { display: block; width: 100%; height: auto; border: 1px solid #ededed; border-radius: 2px; }
-    figcaption { font-size: 12px; color: #777; margin-top: 8px; line-height: 1.45; }
-    .spec { border-top: 1px solid #eee; margin: 1.2em 0; font-size: 14px; }
-    .spec div { display: flex; gap: 16px; padding: 8px 0; border-bottom: 1px solid #eee; }
-    .spec dt { flex: 0 0 132px; color: #888; margin: 0; } .spec dd { margin: 0; color: #1a1a1a; }
-    footer { margin-top: 48px; padding-top: 14px; border-top: 1px solid #eee; font-size: 12px; color: #999; display: flex; justify-content: space-between; }
+    :root {
+      color-scheme: light;
+      --ink: #1a1a1a;
+      --ink-2: #444;
+      --ink-3: #777;
+      --rule: #eee;
+      --bg: #fff;
+      --link: #1a5fb4;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: #fff;
+      color: #1a1a1a;
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      z-index: 100;
+      background: var(--ink);
+      color: var(--bg);
+      padding: 10px 14px;
+      text-decoration: none;
+    }
+    .skip-link:focus { left: 8px; top: 8px; }
+    .page {
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 60px 24px 88px;
+    }
+    header { margin-bottom: 30px; }
+    .meta {
+      font-size: 12px;
+      color: var(--ink-3);
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: 12px;
+      margin-bottom: 30px;
+      line-height: 1.45;
+    }
+    .meta b { color: var(--ink-2); font-weight: 600; }
+    .note { font-size: 12px; color: var(--ink-3); line-height: 1.45; }
+    h1 {
+      font-size: 22px;
+      line-height: 1.2;
+      margin: 0 0 .35em;
+      letter-spacing: -0.01em;
+      font-weight: 650;
+    }
+    .sub { font-size: 15px; color: var(--ink-2); margin: 0; max-width: 62ch; }
+    section { margin: 0 0 28px; }
+    h2 {
+      font-size: 17px;
+      line-height: 1.25;
+      margin: 2em 0 .5em;
+      letter-spacing: -0.01em;
+      font-weight: 650;
+    }
+    h3 { font-size: 15px; line-height: 1.35; margin: 1.4em 0 .45em; font-weight: 600; color: var(--ink-2); }
+    p { margin: 0 0 1em; max-width: 62ch; }
+    ul, ol { margin: 0 0 1em; padding-left: 1.35em; }
+    li { margin-bottom: .35em; }
+    a { color: var(--link); text-decoration: underline; }
+    strong { font-weight: 600; }
+    code { font-family: var(--mono); font-size: .92em; }
+    .advisory {
+      margin: 1em 0;
+      padding-left: 12px;
+      border-left: 2px solid var(--ink);
+      color: var(--ink-2);
+      font-size: 13px;
+      max-width: 62ch;
+    }
+    .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2em 0;
+      font-size: 13px;
+    }
+    caption {
+      caption-side: top;
+      text-align: left;
+      color: var(--ink-3);
+      font-size: 12px;
+      line-height: 1.45;
+      margin-bottom: 8px;
+    }
+    th, td {
+      border-bottom: 1px solid var(--rule);
+      padding: 8px 10px 8px 0;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { font-weight: 600; color: var(--ink-2); }
+    th:last-child, td:last-child { padding-right: 0; }
+    td.lead-cell { font-weight: 600; }
+    footer {
+      margin-top: 48px;
+      padding-top: 14px;
+      border-top: 1px solid var(--rule);
+      font-size: 12px;
+      color: var(--ink-3);
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+    }
     @media (max-width: 600px) {
-      body { margin: 28px auto; padding: 0 18px 64px; }
-      h1 { font-size: 20px; }
-      .spec div { flex-direction: column; gap: 2px; } .spec dt { flex-basis: auto; }
+      .page { padding: 32px 18px 64px; }
+      header { margin-bottom: 26px; }
+      h1 { font-size: 21px; }
+      table.stack thead { display: none; }
+      table.stack, table.stack tbody, table.stack tr, table.stack td { display: block; width: 100%; }
+      table.stack tr { padding: 12px 0; border-bottom: 1px solid var(--rule); }
+      table.stack td { border-bottom: 0; padding: 5px 0; }
+      table.stack td::before {
+        content: attr(data-label);
+        display: block;
+        font-family: var(--mono);
+        font-size: 11px;
+        line-height: 1.2;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+        margin-bottom: 2px;
+      }
+      table.stack td.lead-cell::before { display: none; }
+      footer { display: block; }
+      footer span { display: block; margin-bottom: 4px; }
     }
   </style>
 </head>
 <body>
-  <div class="meta">
-    <b>Project Brief</b> &nbsp; CLIENT &nbsp;&middot;&nbsp; subject<br>
-    Prepared by Noah Glynn, What are we capable of? &nbsp;&middot;&nbsp; DATE<br>
-    <span class="note">Internal team brief. Direct link only.</span>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <div class="page">
+    <header>
+      <div class="meta">
+        <b>Project Brief</b> &nbsp; CLIENT &nbsp;&middot;&nbsp; subject<br>
+        Prepared by What are we capable of? &nbsp;&middot;&nbsp; DATE<br>
+        <span class="note">Direct link only. State whether this is internal, public-safe, noindex, draft, or approved.</span>
+      </div>
+      <h1>Project title</h1>
+      <p class="sub">One-line framing of the work.</p>
+    </header>
+
+    <main id="main">
+      <section>
+        <h2>Bottom line</h2>
+        <p>State the answer in one paragraph. If the page is advisory, say what it can and cannot be used for.</p>
+        <p class="advisory"><strong>Use boundary:</strong> state the approval, reliance, source, or external-action boundary in plain language.</p>
+      </section>
+
+      <section>
+        <h2>What matters</h2>
+        <p>Use short paragraphs. Do not wrap ordinary prose in cards.</p>
+        <ul>
+          <li>Point that changes the decision.</li>
+          <li>Open question that blocks reliance.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Optional table</h2>
+        <p class="note">Use a table only when rows and columns clarify the brief.</p>
+        <div class="table-wrap">
+          <table class="stack">
+            <caption>Caption that states what the table includes and excludes.</caption>
+            <thead>
+              <tr>
+                <th scope="col">Item</th>
+                <th scope="col">Value</th>
+                <th scope="col">Note</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="lead-cell" data-label="Item">Example</td>
+                <td data-label="Value">Value</td>
+                <td data-label="Note">Plain-language note.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>Next gate</h2>
+        <p>State the decision, approval, or verification needed before this page can advance.</p>
+      </section>
+    </main>
+
+    <footer>
+      <span>What are we capable of?</span>
+      <span>YYYY</span>
+    </footer>
   </div>
-
-  <main>
-    <h1>Project title</h1>
-    <p class="sub">One-line framing of the work.</p>
-
-    <section>
-      <h2>The opportunity</h2>
-      <p>What this is and why it matters.</p>
-    </section>
-
-    <section>
-      <h2>What we are making</h2>
-      <dl class="spec">
-        <div><dt>Field</dt><dd>Value</dd></div>
-      </dl>
-    </section>
-
-    <section>
-      <h2>Reference</h2>
-      <figure>
-        <!-- Always set real width/height (intrinsic px) so the box is reserved (CLS). -->
-        <img src="img/example.jpg" width="1600" height="1066" alt="Describe what the image shows.">
-        <figcaption>Caption.</figcaption>
-      </figure>
-    </section>
-  </main>
-
-  <footer>
-    <span>What are we capable of?</span>
-    <span>2026</span>
-  </footer>
 </body>
 </html>

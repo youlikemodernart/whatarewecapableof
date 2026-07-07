@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Architecture Firm Outline | What are we capable of?</title>
+  <meta name="description" content="A working outline for mapping an architecture office's recurring work and turning each stable role into an agent with a leash, sources, artifacts, and approval gates.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Architecture Firm Outline">
+  <meta property="og:description" content="Mapping an architecture office's recurring work and turning each stable role into an agent with a leash, sources, artifacts, and approval gates.">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1a1a1a;
+      --ink-2: #44474a;
+      --ink-3: #686d71;
+      --rule: #e6e6e3;
+      --rule-dark: #1a1a1a;
+      --bg: #ffffff;
+      --soft: #f7f7f5;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 17px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      font-feature-settings: "kern" 1, "liga" 1;
+    }
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      z-index: 100;
+      background: var(--ink);
+      color: var(--bg);
+      padding: 10px 16px;
+      text-decoration: none;
+    }
+    .skip-link:focus { left: 8px; top: 8px; }
+    .page {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 52px 24px 92px;
+    }
+    header { margin-bottom: 12px; }
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--ink-3);
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin: 0;
+      max-width: 20ch;
+      font-size: clamp(34px, 6vw, 56px);
+      line-height: .99;
+      letter-spacing: -0.035em;
+      font-weight: 650;
+      text-wrap: balance;
+    }
+    .lede {
+      margin: 24px 0 0;
+      max-width: 60ch;
+      color: var(--ink-2);
+      font-size: 19px;
+      line-height: 1.45;
+      text-wrap: pretty;
+    }
+    main { display: block; }
+    section {
+      padding: 34px 0;
+      border-top: 1px solid var(--rule);
+    }
+    section:first-child { border-top: 0; padding-top: 30px; }
+    h2 {
+      margin: 0 0 16px;
+      font-size: 20px;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      font-weight: 650;
+    }
+    h3 {
+      margin: 26px 0 6px;
+      font-size: 16px;
+      line-height: 1.35;
+      font-weight: 650;
+    }
+    p { margin: 0 0 14px; max-width: 62ch; text-wrap: pretty; }
+    p:last-child { margin-bottom: 0; }
+    strong { font-weight: 650; }
+    .subtle { color: var(--ink-3); }
+    ul, ol { margin: 0 0 16px; padding-left: 1.3em; max-width: 66ch; }
+    li { margin: 0 0 7px; padding-left: .12em; }
+    li:last-child { margin-bottom: 0; }
+    code {
+      font-family: var(--mono);
+      font-size: .88em;
+      color: var(--ink-2);
+      background: var(--soft);
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+    .spine {
+      margin: 6px 0 18px;
+      padding: 16px 18px;
+      border: 1px solid var(--rule);
+      background: var(--soft);
+      font-family: var(--mono);
+      font-size: 13.5px;
+      line-height: 1.95;
+      color: var(--ink);
+      max-width: none;
+    }
+    .spine .arrow { color: var(--ink-3); padding: 0 4px; }
+    .candidates { font-family: var(--mono); font-size: .95em; }
+    ol.defs li, ul.defs li { margin-bottom: 9px; }
+    .callout {
+      margin: 26px 0 0;
+      padding: 16px 18px;
+      border: 1px solid var(--rule);
+      border-left: 3px solid var(--ink);
+      background: var(--soft);
+      color: var(--ink-2);
+      font-size: 16px;
+      line-height: 1.5;
+      max-width: 64ch;
+    }
+    .callout strong { color: var(--ink); }
+    footer {
+      margin-top: 30px;
+      padding-top: 16px;
+      border-top: 1px solid var(--rule);
+      color: var(--ink-3);
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      font-size: 12px;
+    }
+    @media (max-width: 640px) {
+      body { font-size: 16px; }
+      .page { padding: 32px 18px 64px; }
+      h1 { font-size: 34px; }
+      .lede { font-size: 17px; line-height: 1.42; }
+      section { padding: 26px 0; }
+      .spine { font-size: 13px; line-height: 1.9; }
+      footer { display: block; }
+      footer span { display: block; margin-bottom: 4px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <div class="page">
+    <header>
+      <p class="eyebrow">Direct-link brief | July 6, 2026</p>
+      <h1>Architecture Firm Outline</h1>
+      <p class="lede">Yes. The right move is to treat an architecture office the same way we treated publishing and gallery: first map the firm's recurring work, then turn each stable role into an agent with a leash, sources, artifacts, and approval gates.</p>
+    </header>
+
+    <main id="main">
+      <section id="core-mapping-pattern">
+        <h2>Core mapping pattern</h2>
+        <p>An architecture office has one workflow spine:</p>
+        <p class="spine">lead<span class="arrow">&rarr;</span>fit check<span class="arrow">&rarr;</span>proposal<span class="arrow">&rarr;</span>contract<span class="arrow">&rarr;</span>programming<span class="arrow">&rarr;</span>schematic design<span class="arrow">&rarr;</span>design development<span class="arrow">&rarr;</span>construction documents<span class="arrow">&rarr;</span>permit/bid + construction administration<span class="arrow">&rarr;</span>closeout</p>
+        <p>Each phase creates recurring work objects:</p>
+        <ul>
+          <li>lead record</li>
+          <li>client brief</li>
+          <li>proposal and fee model</li>
+          <li>contract and scope matrix</li>
+          <li>project schedule</li>
+          <li>consultant roster</li>
+          <li>design decision log</li>
+          <li>code and zoning checklist</li>
+          <li>Revit/BIM model or drawing set</li>
+          <li>permit package</li>
+          <li>RFI/submittal log</li>
+          <li>field report</li>
+          <li>punch list</li>
+          <li>project profitability and lessons-learned record</li>
+        </ul>
+        <p>Paperclip maps well because every one of those can become an issue tree.</p>
+      </section>
+
+      <section id="autonomy-gradient">
+        <h2>Autonomy gradient</h2>
+
+        <h3>Tier 1: high autonomy, light review</h3>
+        <p class="subtle">Rule-bound, checkable work.</p>
+        <ul>
+          <li>meeting notes and action logs</li>
+          <li>CRM cleanup</li>
+          <li>project folders and naming</li>
+          <li>timesheet reminders</li>
+          <li>budget dashboards</li>
+          <li>drawing index checks</li>
+          <li>permit checklist assembly</li>
+          <li>RFI and submittal log maintenance</li>
+          <li>product data collection</li>
+          <li>template proposals</li>
+          <li>closeout archive packets</li>
+        </ul>
+
+        <h3>Tier 2: assisted, human decides</h3>
+        <p class="subtle">Judgment-adjacent work.</p>
+        <ul>
+          <li>project-fit analysis</li>
+          <li>fee and staffing scenarios</li>
+          <li>programming synthesis</li>
+          <li>precedent research</li>
+          <li>code interpretation drafts</li>
+          <li>consultant scope comparison</li>
+          <li>SD/DD/CD phase readiness checks</li>
+          <li>design option summaries</li>
+          <li>material or assembly comparisons</li>
+          <li>permit response drafts</li>
+          <li>proposal positioning</li>
+        </ul>
+
+        <h3>Tier 3: human-led</h3>
+        <p class="subtle">The firm's moat and liability core.</p>
+        <ul>
+          <li>design authorship</li>
+          <li>client relationship</li>
+          <li>final scope, fee, and contract terms</li>
+          <li>consultant selection</li>
+          <li>sealed documents</li>
+          <li>code compliance sign-off</li>
+          <li>construction observation judgment</li>
+          <li>pricing and risk decisions</li>
+          <li>hiring and firing</li>
+          <li>external submissions and sends</li>
+          <li>anything that creates professional liability</li>
+        </ul>
+      </section>
+
+      <section id="where-this-fits">
+        <h2>Where this fits in the skill system</h2>
+        <p>I would make this a <strong>standalone, crosslinked</strong> skill, probably:</p>
+        <p class="candidates"><code>architecture-practice</code> or <code>architecture-office-operations</code></p>
+        <p>It should not be buried inside <code>arch-construction-docs</code>. That skill is about producing architectural documents. This new layer would be about running the practice.</p>
+        <p>Crosslinks:</p>
+        <ul class="defs">
+          <li><code>arch-construction-docs</code>: CD production, drawing sets, BIM/CAD standards, QA, code documentation.</li>
+          <li><code>construction-technology</code>: delivery systems, IPD, consultants, BIM/VDC, construction team structure.</li>
+          <li><code>residential-architecture-construction</code>: residential code and building scope.</li>
+          <li><code>business-consulting</code>: expert-firm economics, positioning, service operations, org design, founder bottleneck.</li>
+          <li><code>contract-writing</code>: scope, proposals, AIA-style agreement review support.</li>
+          <li><code>bookkeeping</code>: invoicing, WIP, project profitability, monthly close.</li>
+          <li><code>paperclip-platform</code>: runtime pattern, company, agents, issue tree, gates, audit log.</li>
+        </ul>
+      </section>
+
+      <section id="thin-areas">
+        <h2>Thin areas to research before this becomes strong</h2>
+        <p>Our current archive gives us a seed. The missing substrate is architecture-practice management:</p>
+        <ol class="defs">
+          <li><strong>Firm economics</strong>: fees, utilization, project profitability, WIP, cash flow, overhead, staffing ratios.</li>
+          <li><strong>Sales and positioning</strong>: how architects get work, referrals, competitions, developer relationships, niche formation.</li>
+          <li><strong>Proposal and contract structure</strong>: scope boundaries, additional services, exclusions, standard agreements, liability.</li>
+          <li><strong>Project management</strong>: phase gates, workplans, deliverables matrix, consultant schedule, budget-to-actual.</li>
+          <li><strong>CA and liability</strong>: RFIs, submittals, site observations, change orders, field reports, punch lists.</li>
+          <li><strong>Permitting and entitlement</strong>: zoning, planning, building department workflow, expediters.</li>
+          <li><strong>BIM management</strong>: model standards, LOD, coordination, template libraries, QA protocols.</li>
+          <li><strong>Career ladder and staffing</strong>: principal, associate, project architect, designer, job captain, BIM manager, interns.</li>
+          <li><strong>Consultant ecosystem</strong>: structural, MEP, civil, landscape, code, envelope, cost estimator, renderer.</li>
+          <li><strong>Operating partner split</strong>: what a non-architect can own without blurring licensure, authorship, or liability.</li>
+        </ol>
+      </section>
+
+      <section id="recommended-build-path">
+        <h2>Recommended build path</h2>
+        <ol>
+          <li>Create the architecture office map: role chart, workflow spine, trust gradient, external gates.</li>
+          <li>Do role deep dives: one memo per role with recurring work, artifacts, metrics, sources, failure modes, AI fit.</li>
+          <li>Build the minimal Paperclip company: Principal, Operating Partner, Project Manager, Proposal/Fee, BIM/CD QA, Finance.</li>
+          <li>Add technical agents only after the operating spine works: Code, Specs, CA, Consultant Coordination.</li>
+          <li>Keep design and liability human by default.</li>
+        </ol>
+        <p class="callout"><strong>The key principle:</strong> agents should run the apparatus around the architect, not replace the architect. The valuable firm is a human design practice with an unusually disciplined operating system.</p>
+      </section>
+    </main>
+
+    <footer>
+      <span>What are we capable of?</span>
+      <span>arch-practice</span>
+    </footer>
+  </div>
+</body>
+</html>

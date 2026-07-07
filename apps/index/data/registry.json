@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-06-22",
+  "generatedAt": "2026-07-07",
   "source": "Curated starter registry from repo routes and read-only Vercel scope observations. Rows marked needs_review require live verification before being treated as complete inventory.",
   "items": [
     {
@@ -1257,6 +1257,178 @@
       "description": "Private link map for live pages, tools, proposals, briefs, and subdomains.",
       "notes": "Natural-language aliases: windex and index. URL stays index.whatarewecapableof.com.",
       "lifecycle": "active"
+    },
+    {
+      "id": "brief-arch-practice",
+      "title": "Architecture firm outline",
+      "url": "https://whatarewecapableof.com/briefs/arch-practice/",
+      "path": "/briefs/arch-practice/",
+      "category": "brief",
+      "group": "Briefs",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:briefs/arch-practice/index.html",
+      "tags": [
+        "brief",
+        "architecture-practice",
+        "outline"
+      ],
+      "description": "Direct-link outline for mapping an architecture office.",
+      "lifecycle": "active",
+      "notes": "Added from Windex route-map classification on 2026-07-07; source robots noindex,nofollow."
+    },
+    {
+      "id": "brief-otto-labor-estimate",
+      "title": "Otto labor estimate brief",
+      "url": "https://whatarewecapableof.com/briefs/otto-labor-estimate-070626/",
+      "path": "/briefs/otto-labor-estimate-070626/",
+      "category": "brief",
+      "group": "Briefs",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:briefs/otto-labor-estimate-070626/index.html",
+      "tags": [
+        "brief",
+        "otto",
+        "labor-estimate",
+        "rammed-earth"
+      ],
+      "description": "Direct-link rammed-earth labor estimate brief for Otto.",
+      "lifecycle": "active",
+      "notes": "Added from Windex route-map classification on 2026-07-07; production returned 200 and source robots noindex,nofollow."
+    },
+    {
+      "id": "brief-wedding-officiant-kit",
+      "title": "Wedding Officiant Kit brief",
+      "url": "https://whatarewecapableof.com/briefs/wedding-officiant-kit/",
+      "path": "/briefs/wedding-officiant-kit/",
+      "category": "brief",
+      "group": "Briefs",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:briefs/wedding-officiant-kit/index.html",
+      "tags": [
+        "brief",
+        "wedding-officiant-kit",
+        "launch"
+      ],
+      "description": "Direct-link launch brief for the Wedding Officiant Kit.",
+      "lifecycle": "active",
+      "notes": "Added from Windex route-map classification on 2026-07-07; production returned 200 and source robots noindex,nofollow."
+    },
+    {
+      "id": "proposal-belhaus-publishing",
+      "title": "Belhaus publishing proposal",
+      "url": "https://whatarewecapableof.com/proposals/belhaus-publishing/",
+      "path": "/proposals/belhaus-publishing/",
+      "category": "proposal",
+      "group": "Proposals",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/belhaus-publishing/index.html",
+      "tags": [
+        "proposal",
+        "belhaus",
+        "publishing"
+      ],
+      "description": "Direct-link proposal for a BELHAUS publishing house.",
+      "lifecycle": "active",
+      "notes": "Added from Windex route-map classification on 2026-07-07; production returned 200 and source robots noindex,nofollow."
+    },
+    {
+      "id": "proposal-caroline-ridings-art-management",
+      "title": "Caroline Ridings art management proposal",
+      "url": "https://whatarewecapableof.com/proposals/caroline-ridings-art-management/",
+      "path": "/proposals/caroline-ridings-art-management/",
+      "category": "proposal",
+      "group": "Proposals",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/caroline-ridings-art-management/index.html",
+      "tags": [
+        "proposal",
+        "caroline-ridings",
+        "art-management"
+      ],
+      "description": "Direct-link proposal for art management, catalog operations, commerce, and launch planning.",
+      "lifecycle": "active",
+      "notes": "Added from Windex route-map classification on 2026-07-07; production returned 200 and source robots noindex,nofollow."
+    },
+    {
+      "id": "proposal-kaitlyn-wolfe-seo",
+      "title": "Kaitlyn Wolfe SEO proposal",
+      "url": "https://whatarewecapableof.com/proposals/kaitlyn-wolfe-seo/",
+      "path": "/proposals/kaitlyn-wolfe-seo/",
+      "category": "proposal",
+      "group": "Proposals",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/kaitlyn-wolfe-seo/index.html",
+      "tags": [
+        "proposal",
+        "kaitlyn-wolfe",
+        "seo",
+        "search"
+      ],
+      "description": "Direct-link proposal reviewing how Kaitlyn Wolfe shows up in search.",
+      "lifecycle": "active",
+      "notes": "Added from Windex route-map classification on 2026-07-07; production returned 200 and source robots noindex,nofollow."
+    },
+    {
+      "id": "proposal-shop-my-warehouse-seo",
+      "title": "Shop My Warehouse SEO proposal",
+      "url": "https://whatarewecapableof.com/proposals/shop-my-warehouse-seo/",
+      "path": "/proposals/shop-my-warehouse-seo/",
+      "category": "proposal",
+      "group": "Proposals",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/shop-my-warehouse-seo/index.html",
+      "tags": [
+        "proposal",
+        "shop-my-warehouse",
+        "seo",
+        "search"
+      ],
+      "description": "Direct-link proposal reviewing how Shop My Warehouse shows up in search.",
+      "lifecycle": "active",
+      "notes": "Added from Windex route-map classification on 2026-07-07; production returned 200 and source robots noindex,nofollow."
+    },
+    {
+      "id": "proposal-unitus-seo",
+      "title": "Unitus SEO proposal",
+      "url": "https://whatarewecapableof.com/proposals/unitus-seo/",
+      "path": "/proposals/unitus-seo/",
+      "category": "proposal",
+      "group": "Proposals",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/unitus-seo/index.html",
+      "tags": [
+        "proposal",
+        "unitus",
+        "seo",
+        "traffic-readiness"
+      ],
+      "description": "Direct-link Unitus SEO and traffic-readiness proposal.",
+      "lifecycle": "active",
+      "notes": "Added from Windex route-map classification on 2026-07-07; production returned 200 and source robots noindex,nofollow."
     }
   ],
   "organizationModel": {

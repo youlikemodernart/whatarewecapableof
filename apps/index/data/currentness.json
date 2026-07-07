@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "generatedAt": "2026-07-07T19:56:16.022Z",
+  "registry": {
+    "count": 73,
+    "generatedAt": "2026-07-07"
+  },
+  "exclusions": {
+    "count": 5
+  },
+  "summary": {
+    "candidateCount": 0,
+    "excludedCount": 4,
+    "rawCandidateCount": 4,
+    "actionRequired": false
+  },
+  "candidates": [],
+  "excluded": [
+    {
+      "id": "-templates-brief",
+      "title": " Templates Brief",
+      "url": "https://whatarewecapableof.com/_templates/brief/",
+      "path": "/_templates/brief/",
+      "category": "page",
+      "group": "Needs review",
+      "status": "needs_review",
+      "audience": "internal",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "lifecycle": "active",
+      "source": "repo:_templates/brief/index.html",
+      "tags": [
+        "candidate"
+      ],
+      "description": "Generated candidate. Parent review required before adding to the curated registry.",
+      "exclusionId": "template-brief-source-route",
+      "reason": "Brief template source route is blocked in production and should not be a Windex link.",
+      "reviewedAt": "2026-07-07"
+    },
+    {
+      "id": "-templates-proposal",
+      "title": " Templates Proposal",
+      "url": "https://whatarewecapableof.com/_templates/proposal/",
+      "path": "/_templates/proposal/",
+      "category": "page",
+      "group": "Needs review",
+      "status": "needs_review",
+      "audience": "internal",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "lifecycle": "active",
+      "source": "repo:_templates/proposal/index.html",
+      "tags": [
+        "candidate"
+      ],
+      "description": "Generated candidate. Parent review required before adding to the curated registry.",
+      "exclusionId": "template-proposal-source-route",
+      "reason": "Proposal template source route is blocked in production and should not be a Windex link.",
+      "reviewedAt": "2026-07-07"
+    },
+    {
+      "id": "-templates-tab-guide",
+      "title": " Templates Tab Guide",
+      "url": "https://whatarewecapableof.com/_templates/tab-guide/",
+      "path": "/_templates/tab-guide/",
+      "category": "page",
+      "group": "Needs review",
+      "status": "needs_review",
+      "audience": "internal",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "lifecycle": "active",
+      "source": "repo:_templates/tab-guide/index.html",
+      "tags": [
+        "candidate"
+      ],
+      "description": "Generated candidate. Parent review required before adding to the curated registry.",
+      "exclusionId": "template-tab-guide-source-route",
+      "reason": "Tab guide template/source route is blocked in production and should not be a Windex link.",
+      "reviewedAt": "2026-07-07"
+    },
+    {
+      "id": "apps-fin",
+      "title": "Apps Fin",
+      "url": "https://whatarewecapableof.com/apps/fin/",
+      "path": "/apps/fin/",
+      "category": "tool",
+      "group": "Needs review",
+      "status": "needs_review",
+      "audience": "internal",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "lifecycle": "active",
+      "source": "repo:apps/fin/index.html",
+      "tags": [
+        "candidate"
+      ],
+      "description": "Generated candidate. Parent review required before adding to the curated registry.",
+      "exclusionId": "apps-fin-root-source-route",
+      "reason": "Fin is served from the authenticated fin.whatarewecapableof.com app. The root /apps/fin/ source route is blocked and should not be a Windex link.",
+      "reviewedAt": "2026-06-22"
+    }
+  ]
+}

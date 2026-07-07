@@ -7,6 +7,7 @@ const appRoot = path.resolve(__dirname, '..');
 const repoRoot = path.resolve(appRoot, '../..');
 const registryPath = path.join(appRoot, 'data', 'registry.json');
 const exclusionsPath = path.join(appRoot, 'data', 'exclusions.json');
+const currentnessPath = path.join(appRoot, 'data', 'currentness.json');
 const reportsDir = path.join(repoRoot, '.pi', 'reports');
 
 const allowed = {
@@ -95,6 +96,49 @@ function validateExclusions(exclusions) {
   });
 
   return { ok: true, count: exclusions.items.length };
+}
+
+function currentnessPayload(report) {
+  return {
+    version: 1,
+    generatedAt: report.generatedAt,
+    registry: {
+      count: report.registry.count,
+      generatedAt: report.registry.generatedAt,
+    },
+    exclusions: {
+      count: report.exclusions.count,
+    },
+    summary: report.summary,
+    candidates: report.candidates,
+    excluded: report.excluded,
+  };
+}
+
+function validateCurrentness(currentness, report) {
+  assert(currentness && typeof currentness === 'object', 'Currentness snapshot must be an object.');
+  assert(currentness.version === 1, 'Currentness snapshot version must be 1.');
+  assert(currentness.summary && typeof currentness.summary === 'object', 'Currentness snapshot needs a summary.');
+  assert(Array.isArray(currentness.candidates), 'Currentness snapshot candidates must be an array.');
+  assert(Array.isArray(currentness.excluded), 'Currentness snapshot excluded must be an array.');
+
+  assert(currentness.summary.candidateCount === report.summary.candidateCount, 'Currentness candidate count is stale. Run build-index-registry.mjs --write-currentness.');
+  assert(currentness.summary.excludedCount === report.summary.excludedCount, 'Currentness exclusion count is stale. Run build-index-registry.mjs --write-currentness.');
+  assert(currentness.summary.rawCandidateCount === report.summary.rawCandidateCount, 'Currentness raw candidate count is stale. Run build-index-registry.mjs --write-currentness.');
+  assert(currentness.registry?.count === report.registry.count, 'Currentness registry count is stale. Run build-index-registry.mjs --write-currentness.');
+  assert(currentness.registry?.generatedAt === report.registry.generatedAt, 'Currentness registry date is stale. Run build-index-registry.mjs --write-currentness.');
+  assert(currentness.exclusions?.count === report.exclusions.count, 'Currentness exclusion count is stale. Run build-index-registry.mjs --write-currentness.');
+
+  const reportCandidates = report.candidates.map((item) => item.path).sort().join('\n');
+  const snapshotCandidates = currentness.candidates.map((item) => item.path).sort().join('\n');
+  assert(reportCandidates === snapshotCandidates, 'Currentness candidate paths are stale. Run build-index-registry.mjs --write-currentness.');
+
+  const reportExcluded = report.excluded.map((item) => item.path).sort().join('\n');
+  const snapshotExcluded = currentness.excluded.map((item) => item.path).sort().join('\n');
+  assert(reportExcluded === snapshotExcluded, 'Currentness exclusion paths are stale. Run build-index-registry.mjs --write-currentness.');
+
+  assertNoSecretTerms({ summary: currentness.summary, candidates: currentness.candidates, excluded: currentness.excluded }, 'currentness snapshot');
+  return { ok: true, generatedAt: currentness.generatedAt, candidateCount: currentness.summary.candidateCount, excludedCount: currentness.summary.excludedCount };
 }
 
 function walkIndexRoutes(dir = repoRoot, found = []) {
@@ -257,6 +301,12 @@ function writeReport(report) {
   return { jsonPath, mdPath };
 }
 
+function writeCurrentness(report) {
+  const payload = currentnessPayload(report);
+  fs.writeFileSync(currentnessPath, `${JSON.stringify(payload, null, 2)}\n`);
+  return currentnessPath;
+}
+
 function main() {
   const args = new Set(process.argv.slice(2));
   const report = makeReport();
@@ -266,13 +316,20 @@ function main() {
     reportPaths = writeReport(report);
   }
 
+  let currentnessWritePath = null;
+  if (args.has('--write-currentness')) {
+    currentnessWritePath = writeCurrentness(report);
+  }
+
   if (args.has('--check')) {
-    console.log(JSON.stringify({ ...report.registry, exclusions: report.exclusions }, null, 2));
+    const currentness = readJson(currentnessPath, null);
+    const currentnessSummary = validateCurrentness(currentness, report);
+    console.log(JSON.stringify({ ...report.registry, exclusions: report.exclusions, currentness: currentnessSummary }, null, 2));
     return;
   }
 
   if (args.has('--candidates')) {
-    console.log(JSON.stringify({ ...report, reportPaths }, null, 2));
+    console.log(JSON.stringify({ ...report, reportPaths, currentnessWritePath }, null, 2));
     if (args.has('--fail-on-candidates') && report.summary.candidateCount > 0) process.exitCode = 2;
     return;
   }

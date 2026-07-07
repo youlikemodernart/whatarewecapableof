@@ -1,4 +1,5 @@
 const registry = require('../data/registry.json');
+const currentness = require('../data/currentness.json');
 
 const EDITABLE_FIELDS = ['category', 'lifecycle', 'status'];
 
@@ -43,6 +44,7 @@ function registryPayload(overrides = {}, options = {}) {
     generatedAt: registry.generatedAt,
     source: registry.source,
     items: applyOverridesToItems(registry.items, overrides),
+    currentness,
     overrideCount: overrideCount(overrides),
     persistence: options.persistence || { configured: false },
     ...(Number.isFinite(options.appliedChangeCount) ? { appliedChangeCount: options.appliedChangeCount } : {}),

@@ -512,6 +512,128 @@ button:focus-visible {
 .search-list .index-link { border-bottom: 1px solid var(--line); }
 .search-list .index-link:last-child { border-bottom: 0; }
 
+/* Map: a route-derived tree, closer to the older site-index pattern. */
+.map-results { gap: var(--space-4); }
+
+.map-intro {
+  padding: var(--space-4);
+  display: grid;
+  gap: var(--space-1);
+}
+
+.map-tree {
+  padding: var(--space-4);
+  overflow-x: auto;
+}
+
+.map-node {
+  border-left: 1px solid var(--line);
+  margin-inline-start: var(--space-3);
+  padding-inline-start: var(--space-3);
+}
+
+.map-node.depth-0 {
+  border-left: 0;
+  margin-inline-start: 0;
+  padding-inline-start: 0;
+}
+
+.map-node + .map-node { margin-block-start: var(--space-2); }
+
+.map-node > summary {
+  cursor: pointer;
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  min-height: 28px;
+  list-style: none;
+}
+
+.map-node > summary::-webkit-details-marker { display: none; }
+.map-node > summary::before {
+  content: '+';
+  width: 1.2ch;
+  color: var(--muted);
+  font-family: var(--mono);
+}
+.map-node[open] > summary::before { content: '\2212'; }
+
+.map-segment {
+  font-family: var(--mono);
+  font-size: var(--text-sm);
+  color: var(--ink);
+}
+
+.map-path {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: var(--text-xs);
+  overflow-wrap: anywhere;
+}
+
+.map-items {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0 0 var(--space-2) var(--space-5);
+  list-style: none;
+}
+
+.map-item .index-link {
+  border-bottom: 1px solid var(--line);
+}
+
+.map-children {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.currentness-shelf {
+  display: grid;
+  gap: var(--space-3);
+  padding-block-start: var(--space-4);
+  border-top: 1px solid var(--line);
+}
+
+.currentness-list {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.currentness-row {
+  display: grid;
+  gap: var(--space-1);
+  padding-block: var(--space-2);
+  border-bottom: 1px solid var(--line);
+}
+
+.currentness-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.currentness-title {
+  font-weight: 500;
+}
+
+.currentness-path,
+.currentness-meta {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: var(--text-xs);
+  overflow-wrap: anywhere;
+}
+
+.currentness-note {
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.currentness-row.candidate .currentness-title { color: var(--accent); }
+.currentness-row.excluded .currentness-title { color: var(--ink-soft); }
+
 /* Ledger: the dense scan view. */
 .table-wrap { overflow-x: auto; }
 
@@ -674,5 +796,24 @@ button:focus-visible {
   .button,
   .view-button {
     width: 100%;
+  }
+
+  .map-tree,
+  .map-intro {
+    padding: var(--space-3);
+  }
+
+  .map-node {
+    margin-inline-start: var(--space-2);
+    padding-inline-start: var(--space-2);
+  }
+
+  .map-items {
+    padding-inline-start: var(--space-3);
+  }
+
+  .currentness-head {
+    display: grid;
+    gap: var(--space-1);
   }
 }

@@ -474,6 +474,164 @@ function renderSearchResults(items) {
   refs.results.append(list);
 }
 
+function currentnessData() {
+  return state.registry?.currentness || { summary: {}, candidates: [], excluded: [] };
+}
+
+function currentnessRows(field) {
+  const data = currentnessData();
+  return Array.isArray(data[field]) ? data[field].map((item) => ({ lifecycle: 'active', ...item })) : [];
+}
+
+function routeParts(routePath) {
+  const route = String(routePath || '/').split('?')[0].split('#')[0];
+  return route.replace(/^\/+|\/+$/g, '').split('/').filter(Boolean);
+}
+
+function buildRouteTree(items) {
+  const root = { segment: '/', path: '/', items: [], children: new Map() };
+  sortItems(items).forEach((item) => {
+    const parts = routeParts(item.path || item.url);
+    if (!parts.length) {
+      root.items.push(item);
+      return;
+    }
+
+    let node = root;
+    const route = [];
+    parts.forEach((segment) => {
+      route.push(segment);
+      if (!node.children.has(segment)) {
+        node.children.set(segment, {
+          segment,
+          path: `/${route.join('/')}/`,
+          items: [],
+          children: new Map(),
+        });
+      }
+      node = node.children.get(segment);
+    });
+    node.items.push(item);
+  });
+  return root;
+}
+
+function sortedChildren(node) {
+  const rootOrder = ['blog', 'briefs', 'proposals', 'work', 'apps', 'tools', 'internal', 'pinterest'];
+  return [...node.children.values()].sort((a, b) => {
+    const ai = rootOrder.indexOf(a.segment);
+    const bi = rootOrder.indexOf(b.segment);
+    if (ai !== -1 || bi !== -1) return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+    return a.segment.localeCompare(b.segment);
+  });
+}
+
+function nodeLinkCount(node) {
+  return node.items.length + sortedChildren(node).reduce((sum, child) => sum + nodeLinkCount(child), 0);
+}
+
+function renderMapItem(item) {
+  const row = el('li', 'map-item');
+  row.append(createIndexLink(item, { category: true, lifecycle: true }));
+  return row;
+}
+
+function renderMapNode(node, depth = 0) {
+  const details = document.createElement('details');
+  details.className = `map-node depth-${Math.min(depth, 4)}`;
+  if (depth < 2) details.open = true;
+
+  const summary = document.createElement('summary');
+  const label = el('span', 'map-segment', node.segment === '/' ? 'root' : node.segment);
+  const meta = el('span', 'map-path', `${node.path} · ${nodeLinkCount(node)}`);
+  summary.append(label, meta);
+  details.append(summary);
+
+  if (node.items.length) {
+    const list = el('ul', 'map-items');
+    node.items.forEach((item) => list.append(renderMapItem(item)));
+    details.append(list);
+  }
+
+  const children = sortedChildren(node);
+  if (children.length) {
+    const childWrap = el('div', 'map-children');
+    children.forEach((child) => childWrap.append(renderMapNode(child, depth + 1)));
+    details.append(childWrap);
+  }
+
+  return details;
+}
+
+function renderCurrentnessRow(item, kind) {
+  const row = el('article', `currentness-row ${kind}`);
+  const head = el('div', 'currentness-head');
+  head.append(el('span', 'currentness-title', item.title || item.path));
+  head.append(el('span', 'currentness-path', item.path || item.url));
+  row.append(head);
+
+  const meta = [pretty(item.category), pretty(item.audience), pretty(item.visibility), item.source].filter(Boolean);
+  row.append(el('p', 'currentness-meta', meta.join('  ·  ')));
+  if (kind === 'candidate') {
+    row.append(el('p', 'currentness-note', 'Unmapped route. Classify before publishing to Windex.'));
+  }
+  if (kind === 'excluded') {
+    row.append(el('p', 'currentness-note', item.reason || 'Reviewed exclusion.'));
+  }
+  return row;
+}
+
+function renderCurrentnessShelf(label, rows, kind, emptyText) {
+  const shelf = el('section', `currentness-shelf ${kind}`);
+  const heading = el('div', 'shelf-heading');
+  heading.append(el('h2', null, label));
+  heading.append(el('span', 'category-count', String(rows.length)));
+  shelf.append(heading);
+
+  if (!rows.length) {
+    shelf.append(el('p', 'shelf-note', emptyText));
+    return shelf;
+  }
+
+  const list = el('div', 'currentness-list');
+  rows.forEach((item) => list.append(renderCurrentnessRow(item, kind)));
+  shelf.append(list);
+  return shelf;
+}
+
+function renderMap(items) {
+  refs.results.className = 'results map-results';
+  refs.results.replaceChildren();
+
+  if (state.filters.query) {
+    renderSearchResults(items);
+    return;
+  }
+
+  const data = currentnessData();
+  const candidates = currentnessRows('candidates').filter(matchesFilters);
+  const excluded = currentnessRows('excluded').filter(matchesFilters);
+  const tree = buildRouteTree(items);
+
+  const intro = el('section', 'map-intro panel');
+  intro.append(el('h2', null, 'Route map'));
+  const summary = data.summary || {};
+  const filtersActive = Object.entries(state.filters).some(([key, value]) => key !== 'query' && value !== 'all');
+  const copy = filtersActive
+    ? [`${items.length} registry rows shown`, `${candidates.length} unmapped shown`, `${excluded.length} exclusions shown`]
+    : [`${items.length} registry rows`, `${summary.candidateCount ?? candidates.length} unmapped`, `${summary.excludedCount ?? excluded.length} reviewed exclusions`];
+  if (data.generatedAt) copy.push(`audit ${data.generatedAt.slice(0, 10)}`);
+  intro.append(el('p', 'muted', copy.join(' · ')));
+  refs.results.append(intro);
+
+  const treeWrap = el('section', 'map-tree panel');
+  treeWrap.append(renderMapNode(tree));
+  refs.results.append(treeWrap);
+
+  refs.results.append(renderCurrentnessShelf('Unmapped candidates', candidates, 'candidate', 'No unmapped candidates in the latest bundled audit.'));
+  refs.results.append(renderCurrentnessShelf('Reviewed exclusions', excluded, 'excluded', 'No reviewed exclusions in the latest bundled audit.'));
+}
+
 function renderOverview(items) {
   refs.results.className = 'results overview-results';
   refs.results.replaceChildren();
@@ -659,7 +817,8 @@ function renderCurrentView() {
   });
   renderDraftPanel();
 
-  if (state.view === 'ledger') renderLedger(items);
+  if (state.view === 'map') renderMap(items);
+  else if (state.view === 'ledger') renderLedger(items);
   else if (state.view === 'organize') renderOrganize(items);
   else renderOverview(items);
 }
@@ -775,7 +934,8 @@ async function loadRegistry() {
     const registry = await getJson('/api/registry');
     state.registry = registry;
     state.items = Array.isArray(registry.items) ? registry.items : [];
-    refs.updatedAt.textContent = registry.generatedAt ? `Updated ${registry.generatedAt}` : '';
+    const currentness = registry.currentness?.generatedAt ? ` · Audit ${registry.currentness.generatedAt.slice(0, 10)}` : '';
+    refs.updatedAt.textContent = registry.generatedAt ? `Updated ${registry.generatedAt}${currentness}` : '';
     renderFilters();
     renderCurrentView();
   } catch (error) {

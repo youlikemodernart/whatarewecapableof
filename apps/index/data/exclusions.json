@@ -14,6 +14,27 @@
       "source": "repo:proposals/_template/index.html",
       "reason": "Proposal template source is blocked from production and should not be a Windex link.",
       "reviewedAt": "2026-06-22"
+    },
+    {
+      "id": "template-brief-source-route",
+      "path": "/_templates/brief/",
+      "source": "repo:_templates/brief/index.html",
+      "reason": "Brief template source route is blocked in production and should not be a Windex link.",
+      "reviewedAt": "2026-07-07"
+    },
+    {
+      "id": "template-proposal-source-route",
+      "path": "/_templates/proposal/",
+      "source": "repo:_templates/proposal/index.html",
+      "reason": "Proposal template source route is blocked in production and should not be a Windex link.",
+      "reviewedAt": "2026-07-07"
+    },
+    {
+      "id": "template-tab-guide-source-route",
+      "path": "/_templates/tab-guide/",
+      "source": "repo:_templates/tab-guide/index.html",
+      "reason": "Tab guide template/source route is blocked in production and should not be a Windex link.",
+      "reviewedAt": "2026-07-07"
     }
   ]
 }

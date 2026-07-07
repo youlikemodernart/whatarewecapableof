@@ -3,6 +3,7 @@ const { neon } = require('@neondatabase/serverless');
 const { normalizeInvoice, invoiceClientLabel, invoiceListItem, cleanEntityId, cleanReportingEntityId, cleanVisibilityState, invoiceEntities, publicEntity, entityById } = require('./_invoice');
 const { normalizeFinanceImport, stableFinanceImportContentSha256, summarizeFinanceImport } = require('./_finance_import');
 const { cleanPaymentMethod, customerPaymentMethods, paymentMethodQuote } = require('./_payment_pricing');
+const { assertInvoiceAllowsStripePaymentPage, normalizePaymentProvider } = require('./_payment_provider');
 const { reconciliationFromCharge, retrieveChargeReconciliation } = require('./_stripe');
 const { cleanEmail, paymentEmailRuntimeStatus, sendPaymentNotificationEmail } = require('./_mail');
 const { normalizeRecurringInvoiceTemplate, recurringTemplateSafeSummary, recurringTemplateListItem, buildRecurringInvoiceForRun, nextRecurringRunDate, recurringRunSummary, cleanDate: cleanRecurringDate } = require('./_recurring');
@@ -1335,6 +1336,7 @@ async function createInvoicePaymentRequest(user, invoiceId, modeInput = 'test') 
   const invoice = invoiceFromRow(row);
   if (!invoice) throw makeError(500, 'Invoice data is unavailable.');
   if (invoice.status !== 'approved' || row.status !== 'approved' || !row.approved_by_user_id) throw makeError(409, 'Approve the invoice before creating a Stripe payment link.');
+  assertInvoiceAllowsStripePaymentPage(invoice);
   const amountCents = Number(row.total_cents || invoice.totals?.totalCents || 0);
   if (!Number.isFinite(amountCents) || amountCents <= 0) throw makeError(409, 'Invoice total must be greater than zero before creating a payment link.');
   const snapshotSha256 = paymentSnapshotHash(invoice);
@@ -1480,6 +1482,7 @@ async function createInvoiceCustomerPaymentPage(user, invoiceId, modeInput = 'te
   const db = sql();
   const { row, invoice, amountCents, snapshotSha256 } = await loadApprovedInvoiceForPayment(invoiceId);
   if (!userCanAccessInvoiceRow(currentUser, row)) throw makeError(404, 'Invoice draft not found.');
+  assertInvoiceAllowsStripePaymentPage(invoice);
   const methodFamily = 'customer_choice';
 
   await db`
@@ -2253,6 +2256,7 @@ function normalizeProfile(profileType, input = {}) {
       address: cleanText(source.address, 1000),
       mercuryCustomerId: cleanSingleLine(source.mercuryCustomerId, 160),
       invoiceCode: clientInvoiceCode({ client: { invoiceCode: source.invoiceCode, company: source.company, name: source.name, email: source.email } }),
+      paymentProviderPreference: normalizePaymentProvider(source.paymentProviderPreference || source.paymentProvider || source.payment_provider_preference),
     };
   }
   return {

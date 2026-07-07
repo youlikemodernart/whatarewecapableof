@@ -3,7 +3,8 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "smoke": "node scripts/smoke.mjs"
+    "smoke": "node scripts/smoke.mjs",
+    "smoke:payment-provider": "node scripts/payment-provider-smoke.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0"

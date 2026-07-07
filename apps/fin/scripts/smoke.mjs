@@ -32,8 +32,12 @@ Object.assign(process.env, {
 
 const apiRoutes = new Map([
   ['/api/health', '../api/health.js'],
+  ['/api/session', '../api/session.js'],
   ['/api/invoices', '../api/invoices.js'],
+  ['/api/recurring-invoices', '../api/recurring-invoices.js'],
+  ['/api/entities', '../api/entities.js'],
   ['/api/finance/summary', '../api/finance/summary.js'],
+  ['/api/finance/imports', '../api/finance/imports.js'],
 ]);
 
 const staticRoutes = new Map([
@@ -158,6 +162,7 @@ function installFakeFinDb() {
   const { normalizeInvoice, invoiceClientLabel, cleanEntityId, invoiceEntities, publicEntity, entityById } = require('../api/_invoice.js');
   const { normalizeFinanceImport, summarizeFinanceImport, fakeFinanceImportSummary } = require('../api/_finance_import.js');
   const { cleanPaymentMethod, customerPaymentMethods, paymentMethodQuote } = require('../api/_payment_pricing.js');
+  const { assertInvoiceAllowsStripePaymentPage, normalizePaymentProvider } = require('../api/_payment_provider.js');
   const { normalizeRecurringInvoiceTemplate, recurringTemplateListItem, recurringTemplateSafeSummary, buildRecurringInvoiceForRun, nextRecurringRunDate, recurringRunSummary, cleanDate: cleanRecurringDate } = require('../api/_recurring.js');
   const records = new Map();
   const profileRecords = new Map();
@@ -473,6 +478,7 @@ function installFakeFinDb() {
         address: source.address || '',
         mercuryCustomerId: source.mercuryCustomerId || '',
         invoiceCode: clientInvoiceCode({ client: { invoiceCode: source.invoiceCode, company: source.company, name: source.name, email: source.email } }),
+        paymentProviderPreference: normalizePaymentProvider(source.paymentProviderPreference || source.paymentProvider || source.payment_provider_preference),
       };
     }
     return {
@@ -884,6 +890,7 @@ function installFakeFinDb() {
       const invoice = records.get(invoiceId);
       if (!invoice || invoice.deleted || !canAccessInvoice(currentUser, invoice)) throw makeError(404, 'Invoice draft not found.');
       if (invoice.status !== 'approved' || !invoice.approvedByUserId) throw makeError(409, 'Approve the invoice before creating a Stripe payment link.');
+      assertInvoiceAllowsStripePaymentPage(invoice);
       const amountCents = Number(invoice.totals?.totalCents || 0);
       if (!Number.isFinite(amountCents) || amountCents <= 0) throw makeError(409, 'Invoice total must be greater than zero before creating a payment link.');
       const snapshotSha256 = paymentSnapshotHash(invoice);
@@ -982,6 +989,7 @@ function installFakeFinDb() {
       const invoice = records.get(invoiceId);
       if (!invoice || invoice.deleted || !canAccessInvoice(currentUser, invoice)) throw makeError(404, 'Invoice draft not found.');
       if (invoice.status !== 'approved' || !invoice.approvedByUserId) throw makeError(409, 'Approve the invoice before creating a payment link.');
+      assertInvoiceAllowsStripePaymentPage(invoice);
       const amountCents = Number(invoice.totals?.totalCents || 0);
       if (!Number.isFinite(amountCents) || amountCents <= 0) throw makeError(409, 'Invoice total must be greater than zero before creating a payment link.');
       const snapshotSha256 = paymentSnapshotHash(invoice);
@@ -1633,32 +1641,38 @@ async function runAuthenticatedRouteSmoke() {
   const { signSystemImportRequest } = require('../api/_system_import_auth.js');
   const routePaths = [
     require.resolve('../api/invoices.js'),
+    require.resolve('../api/recurring-invoices.js'),
     require.resolve('../api/_session_route.js'),
-    require.resolve('../api/_entities_route.js'),
     require.resolve('../api/_profiles_route.js'),
     require.resolve('../api/_numbering_route.js'),
+    require.resolve('../api/_entities_route.js'),
     require.resolve('../api/finance/summary.js'),
-    require.resolve('../api/finance/_imports_route.js'),
     require.resolve('../api/finance/import-summary.js'),
     require.resolve('../api/finance/system-import-summary.js'),
+    require.resolve('../api/finance/_imports_route.js'),
+    require.resolve('../api/finance/imports.js'),
+    require.resolve('../api/profiles.js'),
+    require.resolve('../api/numbering.js'),
+    require.resolve('../api/entities.js'),
     require.resolve('../api/stripe/checkout.js'),
     require.resolve('../api/pay.js'),
     require.resolve('../api/pay/checkout.js'),
     require.resolve('../api/stripe/webhook.js'),
     require.resolve('../api/_stripe.js'),
     require.resolve('../api/_payment_pricing.js'),
+    require.resolve('../api/_payment_provider.js'),
   ];
   routePaths.forEach((path) => delete require.cache[path]);
   installFakeFinDb();
   const invoiceHandler = require('../api/invoices.js');
-  const recurringHandler = invoiceHandler;
+  const recurringHandler = require('../api/recurring-invoices.js');
   const summaryHandler = require('../api/finance/summary.js');
   const importSummaryHandler = require('../api/finance/import-summary.js');
   const systemImportSummaryHandler = require('../api/finance/system-import-summary.js');
-  const importsHandler = summaryHandler;
-  const profileHandler = invoiceHandler;
-  const numberingHandler = invoiceHandler;
-  const entitiesHandler = invoiceHandler;
+  const importsHandler = require('../api/finance/imports.js');
+  const profileHandler = require('../api/profiles.js');
+  const numberingHandler = require('../api/numbering.js');
+  const entitiesHandler = require('../api/entities.js');
   const fakeDb = require('../api/_db.js');
   const checkoutHandler = require('../api/stripe/checkout.js');
   const payHandler = require('../api/pay.js');
@@ -1685,61 +1699,61 @@ async function runAuthenticatedRouteSmoke() {
         update: { label: 'Smoke reviewer', salesRep: 'Smoke Reviewer', salesRepEmail: 'reviewer@whatarewecapableof.com', salesRole: 'reviewer' },
       },
     ]) {
-      const listBefore = await callHandler(profileHandler, { method: 'GET', url: `/api/invoices?resource=profiles&type=${spec.type}`, cookie });
+      const listBefore = await callHandler(profileHandler, { method: 'GET', url: `/api/profiles?type=${spec.type}`, cookie });
       assert(listBefore.status === 200, `${spec.type} profile list smoke failed`);
 
-      const created = await callHandler(profileHandler, { method: 'POST', url: `/api/invoices?resource=profiles&type=${spec.type}`, cookie, body: { profile: spec.create } });
+      const created = await callHandler(profileHandler, { method: 'POST', url: `/api/profiles?type=${spec.type}`, cookie, body: { profile: spec.create } });
       assert(created.status === 201 && created.data.profile.type === spec.type, `${spec.type} profile create smoke failed`);
       assert(created.data.profile.label.includes('Smoke'), `${spec.type} profile label smoke failed`);
 
-      const updated = await callHandler(profileHandler, { method: 'PUT', url: `/api/invoices?resource=profiles&type=${spec.type}&id=${created.data.profile.id}`, cookie, body: { profile: spec.update } });
+      const updated = await callHandler(profileHandler, { method: 'PUT', url: `/api/profiles?type=${spec.type}&id=${created.data.profile.id}`, cookie, body: { profile: spec.update } });
       const updateLabel = updated.data?.profile?.label || '';
       assert(updated.status === 200 && (updateLabel.includes('updated') || updateLabel.includes('reviewer')), `${spec.type} profile update smoke failed`);
 
-      const deleted = await callHandler(profileHandler, { method: 'DELETE', url: `/api/invoices?resource=profiles&type=${spec.type}&id=${created.data.profile.id}`, cookie });
+      const deleted = await callHandler(profileHandler, { method: 'DELETE', url: `/api/profiles?type=${spec.type}&id=${created.data.profile.id}`, cookie });
       assert(deleted.status === 200 && deleted.data.deleted === true, `${spec.type} profile delete smoke failed`);
     }
 
     const publicPayee = await callHandler(profileHandler, {
       method: 'POST',
-      url: '/api/invoices?resource=profiles&type=payee',
+      url: '/api/profiles?type=payee',
       cookie,
       body: { profile: { label: 'WAWCO payee', name: 'What are we capable of?', email: 'hello@whatarewecapableof.com', reportingScope: 'wawco', defaultTerms: 'Net 14', defaultPaymentInstructions: 'ACH after approval' } },
     });
     const privatePayee = await callHandler(profileHandler, {
       method: 'POST',
-      url: '/api/invoices?resource=profiles&type=payee',
+      url: '/api/profiles?type=payee',
       cookie,
       body: { profile: { label: 'Private payee', name: 'Private Payee', email: 'private@example.test', reportingScope: 'private' } },
     });
     const client = await callHandler(profileHandler, {
       method: 'POST',
-      url: '/api/invoices?resource=profiles&type=client',
+      url: '/api/profiles?type=client',
       cookie,
       body: { profile: { label: 'Generic client', company: 'Substrate', email: 'client@example.test', invoiceCode: 'SUBSTRATE' } },
     });
     const userProfile = await callHandler(profileHandler, {
       method: 'POST',
-      url: '/api/invoices?resource=profiles&type=user',
+      url: '/api/profiles?type=user',
       cookie,
       body: { profile: { label: 'Generic rep', salesRep: 'Generic Rep', salesRepEmail: 'rep@whatarewecapableof.com', salesRole: 'sales-rep' } },
     });
     assert(publicPayee.status === 201 && privatePayee.status === 201 && client.status === 201 && userProfile.status === 201, 'profile-backed fixture create smoke failed');
     assert(privatePayee.data.profile.data.excludeFromWawcoDashboard === true, 'private profile dashboard exclusion smoke failed');
 
-    const entitiesList = await callHandler(entitiesHandler, { method: 'GET', url: '/api/invoices?resource=entities', cookie });
+    const entitiesList = await callHandler(entitiesHandler, { method: 'GET', url: '/api/entities', cookie });
     assert(entitiesList.status === 200 && entitiesList.data.entities.some((entity) => entity.id === 'ndg'), 'entities endpoint smoke failed');
-    const austinEntitiesList = await callHandler(entitiesHandler, { method: 'GET', url: '/api/invoices?resource=entities', cookie: austinCookie });
+    const austinEntitiesList = await callHandler(entitiesHandler, { method: 'GET', url: '/api/entities', cookie: austinCookie });
     assert(austinEntitiesList.status === 200 && !austinEntitiesList.data.entities.some((entity) => entity.id === 'ndg'), 'non-Noah entity visibility smoke failed');
 
-    const numberingBefore = await callHandler(numberingHandler, { method: 'GET', url: '/api/invoices?resource=numbering', cookie });
+    const numberingBefore = await callHandler(numberingHandler, { method: 'GET', url: '/api/numbering', cookie });
     assert(numberingBefore.status === 200 && numberingBefore.data.numbering.mode === 'client-date-daily', 'numbering GET smoke failed');
     assert(numberingBefore.data.numbering.example === 'SUBSTRATE-052626-01', 'numbering example smoke failed');
     assert(numberingBefore.data.numbering.examples.ndg === 'NDG-SUBSTRATE-052626-01', 'NDG numbering example smoke failed');
 
     const numberingUpdated = await callHandler(numberingHandler, {
       method: 'PUT',
-      url: '/api/invoices?resource=numbering',
+      url: '/api/numbering',
       cookie,
       body: { numbering: { sequencePadding: 2 } },
     });
@@ -1831,7 +1845,7 @@ async function runAuthenticatedRouteSmoke() {
     const austinSplitRead = await callHandler(invoiceHandler, { method: 'GET', url: `/api/invoices?id=${encodeURIComponent(wawcoIssuedNdgReported.data.invoice.id)}`, cookie: austinCookie });
     assert(austinSplitRead.status === 404, 'non-Noah WAWCO-issued NDG-reported read gate smoke failed');
 
-    const numberingAfterCreate = await callHandler(numberingHandler, { method: 'GET', url: '/api/invoices?resource=numbering', cookie });
+    const numberingAfterCreate = await callHandler(numberingHandler, { method: 'GET', url: '/api/numbering', cookie });
     assert(numberingAfterCreate.data.numbering.sequencePadding === 2, 'numbering setting persistence smoke failed');
 
     const readBack = await callHandler(invoiceHandler, { method: 'GET', url: `/api/invoices?id=${encodeURIComponent(id)}`, cookie });
@@ -1847,15 +1861,15 @@ async function runAuthenticatedRouteSmoke() {
     assert(updated.data.invoice.invoiceNumber === 'SUBSTRATE-052626-01', 'invoice number stability on update smoke failed');
     assert(updated.data.invoice.totals.totalCents === 27500, 'invoice total recalculation smoke failed');
 
-    const recurringListBefore = await callHandler(recurringHandler, { method: 'GET', url: '/api/invoices?recurring=1', cookie });
+    const recurringListBefore = await callHandler(recurringHandler, { method: 'GET', url: '/api/recurring-invoices', cookie });
     assert(recurringListBefore.status === 200 && Array.isArray(recurringListBefore.data.templates), 'recurring template list smoke failed');
-    const nonAdminRecurring = await callHandler(recurringHandler, { method: 'POST', url: '/api/invoices?recurring=1', cookie: repCookie, body: { label: 'Blocked recurring', invoiceTemplate: { client: { company: 'Blocked', invoiceCode: 'BLOCKED' }, items: [{ description: 'Blocked', quantity: 1, unitPrice: '10.00' }] } } });
+    const nonAdminRecurring = await callHandler(recurringHandler, { method: 'POST', url: '/api/recurring-invoices', cookie: repCookie, body: { label: 'Blocked recurring', invoiceTemplate: { client: { company: 'Blocked', invoiceCode: 'BLOCKED' }, items: [{ description: 'Blocked', quantity: 1, unitPrice: '10.00' }] } } });
     assert(nonAdminRecurring.status === 403, 'recurring non-admin create gate smoke failed');
-    const autoSendRecurring = await callHandler(recurringHandler, { method: 'POST', url: '/api/invoices?recurring=1', cookie, body: { sendMode: 'auto_send', invoiceTemplate: { client: { company: 'Unsafe', invoiceCode: 'UNSAFE' }, items: [{ description: 'Unsafe', quantity: 1, unitPrice: '10.00' }] } } });
+    const autoSendRecurring = await callHandler(recurringHandler, { method: 'POST', url: '/api/recurring-invoices', cookie, body: { sendMode: 'auto_send', invoiceTemplate: { client: { company: 'Unsafe', invoiceCode: 'UNSAFE' }, items: [{ description: 'Unsafe', quantity: 1, unitPrice: '10.00' }] } } });
     assert(autoSendRecurring.status === 400, 'recurring auto-send gate smoke failed');
     const unitusRecurring = await callHandler(recurringHandler, {
       method: 'POST',
-      url: '/api/invoices?recurring=1',
+      url: '/api/recurring-invoices',
       cookie,
       body: {
         label: 'Unitus weekly email/SMS support',
@@ -1891,16 +1905,16 @@ async function runAuthenticatedRouteSmoke() {
     assert(unitusRecurring.status === 201, 'Unitus recurring template create smoke failed');
     assert(unitusRecurring.data.template.listItem.totalCents === 48000, 'Unitus recurring template total smoke failed');
     assert(unitusRecurring.data.template.sendMode === 'prepare_for_approval', 'Unitus recurring send mode smoke failed');
-    const unitusRun = await callHandler(recurringHandler, { method: 'POST', url: '/api/invoices?recurring=1', cookie, body: { action: 'generate_run', templateId: unitusRecurring.data.template.id, runDate: '2026-07-06' } });
+    const unitusRun = await callHandler(recurringHandler, { method: 'POST', url: '/api/recurring-invoices', cookie, body: { action: 'generate_run', templateId: unitusRecurring.data.template.id, runDate: '2026-07-06' } });
     assert(unitusRun.status === 201 && unitusRun.data.created === true, 'Unitus recurring run create smoke failed');
     assert(unitusRun.data.invoice.status === 'ready_for_review', 'Unitus recurring run invoice approval state smoke failed');
     assert(unitusRun.data.invoice.invoiceNumber === 'UNITUS-070626-01', 'Unitus recurring run numbering smoke failed');
     assert(unitusRun.data.invoice.totals.totalCents === 48000, 'Unitus recurring run total smoke failed');
     assert(unitusRun.data.invoice.items[0].description.includes('2026-07-06'), 'Unitus recurring period placeholder smoke failed');
     assert(!unitusRun.data.run.paymentRequestId, 'Unitus recurring run should not create payment page by default');
-    const duplicateUnitusRun = await callHandler(recurringHandler, { method: 'POST', url: '/api/invoices?recurring=1', cookie, body: { action: 'generate_run', templateId: unitusRecurring.data.template.id, runDate: '2026-07-06' } });
+    const duplicateUnitusRun = await callHandler(recurringHandler, { method: 'POST', url: '/api/recurring-invoices', cookie, body: { action: 'generate_run', templateId: unitusRecurring.data.template.id, runDate: '2026-07-06' } });
     assert(duplicateUnitusRun.status === 200 && duplicateUnitusRun.data.created === false, 'Unitus recurring run idempotency smoke failed');
-    const unitusRuns = await callHandler(recurringHandler, { method: 'GET', url: `/api/invoices?recurring=1&id=${encodeURIComponent(unitusRecurring.data.template.id)}&runs=1`, cookie });
+    const unitusRuns = await callHandler(recurringHandler, { method: 'GET', url: `/api/recurring-invoices?id=${encodeURIComponent(unitusRecurring.data.template.id)}&runs=1`, cookie });
     assert(unitusRuns.status === 200 && unitusRuns.data.runs.length === 1, 'Unitus recurring run list smoke failed');
     const unitusRecurringInvoiceCleanup = await callHandler(invoiceHandler, { method: 'DELETE', url: `/api/invoices?id=${encodeURIComponent(unitusRun.data.invoice.id)}`, cookie });
     assert(unitusRecurringInvoiceCleanup.status === 200 && unitusRecurringInvoiceCleanup.data.deleted === true, 'Unitus recurring invoice cleanup smoke failed');
@@ -1935,6 +1949,31 @@ async function runAuthenticatedRouteSmoke() {
 
     const unapprovedCheckout = await callHandler(checkoutHandler, { method: 'POST', url: '/api/stripe/checkout', cookie, body: { invoiceId: id, mode: 'test' }, headers: checkoutOrigin });
     assert(unapprovedCheckout.status === 409, 'Stripe Checkout approved-only smoke failed');
+
+    const billVendorApInvoice = await callHandler(invoiceHandler, {
+      method: 'POST',
+      url: '/api/invoices',
+      cookie,
+      body: {
+        paymentProvider: 'bill_vendor_ap',
+        client: { company: 'Unitus', invoiceCode: 'UNITUSBILL', paymentProviderPreference: 'bill_vendor_ap' },
+        invoiceDate: '2099-02-03',
+        items: [{ description: 'External AP routed work', quantity: 1, unitPrice: '100.00' }],
+      },
+    });
+    assert(billVendorApInvoice.status === 201 && billVendorApInvoice.data.invoice.paymentProvider === 'bill_vendor_ap', 'BILL vendor/AP invoice create smoke failed');
+    assert(billVendorApInvoice.data.invoice.client.paymentProviderPreference === 'bill_vendor_ap', 'BILL vendor/AP client preference smoke failed');
+    const billVendorApApproved = await callHandler(invoiceHandler, {
+      method: 'PUT',
+      url: `/api/invoices?id=${encodeURIComponent(billVendorApInvoice.data.invoice.id)}`,
+      cookie,
+      body: { status: 'approved' },
+    });
+    assert(billVendorApApproved.status === 200 && billVendorApApproved.data.invoice.status === 'approved', 'BILL vendor/AP invoice approval smoke failed');
+    const billVendorApCheckout = await callHandler(checkoutHandler, { method: 'POST', url: '/api/stripe/checkout', cookie, body: { invoiceId: billVendorApInvoice.data.invoice.id, mode: 'test' }, headers: checkoutOrigin });
+    assert(billVendorApCheckout.status === 409 && /BILL vendor\/AP/.test(billVendorApCheckout.data.error || ''), 'BILL vendor/AP Stripe block smoke failed');
+    const billVendorApDeleted = await callHandler(invoiceHandler, { method: 'DELETE', url: `/api/invoices?id=${encodeURIComponent(billVendorApInvoice.data.invoice.id)}`, cookie });
+    assert(billVendorApDeleted.status === 200 && billVendorApDeleted.data.deleted === true, 'BILL vendor/AP fixture cleanup smoke failed');
 
     const approved = await callHandler(invoiceHandler, {
       method: 'PUT',
@@ -2453,12 +2492,12 @@ async function runAuthenticatedRouteSmoke() {
     const replaySystemImport = await callHandler(systemImportSummaryHandler, { method: 'POST', url: '/api/finance/system-import-summary', rawBody: systemRawBody, headers: signedSystemImport.headers });
     assert(replaySystemImport.status === 409, 'system finance import replay guard smoke failed');
 
-    const systemImportsList = await callHandler(importsHandler, { method: 'GET', url: '/api/finance/summary?resource=imports', cookie });
+    const systemImportsList = await callHandler(importsHandler, { method: 'GET', url: '/api/finance/imports', cookie });
     assert(systemImportsList.status === 200 && systemImportsList.data.imports.length === 2, 'system finance import list smoke failed');
 
-    const deletedSystemImport = await callHandler(importsHandler, { method: 'DELETE', url: `/api/finance/summary?resource=imports&id=${encodeURIComponent(systemImported.data.import.id)}`, cookie, headers: { origin: 'http://127.0.0.1:3321' } });
+    const deletedSystemImport = await callHandler(importsHandler, { method: 'DELETE', url: `/api/finance/imports?id=${encodeURIComponent(systemImported.data.import.id)}`, cookie, headers: { origin: 'http://127.0.0.1:3321' } });
     assert(deletedSystemImport.status === 200 && deletedSystemImport.data.deleted === true, 'system finance import cleanup smoke failed');
-    const deletedChangedSystemImport = await callHandler(importsHandler, { method: 'DELETE', url: `/api/finance/summary?resource=imports&id=${encodeURIComponent(changedSystemImportResponse.data.import.id)}`, cookie, headers: { origin: 'http://127.0.0.1:3321' } });
+    const deletedChangedSystemImport = await callHandler(importsHandler, { method: 'DELETE', url: `/api/finance/imports?id=${encodeURIComponent(changedSystemImportResponse.data.import.id)}`, cookie, headers: { origin: 'http://127.0.0.1:3321' } });
     assert(deletedChangedSystemImport.status === 200 && deletedChangedSystemImport.data.deleted === true, 'system finance import changed cleanup smoke failed');
 
     const importsEnabledBefore = process.env.FIN_FINANCE_IMPORTS_ENABLED;
@@ -2476,7 +2515,7 @@ async function runAuthenticatedRouteSmoke() {
     const nonAdminImport = await callHandler(importSummaryHandler, { method: 'POST', url: '/api/finance/import-summary', cookie: repCookie, body: fakeImport, headers: { origin: 'http://127.0.0.1:3321' } });
     assert(nonAdminImport.status === 403, 'finance import non-admin smoke failed');
 
-    const nonAdminImportsList = await callHandler(importsHandler, { method: 'GET', url: '/api/finance/summary?resource=imports', cookie: repCookie });
+    const nonAdminImportsList = await callHandler(importsHandler, { method: 'GET', url: '/api/finance/imports', cookie: repCookie });
     assert(nonAdminImportsList.status === 403, 'finance imports list non-admin smoke failed');
 
     const invalidSchema = await callHandler(importSummaryHandler, { method: 'POST', url: '/api/finance/import-summary', cookie, body: { ...fakeImport, schemaVersion: 'wrong' }, headers: { origin: 'http://127.0.0.1:3321' } });
@@ -2512,7 +2551,7 @@ async function runAuthenticatedRouteSmoke() {
     const imported = await callHandler(importSummaryHandler, { method: 'POST', url: '/api/finance/import-summary', cookie, body: fakeImport, headers: { origin: 'http://127.0.0.1:3321' } });
     assert(imported.status === 201 && imported.data.import.month === '2099-12', 'finance import create smoke failed');
 
-    const importsList = await callHandler(importsHandler, { method: 'GET', url: '/api/finance/summary?resource=imports', cookie });
+    const importsList = await callHandler(importsHandler, { method: 'GET', url: '/api/finance/imports', cookie });
     assert(importsList.status === 200 && importsList.data.imports.length === 1, 'finance imports list smoke failed');
 
     const importedSummary = await callHandler(summaryHandler, { method: 'GET', url: '/api/finance/summary?month=2099-12', cookie });
@@ -2532,13 +2571,13 @@ async function runAuthenticatedRouteSmoke() {
     assert(nonAdminSummary.data.summary.latestFinanceImport === null, 'non-admin import visibility smoke failed');
     assert(nonAdminSummary.data.summary.metrics.totalAvailableBalanceCents === 0, 'non-admin imported metrics hidden smoke failed');
 
-    const unauthDeleteImport = await callHandler(importsHandler, { method: 'DELETE', url: `/api/finance/summary?resource=imports&id=${encodeURIComponent(imported.data.import.id)}`, headers: { origin: 'http://127.0.0.1:3321' } });
+    const unauthDeleteImport = await callHandler(importsHandler, { method: 'DELETE', url: `/api/finance/imports?id=${encodeURIComponent(imported.data.import.id)}`, headers: { origin: 'http://127.0.0.1:3321' } });
     assert(unauthDeleteImport.status === 401, 'finance import unauthenticated delete smoke failed');
 
-    const nonAdminDeleteImport = await callHandler(importsHandler, { method: 'DELETE', url: `/api/finance/summary?resource=imports&id=${encodeURIComponent(imported.data.import.id)}`, cookie: repCookie, headers: { origin: 'http://127.0.0.1:3321' } });
+    const nonAdminDeleteImport = await callHandler(importsHandler, { method: 'DELETE', url: `/api/finance/imports?id=${encodeURIComponent(imported.data.import.id)}`, cookie: repCookie, headers: { origin: 'http://127.0.0.1:3321' } });
     assert(nonAdminDeleteImport.status === 403, 'finance import non-admin delete smoke failed');
 
-    const deletedImport = await callHandler(importsHandler, { method: 'DELETE', url: `/api/finance/summary?resource=imports&id=${encodeURIComponent(imported.data.import.id)}`, cookie, headers: { origin: 'http://127.0.0.1:3321' } });
+    const deletedImport = await callHandler(importsHandler, { method: 'DELETE', url: `/api/finance/imports?id=${encodeURIComponent(imported.data.import.id)}`, cookie, headers: { origin: 'http://127.0.0.1:3321' } });
     assert(deletedImport.status === 200 && deletedImport.data.deleted === true, 'finance import delete smoke failed');
 
     const afterDeleteSummary = await callHandler(summaryHandler, { method: 'GET', url: '/api/finance/summary?month=2099-12', cookie });
@@ -2723,7 +2762,7 @@ try {
   const healthJson = await health.json();
   assert(healthJson.ok && healthJson.service === 'wawco-fin', 'bad health payload');
 
-  const session = await fetchWithRetry('/api/invoices?resource=session');
+  const session = await fetchWithRetry('/api/session');
   assert(session.ok, `session ${session.status}`);
   const sessionJson = await session.json();
   assert(sessionJson.auth.configured === false, 'expected auth to be unconfigured in smoke');
@@ -2744,15 +2783,16 @@ try {
   assert(invoicesHtml.includes('SUBSTRATE-052626-01'), 'missing client-date numbering UI marker');
   assert(invoicesHtml.includes('client-invoice-code'), 'missing client invoice code UI marker');
   assert(invoicesHtml.includes('preview-due-date-field'), 'missing optional metadata preview wrappers');
-  assert(invoicesHtml.includes('approve-invoice') && invoicesHtml.includes('Stripe payment') && invoicesHtml.includes('create-test-payment-link') && invoicesHtml.includes('create-live-payment-link'), 'missing Stripe payment UI marker');
-  assert(invoicesHtml.includes('Create live pages only after invoice approval'), 'missing Stripe live-link warning marker');
+  assert(invoicesHtml.includes('approve-invoice') && invoicesHtml.includes('Payment route') && invoicesHtml.includes('create-test-payment-link') && invoicesHtml.includes('create-live-payment-link'), 'missing payment route UI marker');
+  assert(invoicesHtml.includes('client-payment-provider') && invoicesHtml.includes('BILL vendor/AP, external'), 'missing BILL vendor/AP payment-route UI marker');
+  assert(invoicesHtml.includes('External BILL vendor/AP mode does not create a Stripe page or call BILL'), 'missing provider boundary warning marker');
   assert(!invoicesHtml.includes('id="preview-status"'), 'client-facing invoice preview should not render internal status badge');
 
   const invoicesJs = await fetchWithRetry('/invoices.js');
   const invoicesJsText = await invoicesJs.text();
-  assert(invoicesJsText.includes('/api/invoices?resource=profiles&type=payee'), 'missing profile API client marker');
-  assert(invoicesJsText.includes('/api/invoices?resource=entities'), 'missing entity API client marker');
-  assert(invoicesJsText.includes('/api/invoices?resource=numbering'), 'missing numbering API client marker');
+  assert(invoicesJsText.includes('/api/profiles?type=payee'), 'missing profile API client marker');
+  assert(invoicesJsText.includes('/api/entities'), 'missing entity API client marker');
+  assert(invoicesJsText.includes('/api/numbering'), 'missing numbering API client marker');
   assert(invoicesJsText.includes('sequencePadding'), 'missing client-date numbering client marker');
   assert(invoicesJsText.includes('previewMeta.hidden'), 'missing optional metadata client marker');
   assert(!invoicesJsText.includes('previewStatus'), 'client-facing invoice status badge should not be rendered');
@@ -2778,7 +2818,7 @@ try {
 
   const financeJs = await fetchWithRetry('/finance.js');
   const financeJsText = await financeJs.text();
-  assert(financeJsText.includes('/api/finance/import-summary') && financeJsText.includes('/api/finance/summary?resource=imports'), 'missing finance import client marker');
+  assert(financeJsText.includes('/api/finance/import-summary') && financeJsText.includes('/api/finance/imports'), 'missing finance import client marker');
   assert(financeJsText.includes('entity=') || financeJsText.includes("params.set('entity'"), 'missing finance entity query client marker');
   assert(financeJsText.includes('paymentLabel') && financeJsText.includes('Paid online'), 'missing finance payment-status client marker');
 
@@ -2788,10 +2828,10 @@ try {
   const protectedSummaryRoute = await fetchWithRetry('/api/finance/summary');
   assert(protectedSummaryRoute.status === 401, `expected finance summary 401, got ${protectedSummaryRoute.status}`);
 
-  const protectedEntitiesRoute = await fetchWithRetry('/api/invoices?resource=entities');
+  const protectedEntitiesRoute = await fetchWithRetry('/api/entities');
   assert(protectedEntitiesRoute.status === 401, `expected entities 401, got ${protectedEntitiesRoute.status}`);
 
-  const protectedImportsRoute = await fetchWithRetry('/api/finance/summary?resource=imports');
+  const protectedImportsRoute = await fetchWithRetry('/api/finance/imports');
   assert(protectedImportsRoute.status === 401, `expected finance imports 401, got ${protectedImportsRoute.status}`);
 
   await runAuthenticatedRouteSmoke();

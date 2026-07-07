@@ -64,6 +64,7 @@ const refs = {
   clientAddress: $('#client-address'),
   clientMercuryCustomer: $('#client-mercury-customer'),
   clientInvoiceCode: $('#client-invoice-code'),
+  clientPaymentProvider: $('#client-payment-provider'),
   itemsEditor: $('#items-editor'),
   discount: $('#discount'),
   taxRate: $('#tax-rate'),
@@ -111,6 +112,13 @@ let entities = [
 ];
 let paymentSettings = { configured: false, mode: 'disabled', testLinksEnabled: false, liveLinksEnabled: false, entities: {} };
 let permissions = { visibleEntityIds: ['wawco'], canViewAllInvoices: false, combinedEntityMode: 'wawco_only' };
+
+const DEFAULT_PAYMENT_PROVIDER = 'stripe_checkout';
+const BILL_VENDOR_AP_PROVIDER = 'bill_vendor_ap';
+const PAYMENT_PROVIDER_LABELS = {
+  stripe_checkout: 'Stripe customer payment page',
+  bill_vendor_ap: 'BILL vendor/AP, external',
+};
 let invoiceView = 'active';
 let formDirty = false;
 
@@ -189,6 +197,41 @@ function entityInvoiceDefaults(entityId) {
 
 function paymentSettingsForEntity(entityId) {
   return paymentSettings.entities?.[entityId] || paymentSettings.entities?.wawco || paymentSettings;
+}
+
+function cleanPaymentProvider(value, fallback = DEFAULT_PAYMENT_PROVIDER) {
+  const token = String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/\.com/g, 'com')
+    .replace(/[\s/-]+/g, '_')
+    .replace(/[^a-z0-9_]+/g, '')
+    .replace(/_+/g, '_')
+    .replace(/^_+|_+$/g, '');
+  if (!token) return fallback;
+  if (token === DEFAULT_PAYMENT_PROVIDER || token === BILL_VENDOR_AP_PROVIDER) return token;
+  if (['stripe', 'checkout', 'customer_payment_page', 'stripe_payment_page'].includes(token)) return DEFAULT_PAYMENT_PROVIDER;
+  if (['bill', 'billcom', 'bill_com', 'bill_vendor', 'vendor_ap', 'external_bill_ap'].includes(token)) return BILL_VENDOR_AP_PROVIDER;
+  return fallback;
+}
+
+function invoicePaymentProvider(invoice = currentInvoice || {}) {
+  const client = invoice.client || {};
+  return cleanPaymentProvider(
+    invoice.paymentProvider
+      || invoice.payment_provider
+      || client.paymentProviderPreference
+      || client.paymentProvider
+      || refs.clientPaymentProvider?.value,
+  );
+}
+
+function invoiceUsesBillVendorAp(invoice = currentInvoice || {}) {
+  return invoicePaymentProvider(invoice) === BILL_VENDOR_AP_PROVIDER;
+}
+
+function paymentProviderLabel(provider) {
+  return PAYMENT_PROVIDER_LABELS[cleanPaymentProvider(provider)] || PAYMENT_PROVIDER_LABELS[DEFAULT_PAYMENT_PROVIDER];
 }
 
 function invoiceViewLabel(view = invoiceView) {
@@ -278,7 +321,8 @@ function baseInvoice(entityId = 'wawco') {
     payeeReportingScope: defaults.payeeReportingScope,
     excludeFromWawcoDashboard: false,
     from: defaults.from,
-    client: { name: '', company: '', email: '', address: '', mercuryCustomerId: '', invoiceCode: '' },
+    paymentProvider: DEFAULT_PAYMENT_PROVIDER,
+    client: { name: '', company: '', email: '', address: '', mercuryCustomerId: '', invoiceCode: '', paymentProviderPreference: DEFAULT_PAYMENT_PROVIDER },
     items: [blankItem()],
     discount: '0.00',
     taxRate: 0,
@@ -320,6 +364,7 @@ function currentFormInvoice(status = refs.status.value || 'draft') {
   const entityId = refs.entityId.value || currentInvoice?.entityId || 'wawco';
   const entity = entityById(entityId);
   const payeeReportingScope = refs.payeeReportingScope.value || entity.reportingScope || entityId;
+  const paymentProvider = cleanPaymentProvider(refs.clientPaymentProvider?.value || currentInvoice?.client?.paymentProviderPreference || currentInvoice?.paymentProvider);
   return {
     ...(currentInvoice || {}),
     entityId,
@@ -338,6 +383,7 @@ function currentFormInvoice(status = refs.status.value || 'draft') {
     userProfileId: refs.userProfileSelect.value || '',
     payeeReportingScope,
     excludeFromWawcoDashboard: payeeReportingScope === 'private',
+    paymentProvider,
     from: {
       ...(currentInvoice?.from || {}),
       name: refs.fromName.value,
@@ -354,6 +400,7 @@ function currentFormInvoice(status = refs.status.value || 'draft') {
       address: refs.clientAddress.value,
       mercuryCustomerId: refs.clientMercuryCustomer.value,
       invoiceCode: refs.clientInvoiceCode.value,
+      paymentProviderPreference: paymentProvider,
     },
     items: invoiceItems,
     discount: refs.discount.value || '0.00',
@@ -394,16 +441,16 @@ function profileById(type, id) {
 }
 
 async function loadEntities() {
-  const data = await getJson('/api/invoices?resource=entities');
+  const data = await getJson('/api/entities');
   if (Array.isArray(data.entities) && data.entities.length) entities = data.entities;
   renderEntitySelect();
 }
 
 async function loadProfiles() {
   const [payee, client, user] = await Promise.all([
-    getJson('/api/invoices?resource=profiles&type=payee'),
-    getJson('/api/invoices?resource=profiles&type=client'),
-    getJson('/api/invoices?resource=profiles&type=user'),
+    getJson('/api/profiles?type=payee'),
+    getJson('/api/profiles?type=client'),
+    getJson('/api/profiles?type=user'),
   ]);
   profiles = {
     payee: payee.profiles || [],
@@ -416,7 +463,7 @@ async function loadProfiles() {
 }
 
 async function loadNumbering() {
-  const data = await getJson('/api/invoices?resource=numbering');
+  const data = await getJson('/api/numbering');
   const numbering = data.numbering || {};
   refs.numberPadding.value = numbering.sequencePadding || 2;
   refs.numberExample.textContent = numbering.examples?.ndg ? `${numbering.example || 'SUBSTRATE-052626-01'} / ${numbering.examples.ndg}` : numbering.example || 'SUBSTRATE-052626-01';
@@ -426,7 +473,7 @@ async function saveNumbering() {
   const numbering = {
     sequencePadding: Number(refs.numberPadding.value),
   };
-  await getJson('/api/invoices?resource=numbering', { method: 'PUT', body: JSON.stringify({ numbering }) });
+  await getJson('/api/numbering', { method: 'PUT', body: JSON.stringify({ numbering }) });
   await loadNumbering();
   setNotice('Numbering rule saved.');
 }
@@ -455,6 +502,7 @@ function clientProfileFromForm() {
     address: refs.clientAddress.value,
     mercuryCustomerId: refs.clientMercuryCustomer.value,
     invoiceCode: refs.clientInvoiceCode.value,
+    paymentProviderPreference: cleanPaymentProvider(refs.clientPaymentProvider?.value),
   };
 }
 
@@ -499,7 +547,8 @@ function applyClientProfile(profile) {
   refs.clientAddress.value = data.address || '';
   refs.clientMercuryCustomer.value = data.mercuryCustomerId || '';
   refs.clientInvoiceCode.value = data.invoiceCode || '';
-  currentInvoice = { ...(currentInvoice || baseInvoice(refs.entityId.value)), clientProfileId: profile.id };
+  refs.clientPaymentProvider.value = cleanPaymentProvider(data.paymentProviderPreference || data.paymentProvider);
+  currentInvoice = { ...(currentInvoice || baseInvoice(refs.entityId.value)), clientProfileId: profile.id, paymentProvider: refs.clientPaymentProvider.value };
   formDirty = true;
   renderPreview();
 }
@@ -528,8 +577,8 @@ async function saveProfile(type) {
   const id = refs[`${type}ProfileSelect`].value;
   const body = { profile: profileFromForm(type) };
   const data = id
-    ? await getJson(`/api/invoices?resource=profiles&type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`, { method: 'PUT', body: JSON.stringify(body) })
-    : await getJson(`/api/invoices?resource=profiles&type=${encodeURIComponent(type)}`, { method: 'POST', body: JSON.stringify(body) });
+    ? await getJson(`/api/profiles?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`, { method: 'PUT', body: JSON.stringify(body) })
+    : await getJson(`/api/profiles?type=${encodeURIComponent(type)}`, { method: 'POST', body: JSON.stringify(body) });
   await loadProfiles();
   refs[`${type}ProfileSelect`].value = data.profile.id;
   setNotice(`${formatStatus(type)} profile saved.`);
@@ -542,7 +591,7 @@ async function deleteProfile(type) {
     return;
   }
   if (!window.confirm(`Delete this ${type} profile? Existing invoice drafts will keep their saved fields.`)) return;
-  await getJson(`/api/invoices?resource=profiles&type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`, { method: 'DELETE' });
+  await getJson(`/api/profiles?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`, { method: 'DELETE' });
   await loadProfiles();
   refs[`${type}ProfileSelect`].value = '';
   setNotice(`${formatStatus(type)} profile deleted.`);
@@ -600,6 +649,7 @@ function fillForm(invoice = baseInvoice(refs.entityId?.value || 'wawco')) {
   refs.clientAddress.value = invoice.client?.address || '';
   refs.clientMercuryCustomer.value = invoice.client?.mercuryCustomerId || '';
   refs.clientInvoiceCode.value = invoice.client?.invoiceCode || '';
+  refs.clientPaymentProvider.value = cleanPaymentProvider(invoice.client?.paymentProviderPreference || invoice.paymentProvider);
   items = (invoice.items && invoice.items.length ? invoice.items : [blankItem()]).map((item) => ({
     id: item.id || crypto.randomUUID(),
     description: item.description || '',
@@ -622,21 +672,25 @@ function renderPaymentPanel(invoice) {
   const entityId = invoice.entityId || currentInvoice?.entityId || 'wawco';
   const entity = entityById(entityId);
   const entityPayment = paymentSettingsForEntity(entityId);
+  const provider = invoicePaymentProvider(invoice);
+  const usesBillVendorAp = provider === BILL_VENDOR_AP_PROVIDER;
   const persistedApproved = Boolean(currentInvoice?.id && currentInvoice.status === 'approved' && invoice.status === 'approved' && !formDirty);
-  const canCreateLink = Boolean(invoice.id && persistedApproved && !payment?.active && Number(invoice.totals?.totalCents || 0) > 0);
+  const canCreateLink = Boolean(!usesBillVendorAp && invoice.id && persistedApproved && !payment?.active && Number(invoice.totals?.totalCents || 0) > 0);
   const canCreateTestLink = canCreateLink && checkoutModeAvailable('test', entityId);
   const canCreateLiveLink = canCreateLink && checkoutModeAvailable('live', entityId);
-  refs.paymentStatusLabel.textContent = paymentLabel(payment);
-  refs.paymentStatusLabel.classList.toggle('is-active', Boolean(payment?.active));
-  refs.paymentStatusLabel.classList.toggle('is-paid', payment?.status === 'paid');
-  refs.paymentMode.textContent = paymentModeCopy(payment, entityId);
+  const customerPaymentUrl = usesBillVendorAp ? '' : (payment?.publicUrl || (payment?.urlKind === 'customer_payment_page' ? payment.url : ''));
+  refs.paymentStatusLabel.textContent = usesBillVendorAp ? 'External AP' : paymentLabel(payment);
+  refs.paymentStatusLabel.classList.toggle('is-active', Boolean(!usesBillVendorAp && payment?.active));
+  refs.paymentStatusLabel.classList.toggle('is-paid', !usesBillVendorAp && payment?.status === 'paid');
+  refs.paymentMode.textContent = usesBillVendorAp ? paymentProviderLabel(provider) : paymentModeCopy(payment, entityId);
   refs.paymentAmount.textContent = formatCurrency(payment?.baseAmountCents ?? payment?.amountCents ?? invoice.totals?.totalCents ?? 0);
-  const customerPaymentUrl = payment?.publicUrl || (payment?.urlKind === 'customer_payment_page' ? payment.url : '');
   refs.paymentUrl.value = customerPaymentUrl;
+  refs.paymentUrl.placeholder = usesBillVendorAp ? 'No Stripe page for BILL vendor/AP' : 'No customer payment page yet';
   refs.createTestPaymentLink.disabled = !canCreateTestLink;
   refs.createLivePaymentLink.disabled = !canCreateLiveLink;
   refs.copyPaymentLink.disabled = !customerPaymentUrl;
-  if (!invoice.id) refs.paymentHelp.textContent = 'Save the invoice before creating a customer payment page.';
+  if (usesBillVendorAp) refs.paymentHelp.textContent = 'External BILL vendor/AP route selected. Fin keeps the invoice of record; do not create a Stripe page. Vendor setup packet, client send, BILL account actions, and sensitive details remain separately approval-gated.';
+  else if (!invoice.id) refs.paymentHelp.textContent = 'Save the invoice before creating a customer payment page.';
   else if (formDirty) refs.paymentHelp.textContent = 'Save or approve the current invoice state before creating a customer payment page.';
   else if (invoice.status !== 'approved' || currentInvoice?.status !== 'approved') refs.paymentHelp.textContent = 'Approve the invoice before creating a customer payment page.';
   else if (payment?.active) refs.paymentHelp.textContent = payment.urlKind === 'customer_payment_page' ? 'This invoice already has an active customer payment page for the current snapshot.' : 'This invoice has active Stripe checkout activity for the current snapshot.';
@@ -648,6 +702,10 @@ function renderPaymentPanel(invoice) {
 
 function previewPaymentInstructions(invoice) {
   const parts = [invoice.paymentInstructions || ''].filter(Boolean);
+  if (invoiceUsesBillVendorAp(invoice)) {
+    parts.push('Payment route: your BILL.com vendor/AP workflow. No Stripe payment page is created for this invoice.');
+    return parts.join('\n\n');
+  }
   const payment = invoice.payment || null;
   const customerPaymentUrl = payment?.publicUrl || (payment?.urlKind === 'customer_payment_page' ? payment.url : '');
   if (customerPaymentUrl && ['active', 'processing', 'paid'].includes(payment.status)) {
@@ -744,7 +802,7 @@ function renderDraftList() {
 }
 
 async function loadSession() {
-  const session = await getJson('/api/invoices?resource=session');
+  const session = await getJson('/api/session');
   paymentSettings = session.payments || paymentSettings;
   permissions = session.permissions || permissions;
   if (!session.auth.configured || !session.user) {
@@ -793,12 +851,17 @@ async function saveInvoice(status = refs.status.value || 'draft') {
     : await getJson('/api/invoices', { method: 'POST', body: JSON.stringify(payload) });
   fillForm(data.invoice);
   await loadInvoices();
-  if (status === 'approved') setNotice('Invoice approved for Stripe payment link creation.');
-  else setNotice(status === 'ready_for_review' ? 'Draft marked ready for review.' : 'Draft saved.');
+  if (status === 'approved') {
+    setNotice(invoiceUsesBillVendorAp(data.invoice) ? 'Invoice approved for external BILL vendor/AP handling. No Stripe page was created.' : 'Invoice approved for Stripe payment link creation.');
+  } else setNotice(status === 'ready_for_review' ? 'Draft marked ready for review.' : 'Draft saved.');
 }
 
 async function approveInvoice() {
-  if (!window.confirm('Approve this invoice for Stripe payment link creation? Review the amount, client, due date, terms, and payment instructions first.')) return;
+  const invoice = currentFormInvoice('approved');
+  const message = invoiceUsesBillVendorAp(invoice)
+    ? 'Approve this invoice for external BILL vendor/AP handling? Review the amount, client, due date, terms, and payment instructions first. No Stripe page will be created.'
+    : 'Approve this invoice for Stripe payment link creation? Review the amount, client, due date, terms, and payment instructions first.';
+  if (!window.confirm(message)) return;
   await saveInvoice('approved');
 }
 
@@ -853,6 +916,10 @@ function yamlScalar(value) {
 }
 
 async function createPaymentLink(mode) {
+  if (invoiceUsesBillVendorAp(currentFormInvoice())) {
+    setNotice('This invoice uses external BILL vendor/AP routing. Fin does not create a Stripe payment page for it.');
+    return;
+  }
   if (!currentInvoice?.id) {
     setNotice('Save the invoice before creating a customer payment page.');
     return;

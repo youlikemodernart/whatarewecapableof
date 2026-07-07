@@ -119,7 +119,7 @@ function renderSession(data) {
 
 async function loadSession() {
   try {
-    const data = await getJson('/api/invoices?resource=session');
+    const data = await getJson('/api/session');
     renderSession(data);
   } catch (error) {
     setStatus(refs.authStatus, 'Error', 'pending');

@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const { DEFAULT_PAYMENT_PROVIDER, invoicePaymentProvider } = require('./_payment_provider');
 
 const STATUS_VALUES = new Set(['draft', 'ready_for_review', 'approved', 'issued', 'paid', 'void']);
 const VISIBILITY_STATES = new Set(['active', 'archived', 'hidden']);
@@ -220,6 +221,7 @@ function baseInvoice(invoiceNumber = '', entityIdInput = 'wawco') {
     payeeReportingScope: defaults.payeeReportingScope,
     excludeFromWawcoDashboard: false,
     from: defaults.from,
+    paymentProvider: DEFAULT_PAYMENT_PROVIDER,
     client: {
       name: '',
       company: '',
@@ -227,6 +229,7 @@ function baseInvoice(invoiceNumber = '', entityIdInput = 'wawco') {
       address: '',
       mercuryCustomerId: '',
       invoiceCode: '',
+      paymentProviderPreference: DEFAULT_PAYMENT_PROVIDER,
     },
     items: [
       {
@@ -287,6 +290,7 @@ function normalizeInvoice(input = {}, options = {}) {
   const reportingEntityId = cleanReportingEntityId(source.reportingEntityId || source.reporting_entity_id || (rawReportingScope === 'private' ? '' : rawReportingScope), entityId);
   const reportingScope = rawReportingScope === 'private' ? 'private' : reportingEntityId;
   const dashboardExcluded = cleanBoolean(source.dashboardExcluded ?? source.dashboard_excluded ?? source.excludeFromWawcoDashboard) || reportingScope === 'private';
+  const paymentProvider = invoicePaymentProvider(source, fallback.client?.paymentProviderPreference || fallback.paymentProvider || DEFAULT_PAYMENT_PROVIDER);
 
   return {
     id: cleanSingleLine(source.id || options.id || '', 80),
@@ -314,6 +318,7 @@ function normalizeInvoice(input = {}, options = {}) {
     dashboardExcluded,
     payeeReportingScope: reportingScope,
     excludeFromWawcoDashboard: dashboardExcluded,
+    paymentProvider,
     from: {
       name: cleanSingleLine(source.from?.name || fallback.from.name || entityDefaults.from.name, 240),
       company: cleanSingleLine(source.from?.company || fallback.from.company || entityDefaults.from.company, 240),
@@ -328,6 +333,7 @@ function normalizeInvoice(input = {}, options = {}) {
       address: cleanText(source.client?.address, 1000).trim(),
       mercuryCustomerId: cleanSingleLine(source.client?.mercuryCustomerId, 160),
       invoiceCode: cleanSingleLine(source.client?.invoiceCode, 40).toUpperCase().replace(/[^A-Z0-9]+/g, '').slice(0, 24),
+      paymentProviderPreference: paymentProvider,
     },
     items,
     discount,

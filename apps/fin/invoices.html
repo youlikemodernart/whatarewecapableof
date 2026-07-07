@@ -22,7 +22,7 @@
   <main class="page page-wide">
     <header class="page-head">
       <h1>Invoice studio</h1>
-      <p class="page-note">Hosted multi-entity drafts for What are we capable of? and Noah Development Group LLC, custom PDFs, and admin-created Stripe customer payment pages. Mercury plans are browser downloads only; client sends, refunds, customer changes, and bank actions remain separate approval-gated steps.</p>
+      <p class="page-note">Hosted multi-entity drafts for What are we capable of? and Noah Development Group LLC, custom PDFs, Stripe customer payment pages, and source-local external BILL vendor/AP routing. Mercury plans are browser downloads only; client sends, refunds, customer changes, and bank actions remain separate approval-gated steps.</p>
     </header>
 
     <section class="panel" id="signin-panel" hidden>
@@ -75,8 +75,8 @@
         <section class="panel" id="payment-panel">
           <div class="section-header">
             <div>
-              <h2>Stripe payment</h2>
-              <p class="help" id="payment-help">Approve the invoice before creating a customer payment page.</p>
+              <h2>Payment route</h2>
+              <p class="help" id="payment-help">Approve the invoice before creating a customer payment page, or mark the client for external BILL vendor/AP handling.</p>
             </div>
             <span class="status-pill" id="payment-status-label">No link</span>
           </div>
@@ -98,7 +98,7 @@
             <button type="button" id="create-live-payment-link">Create live payment page</button>
             <button type="button" class="secondary" id="copy-payment-link">Copy page link</button>
           </div>
-          <p class="help">Create live pages only after invoice approval and at send time. The customer page lets the client choose bank account or card before Stripe Checkout; client sends, invoice emails, refunds, payment attempts, and Stripe configuration changes remain separate approval-gated actions.</p>
+          <p class="help">Stripe remains the default route. External BILL vendor/AP mode does not create a Stripe page or call BILL; it only keeps Fin as the invoice source of truth while the client pays through their AP workflow. Client sends, invoice emails, refunds, payment attempts, and provider configuration changes remain separate approval-gated actions.</p>
         </section>
 
         <form id="invoice-form">
@@ -208,6 +208,13 @@
             <label>Invoice code
               <input id="client-invoice-code" autocomplete="off" placeholder="SUBSTRATE">
             </label>
+            <label>Payment route
+              <select id="client-payment-provider">
+                <option value="stripe_checkout">Stripe customer payment page</option>
+                <option value="bill_vendor_ap">BILL vendor/AP, external</option>
+              </select>
+            </label>
+            <p class="help">Stripe is the default. BILL vendor/AP is source-local routing metadata for clients who pay WAWCO through their own BILL.com AP workflow; it does not read credentials, call BILL, or create a Stripe payment page.</p>
             <label>Email
               <input id="client-email" type="email" autocomplete="email">
             </label>

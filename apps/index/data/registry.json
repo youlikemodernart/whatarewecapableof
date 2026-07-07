@@ -1429,6 +1429,30 @@
       "description": "Direct-link Unitus SEO and traffic-readiness proposal.",
       "lifecycle": "active",
       "notes": "Added from Windex route-map classification on 2026-07-07; production returned 200 and source robots noindex,nofollow."
+    },
+    {
+      "id": "proposal-kw-search-next",
+      "title": "Kaitlyn Wolfe / Shop My Warehouse search next step",
+      "url": "https://whatarewecapableof.com/proposals/kw-search-next/",
+      "path": "/proposals/kw-search-next/",
+      "category": "proposal",
+      "group": "Proposals",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:proposals/kw-search-next/index.html",
+      "tags": [
+        "proposal",
+        "kaitlyn-wolfe",
+        "shop-my-warehouse",
+        "seo",
+        "search",
+        "next-step"
+      ],
+      "description": "Direct-link proposal for the next search tracks for Kaitlyn Wolfe and Shop My Warehouse.",
+      "lifecycle": "active",
+      "notes": "Added from Windex currentness classification on 2026-07-07; production returned 200 and source robots noindex,nofollow."
     }
   ],
   "organizationModel": {

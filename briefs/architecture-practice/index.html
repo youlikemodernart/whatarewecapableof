@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>How much of an architecture practice can AI run? | What are we capable of?</title>
+  <meta name="description" content="A map of how much of an architecture practice's work AI can carry: what it can run, what it assists, and what stays with the licensed architect.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="How much of an architecture practice can AI run?">
+  <meta property="og:description" content="What AI can run, what it assists, and what stays with the licensed architect. An early map.">
+  <meta property="og:image" content="/og.png">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1a1a1a;
+      --ink-2: #44474a;
+      --ink-3: #686d71;
+      --rule: #e6e6e3;
+      --bg: #ffffff;
+      --soft: #f7f7f5;
+      --run: #3f7d5c;
+      --assist: #b7862f;
+      --human: #5b6470;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0; background: var(--bg); color: var(--ink);
+      font-family: var(--sans); font-size: 17px; line-height: 1.55;
+      -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+      font-feature-settings: "kern" 1, "liga" 1;
+    }
+    .skip-link { position: absolute; left: -9999px; top: 0; z-index: 100; background: var(--ink); color: var(--bg); padding: 10px 16px; text-decoration: none; }
+    .skip-link:focus { left: 8px; top: 8px; }
+    .page { max-width: 760px; margin: 0 auto; padding: 52px 24px 92px; }
+    header { margin-bottom: 12px; }
+    .eyebrow { margin: 0 0 12px; color: var(--ink-3); font-family: var(--mono); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+    h1 { margin: 0; max-width: 20ch; font-size: clamp(34px, 6vw, 56px); line-height: .99; letter-spacing: -0.035em; font-weight: 650; text-wrap: balance; }
+    .lede { margin: 24px 0 0; max-width: 60ch; color: var(--ink-2); font-size: 19px; line-height: 1.45; text-wrap: pretty; }
+    main { display: block; }
+    section { padding: 34px 0; border-top: 1px solid var(--rule); }
+    section:first-child { border-top: 0; padding-top: 30px; }
+    h2 { margin: 0 0 16px; font-size: 20px; line-height: 1.2; letter-spacing: -0.01em; font-weight: 650; }
+    p { margin: 0 0 14px; max-width: 62ch; text-wrap: pretty; }
+    p:last-child { margin-bottom: 0; }
+    strong { font-weight: 650; }
+    .lead-line { font-size: 19px; color: var(--ink); max-width: 60ch; }
+    a { color: var(--human); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+    a:hover { color: var(--ink); }
+    .buckets { margin: 20px 0 18px; display: flex; flex-direction: column; gap: 12px; }
+    .bucket { border: 1px solid var(--rule); border-left: 3px solid var(--c); background: var(--soft); padding: 15px 18px; }
+    .bucket.run { --c: var(--run); }
+    .bucket.assist { --c: var(--assist); }
+    .bucket.human { --c: var(--human); }
+    .bucket .lbl { font-weight: 650; margin: 0 0 2px; }
+    .bucket .note { color: var(--ink-3); font-weight: 400; font-size: 15px; }
+    .bucket ul { margin: 9px 0 0; padding: 0; list-style: none; color: var(--ink-2); font-size: 15.5px; }
+    .bucket li { position: relative; padding: 2px 0 2px 15px; }
+    .bucket li::before { content: ""; position: absolute; left: 0; top: 11px; width: 5px; height: 5px; border-radius: 50%; background: var(--c); opacity: .75; }
+    .more { margin: 20px 0 0; font-size: 16px; }
+    ul.plain { margin: 14px 0 14px; padding: 0; list-style: none; max-width: 62ch; }
+    ul.plain li { padding: 0 0 12px; border-bottom: 1px solid var(--rule); margin-bottom: 12px; }
+    ul.plain li:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+    footer { margin-top: 30px; padding-top: 16px; border-top: 1px solid var(--rule); color: var(--ink-3); display: flex; justify-content: space-between; gap: 16px; font-size: 12px; }
+    @media (max-width: 640px) {
+      body { font-size: 16px; }
+      .page { padding: 32px 18px 64px; }
+      h1 { font-size: 34px; }
+      .lede { font-size: 17px; line-height: 1.42; }
+      .lead-line { font-size: 17px; }
+      section { padding: 26px 0; }
+      footer { display: block; }
+      footer span { display: block; margin-bottom: 4px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <div class="page">
+    <header>
+      <p class="eyebrow">Direct-link brief | July 8, 2026</p>
+      <h1>How much of an architecture practice can AI run?</h1>
+      <p class="lede">A map of how much of an architecture practice's work AI can carry: what it can run, what it assists, and what stays with the licensed architect. It is built on how a small firm operates in general, not a read of your specific practice, so treat the details as a starting point we would calibrate together.</p>
+    </header>
+
+    <main id="main">
+      <section>
+        <h2>The short answer</h2>
+        <p class="lead-line">A practice is really two things stacked on top of each other.</p>
+        <p>One is the licensed work. A registered architect has to hold responsible control, and the law reserves the seal, the code sign-off, and the design judgment to a licensed person. Software cannot do that part, and should not. The other is the operating apparatus wrapped around it: winning the work, proposals and fees, setting up projects, tracking drawings and permits, coordinating consultants, keeping the construction-admin logs, the books. Almost none of that requires a license.</p>
+        <p>So the answer splits. AI can carry a large share of the operating apparatus, and it can lift the paperwork off the licensed work, the checklists, logs, drafts, and research, while you still make every design and liability call. It cannot author the design or hold responsible control, which is where the firm's value and its liability both live. The win is leverage: your scarce licensed time goes back to the design and the clients instead of the machine around them.</p>
+        <p>One thing worth saying up front, because it changes what to automate first: in a small firm the architect is the bottleneck. Every seat quietly carries an "and admin" half, and the non-billable operating load is what pulls the principal off billable design and away from clients. So the first automation to reach for is that back office, the invisible infrastructure a small firm can never afford to staff.</p>
+      </section>
+
+      <section>
+        <h2>The whole operation, in three buckets</h2>
+        <p>Sorted by how much AI can take off your plate today.</p>
+        <div class="buckets">
+          <div class="bucket run">
+            <p class="lbl">AI can run it <span class="note">you set the rules and handle the exceptions</span></p>
+            <ul>
+              <li>Lead intake, CRM, and follow-up</li>
+              <li>Meeting notes and action logs</li>
+              <li>Project setup: folders, naming, schedules, the drawing index</li>
+              <li>Proposal and fee-model drafts from your templates</li>
+              <li>Code, zoning, and permit checklist assembly</li>
+              <li>RFI and submittal logs, and the response clocks</li>
+              <li>Product and material data collection</li>
+              <li>Budget, work-in-progress, and profitability dashboards</li>
+              <li>Closeout and archive packets</li>
+            </ul>
+          </div>
+          <div class="bucket assist">
+            <p class="lbl">AI assists, you decide <span class="note">judgment, taste, and the law keep you in the loop</span></p>
+            <ul>
+              <li>Project-fit and go/no-go analysis</li>
+              <li>Fee and staffing scenarios</li>
+              <li>Programming: turning a client's needs into a brief</li>
+              <li>Precedent research and code-interpretation drafts</li>
+              <li>Consultant scope comparison</li>
+              <li>Design-option and material or assembly summaries</li>
+              <li>Drawing-set QA and phase-readiness checks</li>
+              <li>Permit-comment and RFI response drafts</li>
+            </ul>
+          </div>
+          <div class="bucket human">
+            <p class="lbl">Stays human <span class="note">licensed, authored, yours</span></p>
+            <ul>
+              <li>The design itself, and its authorship</li>
+              <li>The client relationship</li>
+              <li>Final scope, fee, and contract terms</li>
+              <li>Consultant selection</li>
+              <li>Sealed drawings and code-compliance sign-off</li>
+              <li>Construction-observation judgment</li>
+              <li>Pricing and risk decisions</li>
+            </ul>
+          </div>
+        </div>
+        <p>For most firms the order is the same. Start with the back office, the logs, the proposals, the project setup, the books, because that is the load a small firm can never staff and it frees the most of your time. Add the documentation and construction-admin help once the operating spine is running.</p>
+        <p class="more"><a href="/briefs/architecture-practice/details.html">See the detailed map: the team, the org chart, and the agent-team version in full.</a></p>
+      </section>
+
+      <section>
+        <h2>The more ambitious version</h2>
+        <p>This is the part we are most interested in building.</p>
+        <p>Instead of buying a stack of separate tools, you can model the whole operating apparatus as a small team of AI agents that mirrors the office you would otherwise hire: one on business development and proposals, one on project setup and coordination, one on code and permits, one on the construction-admin logs, one on the books, with a project-manager agent coordinating them and you, the architect, on top with final say. It is the same office you would staff, run by software.</p>
+        <p>The honest catch is not a privacy law, it is your license and your name. Everything the team produces exists for your review and your seal. Nothing it drafts is sealed, certified, or sent without you, a licensed person still holds responsible control over every technical submission, and the design and the client stay yours. Confidential client work and unpublished design work run on private infrastructure, not an ordinary AI subscription.</p>
+        <p>So the right first step is small and low-risk: we build the operating team against one representative project and let it run, so you can watch your practice's back office work before you commit to anything. It costs almost nothing, it exposes no live client work, and it doubles as the blueprint for the real thing if you decide to build it.</p>
+      </section>
+
+      <section>
+        <h2>What would make this real for you</h2>
+        <p>A fair caveat: this is an outside look at how a small firm operates, not a read on your practice. A few things would sharpen it into something built for you.</p>
+        <ul class="plain">
+          <li><strong>Your state.</strong> What a firm may be, and who must hold responsible control, varies by state board. That sets the exact line between what an agent may draft and what only a licensed architect may sign.</li>
+          <li><strong>Where your non-billable hours go.</strong> Proposals, coordination, construction-admin paperwork, the books: whichever one eats your week points at the first thing to automate.</li>
+          <li><strong>The software you already run.</strong> Your BIM, accounting, and document tools decide what connects to what.</li>
+          <li><strong>What a win looks like to you.</strong> A lighter practice with almost no staff, more time on design, carrying more work without hiring, or a cleaner handoff. Each one points at a different first move.</li>
+        </ul>
+        <p>Whenever you want, let's sit down and tailor this to your actual practice. If it is useful, we will build the simulation so you can see it running.</p>
+      </section>
+    </main>
+
+    <footer>
+      <span>What are we capable of?</span>
+      <span>architecture-practice</span>
+    </footer>
+  </div>
+</body>
+</html>

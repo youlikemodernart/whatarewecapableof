@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>The detailed map | What are we capable of?</title>
+  <meta name="description" content="The full breakdown: how a small architecture firm is organized, and what AI can take from each role.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="The detailed map: an architecture practice and AI">
+  <meta property="og:description" content="The team, the org chart, and where AI fits, role by role.">
+  <meta property="og:image" content="/og.png">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1a1a1a; --ink-2: #44474a; --ink-3: #686d71;
+      --rule: #e6e6e3; --bg: #ffffff; --soft: #f7f7f5;
+      --run: #3f7d5c; --assist: #b7862f; --human: #5b6470;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 17px; line-height: 1.55; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; font-feature-settings: "kern" 1, "liga" 1; }
+    .skip-link { position: absolute; left: -9999px; top: 0; z-index: 100; background: var(--ink); color: var(--bg); padding: 10px 16px; text-decoration: none; }
+    .skip-link:focus { left: 8px; top: 8px; }
+    .page { max-width: 760px; margin: 0 auto; padding: 40px 24px 92px; }
+    a { color: var(--human); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+    a:hover { color: var(--ink); }
+    .back { font-family: var(--mono); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; display: inline-block; margin-bottom: 30px; }
+    .eyebrow { margin: 0 0 12px; color: var(--ink-3); font-family: var(--mono); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+    h1 { margin: 0; max-width: 22ch; font-size: clamp(30px, 5vw, 46px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 650; text-wrap: balance; }
+    .lede { margin: 22px 0 0; max-width: 60ch; color: var(--ink-2); font-size: 18px; line-height: 1.45; text-wrap: pretty; }
+    main { display: block; }
+    section { padding: 32px 0; border-top: 1px solid var(--rule); }
+    h2 { margin: 0 0 14px; font-size: 20px; line-height: 1.2; letter-spacing: -0.01em; font-weight: 650; }
+    h3 { margin: 22px 0 8px; font-size: 15px; line-height: 1.3; font-weight: 650; }
+    p { margin: 0 0 14px; max-width: 62ch; text-wrap: pretty; }
+    p:last-child { margin-bottom: 0; }
+    strong { font-weight: 650; }
+    ul.roles { list-style: none; margin: 10px 0 8px; padding: 0; max-width: 64ch; }
+    ul.roles li { padding: 0 0 10px; border-bottom: 1px solid var(--rule); margin-bottom: 10px; font-size: 16px; color: var(--ink-2); }
+    ul.roles li:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+    ul.roles .role { font-weight: 650; color: var(--ink); }
+    ul.roles .law { color: var(--ink-3); font-size: 14.5px; }
+    pre.chart { margin: 8px 0 18px; padding: 15px 16px; border: 1px solid var(--rule); background: var(--soft); font-family: var(--mono); font-size: 12px; line-height: 1.55; color: var(--ink-2); overflow-x: auto; max-width: none; }
+    .tset { margin: 6px 0 20px; }
+    .tcap { display: flex; align-items: center; gap: 8px; font-weight: 650; margin: 20px 0 8px; font-size: 16px; }
+    .tag { display: inline-block; font-size: 11px; font-weight: 650; letter-spacing: .02em; padding: 1px 7px; border-radius: 2px; border: 1px solid var(--c); color: var(--c); }
+    .tset.run { --c: var(--run); } .tset.assist { --c: var(--assist); } .tset.human { --c: var(--human); }
+    table { width: 100%; border-collapse: collapse; font-size: 15px; border-left: 3px solid var(--c); }
+    th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--rule); }
+    th { font-family: var(--mono); font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-3); font-weight: 650; }
+    td.rl { font-weight: 650; color: var(--ink); white-space: nowrap; }
+    td { color: var(--ink-2); }
+    footer { margin-top: 30px; padding-top: 16px; border-top: 1px solid var(--rule); color: var(--ink-3); display: flex; justify-content: space-between; gap: 16px; font-size: 12px; }
+    @media (max-width: 640px) {
+      body { font-size: 16px; }
+      .page { padding: 28px 18px 64px; }
+      h1 { font-size: 29px; }
+      .lede { font-size: 16px; }
+      section { padding: 26px 0; }
+      table { font-size: 14px; }
+      th, td { padding: 8px 8px; }
+      td.rl { white-space: normal; }
+      pre.chart { font-size: 10.5px; }
+      footer { display: block; }
+      footer span { display: block; margin-bottom: 4px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <div class="page">
+    <a class="back" href="/briefs/architecture-practice/">Back to the summary</a>
+
+    <header>
+      <p class="eyebrow">The detailed map | July 8, 2026</p>
+      <h1>How a practice is organized, and where AI fits</h1>
+      <p class="lede">The full breakdown behind the summary: the team, the org chart, and what AI can take from each role. A small, independent architecture firm.</p>
+    </header>
+
+    <main id="main">
+      <section>
+        <h2>Three lanes</h2>
+        <p>Every small firm divides into three lanes, and the line between them is what your license and your contracts reserve to you. That line is also the automation line.</p>
+        <ul class="roles">
+          <li><span class="role">Design and liability.</span> The licensed core: design authorship, the seal, responsible control over every technical submission, code sign-off, and construction-observation judgment. Yours by law, and the firm's actual product.</li>
+          <li><span class="role">The operating apparatus.</span> Business development, proposals and fees, project setup, code and permit tracking, consultant coordination, documentation QA, specs, and the construction-admin logs. Almost none of it requires a license, so almost all of it is open to automation.</li>
+          <li><span class="role">Management.</span> The operating-partner seat plus you wearing the owner hat: the pipeline, the books, staffing, compliance, the numbers.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>The team, role by role</h2>
+        <h3>Design and liability</h3>
+        <ul class="roles">
+          <li><span class="role">Principal architect / owner.</span> Design authorship, the client relationship, final judgment, the seal, and the risk. <span class="law">Yours by law: command of the architectural services, the seal, and code sign-off.</span></li>
+          <li><span class="role">Project architect.</span> Runs a project's technical development and coordinates the set. <span class="law">Works under the principal's responsible control; often on the licensure track.</span></li>
+          <li><span class="role">Job captain / production.</span> Assembles and details the drawing set. <span class="law">Reversible production work; sealed only under a licensed architect's responsible control.</span></li>
+        </ul>
+        <h3>The operating apparatus</h3>
+        <ul class="roles">
+          <li><span class="role">Business development / marketing.</span> Pipeline, portfolio, outreach, and the proposal content library.</li>
+          <li><span class="role">Proposal / fee coordinator.</span> Go/no-go, fee and staffing scenarios, assembling the proposal.</li>
+          <li><span class="role">Project manager / studio coordinator.</span> Schedules, phase-gate checklists, action logs, deliverable tracking.</li>
+          <li><span class="role">Code / permit coordinator.</span> Zoning and code checklists, the permit matrix per jurisdiction, resubmission tracking.</li>
+          <li><span class="role">Consultant coordinator.</span> The consultant roster, agreements and insurance on file, deliverable schedules.</li>
+          <li><span class="role">Documentation / specs / QA.</span> Sheet-index and standards checks, redline and issue logs, spec editing support, product data.</li>
+          <li><span class="role">Construction-admin coordinator.</span> Submittal, RFI, change-order, payment, and closeout logs, and the response clocks.</li>
+        </ul>
+        <h3>Management</h3>
+        <ul class="roles">
+          <li><span class="role">Operating partner / office manager.</span> Runs the business: pipeline, the books, staffing, compliance, the KPIs. In a small firm this is one seat, often you.</li>
+          <li><span class="role">Bookkeeper / finance.</span> Timesheets, invoicing, work-in-progress, aged receivables, the monthly close.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>The org chart</h2>
+        <p>What it looks like the day it is just you, and once the firm is full.</p>
+        <h3>At launch (a solo or small studio)</h3>
+<pre class="chart">                 PRINCIPAL ARCHITECT (you)
+             design + owner / manager + the seal
+                          |
+       -------------------+-------------------
+       |                                     |
+  Drawing production                  Operating apparatus
+  (project architect /                (one seat, all admin:
+   job captain, added                  BD, proposals, project
+   as work builds)                     setup, the books)</pre>
+        <h3>Once full (principal, an operating partner, a small team)</h3>
+<pre class="chart">                    PRINCIPAL ARCHITECT
+               design - the seal - the clients
+                /                            \
+    OPERATING PARTNER                    DESIGN / PRODUCTION
+    (runs the business)              (reports to the architect)
+          |                                    |
+   -------+-----------              -----------+----------
+   |    |       |     |             |          |         |
+  BD/  Propo-  Cons- Finance     Project     Job      Specs /
+ mktg  sal/fee ultant & ops      architect   captain  doc QA
+       coord   coord             (x1-2)</pre>
+        <p>A common small build is one principal architect, a project architect or two, a job captain, and a single operating seat that carries the whole back office.</p>
+      </section>
+
+      <section>
+        <h2>Where AI fits, role by role</h2>
+        <p>The same three buckets from the summary, mapped onto each role: what AI can carry, and what stays with a person.</p>
+
+        <div class="tset run">
+          <div class="tcap">The operating apparatus <span class="tag">most automatable</span></div>
+          <table>
+            <thead><tr><th>Role</th><th>AI can take</th><th>Stays with a person</th></tr></thead>
+            <tbody>
+              <tr><td class="rl">BD / marketing</td><td>Pipeline dashboards, CRM hygiene, portfolio and case-study drafts, outreach drafts</td><td>Positioning, the relationship, every send</td></tr>
+              <tr><td class="rl">Proposals / fee</td><td>Go/no-go memos, fee and staffing scenarios, assembling the proposal</td><td>Fee approval, scope commitments, signing</td></tr>
+              <tr><td class="rl">Project manager</td><td>Schedules, phase-gate checklists, action logs, deliverable tracking</td><td>Phase-gate sign-offs, client approvals</td></tr>
+              <tr><td class="rl">Code / permit</td><td>Code and zoning checklists, the permit matrix, resubmission tracking</td><td>The compliance determination, any dealing with the building department</td></tr>
+              <tr><td class="rl">Consultant coordination</td><td>The roster, agreements and insurance on file, deliverable clocks</td><td>Final consultant selection</td></tr>
+              <tr><td class="rl">Documentation / specs / QA</td><td>Sheet-index and standards checks, redline logs, spec editing, product data</td><td>What the standards are, and the seal</td></tr>
+              <tr><td class="rl">Construction admin</td><td>Submittal, RFI, change-order, payment, and closeout logs</td><td>Payment certification, contract interpretation, rejecting work</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tset human">
+          <div class="tcap">Design and liability <span class="tag">mostly yours</span></div>
+          <table>
+            <thead><tr><th>Role</th><th>AI can assist</th><th>Stays with a person</th></tr></thead>
+            <tbody>
+              <tr><td class="rl">Principal architect</td><td>Precedent research, drafting notes, modeling options on request</td><td>Design authorship, the seal, responsible control</td></tr>
+              <tr><td class="rl">Project architect</td><td>Drawing-set QA, coordination checks, code checklist drafts</td><td>Technical judgment, what gets sealed</td></tr>
+              <tr><td class="rl">Production</td><td>Sheet-index checks, redline and issue logging</td><td>The drawn work itself</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tset assist">
+          <div class="tcap">Management <span class="tag">mixed</span></div>
+          <table>
+            <thead><tr><th>Role</th><th>AI can take</th><th>Stays with a person</th></tr></thead>
+            <tbody>
+              <tr><td class="rl">Operating partner</td><td>KPI dashboards, pipeline math, compliance logs</td><td>Hiring, pricing and risk, the client leadership</td></tr>
+              <tr><td class="rl">Finance</td><td>Timesheet and invoice prompts, WIP tracking, aged-AR watch, the monthly-close draft</td><td>Distributions, and every payment</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>What sets the exact line</h2>
+        <p>Two things decide precisely where automation stops for your practice.</p>
+        <ul class="roles">
+          <li><span class="role">Your state board.</span> The non-delegable core is the same everywhere: a licensed architect holds responsible control, seals the documents, and signs off on code compliance, and only a licensed person or a registered firm may present the work as architecture at all. What varies by state is the rest, who may own the firm and who must hold command of the services, and it moves the line. We pull your state's rules before setting anything up. None of this is legal or licensure advice; your state board and your counsel govern.</li>
+          <li><span class="role">Confidentiality and liability.</span> Anything an agent drafts exists for your review and your seal; nothing is sealed, certified, or sent on its own. Client program and financial data, unpublished design work, and anything headed toward a dispute run on private infrastructure, not an ordinary AI tool. That is exactly why the agent-team idea starts as a controlled build on sample material, not a live hookup to your files.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>The order to do it in</h2>
+        <p>For a small firm, sequence beats scope. The back office comes before the clever parts.</p>
+        <ul class="roles">
+          <li><span class="role">First, the system of record.</span> Stand up the books and the project tracker: timesheets, work-in-progress, invoicing, and the drawing and permit logs. Bounded, checkable, and everything else reads from it.</li>
+          <li><span class="role">Then the project manager's paperwork.</span> Schedules, phase-gate checklists, action logs, code and consultant tracking.</li>
+          <li><span class="role">Then business development and proposals.</span> Go/no-go, fee scenarios, the content library, outreach drafts, with every send still yours to approve.</li>
+          <li><span class="role">When a project reaches construction, the CA logs.</span> The most paperwork-dense phase, and the one where liability concentrates: logs and clocks first, drafting second, professional determinations never.</li>
+          <li><span class="role">Later, the documentation and specs help,</span> once drawing volume justifies it.</li>
+        </ul>
+        <p>Keep the design and the liability human, and spend the freed time there. The point of the back office is the front of the house: the design, the clients, the judgment.</p>
+      </section>
+
+      <section>
+        <h2>The agent-team version</h2>
+        <p>The most ambitious form of this replaces a stack of separate tools with a single coordinated team of AI agents that mirrors the office you would otherwise hire.</p>
+<pre class="chart">          PRINCIPAL ARCHITECT (you, final say + the seal)
+                          |
+               PROJECT-MANAGER AGENT
+        (keeps the schedule and the logs, coordinates
+         the team, asks you before anything leaves)
+                          |
+       -------------------+-------------------
+       |         |            |            |
+     BD /      Code /     Consultant     Finance
+  proposals    permits    coordination   &amp; ops
+                          |
+              Construction-admin agent
+           (keeps the logs; you make every call)</pre>
+        <p>Two ways to run it, and the order is not optional:</p>
+        <ul class="roles">
+          <li><span class="role">Step one: a controlled build.</span> We build the whole team against one representative project and let it run, so you can watch your practice's operation work before it touches anything live. Because it runs on sample material, no confidential client work is exposed, and it doubles as the blueprint for the real thing.</li>
+          <li><span class="role">Step two, if you want it: the real thing.</span> A version wired to your live files and software runs on private infrastructure and connects to your real tools. It is a bigger build. For a single small practice, buying a few proven tools first is often the smarter first move; the agent team earns its keep as a repeatable operating system, across your own projects or as something the firm keeps for good.</li>
+        </ul>
+        <p>Either way, every agent starts by drafting and asking for your approval, and earns more independence only as it proves out, beginning with the reversible, low-stakes work. And the hard line never moves: no agent signs, seals, certifies, determines code compliance, commits a fee, or sends anything on its own.</p>
+      </section>
+    </main>
+
+    <a class="back" href="/briefs/architecture-practice/">Back to the summary</a>
+
+    <footer>
+      <span>What are we capable of?</span>
+      <span>architecture-practice</span>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-07-07",
+  "generatedAt": "2026-07-09",
   "source": "Curated starter registry from repo routes and read-only Vercel scope observations. Rows marked needs_review require live verification before being treated as complete inventory.",
   "items": [
     {
@@ -1278,6 +1278,50 @@
       "description": "Direct-link outline for mapping an architecture office.",
       "lifecycle": "active",
       "notes": "Added from Windex route-map classification on 2026-07-07; source robots noindex,nofollow."
+    },
+    {
+      "id": "brief-architecture-practice",
+      "title": "Architecture practice AI map",
+      "url": "https://whatarewecapableof.com/briefs/architecture-practice/",
+      "path": "/briefs/architecture-practice/",
+      "category": "brief",
+      "group": "Briefs",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:briefs/architecture-practice/index.html",
+      "tags": [
+        "brief",
+        "architecture-practice",
+        "ai-automation",
+        "practice-map"
+      ],
+      "description": "Direct-link map of what AI can run, assist, and leave to licensed architects in an architecture practice.",
+      "lifecycle": "active",
+      "notes": "Added from Windex currentness classification on 2026-07-09; production returned 200 and source robots noindex,nofollow."
+    },
+    {
+      "id": "brief-dental-practice",
+      "title": "Dental practice AI map",
+      "url": "https://whatarewecapableof.com/briefs/dental-practice/",
+      "path": "/briefs/dental-practice/",
+      "category": "brief",
+      "group": "Briefs",
+      "status": "active",
+      "audience": "client",
+      "auth": "direct_link",
+      "visibility": "noindex",
+      "source": "repo:briefs/dental-practice/index.html",
+      "tags": [
+        "brief",
+        "dental-practice",
+        "ai-automation",
+        "practice-map"
+      ],
+      "description": "Direct-link map of what AI can run, assist, and leave with humans in a dental practice.",
+      "lifecycle": "active",
+      "notes": "Added from Windex currentness classification on 2026-07-09; production returned 200 and source robots noindex,nofollow."
     },
     {
       "id": "brief-otto-labor-estimate",

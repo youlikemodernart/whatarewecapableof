@@ -1,230 +1,479 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow">
-  <title>Kaitlyn Wolfe and Shop My Warehouse, the next step in search | What are we capable of?</title>
-  <meta property="og:title" content="Kaitlyn Wolfe and Shop My Warehouse, the next step in search">
-  <meta property="og:type" content="website">
-  <style>
-    :root{
-      --ink:#1a1a1a; --ink-2:#44474a; --ink-3:#686d71; --rule:#e6e6e3; --bg:#ffffff;
-      --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-    }
-    *{box-sizing:border-box;}
-    html{-webkit-text-size-adjust:100%;}
-    body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-feature-settings:"kern" 1,"liga" 1;}
-    @media (max-width:600px){body{font-size:17px;}}
-    em{font-style:italic;}
-    :focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:1px;}
-    a{color:var(--ink);}
-    .skip-link{position:absolute;left:8px;top:-48px;z-index:100;background:var(--ink);color:#fff;padding:9px 14px;font-size:14px;text-decoration:none;border-radius:0 0 3px 3px;transition:top .15s ease;}
-    .skip-link:focus{top:0;}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#ffffff">
+<title>Kaitlyn Wolfe and SMW, search in one place | What are we capable of?</title>
+<meta property="og:title" content="Kaitlyn Wolfe and SMW, search in one place">
+<meta property="og:type" content="website">
+<style>
+  @font-face {
+    font-family: 'Geist Mono';
+    src: url('/assets/fonts/geist-mono-latin.woff2') format('woff2');
+    font-weight: 400; font-style: normal; font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215;
+  }
+  @font-face {
+    font-family: 'Geist Mono';
+    src: url('/assets/fonts/geist-mono-latin-ext.woff2') format('woff2');
+    font-weight: 400; font-style: normal; font-display: swap;
+    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
 
-    .page{max-width:760px;margin:0 auto;padding:28px 24px 96px;}
-    .site-header{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding-bottom:16px;border-bottom:1px solid var(--rule);margin-bottom:clamp(48px,9vh,96px);font-size:14px;}
-    .site-header a{color:var(--ink);text-decoration:none;}
-    .site-header .mark{font-weight:500;}
-    .site-header .mail{color:var(--ink-3);}
-    .site-header .mail:hover{color:var(--ink);}
-    .site-footer{margin-top:clamp(64px,10vh,104px);padding-top:20px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:14px;color:var(--ink-3);}
-    .site-footer a{color:var(--ink-3);text-decoration:none;}
-    .site-footer a:hover{color:var(--ink);}
+  :root{
+    --ink:#1a1a1a; --ink-2:#44474a; --ink-3:#686d71;
+    --rule:#e6e6e3; --rule-2:rgba(0,0,0,0.15); --rule-3:rgba(0,0,0,0.08); --bg:#ffffff;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --mono:'Geist Mono',ui-monospace,'SF Mono',Menlo,monospace;
+    --caps:0.06em;
+    --hdr:46px;
+    --gutter:24px;
+    /* flat type scale: size = role, never rank */
+    --m:18px;   /* body, titles, section content */
+    --s:14px;   /* tabs, close */
+    --xs:12.5px;/* meta, labels, cues, table headers, evidence */
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;overflow-x:clip;scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:var(--m);line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-feature-settings:"kern" 1,"liga" 1;}
+  @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}}
+  em{font-style:italic;}
+  a{color:inherit;}
+  :focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:1px;}
 
-    p{margin:0 0 1em;max-width:60ch;text-wrap:pretty;}
-    p:last-child{margin-bottom:0;}
-    section{margin-top:clamp(56px,9vh,92px);}
-    h2{font-size:23px;line-height:1.2;letter-spacing:-0.01em;font-weight:600;margin:0 0 20px;}
+  .skip-link{position:absolute;left:-9999px;top:0;z-index:100;background:var(--ink);color:var(--bg);padding:10px 16px;text-decoration:none;font-size:var(--s);}
+  .skip-link:focus{left:8px;top:8px;}
 
-    .p-meta{font-size:13px;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin:0 0 18px;}
-    .p-title{font-size:clamp(30px,4.6vw,46px);line-height:1.1;letter-spacing:-0.018em;font-weight:600;margin:0;max-width:22ch;text-wrap:balance;}
-    .p-lede{font-size:20px;line-height:1.5;color:var(--ink-2);max-width:58ch;margin:24px 0 0;text-wrap:pretty;}
-    .eyebrow{font-size:13px;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-3);margin:0 0 10px;}
+  .wrap{max-width:960px;margin:0 auto;padding:0 var(--gutter) 96px;}
 
-    .finding{display:grid;grid-template-columns:40px 1fr;gap:4px 16px;margin-bottom:clamp(28px,4vh,40px);}
-    .finding:last-child{margin-bottom:0;}
-    .finding .n{font-size:18px;font-weight:500;color:var(--ink-3);padding-top:2px;}
-    .finding>div>p,.finding>p{margin:0;max-width:58ch;}
-    .finding h3{font-size:19px;font-weight:600;margin:0 0 8px;}
+  /* double-sticky: site identity above, tab bar below */
+  .proposal-header{height:var(--hdr);display:flex;align-items:center;position:sticky;top:0;z-index:20;background:var(--bg);}
+  .proposal-header a{font-size:var(--s);text-decoration:none;letter-spacing:-0.01em;}
 
-    .layer{display:grid;grid-template-columns:170px 1fr;gap:8px 20px;padding:18px 0;border-top:1px solid var(--rule);}
-    .layer:last-of-type{border-bottom:1px solid var(--rule);}
-    .layer .label{font-size:14px;color:var(--ink-3);padding-top:2px;}
-    .layer p{margin:0;max-width:54ch;}
+  .proposal-meta{font-family:var(--mono);font-size:var(--xs);text-transform:uppercase;letter-spacing:var(--caps);color:var(--ink-3);margin:10px 0 0;}
+  .proposal-title{font-family:var(--sans);font-weight:600;font-size:var(--m);line-height:1.35;margin:14px 0 0;max-width:62ch;text-wrap:pretty;}
+  .proposal-guide{font-family:var(--sans);font-weight:400;font-size:var(--m);line-height:1.5;margin:14px 0 0;max-width:68ch;color:var(--ink-2);text-wrap:pretty;}
+  .proposal-guide strong{font-weight:600;color:var(--ink);}
 
-    .p-table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
-    .p-table{width:100%;border-collapse:collapse;margin:8px 0 0;font-size:16px;}
-    .p-table th{text-align:left;font-size:13px;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);font-weight:600;padding:0 18px 10px 0;vertical-align:bottom;border-bottom:1px solid var(--ink);}
-    .p-table td{text-align:left;padding:14px 18px 14px 0;vertical-align:top;border-bottom:1px solid var(--rule);}
-    .p-table td:last-child,.p-table th:last-child{padding-right:0;}
-    .p-table td.lead-cell{font-weight:600;color:var(--ink);white-space:nowrap;}
+  nav.tabs{display:flex;gap:22px;align-items:center;min-height:40px;position:sticky;top:var(--hdr);z-index:15;background:var(--bg);margin-top:22px;border-bottom:1px solid var(--ink);overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none;}
+  nav.tabs::-webkit-scrollbar{display:none;}
+  .tab{font-family:var(--mono);font-size:var(--s);text-transform:uppercase;letter-spacing:var(--caps);text-decoration:none;color:var(--ink);opacity:0.4;padding:8px 0;white-space:nowrap;transition:opacity .15s ease;}
+  .tab:hover{opacity:0.7;}
+  .tab.active{opacity:1;}
 
-    .demo{margin:24px 0 0;}
-    .demo a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--ink);padding-bottom:2px;font-size:18px;}
-    .demo a:hover{border-bottom-width:2px;}
-    .demo .note{display:block;font-size:14px;color:var(--ink-3);margin-top:8px;}
+  .panel{padding-top:34px;}
+  .tabbed .panel{display:none;}
+  .tabbed .panel.active{display:block;}
+  .tabbed .panel-full{display:none;min-height:calc(100svh - 8rem);flex-direction:column;justify-content:center;}
+  .tabbed .panel-full.active{display:flex;}
 
-    .seealso{display:grid;grid-template-columns:1fr;gap:0;}
-    .seealso a{color:var(--ink);}
+  /* panel intro (per-tab lede), flat scale */
+  .panel-lede{font-family:var(--sans);font-size:var(--m);line-height:1.5;color:var(--ink-2);max-width:68ch;margin:0 0 8px;text-wrap:pretty;}
+  .panel-lede strong{font-weight:600;color:var(--ink);}
 
-    .close-line{font-size:22px;line-height:1.35;font-weight:500;max-width:44ch;text-wrap:balance;}
-    .cta{margin-top:28px;}
-    .cta a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--ink);padding-bottom:2px;font-size:18px;}
-    .cta a:hover{border-bottom-width:2px;}
+  /* Cornell section: governing question (cue) + answer (body) */
+  .cq{display:grid;grid-template-columns:184px 1fr;gap:10px 34px;padding:20px 0;border-top:1px solid var(--rule-2);}
+  .cq:first-of-type{border-top:1px solid var(--ink);}
+  .cq-cue{font-family:var(--mono);font-size:var(--xs);line-height:1.35;text-transform:uppercase;letter-spacing:var(--caps);color:var(--ink-3);padding-top:3px;}
+  .cq-body{min-width:0;}
+  .cq-body>:first-child{margin-top:0;}
+  .cq-body>:last-child{margin-bottom:0;}
 
-    @media (max-width:600px){
-      .page{padding-bottom:48px;}
-      .site-header{font-size:13px;flex-wrap:wrap;row-gap:4px;}
-      .site-header .mark{white-space:nowrap;}
-      .site-footer{margin-top:48px;}
-      section{margin-top:48px;}
-      .finding{grid-template-columns:32px 1fr;}
-      .layer{grid-template-columns:1fr;gap:4px;}
-      .p-table{font-size:15px;}
-      .p-table td.lead-cell{white-space:normal;}
-      .p-table-stack thead{display:none;}
-      .p-table-stack,.p-table-stack tbody,.p-table-stack tr,.p-table-stack td{display:block;width:100%;}
-      .p-table-stack tr{padding:14px 0;border-bottom:1px solid var(--rule);}
-      .p-table-stack tr:first-child{border-top:1px solid var(--ink);}
-      .p-table-stack td{border-bottom:0;padding:6px 0;}
-      .p-table-stack td::before{content:attr(data-label);display:block;font-size:12px;line-height:1.2;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:2px;}
-      .p-table-stack td.lead-cell{padding-top:0;margin-bottom:6px;}
-      .p-table-stack td.lead-cell::before{display:none;}
-    }
-  </style>
+  /* summary answer sheet: one tight answer per question */
+  .ans{margin:0;max-width:68ch;}
+  .ans .to{font-family:var(--mono);font-size:var(--xs);text-transform:uppercase;letter-spacing:var(--caps);white-space:nowrap;}
+  .ans .to a{text-decoration:none;border-bottom:1px solid var(--rule);padding-bottom:1px;}
+  .ans .to a:hover{border-bottom-color:var(--ink);}
+
+  p{margin:0 0 1em;max-width:68ch;text-wrap:pretty;}
+  .cq-body p a{text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;}
+  .lead-in{margin-bottom:18px;}
+
+  /* findings: mono number + prose */
+  .finding{display:grid;grid-template-columns:34px 1fr;gap:2px 14px;margin:16px 0;}
+  .finding .n{font-family:var(--mono);font-size:var(--xs);color:var(--ink-3);padding-top:4px;letter-spacing:var(--caps);}
+  .finding h4{font-size:var(--m);font-weight:600;margin:0 0 4px;}
+  .finding p{margin:0;max-width:66ch;}
+
+  /* layer rows: mono label + prose */
+  .layer{display:grid;grid-template-columns:150px 1fr;gap:6px 20px;padding:16px 0;border-top:1px solid var(--rule);}
+  .layer:first-of-type{margin-top:14px;}
+  .layer:last-of-type{border-bottom:1px solid var(--rule);}
+  .layer .lb{font-family:var(--mono);font-size:var(--xs);text-transform:uppercase;letter-spacing:var(--caps);color:var(--ink-3);padding-top:3px;}
+  .layer p{margin:0;max-width:66ch;}
+
+  /* quiet stat field */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:20px 24px;border-top:1px solid var(--rule);padding-top:18px;margin-top:14px;}
+  .stat .num{font-family:var(--sans);font-size:var(--m);font-weight:500;line-height:1.2;}
+  .stat .lb{font-family:var(--mono);font-size:var(--xs);text-transform:uppercase;letter-spacing:var(--caps);color:var(--ink-3);margin-top:5px;max-width:24ch;line-height:1.4;}
+
+  /* tables */
+  .p-table{width:100%;border-collapse:collapse;margin:14px 0 0;font-size:var(--m);}
+  .p-table th{text-align:left;font-family:var(--mono);font-size:var(--xs);text-transform:uppercase;letter-spacing:var(--caps);color:var(--ink-3);font-weight:400;padding:0 16px 8px 0;vertical-align:bottom;border-bottom:1px solid var(--ink);}
+  .p-table td{text-align:left;padding:12px 16px 12px 0;vertical-align:top;border-bottom:1px solid var(--rule);}
+  .p-table td:last-child,.p-table th:last-child{padding-right:0;}
+  .p-table td.k{font-weight:600;white-space:nowrap;}
+
+  /* demo link */
+  .demo{margin:16px 0 0;}
+  .demo a{text-decoration:none;border-bottom:1px solid var(--ink);padding-bottom:2px;}
+  .demo a:hover{box-shadow:0 1px 0 var(--ink);}
+  .demo .note{display:block;font-family:var(--sans);font-size:var(--s);color:var(--ink-3);margin-top:8px;max-width:68ch;line-height:1.5;}
+  .jump{font-family:var(--mono);font-size:var(--xs);text-transform:uppercase;letter-spacing:var(--caps);}
+  .jump a{text-decoration:none;border-bottom:1px solid var(--rule);padding-bottom:2px;}
+  .jump a:hover{border-bottom-color:var(--ink);}
+
+  .close{margin-top:30px;padding-top:20px;border-top:1px solid var(--ink);}
+  .close p{font-size:var(--m);max-width:46ch;}
+  .close .cta{margin-top:14px;}
+  .close .cta a{text-decoration:none;border-bottom:1px solid var(--ink);padding-bottom:2px;}
+  .close .cta a:hover{box-shadow:0 1px 0 var(--ink);}
+
+  /* the ? tab */
+  .q-block .big{font-family:var(--sans);font-weight:400;font-size:var(--m);line-height:1.5;max-width:34ch;margin:0;}
+  .q-block .big strong{font-weight:600;}
+  .q-cta{font-family:var(--mono);font-size:var(--s);text-transform:uppercase;letter-spacing:var(--caps);margin-top:18px;}
+  .q-cta a{text-decoration:none;border-bottom:1px solid var(--ink);padding-bottom:2px;}
+
+  footer{margin-top:52px;padding-top:16px;border-top:1px solid var(--rule-3);}
+  footer .m{font-family:var(--mono);font-size:var(--xs);text-transform:uppercase;letter-spacing:var(--caps);color:var(--ink-3);}
+
+  /* ===== mobile reflow ===== */
+  @media (max-width:640px){
+    :root{--gutter:16px;--m:17px;}
+    .wrap{padding-bottom:48px;}
+    nav.tabs{gap:16px;}
+    .panel{padding-top:26px;}
+    .cq{grid-template-columns:1fr;gap:7px;padding:18px 0;}
+    .cq-cue{padding-top:0;}
+    .finding{grid-template-columns:28px 1fr;}
+    .layer{grid-template-columns:1fr;gap:3px;}
+    .layer .lb{padding-top:0;}
+    p,.finding p,.layer p,.cq-body p,.ans{max-width:none;}
+    .p-table{font-size:var(--m);}
+    .p-table td.k{white-space:normal;}
+    .p-table-stack thead{display:none;}
+    .p-table-stack,.p-table-stack tbody,.p-table-stack tr,.p-table-stack td{display:block;width:100%;}
+    .p-table-stack tr{padding:12px 0;border-bottom:1px solid var(--rule);}
+    .p-table-stack tr:first-child{border-top:1px solid var(--ink);}
+    .p-table-stack td{border-bottom:0;padding:5px 0;}
+    .p-table-stack td.k{padding-top:0;}
+    .p-table-stack td:not(.k)::before{content:attr(data-label);display:block;font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:var(--caps);color:var(--ink-3);margin-bottom:2px;}
+  }
+</style>
 </head>
 <body class="page-proposal">
-  <a class="skip-link" href="#main">Skip to content</a>
-  <div class="page">
-    <header class="site-header">
-      <a class="mark" href="/">What are we capable of?</a>
-      <a class="mail" href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a>
-    </header>
-    <main id="main">
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="wrap">
 
-    <p class="p-meta">Prepared for Aditi and the Kaitlyn Wolfe team &middot; July 2026</p>
-    <h1 class="p-title">Two search tracks, and how we would run&nbsp;them.</h1>
-    <p class="p-lede">You have seen the two pages already, the studio site and Shop My Warehouse. This pulls the answers to your five questions into one place, keeps the two tracks apart, and shows how the ongoing work runs.</p>
+  <header class="proposal-header">
+    <a href="https://whatarewecapableof.com/">What are we capable of?</a>
+  </header>
 
-    <section>
-      <p class="eyebrow">The short version</p>
-      <h2>Two different problems, one way of working</h2>
-      <p>The studio site and the store need different things from search, so we keep them as two tracks. The studio site is a strong portfolio on Cargo with no page built for the searches that bring in design and build work. Shop My Warehouse is a store of one-of-a-kind pieces, where the lasting search value sits in the collection pages, not in products that sell and disappear.</p>
-      <p>Both run on the same operating loop underneath, and a person signs off on every change that touches a live site. The rest of this page answers your five questions across both.</p>
+  <main id="main">
 
-      <div class="layer" style="margin-top:36px;"><div class="label">Studio site</div><div><p>kaitlynwolfe.com. Move off Cargo onto a foundation we control, then build the local-service pages that actually capture demand. Detail in the <a href="https://whatarewecapableof.com/proposals/kaitlyn-wolfe-seo/">studio-site look at search</a>.</p></div></div>
-      <div class="layer"><div class="label">Shop My Warehouse</div><div><p>shopmywarehouse.com. Make the collection pages carry the search value, keep sold pieces from becoming dead ends, and add strong titles and alt text as new items go up. Detail in the <a href="https://whatarewecapableof.com/proposals/shop-my-warehouse-seo/">Shop My Warehouse look at search</a>.</p></div></div>
-    </section>
+    <p class="proposal-meta">Prepared for Aditi and the KW team / July 2026</p>
+    <p class="proposal-title">Two SEO projects, one site to read them: the studio site, SMW, and how the work runs.</p>
+    <p class="proposal-guide"><strong>Summary</strong> answers your five questions in one line each. <strong>Studio site</strong> and <strong>SMW</strong> hold the full detail. Every section is headed by the question it answers.</p>
 
-    <section>
-      <p class="eyebrow">Your first question &middot; the studio site</p>
-      <h2>What we can do on Cargo, and what needs the move</h2>
-      <p>Some real wins do not need a new site, and we would do those first whatever you decide. Others are things Cargo cannot do, and they are the ones that move a site like this the most.</p>
+    <nav class="tabs" aria-label="Sections">
+      <a class="tab active" href="#summary">Summary</a>
+      <a class="tab" href="#studio">Studio site</a>
+      <a class="tab" href="#smw">SMW</a>
+      <a class="tab" href="#q">?</a>
+    </nav>
 
-      <div class="layer" style="margin-top:32px;"><div class="label">On Cargo now</div><div><p>Claim and build out the Google Business Profile, put a real address on the site, rewrite the page titles and the one shared description toward the words people search, and strip the nav, footer, and test pages out of what Google sees.</p></div></div>
-      <div class="layer"><div class="label">Needs the move</div><div><p>Per-page titles and descriptions, canonical tags, real headings, image alt text, structured data that tells Google the studio is a local design and build business, modern image formats and speed, a clean URL structure with redirect control, and changes made once across every page. Cargo cannot do these.</p></div></div>
+    <!-- ===================== SUMMARY ===================== -->
+    <section id="summary" class="panel active" aria-label="Summary">
+      <p class="panel-lede">Questions from your last Slack message and more, answered in one line each. Open a tab for the full detail behind any answer.</p>
 
-      <p class="demo" style="margin-top:36px;"><a href="https://kaitlyn-wolfe-mirror.vercel.app" target="_blank" rel="noopener">kaitlyn-wolfe-mirror.vercel.app</a><span class="note">We already rebuilt the studio site off Cargo, on our own. Today it is a faithful copy on a foundation we control. The search layer is the work we add on top once you are on it.</span></p>
-    </section>
-
-    <section>
-      <p class="eyebrow">Your second question &middot; the studio site</p>
-      <h2>How we protect rankings through the move</h2>
-      <p>We treat a move as a controlled cutover, not a flip of a switch. The steps that hold onto the search value you have earned:</p>
-
-      <div class="finding" style="margin-top:32px;"><div class="n">01</div><div><p>Inventory every current URL and decide, one by one: keep it, redirect it, or retire it.</p></div></div>
-      <div class="finding"><div class="n">02</div><div><p>Preserve the high-value URLs, and build a 301 redirect map for anything whose address changes, so old links and their search value carry forward.</p></div></div>
-      <div class="finding"><div class="n">03</div><div><p>Ship the new site with the full search layer already in place: titles, descriptions, canonicals, schema, headings, alt text, and a clean sitemap.</p></div></div>
-      <div class="finding"><div class="n">04</div><div><p>Keep the new site on hidden, no-index staging until it passes a page-by-page review.</p></div></div>
-      <div class="finding"><div class="n">05</div><div><p>Cut over, submit the new sitemap in Search Console, and keep the old links resolving through the redirects.</p></div></div>
-      <div class="finding"><div class="n">06</div><div><p>Watch Search Console coverage, rankings, and traffic after launch, and correct anything that moves.</p></div></div>
-
-      <p style="margin-top:8px;">The plan is discipline and measurement through the move. A clean cutover holds the equity, and we watch and fix rather than promise no movement. No one honest promises zero turbulence in a migration.</p>
-    </section>
-
-    <section>
-      <p class="eyebrow">Your third question &middot; both tracks</p>
-      <h2>What the ongoing work is</h2>
-      <p>Both tracks run on one loop, the same one we use on our own brands and on a live store.</p>
-
-      <div class="finding" style="margin-top:32px;"><div class="n">01</div><div><p>We watch the real search data: what a site ranks for, and what it is close to ranking for.</p></div></div>
-      <div class="finding"><div class="n">02</div><div><p>We find the openings worth the work, the searches with demand you could win.</p></div></div>
-      <div class="finding"><div class="n">03</div><div><p>We draft in your voice, and score it against a quality bar before anything ships.</p></div></div>
-      <div class="finding"><div class="n">04</div><div><p>You approve. Nothing goes live without a person saying yes to that exact change.</p></div></div>
-      <div class="finding"><div class="n">05</div><div><p>We publish, measure whether it moved, and adjust. The system improves from its own results.</p></div></div>
-
-      <div class="layer" style="margin-top:36px;"><div class="label">Studio site</div><div><p>Hosting and maintenance, local SEO, the service and location pages, Business Profile, schema, page improvements, and monthly measurement and reporting.</p></div></div>
-      <div class="layer"><div class="label">Shop My Warehouse</div><div><p>Collection and category content, a system to write good titles and alt text as new items are added, the sold-item lifecycle, catalog SEO, and measurement.</p></div></div>
-
-      <p style="margin-top:28px;">It is a system you own and can see into, not a monthly mystery. A person approves every live change.</p>
-    </section>
-
-    <section>
-      <p class="eyebrow">Your fourth question &middot; both tracks</p>
-      <h2>What we would measure in the first few months</h2>
-      <p>The early work is mostly foundation and leading indicators, with the first real search readings starting once access is in.</p>
-
-      <div class="layer" style="margin-top:32px;"><div class="label">Foundation</div><div><p>Access connected, the index cleaned up so junk pages drop and the real pages are submitted, the Business Profile built out, and coverage of titles, alt text, headings, and schema in place. On the studio site, the first service and location pages live and indexed. On the store, the sold-item lifecycle running and the top collections carrying real content.</p></div></div>
-      <div class="layer"><div class="label">The search read</div><div><p>Search Console impressions, clicks, click-through rate, and average position by page and query, plus organic sessions and the paths that lead to an inquiry or a sale once Analytics is connected.</p></div></div>
-
-      <p style="margin-top:36px;">The first stretch sets the baseline and fixes the structure, then starts measuring the movement. We do not promise ranking jumps before the access is in and Google has recrawled.</p>
-    </section>
-
-    <section>
-      <p class="eyebrow">Your fifth question &middot; proof</p>
-      <h2>Where we run this today</h2>
-      <p>We run this exact loop on Ezra Arthur, a live e-commerce brand. We used Search Console to find underperforming pages, including belt-sizing and full-grain leather content, rewrote them in the brand's voice through a quality gate, and published each change with a person approving it. We set baselines first, so the results can be measured once Google recrawls.</p>
-      <p>The difference in how we work is the AI tooling underneath. It makes the per-item work economical, so we can be far more involved than an agency billing hours to hand-edit pages. The system finds, drafts, scores, and measures, and a person approves every change that touches a live site. We treat SEO as the default way we build online systems, backed by our own tooling and a real content-quality process.</p>
-    </section>
-
-    <section>
-      <p class="eyebrow">If you move forward</p>
-      <h2>The intake</h2>
-      <p>There is no charge to read this or to decide. If you move forward, the first step on either property is a focused intake: the full audit done with real access, and a short, prioritized plan to act on. The intake fee is due only if we complete that audit and you decide to proceed with SEO.</p>
-
-      <div class="p-table-scroll">
-        <table class="p-table p-table-stack">
-          <thead><tr><th scope="col">Property</th><th scope="col">One-time intake</th></tr></thead>
-          <tbody>
-            <tr><td class="lead-cell" data-label="Property">Studio site (kaitlynwolfe.com)</td><td data-label="One-time intake">$1,200</td></tr>
-            <tr><td class="lead-cell" data-label="Property">Shop My Warehouse</td><td data-label="One-time intake">$800</td></tr>
-          </tbody>
-        </table>
+      <div class="cq">
+        <div class="cq-cue">Why separate into two projects?</div>
+        <div class="cq-body"><p class="ans">Each site has different search problems and a different underlying structure. We use a similar loop on both, adapted to the needs of the structure and site goals.</p></div>
       </div>
 
-      <p style="margin-top:28px;">Everything past the intake, the build and the ongoing program, we scope with you and Chelsea on a call, where we can match it to what you actually want to do. No charge to look or decide.</p>
+      <div class="cq">
+        <div class="cq-cue">What if we stay on Cargo?</div>
+        <div class="cq-body"><p class="ans">Some wins are possible (Business Profile, a real address, better title wording); the moves that matter most need a platform change. <span class="to"><a href="#studio">Studio site &rarr;</a></span></p></div>
+      </div>
+
+      <div class="cq">
+        <div class="cq-cue">Is the move safe?</div>
+        <div class="cq-body"><p class="ans">A controlled switch, methodical and reversible: every URL is redirected so no existing web presence is lost. <span class="to"><a href="#studio">Studio site &rarr;</a></span></p></div>
+      </div>
+
+      <div class="cq">
+        <div class="cq-cue">What do we handle moving forward?</div>
+        <div class="cq-body"><p class="ans">One loop: we watch the data, find openings, draft in a KW voice, you approve, we publish and measure.</p></div>
+      </div>
+
+      <div class="cq">
+        <div class="cq-cue">What do we measure first?</div>
+        <div class="cq-body"><p class="ans">We measure the existing baseline of traffic and shoot for more visits and higher relevant search rankings.</p></div>
+      </div>
+
+      <div class="cq">
+        <div class="cq-cue">Where have we done this?</div>
+        <div class="cq-body"><p class="ans">We run the same loop for Ezra Arthur, Unitus and a Florida HVAC company.</p></div>
+      </div>
+
+      <div class="cq">
+        <div class="cq-cue">What does it cost to start?</div>
+        <div class="cq-body"><p class="ans">Intake is $1,200 for the studio site, $800 for the store, due only if you proceed. The rest we scope after we see the inside of the system.</p></div>
+      </div>
+
+      <div class="cq">
+        <div class="cq-cue">What access do we need?</div>
+        <div class="cq-body"><p class="ans">For both websites, grant hello@whatarewecapableof.com access to <a href="https://search.google.com/search-console/users" target="_blank" rel="noopener">Google Search Console</a>, <a href="https://analytics.google.com/" target="_blank" rel="noopener">Google Analytics</a>, and the <a href="https://business.google.com/" target="_blank" rel="noopener">Google Business Profile</a>.</p></div>
+      </div>
+
+      <p class="jump" style="margin-top:24px;"><a href="#studio">Studio site, full detail &rarr;</a> &nbsp;&nbsp; <a href="#smw">SMW, full detail &rarr;</a></p>
     </section>
 
-    <section>
-      <p class="eyebrow">To put real numbers on it</p>
-      <h2>The access that turns strong guesses into real numbers</h2>
-      <p>Everything above we found from the outside, the same view Google has. Read-only access to a few free tools shows the inside and lets us measure instead of assert. Each is view-only.</p>
-      <div class="layer" style="margin-top:32px;"><div class="label">Search &amp; visitors</div><div><p>Search Console and Analytics on both properties, the Business Profile for local search, and Bing. Plus your OK to stand up a read-only Shop My Warehouse app so we can audit the catalog.</p></div></div>
-      <p style="margin-top:28px;">Until those are connected, we state the technical case with confidence and hold off on promising specific traffic numbers.</p>
+    <!-- ===================== STUDIO SITE ===================== -->
+    <section id="studio" class="panel" aria-label="Studio site">
+      <p class="panel-lede"><strong>The studio site.</strong> We looked at kaitlynwolfe.com the way Google does, then compared what revamping SEO for the current site on Cargo can and cannot do with what migrating off Cargo allows.</p>
+
+      <div class="cq">
+        <div class="cq-cue">What caps the search?</div>
+        <div class="cq-body">
+          <p>The studio site is well designed but the photography carries it. The thing holding back search is mostly the platform underneath. Cargo makes a beautiful portfolio but offers little of what a search engine reads. The site has no page built to address searches that bring in design and build work.</p>
+          <div class="stats">
+            <div class="stat"><div class="num">173</div><div class="lb">URLs in the sitemap today, 40+ of them nav and test pages</div></div>
+            <div class="stat"><div class="num">1</div><div class="lb">meta description, shared word for word across all of them</div></div>
+            <div class="stat"><div class="num">0</div><div class="lb">service or location pages, where local searches land</div></div>
+            <div class="stat"><div class="num">0</div><div class="lb">schema, headings, or image alt text for Google to read</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cq">
+        <div class="cq-cue">What can we fix on Cargo?</div>
+        <div class="cq-body">
+          <p class="lead-in">Some wins do not need a new site. We do these first either way.</p>
+          <div class="finding"><div class="n">01</div><div><h4>Claim and optimize the Google Business Profile</h4><p>The single biggest local lever does not touch the website. We make sure the studio's Google Business Profile exists, is verified, and is built out, so the studio shows up in the map and local results for Scottsdale and Phoenix searches. This works on any platform.</p></div></div>
+          <div class="finding"><div class="n">02</div><div><h4>Put a real address on the site</h4><p>The contact page shows only forms right now: no address, no phone, no city or state on the page. Adding consistent name, address, and phone is a core local-search signal, and it is straightforward to add on Cargo.</p></div></div>
+          <div class="finding"><div class="n">03</div><div><h4>Rewrite the titles and the one description</h4><p>Every page shares a single, identical description. We rewrite the page titles and that description toward the words people search, like Scottsdale interior design and custom home remodel, instead of page names. Cargo's control here is limited, but the wording is worth improving.</p></div></div>
+          <div class="finding"><div class="n">04</div><div><h4>Clean up what Google sees</h4><p>The sitemap lists 173 URLs, more than 40 of which are navigation, footer, archive, and test pages with no reason to be in search. We strip those out and ask Google to drop them, so the real pages stand on their own.</p></div></div>
+          <p>That is a huge tune-up and worth doing, but it has a ceiling. The things that bring in the most traffic to a site like this are per-page descriptions and titles, canonical tags, real headings, image alt text, structured data, modern image formats, and fast loading. These are not things Cargo can do. To get those, the site has to move. To make it easy to move, we already built the new version.</p>
+        </div>
+      </div>
+
+      <div class="cq">
+        <div class="cq-cue">What does moving unlock?</div>
+        <div class="cq-body">
+          <p>We rebuilt kaitlynwolfe.com off Cargo, on our own, offered as a migration at no cost to you. It&rsquo;s live, it matches the current design, and it loads faster. Open a working preview below:</p>
+          <p class="demo"><a href="https://kaitlyn-wolfe-mirror.vercel.app" target="_blank" rel="noopener">kaitlyn-wolfe-mirror.vercel.app</a></p>
+          <div class="layer"><div class="lb">Search control</div><p>Per-page titles and descriptions, canonical tags, real headings, and structured data that tells Google the studio is a local design and build business and where it works. None of this is possible on Cargo.</p></div>
+          <div class="layer"><div class="lb">Images that count</div><p>Real image tags with descriptive alt text, modern formats, and the photos served from the studio's own domain instead of Cargo's. The portfolio starts contributing to search instead of sitting invisible to it.</p></div>
+          <div class="layer"><div class="lb">Speed</div><p>The site is static, with none of Cargo's runtime. Faster loading is a ranking input and a better experience, especially on mobile.</p></div>
+          <div class="layer"><div class="lb">The KW team can edit it easier</div><p>The site is built from a handful of templates. Change a layout once and it updates every project page, instead of editing each page by hand. We are also open to building a way for the team to request changes by messaging an assistant in Slack.</p></div>
+          <div class="layer"><div class="lb">We host and maintain it</div><p>Hosting is included; we scope the ongoing plan with you, and we keep the site running and updated. Moving off Cargo also retires the Cargo subscription and one more platform to manage.</p></div>
+        </div>
+      </div>
+
+      <div class="cq">
+        <div class="cq-cue">Is the move safe?</div>
+        <div class="cq-body">
+          <p class="lead-in">We treat a move as a controlled switch, methodical and reversible. The steps that make sure no existing web presence is lost:</p>
+          <div class="finding"><div class="n">01</div><p>Inventory every current URL and decide, one by one: keep it, redirect it, or retire it.</p></div>
+          <div class="finding"><div class="n">02</div><p>Preserve the high-value URLs, and build a 301 redirect map for anything whose address changes, so old links and their search value carry forward.</p></div>
+          <div class="finding"><div class="n">03</div><p>Ship the new site with the full search layer already in place: titles, descriptions, canonicals, schema, headings, alt text, and a clean sitemap.</p></div>
+          <div class="finding"><div class="n">04</div><p>Keep the new site on hidden, no-index staging until it passes a page-by-page review.</p></div>
+          <div class="finding"><div class="n">05</div><p>Flip the switch, submit the new sitemap in Search Console, and keep the old links resolving through the redirects.</p></div>
+          <div class="finding"><div class="n">06</div><p>Watch Search Console coverage, rankings, and traffic after launch, and correct anything that moves.</p></div>
+          <p>The plan is discipline and measurement throughout the move. A clean switch holds the value KW has earned, and we watch and fix rather than promise no movement. No one honest promises zero turbulence in a migration like this, but we manage any issues excellently.</p>
+        </div>
+      </div>
+
+      <div class="cq">
+        <div class="cq-cue">Where is the traffic?</div>
+        <div class="cq-body">
+          <p>A portfolio is proof, and it earns the work once someone is already looking. It is not what people search. Almost nobody types &ldquo;southwest zen project&rdquo; into Google. They type &ldquo;Scottsdale interior designer,&rdquo; &ldquo;Paradise Valley custom home builder,&rdquo; &ldquo;Phoenix luxury remodel,&rdquo; and they search the studio by name. The current site has no page built to answer any of those.</p>
+          <p>The work that captures this kind of demand is a set of service and location pages: interior design, design and build, renovation, new construction, commercial, each tied to the places the studio works. Each carries specific local signals, each links into the projects that prove what the studio can do. The portfolio becomes evidence behind those pages. This is the part that moves rankings, and it needs the platform from the move to exist.</p>
+          <p>The same approach can apply to the rest of the family. SMW, SUBSTRATE, and GROUND FLOOR carry the buying intent today, and the studio site can feed them. We can start with the studio and grow out from there.</p>
+        </div>
+      </div>
+
+      <div class="cq">
+        <div class="cq-cue">How does it run after?</div>
+        <div class="cq-body">
+          <p class="lead-in">Moving off Cargo is rehab. After that, the site will run on a loop we already use.</p>
+          <div class="finding"><div class="n">01</div><p>We watch real search data: what the studio ranks for, and what it is close to ranking for.</p></div>
+          <div class="finding"><div class="n">02</div><p>We find openings worth writing for, searches with demand the studio can rank highly for.</p></div>
+          <div class="finding"><div class="n">03</div><p>We draft in the studio's voice.</p></div>
+          <div class="finding"><div class="n">04</div><p>KW approves. Nothing goes live without a person saying yes to that exact change.</p></div>
+          <div class="finding"><div class="n">05</div><p>We publish, measure whether rankings improved, and adjust. The system improves from its own results.</p></div>
+        </div>
+      </div>
+
+      <div class="cq">
+        <div class="cq-cue">What access do we need?</div>
+        <div class="cq-body">
+          <p>Everything above we found from outside the site, the same view Google has. Access to three free tools shows the inside and lets us put real numbers on the opportunity instead of asserting it.</p>
+          <div class="layer"><div class="lb">Search Console</div><p>The exact searches bringing people in, what Google has indexed, and where the studio ranks just below the first page.</p></div>
+          <div class="layer"><div class="lb">Analytics</div><p>Which pages visitors land on from search, and which ones lead to an inquiry.</p></div>
+          <div class="layer"><div class="lb">Business Profile</div><p>How the studio shows up in local search and on the map, the highest-value local lever and one the site cannot show on its own.</p></div>
+          <p>Until those are connected, we can state the technical case with confidence, which is what is above. We hold off on suggesting specific traffic numbers until we can see the real data.</p>
+        </div>
+      </div>
+
+      <div class="close">
+        <p>We would rather show what we can do than describe it, so we already rebuilt the site. The rest is a short conversation when you are ready.</p>
+        <p class="cta"><a href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a></p>
+      </div>
     </section>
 
-    <section>
-      <p class="eyebrow">See also</p>
-      <h2>The three pages behind this</h2>
-      <p class="seealso">
-        <a href="https://whatarewecapableof.com/proposals/kaitlyn-wolfe-seo/">The studio site, a look at search</a><br>
-        <a href="https://whatarewecapableof.com/proposals/shop-my-warehouse-seo/">Shop My Warehouse, a look at search</a><br>
-        <a href="https://kaitlyn-wolfe-mirror.vercel.app" target="_blank" rel="noopener">The studio site rebuilt off Cargo, a working preview</a>
-      </p>
+    <!-- ===================== SMW ===================== -->
+    <section id="smw" class="panel" aria-label="SMW">
+      <p class="panel-lede"><strong>SMW.</strong> We looked at the store the way a search engine does: what we can already see from the outside, what a little read-only access would show, and a simple way to go further.</p>
+
+      <div class="cq">
+        <div class="cq-cue">What kind of store is this?</div>
+        <div class="cq-body">
+          <p>SMW sells one-of-a-kind pieces. Each is listed once, sells, and is gone, so most product pages are temporary. Search engines give the most weight to pages that stay put, which here means the collection and category pages rather than the individual products.</p>
+          <div class="stats">
+            <div class="stat"><div class="num">1,464</div><div class="lb">live product pages today</div></div>
+            <div class="stat"><div class="num">50&ndash;110</div><div class="lb">new pieces added a month</div></div>
+            <div class="stat"><div class="num">1 in 4</div><div class="lb">live pages are pieces already sold</div></div>
+            <div class="stat"><div class="num">71</div><div class="lb">collection pages, the durable ones</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cq">
+        <div class="cq-cue">What can we see now?</div>
+        <div class="cq-body">
+          <p class="lead-in">We looked only at what is public, the same view search engines have.</p>
+          <div class="finding"><div class="n">01</div><div><h4>Sold pieces stay online</h4><p>More than a quarter of the live product pages are items that already sold but are still online. They cannot be bought, so each should redirect to its collection when it sells, which keeps the search value it earned.</p></div></div>
+          <div class="finding"><div class="n">02</div><div><h4>Collection pages have no text</h4><p>Collection pages like Furniture, Lighting, and Vases keep the same address even as the products inside them change, so they are the best place to rank for a search like &ldquo;vintage brass lamp.&rdquo; Right now they have no description text for Google to read. This is the biggest opportunity.</p></div></div>
+          <div class="finding"><div class="n">03</div><div><h4>Titles miss the search words</h4><p>A page title is a top ranking signal, and the first words count most. Most titles read <em>Name [VINTAGE] &ndash; Kaitlyn Wolfe</em>, so the opening goes to the bracket and the brand instead of the words people search: the material, the era, the kind of object.</p></div></div>
+          <div class="finding"><div class="n">04</div><div><h4>Photos have no alt text</h4><p>Alt text is the short description attached to a photo that tells Google and screen readers what it shows. Every product image is missing it, so the photos cannot show in Google Images, where much vintage shopping starts.</p></div></div>
+          <div class="finding"><div class="n">05</div><div><h4>Internal pages are visible in search</h4><p>A few internal and quote-only collections, meant for staff or private sales, are open to Google alongside the public pages. They should be hidden so the public pages rank on their own.</p></div></div>
+          <div class="finding"><div class="n">06</div><div><h4>What is already working</h4><p>Much of the hard part is done. The store loads fast, the technical setup is solid, and it is already wired for the new AI shopping assistants. A strong base to build on.</p></div></div>
+        </div>
+      </div>
+
+      <div class="cq">
+        <div class="cq-cue">What would access show?</div>
+        <div class="cq-body">
+          <p class="lead-in">Everything above we found from outside the store. Read-only access to a few tools would show the inside: the real search and visitor data. Each is free to grant and view-only.</p>
+          <div class="layer"><div class="lb">Search Console</div><p>The most useful by far. It shows the exact searches bringing people in, which pages Google indexes or skips, and where the store ranks just below page one.</p></div>
+          <div class="layer"><div class="lb">Analytics</div><p>Where search visitors land, and which pages lead to a sale.</p></div>
+          <div class="layer"><div class="lb">Business Profile</div><p>How the Scottsdale showroom shows up in local search and on the map.</p></div>
+          <div class="layer"><div class="lb">Bing &amp; AI search</div><p>The same picture on Bing, which also feeds the AI assistants starting to recommend stores.</p></div>
+        </div>
+      </div>
+
+      <div class="cq">
+        <div class="cq-cue">What is the first step?</div>
+        <div class="cq-body">
+          <p>There is no charge to read this or to decide. If you choose to move forward with SEO, the first step is a focused intake: the full audit done with that access in place, and a clear, prioritized plan to act on. The intake is a one-time $800, due only when you decide to begin.</p>
+          <table class="p-table p-table-stack">
+            <thead><tr><th scope="col">Item</th><th scope="col">What it means</th></tr></thead>
+            <tbody>
+              <tr><td class="k" data-label="Item">What it is</td><td data-label="What it means">The first step of moving forward: the full SMW audit, done with real access.</td></tr>
+              <tr><td class="k" data-label="Item">What you get</td><td data-label="What it means">A short, prioritized plan in plain language to act on.</td></tr>
+              <tr><td class="k" data-label="Item">What we need</td><td data-label="What it means">The read-only access above. We handle the rest.</td></tr>
+              <tr><td class="k" data-label="Item">The cost</td><td data-label="What it means">No charge to look or decide. If you move forward with SEO, a one-time $800 covers the intake.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="cq">
+        <div class="cq-cue">Where does it go later?</div>
+        <div class="cq-body">
+          <p>Later, we could automate this so every new item is added with a strong title, alt text, and the right category already filled in. That is a bigger build, and the audit comes first.</p>
+        </div>
+      </div>
+
+      <div class="close">
+        <p>We would rather show what we can do than talk about it, so we started with the work. The rest is a short step when you are ready.</p>
+        <p class="cta"><a href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a></p>
+      </div>
     </section>
 
-    <section>
-      <p class="eyebrow">The next step</p>
-      <p class="close-line">You have seen the work on both. The next step is a short call to pick where to start.</p>
-      <p class="cta"><a href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a></p>
+    <!-- ===================== ? ===================== -->
+    <section id="q" class="panel-full" aria-label="What are we capable of?">
+      <div class="q-block">
+        <p class="big">What are <strong>we</strong> capable of?</p>
+        <p class="big" style="margin-top:14px;">Let's find out.</p>
+        <p class="q-cta"><a href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a></p>
+      </div>
     </section>
 
-    </main>
-    <footer class="site-footer">
-      <a href="/">What are we capable of?</a>
-      <span>Prepared for the Kaitlyn Wolfe team, July 2026.</span>
-    </footer>
-  </div>
+  </main>
+
+  <footer>
+    <span class="m">Prepared for the KW team, July 2026. Findings from public review of kaitlynwolfe.com and SMW.</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var main = document.getElementById('main');
+  var header = document.querySelector('.proposal-header');
+  var tabsNav = document.querySelector('.tabs');
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.panel, .panel-full'));
+  if(!tabs.length) return;
+
+  main.classList.add('tabbed');
+
+  function stickyOffset(){
+    var h = header ? header.getBoundingClientRect().height : 0;
+    var t = tabsNav ? tabsNav.getBoundingClientRect().height : 0;
+    return h + t;
+  }
+  function scrollPanelToTop(panel){
+    var top = panel.getBoundingClientRect().top + window.scrollY - stickyOffset() - 8;
+    var target = Math.max(0, Math.round(top));
+    var root = document.documentElement;
+    var prev = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
+    window.scrollTo(0, target);
+    root.style.scrollBehavior = prev;
+  }
+  function activate(tab, doScroll){
+    var id = tab.getAttribute('href').slice(1);
+    var panel = document.getElementById(id);
+    if(!panel) return;
+    panels.forEach(function(p){ p.classList.remove('active'); });
+    tabs.forEach(function(t){ t.classList.remove('active'); t.removeAttribute('aria-current'); });
+    panel.classList.add('active');
+    tab.classList.add('active');
+    tab.setAttribute('aria-current','true');
+    if(history.replaceState){ history.replaceState(null,'', '#'+id); }
+    if(doScroll){ scrollPanelToTop(panel); }
+  }
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(e){ e.preventDefault(); activate(this, true); });
+  });
+  // in-body links that jump to another tab
+  document.querySelectorAll('.cq-body a[href^="#"], .jump a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      var id = this.getAttribute('href').slice(1);
+      var t = tabs.filter(function(x){ return x.getAttribute('href') === '#'+id; })[0];
+      if(t){ e.preventDefault(); activate(t, true); }
+    });
+  });
+  // deep-link + back/forward: switch tabs when the URL hash changes
+  window.addEventListener('hashchange', function(){
+    var h = window.location.hash.slice(1);
+    var m = tabs.filter(function(x){ return x.getAttribute('href') === '#'+h; })[0];
+    if(m){ activate(m, true); }
+  });
+  // open the tab named in the URL hash on load
+  var hash = window.location.hash.slice(1);
+  if(hash){
+    var match = tabs.filter(function(x){ return x.getAttribute('href') === '#'+hash; })[0];
+    if(match){ activate(match, false); }
+  }
+})();
+</script>
+<!-- width finalized at 960px; preview slider removed -->
 </body>
 </html>

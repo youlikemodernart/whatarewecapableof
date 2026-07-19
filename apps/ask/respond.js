@@ -130,10 +130,13 @@
 
     if (q.type === 'identity') {
       const value = saved || {};
-      body += ['name', 'email', 'role'].map((key) => {
-        const field = (q.fields || []).find((candidate) => candidate.key === key) || { key, label: key };
+      body += (q.fields || []).map((field) => {
+        const key = field.key;
         const type = key === 'email' ? 'email' : 'text';
-        return `<div class="field"><label for="${key}">${escapeHtml(field.label)}</label><input id="${key}" type="${type}" data-field="${key}" autocomplete="${escapeHtml(field.autocomplete || '')}" value="${escapeHtml(value[key] || '')}"></div>`;
+        const fieldRequired = field.required === false ? false : field.required === true || q.required;
+        const required = fieldRequired ? ' required' : '';
+        const marker = fieldRequired ? ' <span aria-hidden="true">*</span>' : '';
+        return `<div class="field"><label for="${escapeHtml(key)}">${escapeHtml(field.label)}${marker}</label><input id="${escapeHtml(key)}" type="${type}" data-field="${escapeHtml(key)}" autocomplete="${escapeHtml(field.autocomplete || '')}" value="${escapeHtml(value[key] || '')}"${required}></div>`;
       }).join('');
     } else if (q.type === 'short_text') {
       body += `<div class="field"><label for="answer">Answer</label><input id="answer" value="${escapeHtml(saved || '')}" placeholder="${escapeHtml(q.placeholder || '')}"></div>`;
@@ -168,8 +171,11 @@
 
   function valid(question) {
     const value = valueFor(question);
+    if (question.type === 'identity') return (question.fields || []).every((field) => {
+      const fieldRequired = field.required === false ? false : field.required === true || question.required;
+      return !fieldRequired || Boolean(value?.[field.key]);
+    });
     if (!question.required) return true;
-    if (question.type === 'identity') return Boolean(value?.name && value?.email && value?.role);
     if (question.type === 'multi_choice') return Array.isArray(value) && value.length > 0;
     if (question.type === 'approval_checkbox') return value === true;
     return Boolean(value);

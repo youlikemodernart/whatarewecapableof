@@ -128,6 +128,12 @@ const answers = [
   { questionRef: 'internal-draft-approval', value: true },
 ];
 
+const incompleteLegacyAnswers = answers.map((answer) => answer.questionRef === 'respondent-identity'
+  ? { ...answer, value: { name: 'Noah Smoke', email: 'noah@whatarewecapableof.com' } }
+  : answer);
+result = await call(submit, { method: 'POST', url: '/api/public/submit', cookie: draftCookie, body: { answers: incompleteLegacyAnswers } });
+assert(result.status === 400, 'legacy required identity should still require role when field flags are absent');
+
 result = await call(submit, { method: 'POST', url: '/api/public/submit', cookie: draftCookie, body: { answers } });
 assert(result.status === 200 && result.data.submitted === true, 'submit should persist response');
 assert(!result.data.responseId && !result.data.response?.id, 'public submit should not expose internal response id');
@@ -261,18 +267,70 @@ result = await call(decks, { url: '/api/admin/decks', cookie: admin.cookie });
 const beforeBegin = result.data.decks.find((deck) => deck.id === changeDeck.deck.id);
 assert(beforeBegin?.responseCount === 0, 'link-only metadata GET should not create a response');
 
+const revisedQuestions = [
+  {
+    ref: 'respondent-identity',
+    type: 'identity',
+    section: 'About you',
+    prompt: 'Who is submitting this form?',
+    required: true,
+    fields: [
+      { key: 'name', label: 'Your name' },
+      { key: 'email', label: 'Kamp Love email' },
+    ],
+  },
+  importDeck.questions[1],
+  importDeck.questions[2],
+];
+
+result = await call(decks, { method: 'PATCH', url: '/api/admin/decks', body: { action: 'revise-questions', id: changeDeck.deck.id, questions: revisedQuestions } });
+assert(result.status === 401, 'question revision should require auth');
+
+result = await call(decks, { method: 'PATCH', url: '/api/admin/decks', cookie: admin.cookie, body: { action: 'revise-questions', id: changeDeck.deck.id, questions: revisedQuestions } });
+assert(result.status === 403, 'question revision should require CSRF');
+
+result = await call(decks, { method: 'PATCH', url: '/api/admin/decks', cookie: admin.cookie, headers: adminHeaders, body: { action: 'revise-questions', id: changeDeck.deck.id, questions: revisedQuestions } });
+assert(result.status === 200 && result.data.deck.versionId !== changeDeck.deck.versionId, 'zero-response deck should receive a new question version');
+assert(result.data.deck.accessMode === 'link-only' && result.data.deck.passcodeRequired === false, 'question revision should preserve link-only access');
+
+const revisedEventState = JSON.parse(fs.readFileSync(process.env.ASK_MEMORY_FILE, 'utf8'));
+const revisionEvent = revisedEventState.events.find((event) => event.deckId === changeDeck.deck.id && event.eventType === 'questions_revised');
+assert(revisionEvent?.metadata?.questionCount === 3 && revisionEvent.metadata?.schemaSha256, 'question revision should record safe schema metadata');
+assert(!Object.hasOwn(revisionEvent.metadata, 'questions'), 'question revision events should not retain raw question text');
+
+result = await call(decks, { url: '/api/admin/decks', cookie: admin.cookie });
+const afterRevision = result.data.decks.find((deck) => deck.id === changeDeck.deck.id);
+assert(afterRevision?.responseCount === 0, 'question revision should not create a response');
+
 result = await call(start, { method: 'POST', url: '/api/public/start', body: { slug: 'smoke-link-only' } });
 assert(result.status === 400, 'link-only start should require the explicit Begin action');
 
 result = await call(start, { method: 'POST', url: '/api/public/start', body: { slug: 'smoke-link-only', begin: true } });
-assert(result.status === 200 && result.data.resumed === false && result.data.deck.questions.length === 3, 'link-only Begin should start the response flow without a passcode');
+assert(result.status === 200 && result.data.resumed === false && result.data.deck.questions.length === 3, 'link-only Begin should start the revised response flow without a passcode');
+assert(result.data.deck.questions[0].type === 'identity' && result.data.deck.questions[0].fields.length === 2, 'revised identity should contain exactly name and email');
+assert(result.data.deck.questions[0].fields[1].label === 'Kamp Love email', 'revised identity should label the email field');
 const linkOnlyDraftCookie = cookieHeader(result.headers['set-cookie']);
 
 result = await call(start, { method: 'POST', url: '/api/public/start', cookie: linkOnlyDraftCookie, body: { slug: 'smoke-link-only', begin: true } });
 assert(result.status === 200 && result.data.resumed === true, 'repeated link-only Begin should resume rather than create another response');
 
+const revisedAnswers = [
+  { questionRef: 'respondent-identity', value: { name: 'Link-only Smoke', email: 'not-an-email' } },
+  { questionRef: 'import-priority', value: 'draft' },
+  { questionRef: 'import-approval', value: true },
+];
+result = await call(submit, { method: 'POST', url: '/api/public/submit', cookie: linkOnlyDraftCookie, body: { answers: revisedAnswers } });
+assert(result.status === 400, 'two-field identity should validate email without requiring a role');
+
+revisedAnswers[0].value.email = 'link-only@whatarewecapableof.com';
+result = await call(submit, { method: 'POST', url: '/api/public/submit', cookie: linkOnlyDraftCookie, body: { answers: revisedAnswers } });
+assert(result.status === 200 && result.data.submitted === true, 'two-field identity should submit without a role');
+
+result = await call(decks, { method: 'PATCH', url: '/api/admin/decks', cookie: admin.cookie, headers: adminHeaders, body: { action: 'revise-questions', id: changeDeck.deck.id, questions: revisedQuestions } });
+assert(result.status === 409, 'question revision should reject any deck with a response');
+
 result = await call(decks, { method: 'PATCH', url: '/api/admin/decks', cookie: admin.cookie, headers: adminHeaders, body: { id: changeDeck.deck.id, access: { mode: 'passcode' } } });
-assert(result.status === 409, 'access reconfiguration should reject any deck with a started response');
+assert(result.status === 409, 'access reconfiguration should reject any deck with a started or submitted response');
 
 const collisionDeckInput = { ...importDeck, title: 'Collision smoke questions', clientLabel: 'Collision Co' };
 result = await call(decks, { method: 'POST', url: '/api/admin/decks', cookie: admin.cookie, headers: adminHeaders, body: collisionDeckInput });
@@ -306,6 +364,7 @@ console.log(JSON.stringify({
     'metadata-hides-questions',
     'begin-required',
     'passcode',
+    'legacy-required-identity-preserved',
     'missing-passcode-material-fails-closed',
     'opaque-draft-cookie',
     'draft-resume',
@@ -323,6 +382,9 @@ console.log(JSON.stringify({
     'link-only-old-slug-invalidated',
     'link-only-event-metadata-minimized',
     'link-only-metadata-no-response',
+    'identity-fields-legacy-and-two-field',
+    'zero-response-question-revision',
+    'question-revision-event-metadata-minimized',
     'link-only-begin',
     'link-only-response-lockout',
     'link-only-slug-collision',

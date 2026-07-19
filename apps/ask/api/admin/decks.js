@@ -1,6 +1,6 @@
 const { getBaseUrl, getSession, requireCsrf, json } = require('../_auth');
 const { readJsonBody, handleApiError, makeHttpError } = require('../_http');
-const { createDeckFromImport, reconfigureDeckAccess, listDecks } = require('../_db');
+const { createDeckFromImport, reconfigureDeckAccess, reviseDeckQuestions, listDecks } = require('../_db');
 
 module.exports = async function handler(req, res) {
   if (!['GET', 'POST', 'PATCH'].includes(req.method)) {
@@ -27,6 +27,16 @@ module.exports = async function handler(req, res) {
         baseUrl,
       });
       return json(res, 201, result);
+    }
+
+    if (body.action === 'revise-questions') {
+      const result = await reviseDeckQuestions({
+        deckId: body.id || body.deckId,
+        questions: body.questions,
+        actorUserId: user.email || user.sub || 'admin',
+        baseUrl,
+      });
+      return json(res, 200, result);
     }
 
     const result = await reconfigureDeckAccess({

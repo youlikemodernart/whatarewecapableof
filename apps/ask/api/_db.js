@@ -13,6 +13,11 @@ const DECK_SCHEMA_VERSION = 'ask.deck.v0';
 const DECK_STATUSES = new Set(['draft', 'published', 'closed', 'archived']);
 const DECK_SENSITIVITIES = new Set(['low', 'medium', 'high']);
 const ACCESS_MODES = new Set(['passcode', 'link-only']);
+const IDENTITY_FIELD_DEFAULTS = {
+  name: { label: 'Name', autocomplete: 'name' },
+  email: { label: 'Email', autocomplete: 'email' },
+  role: { label: 'Role', autocomplete: 'organization-title' },
+};
 
 function env(name, fallback = '') {
   return String(process.env[name] ?? fallback).trim();
@@ -440,6 +445,28 @@ function normalizeWelcome(value = {}) {
   };
 }
 
+function normalizeIdentityFields(value, questionRequired) {
+  if (value !== undefined && !Array.isArray(value)) throw makeHttpError(400, 'Identity fields must be an array.');
+  const fields = value === undefined
+    ? Object.keys(IDENTITY_FIELD_DEFAULTS).map((key) => ({ key }))
+    : value;
+  if (!fields.length || fields.length > Object.keys(IDENTITY_FIELD_DEFAULTS).length) throw makeHttpError(400, 'Identity questions need one to three supported fields.');
+  const seen = new Set();
+  return fields.map((field) => {
+    const key = cleanSingleLine(field?.key, 40);
+    const defaults = IDENTITY_FIELD_DEFAULTS[key];
+    if (!defaults) throw makeHttpError(400, 'Identity fields must be name, email, or role.');
+    if (seen.has(key)) throw makeHttpError(400, `Duplicate identity field ${key}.`);
+    seen.add(key);
+    return {
+      key,
+      label: cleanSingleLine(field?.label, 120) || defaults.label,
+      autocomplete: defaults.autocomplete,
+      required: field?.required === false ? false : field?.required === true || questionRequired,
+    };
+  });
+}
+
 function normalizeChoice(input, index) {
   const ref = cleanRef(input?.ref || `choice-${index + 1}`, 'Choice reference');
   return {
@@ -468,14 +495,7 @@ function normalizeQuestion(input, index) {
     required: input?.required !== false,
   };
   if (!question.prompt) throw makeHttpError(400, `Question ${index + 1} is missing a prompt.`);
-  if (type === 'identity') {
-    const labels = new Map((Array.isArray(input?.fields) ? input.fields : []).map((field) => [String(field?.key || ''), field]));
-    question.fields = [
-      { key: 'name', label: cleanSingleLine(labels.get('name')?.label, 120) || 'Name', autocomplete: 'name' },
-      { key: 'email', label: cleanSingleLine(labels.get('email')?.label, 120) || 'Email', autocomplete: 'email' },
-      { key: 'role', label: cleanSingleLine(labels.get('role')?.label, 120) || 'Role', autocomplete: 'organization-title' },
-    ];
-  }
+  if (type === 'identity') question.fields = normalizeIdentityFields(input?.fields, question.required);
   if (type === 'short_text' || type === 'long_text') {
     question.placeholder = cleanSingleLine(input?.placeholder, 200);
   }
@@ -541,6 +561,35 @@ function normalizeDeckImport(input) {
   };
 }
 
+function deckSchemaFromNormalized(normalized) {
+  return {
+    schemaVersion: DECK_SCHEMA_VERSION,
+    title: normalized.title,
+    clientLabel: normalized.clientLabel,
+    estimatedMinutes: normalized.estimatedMinutes,
+    welcome: normalized.welcome,
+    sourceLabel: normalized.sourceLabel,
+    sourceSummary: normalized.sourceSummary,
+    questions: normalized.questions,
+  };
+}
+
+function normalizeDeckQuestionRevision(record, questions) {
+  const schema = record.schemaJson || {};
+  return normalizeDeckImport({
+    schemaVersion: DECK_SCHEMA_VERSION,
+    title: record.title,
+    clientLabel: record.clientLabel,
+    status: record.status,
+    sensitivity: record.sensitivity,
+    estimatedMinutes: schema.estimatedMinutes,
+    welcome: schema.welcome,
+    sourceLabel: schema.sourceLabel,
+    sourceSummary: schema.sourceSummary,
+    questions,
+  });
+}
+
 function randomPublicSlug() {
   return `ask_${crypto.randomBytes(18).toString('base64url')}`;
 }
@@ -591,16 +640,7 @@ async function createDeckFromImport({ deckInput, actorUserId = '', baseUrl = '' 
   const deckId = id('ask_deck');
   const deckVersionId = id('ask_deck_version');
   const now = new Date().toISOString();
-  const schemaJson = {
-    schemaVersion: DECK_SCHEMA_VERSION,
-    title: normalized.title,
-    clientLabel: normalized.clientLabel,
-    estimatedMinutes: normalized.estimatedMinutes,
-    welcome: normalized.welcome,
-    sourceLabel: normalized.sourceLabel,
-    sourceSummary: normalized.sourceSummary,
-    questions: normalized.questions,
-  };
+  const schemaJson = deckSchemaFromNormalized(normalized);
   const record = {
     deckId,
     deckVersionId,
@@ -789,6 +829,122 @@ async function reconfigureDeckAccess({ deckId, access, actorUserId = '', baseUrl
   }
 }
 
+async function reviseDeckQuestions({ deckId, questions, actorUserId = '', baseUrl = '' }) {
+  const cleanId = cleanDeckId(deckId);
+
+  if (storageConfig().mode === 'memory') {
+    const state = memory();
+    const record = state.decksById.get(cleanId);
+    if (!record) throw makeHttpError(404, 'Deck not found.');
+    if (record.status !== 'published') throw makeHttpError(409, 'Only published decks can revise questions.');
+    const responseCount = Array.from(state.responses.values()).filter((response) => response.deckId === record.deckId).length;
+    if (responseCount) throw makeHttpError(409, 'Deck questions cannot change after a response has started.');
+    const normalized = normalizeDeckQuestionRevision(record, questions);
+    const schemaJson = deckSchemaFromNormalized(normalized);
+    record.deckVersionId = id('ask_deck_version');
+    record.schemaJson = schemaJson;
+    record.schemaSha256 = sha256(stableJson(schemaJson));
+    record.updatedAt = new Date().toISOString();
+    state.decksById.set(record.deckId, record);
+    state.decks.set(record.publicSlugHash, record);
+    state.events.push({
+      deckId: record.deckId,
+      eventType: 'questions_revised',
+      createdAt: record.updatedAt,
+      metadata: { questionCount: normalized.questions.length, schemaSha256: record.schemaSha256 },
+    });
+    persistMemory(state);
+    return { ok: true, deck: deckAdminSummary(record, { baseUrl, responseCount: 0 }) };
+  }
+
+  await ensureSchema();
+  const db = sql();
+  const currentRows = await db`SELECT d.id AS deck_id, d.title, d.client_label, d.status, d.sensitivity, d.passcode_required,
+      d.public_slug_ciphertext, d.created_at, d.updated_at,
+      latest.id AS deck_version_id, latest.schema_json,
+      COALESCE(response_counts.response_count, 0)::int AS response_count
+    FROM ask_decks d
+    JOIN LATERAL (
+      SELECT id, schema_json FROM ask_deck_versions v WHERE v.deck_id = d.id ORDER BY v.published_at DESC NULLS LAST, v.created_at DESC LIMIT 1
+    ) latest ON TRUE
+    LEFT JOIN (
+      SELECT deck_id, count(*) AS response_count FROM ask_responses GROUP BY deck_id
+    ) response_counts ON response_counts.deck_id = d.id
+    WHERE d.id = ${cleanId} AND d.deleted_at IS NULL
+    LIMIT 1`;
+  if (!currentRows.length) throw makeHttpError(404, 'Deck not found.');
+  const current = currentRows[0];
+  if (current.status !== 'published') throw makeHttpError(409, 'Only published decks can revise questions.');
+  if (Number(current.response_count || 0) > 0) throw makeHttpError(409, 'Deck questions cannot change after a response has started.');
+  const record = {
+    deckId: current.deck_id,
+    deckVersionId: current.deck_version_id,
+    title: current.title,
+    clientLabel: current.client_label,
+    status: current.status,
+    sensitivity: current.sensitivity,
+    passcodeRequired: current.passcode_required,
+    publicSlugCiphertext: current.public_slug_ciphertext,
+    schemaJson: current.schema_json,
+    createdAt: current.created_at,
+    updatedAt: current.updated_at,
+  };
+  const normalized = normalizeDeckQuestionRevision(record, questions);
+  const schemaJson = deckSchemaFromNormalized(normalized);
+  const schemaSha256 = sha256(stableJson(schemaJson));
+  const nextVersionId = id('ask_deck_version');
+  const nextVersionLabel = `revision-${Date.now()}`;
+  const metadata = JSON.stringify({ questionCount: normalized.questions.length, schemaSha256 });
+
+  const [lockedRows, revisedRows] = await db.transaction((tx) => [
+    tx`SELECT d.id
+      FROM ask_decks d
+      WHERE d.id = ${cleanId} AND d.status = 'published' AND d.deleted_at IS NULL
+      FOR UPDATE`,
+    tx`WITH eligible AS (
+      SELECT d.id
+      FROM ask_decks d
+      WHERE d.id = ${cleanId}
+        AND d.status = 'published'
+        AND d.deleted_at IS NULL
+        AND NOT EXISTS (SELECT 1 FROM ask_responses r WHERE r.deck_id = d.id)
+    ), inserted AS (
+      INSERT INTO ask_deck_versions (id, deck_id, version_label, schema_json, schema_sha256, published_at)
+      SELECT ${nextVersionId}, id, ${nextVersionLabel}, ${JSON.stringify(schemaJson)}::jsonb, ${schemaSha256}, now()
+      FROM eligible
+      RETURNING deck_id
+    ), touched AS (
+      UPDATE ask_decks d
+      SET updated_at = now()
+      FROM inserted i
+      WHERE d.id = i.deck_id
+      RETURNING d.id, d.title, d.client_label, d.status, d.sensitivity, d.passcode_required, d.public_slug_ciphertext, d.created_at, d.updated_at
+    ), event_written AS (
+      INSERT INTO ask_deck_events (deck_id, event_type, summary, metadata)
+      SELECT id, 'questions_revised', 'Revised deck question schema.', ${metadata}::jsonb FROM touched
+    )
+    SELECT id AS deck_id, title, client_label, status, sensitivity, passcode_required, public_slug_ciphertext, created_at, updated_at
+    FROM touched`,
+  ]);
+  if (!lockedRows.length || !revisedRows.length) throw makeHttpError(409, 'Deck questions can no longer be changed. Reload and try again.');
+  const revised = revisedRows[0];
+  return {
+    ok: true,
+    deck: deckAdminSummary({
+      deckId: revised.deck_id,
+      deckVersionId: nextVersionId,
+      title: revised.title,
+      clientLabel: revised.client_label,
+      status: revised.status,
+      sensitivity: revised.sensitivity,
+      passcodeRequired: revised.passcode_required,
+      publicSlugCiphertext: revised.public_slug_ciphertext,
+      createdAt: revised.created_at,
+      updatedAt: revised.updated_at,
+    }, { baseUrl, responseCount: 0 }),
+  };
+}
+
 async function listDecks({ baseUrl = '' } = {}) {
   if (storageConfig().mode === 'memory') {
     const state = memory();
@@ -844,12 +1000,23 @@ function normalizeAnswer(question, incoming) {
   let value;
   if (question.type === 'identity') {
     const source = raw || {};
-    value = {
-      name: cleanSingleLine(source.name, 120),
-      email: cleanEmail(source.email),
-      role: cleanSingleLine(source.role, 120),
-    };
-    if (question.required && (!value.name || !value.email || !value.role)) throw makeHttpError(400, 'Name, email, and role are required.');
+    const fields = (Array.isArray(question.fields) && question.fields.length
+      ? question.fields
+      : normalizeIdentityFields(undefined, Boolean(question.required)))
+      .map((field) => ({
+        ...field,
+        required: field.required === false ? false : field.required === true || Boolean(question.required),
+      }));
+    value = {};
+    for (const field of fields) {
+      value[field.key] = field.key === 'email'
+        ? cleanEmail(source[field.key])
+        : cleanSingleLine(source[field.key], 120);
+      if (field.required && !value[field.key]) throw makeHttpError(400, `${field.label || field.key} is required.`);
+    }
+    value.name = value.name || '';
+    value.email = value.email || '';
+    value.role = value.role || '';
   } else if (question.type === 'short_text') {
     value = cleanSingleLine(raw, 400);
     if (question.required && !value) throw makeHttpError(400, 'Required answer is missing.');
@@ -927,6 +1094,10 @@ async function startResponse({ slug, passcode = '' }) {
   const now = new Date().toISOString();
   if (storageConfig().mode === 'memory') {
     const state = memory();
+    const current = state.decksById.get(record.deckId);
+    if (!current || current.publicSlugHash !== slugHash(slug) || current.deckVersionId !== record.deckVersionId || current.status !== 'published') {
+      throw makeHttpError(409, 'This link changed or closed. Reload the page.');
+    }
     state.responses.set(responseId, {
       id: responseId,
       deckId: record.deckId,
@@ -955,6 +1126,9 @@ async function startResponse({ slug, passcode = '' }) {
           AND d.status = 'published'
           AND d.deleted_at IS NULL
           AND (d.expires_at IS NULL OR d.expires_at > now())
+          AND ${record.deckVersionId} = (
+            SELECT v.id FROM ask_deck_versions v WHERE v.deck_id = d.id ORDER BY v.published_at DESC NULLS LAST, v.created_at DESC LIMIT 1
+          )
         FOR UPDATE`,
       tx`WITH inserted AS (
         INSERT INTO ask_responses (id, deck_id, deck_version_id, status)
@@ -966,6 +1140,9 @@ async function startResponse({ slug, passcode = '' }) {
           AND d.status = 'published'
           AND d.deleted_at IS NULL
           AND (d.expires_at IS NULL OR d.expires_at > now())
+          AND ${record.deckVersionId} = (
+            SELECT v.id FROM ask_deck_versions v WHERE v.deck_id = d.id ORDER BY v.published_at DESC NULLS LAST, v.created_at DESC LIMIT 1
+          )
         RETURNING id
       )
       INSERT INTO ask_response_events (response_id, event_type, summary)
@@ -1248,6 +1425,7 @@ module.exports = {
   normalizeDeckImport,
   createDeckFromImport,
   reconfigureDeckAccess,
+  reviseDeckQuestions,
   listDecks,
   listResponses,
   getResponse,

@@ -1,6 +1,6 @@
 (() => {
   const params = new URLSearchParams(window.location.search);
-  const slug = params.get('slug') || 'sample-company-demo-7Vnyc9s3';
+  const slug = params.get('slug') || '';
 
   const els = {
     loading: document.getElementById('loading'),
@@ -11,6 +11,13 @@
     passcodeTitle: document.getElementById('passcodeTitle'),
     passcodeClient: document.getElementById('passcodeClient'),
     passcodeBody: document.getElementById('passcodeBody'),
+    welcomeView: document.getElementById('welcomeView'),
+    welcomeTitle: document.getElementById('welcomeTitle'),
+    welcomeClient: document.getElementById('welcomeClient'),
+    welcomeBody: document.getElementById('welcomeBody'),
+    welcomePrivacy: document.getElementById('welcomePrivacy'),
+    beginButton: document.getElementById('beginButton'),
+    beginError: document.getElementById('beginError'),
     questionView: document.getElementById('questionView'),
     questionCard: document.getElementById('questionCard'),
     questionError: document.getElementById('questionError'),
@@ -26,7 +33,7 @@
   const answers = new Map();
 
   function show(name) {
-    ['loading', 'passcodeView', 'questionView', 'doneView'].forEach((key) => els[key].classList.toggle('hidden', key !== name));
+    ['loading', 'passcodeView', 'welcomeView', 'questionView', 'doneView'].forEach((key) => els[key].classList.toggle('hidden', key !== name));
   }
 
   function escapeHtml(value) {
@@ -45,7 +52,20 @@
     return data;
   }
 
+  function showWelcome(meta) {
+    els.welcomeTitle.textContent = meta.welcome?.title || meta.title || 'A few questions';
+    els.welcomeClient.textContent = meta.clientLabel || 'Shared question link';
+    els.welcomeBody.textContent = meta.welcome?.body || '';
+    els.welcomePrivacy.textContent = meta.welcome?.privacy || 'Only share information you are comfortable providing through this link.';
+    els.saveState.textContent = 'Link-only access';
+    show('welcomeView');
+  }
+
   async function loadDeck() {
+    if (!slug) {
+      els.loading.innerHTML = '<h1>Link unavailable</h1><p class="context">Use the complete question link.</p>';
+      return;
+    }
     try {
       const data = await request(`/api/public/deck?slug=${encodeURIComponent(slug)}`, { headers: {} });
       const meta = data.deck;
@@ -53,7 +73,7 @@
       els.passcodeClient.textContent = meta.clientLabel || 'Client questions';
       els.passcodeBody.textContent = meta.welcome?.privacy || 'This question set needs a passcode before answers can be opened.';
       if (meta.passcodeRequired) show('passcodeView');
-      else await start('');
+      else showWelcome(meta);
     } catch (error) {
       els.loading.innerHTML = `<h1>Link unavailable</h1><p class="context">${escapeHtml(error.message)}</p>`;
     }
@@ -62,7 +82,7 @@
   async function start(passcode) {
     const data = await request('/api/public/start', {
       method: 'POST',
-      body: JSON.stringify({ slug, passcode }),
+      body: JSON.stringify({ slug, passcode, begin: true }),
     });
     deck = data.deck;
     index = 0;
@@ -182,6 +202,11 @@
     event.preventDefault();
     els.passcodeError.textContent = '';
     try { await start(els.passcode.value); } catch (error) { els.passcodeError.textContent = error.message; }
+  });
+  els.beginButton.addEventListener('click', async () => {
+    els.beginError.textContent = '';
+    els.beginButton.disabled = true;
+    try { await start(''); } catch (error) { els.beginError.textContent = error.message; els.beginButton.disabled = false; }
   });
   els.backButton.addEventListener('click', () => { if (index > 0) { collect(currentQuestion()); index -= 1; render(); } });
   els.nextButton.addEventListener('click', next);

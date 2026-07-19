@@ -12,7 +12,7 @@
   <main class="shell" id="main">
     <header class="topline">
       <p class="brand">Ask</p>
-      <p class="helper" id="saveState">Private link</p>
+      <p class="helper" id="saveState">Secure link</p>
     </header>
 
     <section id="loading" class="stack">
@@ -34,6 +34,17 @@
         <button type="submit">Open questions</button>
         <p class="error" id="passcodeError" role="alert"></p>
       </form>
+    </section>
+
+    <section id="welcomeView" class="stack hidden">
+      <div>
+        <p class="qmeta" id="welcomeClient">Shared question link</p>
+        <h1 id="welcomeTitle">A few questions</h1>
+        <p class="context" id="welcomeBody"></p>
+        <p class="context" id="welcomePrivacy">Only share information you are comfortable providing through this link.</p>
+      </div>
+      <button type="button" id="beginButton">Begin questions</button>
+      <p class="error" id="beginError" role="alert"></p>
     </section>
 
     <section id="questionView" class="hidden">

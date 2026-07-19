@@ -12,6 +12,7 @@ const QUESTION_TYPES = new Set(['identity', 'short_text', 'long_text', 'multi_ch
 const DECK_SCHEMA_VERSION = 'ask.deck.v0';
 const DECK_STATUSES = new Set(['draft', 'published', 'closed', 'archived']);
 const DECK_SENSITIVITIES = new Set(['low', 'medium', 'high']);
+const ACCESS_MODES = new Set(['passcode', 'link-only']);
 
 function env(name, fallback = '') {
   return String(process.env[name] ?? fallback).trim();
@@ -97,7 +98,7 @@ function passcodeHash(passcode, salt) {
 }
 
 function verifyPasscode(passcode, salt, expectedHash) {
-  if (!expectedHash) return true;
+  if (!expectedHash || !salt) return false;
   if (!passcode) return false;
   const actual = passcodeHash(passcode, salt);
   const left = Buffer.from(actual);
@@ -110,6 +111,24 @@ function cleanSlug(value) {
   const slug = String(value || '').trim();
   if (!/^[A-Za-z0-9_-]{8,128}$/.test(slug)) throw makeHttpError(400, 'Invalid link.');
   return slug;
+}
+
+function cleanHumanSlug(value) {
+  const slug = String(value || '').trim();
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) || slug.length < 3 || slug.length > 80) {
+    throw makeHttpError(400, 'Link-only decks need a lowercase, human-readable slug using letters, numbers, and single dashes.');
+  }
+  return slug;
+}
+
+function cleanDeckId(value) {
+  const deckId = String(value || '').trim();
+  if (!/^ask_deck_[A-Za-z0-9_-]{4,80}$/.test(deckId)) throw makeHttpError(400, 'Invalid deck.');
+  return deckId;
+}
+
+function isUniqueViolation(error) {
+  return error?.code === '23505' || /unique constraint|duplicate key/i.test(String(error?.message || ''));
 }
 
 function cleanSingleLine(value, max = 240) {
@@ -130,15 +149,17 @@ function cleanEmail(value) {
 function publicDeckPayload(record, includeQuestions = false) {
   const schema = record.schemaJson;
   const welcome = schema.welcome || {};
+  const linkOnly = !record.passcodeRequired;
+  const canShowWelcome = includeQuestions || linkOnly;
   return {
     id: record.deckId,
     versionId: record.deckVersionId,
-    title: includeQuestions ? record.title : 'Private questions',
-    clientLabel: includeQuestions ? record.clientLabel : 'Secure response link',
+    title: canShowWelcome ? record.title : 'Private questions',
+    clientLabel: canShowWelcome ? record.clientLabel : 'Secure response link',
     status: record.status,
     sensitivity: includeQuestions ? record.sensitivity : '',
     estimatedMinutes: includeQuestions ? schema.estimatedMinutes || 4 : undefined,
-    welcome: includeQuestions ? welcome : {
+    welcome: canShowWelcome ? welcome : {
       title: 'Enter passcode',
       body: '',
       privacy: welcome.privacy || 'This question set needs a passcode before answers can be opened.',
@@ -390,6 +411,20 @@ function cleanBoolean(value, fallback = false) {
   return typeof value === 'boolean' ? value : fallback;
 }
 
+function normalizeDeckAccess(value, sensitivity) {
+  if (value === undefined || value === null) throw makeHttpError(400, 'Deck access settings are required.');
+  if (!value || typeof value !== 'object' || Array.isArray(value)) throw makeHttpError(400, 'Deck access settings must be an object.');
+  const mode = cleanSingleLine(value.mode, 32).toLowerCase();
+  if (!ACCESS_MODES.has(mode)) throw makeHttpError(400, 'Deck access mode must be passcode or link-only.');
+  if (mode === 'passcode') {
+    if (cleanSingleLine(value.publicSlug, 80)) throw makeHttpError(400, 'Passcode decks use a generated private link.');
+    return { mode, passcodeRequired: true, publicSlug: '' };
+  }
+  if (sensitivity === 'high') throw makeHttpError(400, 'High-sensitivity decks cannot use link-only access.');
+  if (value.publicExposureAcknowledged !== true) throw makeHttpError(400, 'Link-only access requires explicit public exposure acknowledgement.');
+  return { mode, passcodeRequired: false, publicSlug: cleanHumanSlug(value.publicSlug) };
+}
+
 function rejectRawSourceKeys(input) {
   const blocked = new Set(['rawSource', 'rawSources', 'sourceText', 'sourceHtml', 'emailBody', 'emails', 'messages', 'slackMessages', 'transcript', 'credentials', 'secret', 'secrets']);
   for (const key of Object.keys(input || {})) {
@@ -479,6 +514,8 @@ function normalizeDeckImport(input) {
   if (!DECK_STATUSES.has(status) || status === 'archived') throw makeHttpError(400, 'Deck status must be draft, published, or closed.');
   const sensitivity = cleanSingleLine(source.sensitivity || 'medium', 40);
   if (!DECK_SENSITIVITIES.has(sensitivity)) throw makeHttpError(400, 'Deck sensitivity must be low, medium, or high.');
+  if (source.access !== undefined) throw makeHttpError(400, 'Link-only access is an admin-only reconfiguration. Imported decks require a passcode.');
+  if (source.passcodeRequired === false) throw makeHttpError(400, 'Imported decks require a passcode.');
   const questions = Array.isArray(source.questions) ? source.questions : [];
   if (!questions.length) throw makeHttpError(400, 'Deck import must include at least one question.');
   if (questions.length > 60) throw makeHttpError(400, 'Deck import has too many questions.');
@@ -489,7 +526,6 @@ function normalizeDeckImport(input) {
     return question;
   });
   const estimatedMinutes = Number(source.estimatedMinutes || Math.max(2, Math.ceil(normalizedQuestions.length / 2)));
-  if (source.passcodeRequired === false) throw makeHttpError(400, 'Imported decks must require a passcode.');
   return {
     schemaVersion: DECK_SCHEMA_VERSION,
     title,
@@ -513,6 +549,23 @@ function randomPasscode() {
   return crypto.randomBytes(12).toString('base64url');
 }
 
+function buildAccessCredentials(access) {
+  const publicSlug = access.mode === 'link-only' ? access.publicSlug : randomPublicSlug();
+  const passcode = access.passcodeRequired ? randomPasscode() : '';
+  const passcodeSalt = passcode
+    ? hmac(`deck-passcode-salt:${publicSlug}:${Date.now()}:${crypto.randomBytes(8).toString('hex')}`).slice(0, 32)
+    : '';
+  return {
+    publicSlug,
+    publicSlugHash: slugHash(publicSlug),
+    publicSlugCiphertext: encryptSlug(publicSlug),
+    passcode,
+    passcodeRequired: access.passcodeRequired,
+    passcodeSalt,
+    passcodeHash: passcode ? passcodeHash(passcode, passcodeSalt) : '',
+  };
+}
+
 function deckAdminSummary(record, { baseUrl = '', responseCount = 0 } = {}) {
   const publicSlug = record.publicSlug || decryptSlug(record.publicSlugCiphertext);
   return {
@@ -522,6 +575,7 @@ function deckAdminSummary(record, { baseUrl = '', responseCount = 0 } = {}) {
     clientLabel: record.clientLabel,
     status: record.status,
     sensitivity: record.sensitivity,
+    accessMode: record.passcodeRequired ? 'passcode' : 'link-only',
     passcodeRequired: Boolean(record.passcodeRequired),
     publicSlug: record.status === 'published' ? publicSlug || '' : '',
     publicUrl: record.status === 'published' ? publicUrlForSlug(publicSlug, baseUrl) : '',
@@ -533,9 +587,7 @@ function deckAdminSummary(record, { baseUrl = '', responseCount = 0 } = {}) {
 
 async function createDeckFromImport({ deckInput, actorUserId = '', baseUrl = '' }) {
   const normalized = normalizeDeckImport(deckInput);
-  const publicSlug = randomPublicSlug();
-  const passcode = normalized.passcodeRequired ? randomPasscode() : '';
-  const salt = hmac(`deck-passcode-salt:${publicSlug}:${Date.now()}:${crypto.randomBytes(8).toString('hex')}`).slice(0, 32);
+  const credentials = buildAccessCredentials({ mode: 'passcode', passcodeRequired: true, publicSlug: '' });
   const deckId = id('ask_deck');
   const deckVersionId = id('ask_deck_version');
   const now = new Date().toISOString();
@@ -556,12 +608,12 @@ async function createDeckFromImport({ deckInput, actorUserId = '', baseUrl = '' 
     clientLabel: normalized.clientLabel,
     status: normalized.status,
     sensitivity: normalized.sensitivity,
-    passcodeRequired: normalized.passcodeRequired,
-    passcodeSalt: salt,
-    passcodeHash: passcode ? passcodeHash(passcode, salt) : '',
-    publicSlugHash: slugHash(publicSlug),
-    publicSlugCiphertext: encryptSlug(publicSlug),
-    publicSlug,
+    passcodeRequired: credentials.passcodeRequired,
+    passcodeSalt: credentials.passcodeSalt,
+    passcodeHash: credentials.passcodeHash,
+    publicSlugHash: credentials.publicSlugHash,
+    publicSlugCiphertext: credentials.publicSlugCiphertext,
+    publicSlug: credentials.publicSlug,
     schemaJson,
     schemaSha256: sha256(stableJson(schemaJson)),
     createdAt: now,
@@ -570,32 +622,171 @@ async function createDeckFromImport({ deckInput, actorUserId = '', baseUrl = '' 
 
   if (storageConfig().mode === 'memory') {
     const state = memory();
+    if (state.decks.has(record.publicSlugHash)) throw makeHttpError(409, 'That public link is already in use.');
     state.decks.set(record.publicSlugHash, record);
     state.decksById.set(record.deckId, record);
-    state.events.push({ deckId, actorUserId, eventType: 'imported', createdAt: now, metadata: { sourceLabel: normalized.sourceLabel } });
+    state.events.push({ deckId, actorUserId, eventType: 'imported', createdAt: now, metadata: { sourceLabel: normalized.sourceLabel, accessMode: 'passcode' } });
     persistMemory(state);
   } else {
     await ensureSchema();
     const db = sql();
-    await db`INSERT INTO ask_decks (id, title, client_label, status, sensitivity, public_slug_hash, public_slug_ciphertext, passcode_required, passcode_salt, passcode_hash)
-      VALUES (${record.deckId}, ${record.title}, ${record.clientLabel}, 'draft', ${record.sensitivity}, ${record.publicSlugHash}, ${record.publicSlugCiphertext}, ${record.passcodeRequired}, ${record.passcodeSalt}, ${record.passcodeHash})`;
+    try {
+      await db`INSERT INTO ask_decks (id, title, client_label, status, sensitivity, public_slug_hash, public_slug_ciphertext, passcode_required, passcode_salt, passcode_hash)
+        VALUES (${record.deckId}, ${record.title}, ${record.clientLabel}, 'draft', ${record.sensitivity}, ${record.publicSlugHash}, ${record.publicSlugCiphertext}, ${record.passcodeRequired}, ${record.passcodeSalt}, ${record.passcodeHash})`;
+    } catch (error) {
+      if (isUniqueViolation(error)) throw makeHttpError(409, 'That public link is already in use.');
+      throw error;
+    }
     await db`INSERT INTO ask_deck_versions (id, deck_id, version_label, schema_json, schema_sha256, published_at)
       VALUES (${record.deckVersionId}, ${record.deckId}, 'v1', ${JSON.stringify(record.schemaJson)}::jsonb, ${record.schemaSha256}, ${record.status === 'published' ? new Date().toISOString() : null})`;
     await db`UPDATE ask_decks SET status = ${record.status}, updated_at = now() WHERE id = ${record.deckId}`;
     await db`INSERT INTO ask_deck_events (deck_id, event_type, summary, metadata)
-      VALUES (${record.deckId}, 'imported', 'Imported deck from ask.deck.v0 packet.', ${JSON.stringify({ actorUserId, sourceLabel: normalized.sourceLabel, schemaSha256: record.schemaSha256 })}::jsonb)`;
+      VALUES (${record.deckId}, 'imported', 'Imported deck from ask.deck.v0 packet.', ${JSON.stringify({ actorUserId, sourceLabel: normalized.sourceLabel, schemaSha256: record.schemaSha256, accessMode: 'passcode' })}::jsonb)`;
   }
 
   return {
     ok: true,
     deck: deckAdminSummary(record, { baseUrl }),
     secret: {
-      publicSlug: normalized.status === 'published' ? publicSlug : '',
-      publicUrl: normalized.status === 'published' ? publicUrlForSlug(publicSlug, baseUrl) : '',
-      passcode,
-      passcodeRequired: normalized.passcodeRequired,
+      publicSlug: normalized.status === 'published' ? credentials.publicSlug : '',
+      publicUrl: normalized.status === 'published' ? publicUrlForSlug(credentials.publicSlug, baseUrl) : '',
+      passcode: credentials.passcode,
+      passcodeRequired: credentials.passcodeRequired,
     },
   };
+}
+
+async function reconfigureDeckAccess({ deckId, access, actorUserId = '', baseUrl = '' }) {
+  const cleanId = cleanDeckId(deckId);
+
+  if (storageConfig().mode === 'memory') {
+    const state = memory();
+    const record = state.decksById.get(cleanId);
+    if (!record) throw makeHttpError(404, 'Deck not found.');
+    if (record.status !== 'published') throw makeHttpError(409, 'Only published decks can change access.');
+    const responseCount = Array.from(state.responses.values()).filter((response) => response.deckId === record.deckId).length;
+    if (responseCount) throw makeHttpError(409, 'Deck access cannot change after a response has started.');
+    const normalizedAccess = normalizeDeckAccess(access, record.sensitivity);
+    const credentials = buildAccessCredentials(normalizedAccess);
+    const occupied = state.decks.get(credentials.publicSlugHash);
+    if (occupied && occupied.deckId !== record.deckId) throw makeHttpError(409, 'That public link is already in use.');
+    const fromAccessMode = record.passcodeRequired ? 'passcode' : 'link-only';
+    state.decks.delete(record.publicSlugHash);
+    record.publicSlugHash = credentials.publicSlugHash;
+    record.publicSlugCiphertext = credentials.publicSlugCiphertext;
+    record.publicSlug = credentials.publicSlug;
+    record.passcodeRequired = credentials.passcodeRequired;
+    record.passcodeSalt = credentials.passcodeSalt;
+    record.passcodeHash = credentials.passcodeHash;
+    record.updatedAt = new Date().toISOString();
+    state.decks.set(record.publicSlugHash, record);
+    state.decksById.set(record.deckId, record);
+    state.events.push({
+      deckId: record.deckId,
+      actorUserId,
+      eventType: 'access_reconfigured',
+      createdAt: record.updatedAt,
+      metadata: { fromAccessMode, toAccessMode: normalizedAccess.mode },
+    });
+    persistMemory(state);
+    return {
+      ok: true,
+      deck: deckAdminSummary(record, { baseUrl, responseCount: 0 }),
+      secret: {
+        publicSlug: credentials.publicSlug,
+        publicUrl: publicUrlForSlug(credentials.publicSlug, baseUrl),
+        passcode: credentials.passcode,
+        passcodeRequired: credentials.passcodeRequired,
+      },
+    };
+  }
+
+  await ensureSchema();
+  const db = sql();
+  const currentRows = await db`SELECT d.id AS deck_id, d.title, d.client_label, d.status, d.sensitivity, d.passcode_required,
+      d.public_slug_ciphertext, d.created_at, d.updated_at,
+      latest.id AS deck_version_id,
+      COALESCE(response_counts.response_count, 0)::int AS response_count
+    FROM ask_decks d
+    LEFT JOIN LATERAL (
+      SELECT id FROM ask_deck_versions v WHERE v.deck_id = d.id ORDER BY v.published_at DESC NULLS LAST, v.created_at DESC LIMIT 1
+    ) latest ON TRUE
+    LEFT JOIN (
+      SELECT deck_id, count(*) AS response_count FROM ask_responses GROUP BY deck_id
+    ) response_counts ON response_counts.deck_id = d.id
+    WHERE d.id = ${cleanId} AND d.deleted_at IS NULL
+    LIMIT 1`;
+  if (!currentRows.length) throw makeHttpError(404, 'Deck not found.');
+  const current = currentRows[0];
+  if (current.status !== 'published') throw makeHttpError(409, 'Only published decks can change access.');
+  if (Number(current.response_count || 0) > 0) throw makeHttpError(409, 'Deck access cannot change after a response has started.');
+  const normalizedAccess = normalizeDeckAccess(access, current.sensitivity);
+  const credentials = buildAccessCredentials(normalizedAccess);
+  const metadata = JSON.stringify({
+    actorUserId,
+    fromAccessMode: current.passcode_required ? 'passcode' : 'link-only',
+    toAccessMode: normalizedAccess.mode,
+  });
+
+  try {
+    const [lockedRows, updatedRows] = await db.transaction((tx) => [
+      tx`SELECT d.id
+        FROM ask_decks d
+        WHERE d.id = ${cleanId} AND d.status = 'published' AND d.deleted_at IS NULL
+        FOR UPDATE`,
+      tx`WITH changed AS (
+        UPDATE ask_decks d
+        SET public_slug_hash = ${credentials.publicSlugHash},
+            public_slug_ciphertext = ${credentials.publicSlugCiphertext},
+            passcode_required = ${credentials.passcodeRequired},
+            passcode_salt = ${credentials.passcodeSalt},
+            passcode_hash = ${credentials.passcodeHash},
+            updated_at = now()
+        WHERE d.id = ${cleanId}
+          AND d.status = 'published'
+          AND d.deleted_at IS NULL
+          AND NOT EXISTS (SELECT 1 FROM ask_responses r WHERE r.deck_id = d.id)
+        RETURNING d.id, d.title, d.client_label, d.status, d.sensitivity, d.passcode_required, d.public_slug_ciphertext, d.created_at, d.updated_at
+      ), event_written AS (
+        INSERT INTO ask_deck_events (deck_id, event_type, summary, metadata)
+        SELECT id, 'access_reconfigured', 'Changed deck access mode.', ${metadata}::jsonb FROM changed
+      )
+      SELECT changed.id AS deck_id, changed.title, changed.client_label, changed.status, changed.sensitivity, changed.passcode_required,
+        changed.public_slug_ciphertext, changed.created_at, changed.updated_at,
+        latest.id AS deck_version_id
+      FROM changed
+      JOIN LATERAL (
+        SELECT id FROM ask_deck_versions v WHERE v.deck_id = changed.id ORDER BY v.published_at DESC NULLS LAST, v.created_at DESC LIMIT 1
+      ) latest ON TRUE`,
+    ]);
+    if (!lockedRows.length || !updatedRows.length) throw makeHttpError(409, 'Deck access can no longer be changed. Reload and try again.');
+    const updated = updatedRows[0];
+    return {
+      ok: true,
+      deck: deckAdminSummary({
+        deckId: updated.deck_id,
+        deckVersionId: updated.deck_version_id,
+        title: updated.title,
+        clientLabel: updated.client_label,
+        status: updated.status,
+        sensitivity: updated.sensitivity,
+        passcodeRequired: updated.passcode_required,
+        publicSlugCiphertext: updated.public_slug_ciphertext,
+        publicSlug: credentials.publicSlug,
+        createdAt: updated.created_at,
+        updatedAt: updated.updated_at,
+      }, { baseUrl, responseCount: 0 }),
+      secret: {
+        publicSlug: credentials.publicSlug,
+        publicUrl: publicUrlForSlug(credentials.publicSlug, baseUrl),
+        passcode: credentials.passcode,
+        passcodeRequired: credentials.passcodeRequired,
+      },
+    };
+  } catch (error) {
+    if (isUniqueViolation(error)) throw makeHttpError(409, 'That public link is already in use.');
+    throw error;
+  }
 }
 
 async function listDecks({ baseUrl = '' } = {}) {
@@ -754,13 +945,77 @@ async function startResponse({ slug, passcode = '' }) {
   } else {
     await ensureSchema();
     const db = sql();
-    await db`INSERT INTO ask_responses (id, deck_id, deck_version_id, status)
-      VALUES (${responseId}, ${record.deckId}, ${record.deckVersionId}, 'started')`;
-    await db`INSERT INTO ask_response_events (response_id, event_type, summary)
-      VALUES (${responseId}, 'started', 'Respondent started answer flow.')`;
+    const expectedSlugHash = slugHash(slug);
+    const [lockedRows, eventRows] = await db.transaction((tx) => [
+      tx`SELECT d.id
+        FROM ask_decks d
+        WHERE d.id = ${record.deckId}
+          AND d.public_slug_hash = ${expectedSlugHash}
+          AND d.passcode_required = ${Boolean(record.passcodeRequired)}
+          AND d.status = 'published'
+          AND d.deleted_at IS NULL
+          AND (d.expires_at IS NULL OR d.expires_at > now())
+        FOR UPDATE`,
+      tx`WITH inserted AS (
+        INSERT INTO ask_responses (id, deck_id, deck_version_id, status)
+        SELECT ${responseId}, d.id, ${record.deckVersionId}, 'started'
+        FROM ask_decks d
+        WHERE d.id = ${record.deckId}
+          AND d.public_slug_hash = ${expectedSlugHash}
+          AND d.passcode_required = ${Boolean(record.passcodeRequired)}
+          AND d.status = 'published'
+          AND d.deleted_at IS NULL
+          AND (d.expires_at IS NULL OR d.expires_at > now())
+        RETURNING id
+      )
+      INSERT INTO ask_response_events (response_id, event_type, summary)
+      SELECT id, 'started', 'Respondent started answer flow.' FROM inserted
+      RETURNING response_id`,
+    ]);
+    if (!lockedRows.length || !eventRows.length) throw makeHttpError(409, 'This link changed or closed. Reload the page.');
   }
   return {
     responseId,
+    deckId: record.deckId,
+    deckVersionId: record.deckVersionId,
+    deck: publicDeckPayload(record, true),
+  };
+}
+
+async function resumeResponse({ responseId, slug }) {
+  const cleanResponseId = cleanSingleLine(responseId, 80);
+  if (!cleanResponseId) return null;
+  const record = await deckRecordBySlug(slug);
+  if (!record) return null;
+
+  if (storageConfig().mode === 'memory') {
+    const state = memory();
+    const response = state.responses.get(cleanResponseId);
+    if (!response || response.deckId !== record.deckId || response.status !== 'started') return null;
+    return {
+      responseId: response.id,
+      deckId: record.deckId,
+      deckVersionId: record.deckVersionId,
+      deck: publicDeckPayload(record, true),
+    };
+  }
+
+  await ensureSchema();
+  const db = sql();
+  const rows = await db`SELECT r.id
+    FROM ask_responses r
+    JOIN ask_decks d ON d.id = r.deck_id
+    WHERE r.id = ${cleanResponseId}
+      AND r.deck_id = ${record.deckId}
+      AND r.status = 'started'
+      AND d.public_slug_hash = ${slugHash(slug)}
+      AND d.status = 'published'
+      AND d.deleted_at IS NULL
+      AND (d.expires_at IS NULL OR d.expires_at > now())
+    LIMIT 1`;
+  if (!rows.length) return null;
+  return {
+    responseId: cleanResponseId,
     deckId: record.deckId,
     deckVersionId: record.deckVersionId,
     deck: publicDeckPayload(record, true),
@@ -988,9 +1243,11 @@ module.exports = {
   cleanSlug,
   publicDeck,
   startResponse,
+  resumeResponse,
   submitResponse,
   normalizeDeckImport,
   createDeckFromImport,
+  reconfigureDeckAccess,
   listDecks,
   listResponses,
   getResponse,

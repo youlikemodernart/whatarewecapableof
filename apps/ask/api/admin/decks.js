@@ -1,10 +1,10 @@
 const { getBaseUrl, getSession, requireCsrf, json } = require('../_auth');
 const { readJsonBody, handleApiError, makeHttpError } = require('../_http');
-const { createDeckFromImport, listDecks } = require('../_db');
+const { createDeckFromImport, reconfigureDeckAccess, listDecks } = require('../_db');
 
 module.exports = async function handler(req, res) {
-  if (req.method !== 'GET' && req.method !== 'POST') {
-    res.setHeader('Allow', 'GET, POST');
+  if (!['GET', 'POST', 'PATCH'].includes(req.method)) {
+    res.setHeader('Allow', 'GET, POST, PATCH');
     return json(res, 405, { error: 'Method not allowed' });
   }
 
@@ -20,12 +20,22 @@ module.exports = async function handler(req, res) {
 
     if (!requireCsrf(req)) throw makeHttpError(403, 'CSRF check failed.');
     const body = await readJsonBody(req, 96_000);
-    const result = await createDeckFromImport({
-      deckInput: body.deck || body,
+    if (req.method === 'POST') {
+      const result = await createDeckFromImport({
+        deckInput: body.deck || body,
+        actorUserId: user.email || user.sub || 'admin',
+        baseUrl,
+      });
+      return json(res, 201, result);
+    }
+
+    const result = await reconfigureDeckAccess({
+      deckId: body.id || body.deckId,
+      access: body.access,
       actorUserId: user.email || user.sub || 'admin',
       baseUrl,
     });
-    return json(res, 201, result);
+    return json(res, 200, result);
   } catch (error) {
     return handleApiError(res, json, error);
   }

@@ -12,7 +12,13 @@
     && Number.isInteger(article.sectionCount)
   ));
 
-  const allowedTags = new Set(['P', 'H1', 'H2', 'SECTION', 'EM', 'STRONG', 'A', 'UL', 'OL', 'LI', 'BR']);
+  const allowedTags = new Set(['P', 'H1', 'H2', 'H3', 'SECTION', 'DIV', 'SPAN', 'EM', 'STRONG', 'A', 'UL', 'OL', 'LI', 'BR']);
+  const allowedClassesByTag = new Map([
+    ['P', new Set(['post-eyebrow', 'leave', 'sub', 'section-lead', 'refuse', 'cluster-note', 'meta', 'start'])],
+    ['UL', new Set(['guarantees'])],
+    ['DIV', new Set(['steps', 'step', 'n', 'faq', 'actions', 'areas', 'area'])],
+    ['SPAN', new Set(['label'])],
+  ]);
   const discardTags = new Set(['SCRIPT', 'STYLE', 'IFRAME', 'OBJECT', 'EMBED', 'FORM', 'INPUT', 'BUTTON', 'SVG', 'MATH', 'TEMPLATE']);
   const storagePrefix = 'wawco-editorial-studio/v1/';
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -38,6 +44,7 @@
   }
 
   function safeHref(value) {
+    if (typeof value !== 'string' || !value.trim()) return null;
     try {
       const url = new URL(value, window.location.origin);
       if (url.protocol === 'mailto:') return url.href;
@@ -48,6 +55,24 @@
       // Invalid links are removed by the caller.
     }
     return null;
+  }
+
+  function allowedClassValue(tag, value) {
+    const allowedClasses = allowedClassesByTag.get(tag);
+    if (!allowedClasses) return '';
+    return value
+      .trim()
+      .split(/\s+/)
+      .filter((className) => allowedClasses.has(className))
+      .join(' ');
+  }
+
+  function allowedStyleValue(tag, value) {
+    if (tag !== 'P') return '';
+    const normalized = value.trim().toLowerCase().replace(/\s+/g, '');
+    return normalized === 'margin-top:24px' || normalized === 'margin-top:24px;'
+      ? 'margin-top: 24px;'
+      : '';
   }
 
   function sanitizeArticleHtml(rawHtml) {
@@ -83,17 +108,18 @@
 
       const originalClass = node.getAttribute('class') || '';
       const originalHref = node.getAttribute('href') || '';
+      const originalStyle = node.getAttribute('style') || '';
       [...node.attributes].forEach((attribute) => node.removeAttribute(attribute.name));
 
-      if (tag === 'P' && ['post-eyebrow', 'leave'].includes(originalClass)) {
-        node.className = originalClass;
-      }
+      const classValue = allowedClassValue(tag, originalClass);
+      if (classValue) node.setAttribute('class', classValue);
       if (tag === 'H1') node.className = 'lead';
-      if (tag === 'UL' && originalClass === 'guarantees') node.className = 'guarantees';
       if (tag === 'A') {
         const href = safeHref(originalHref);
         if (href) node.setAttribute('href', href);
       }
+      const styleValue = allowedStyleValue(tag, originalStyle);
+      if (styleValue) node.setAttribute('style', styleValue);
     }
 
     [...documentFragment.body.childNodes].forEach(sanitizeNode);
@@ -137,7 +163,7 @@
     if (!list || !status) return;
 
     if (!articles.length) {
-      status.textContent = 'No canonical articles are available.';
+      status.textContent = 'No canonical published pages are available.';
       return;
     }
 
@@ -159,17 +185,17 @@
       list.append(item);
     });
 
-    status.textContent = `${articles.length} published articles`;
+    status.textContent = `${articles.length} published pages`;
   }
 
   function renderEditorError(message) {
     const shell = document.querySelector('.editorial-workspace-shell');
     if (!shell) return;
     shell.replaceChildren();
-    const heading = createElement('h1', 'Article unavailable');
+    const heading = createElement('h1', 'Page unavailable');
     heading.className = 'lead';
     const detail = createElement('p', message);
-    const back = createElement('a', 'Back to articles');
+    const back = createElement('a', 'Back to published pages');
     back.href = '../';
     const wrapper = createElement('div');
     wrapper.className = 'editorial-error';
@@ -194,7 +220,7 @@
     const slug = new URLSearchParams(window.location.search).get('article');
     const article = articleForSlug(slug);
     if (!article) {
-      renderEditorError('Choose one of the canonical articles from the Editorial Studio library.');
+      renderEditorError('Choose one of the canonical published pages from the Editorial Studio library.');
       return;
     }
 

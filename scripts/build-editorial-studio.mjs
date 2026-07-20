@@ -7,14 +7,27 @@ import process from 'node:process';
 const root = resolve(import.meta.dirname, '..');
 const outputPath = resolve(root, 'editorial/articles.js');
 
+// Keep the Writing index's current public ordering explicit and reviewable.
 const articleSources = [
   {
     slug: 'business-process-automation',
     sourcePath: 'blog/business-process-automation/index.html',
+    dateLabel: 'June 2026',
+  },
+  {
+    slug: 'how-we-work',
+    sourcePath: 'how-we-work/index.html',
+    dateLabel: 'May 2026',
+  },
+  {
+    slug: 'where-we-help',
+    sourcePath: 'where-we-help/index.html',
+    dateLabel: 'May 2026',
   },
   {
     slug: 'different',
     sourcePath: 'blog/different/index.html',
+    dateLabel: 'June 2026',
   },
 ];
 
@@ -46,9 +59,11 @@ function firstArticleParagraph(articleHtml, sourcePath) {
 }
 
 function extractArticle(source, html) {
+  if (typeof source.dateLabel !== 'string' || !source.dateLabel.trim()) {
+    throw new Error(`Expected an explicit date label in the source manifest for ${source.sourcePath}`);
+  }
   const articleHtml = extractRequired(html, /<main id="main">\s*([\s\S]*?)\s*<\/main>/i, 'article main', source.sourcePath);
   const titleHtml = extractRequired(articleHtml, /<h1(?:\s[^>]*)?>([\s\S]*?)<\/h1>/i, 'article title', source.sourcePath);
-  const eyebrowHtml = extractRequired(articleHtml, /<p class="post-eyebrow">([\s\S]*?)<\/p>/i, 'article date label', source.sourcePath);
   const excerptHtml = firstArticleParagraph(articleHtml, source.sourcePath);
   const sectionCount = (articleHtml.match(/<h2(?:\s[^>]*)?>/gi) || []).length;
 
@@ -60,7 +75,7 @@ function extractArticle(source, html) {
     slug: source.slug,
     sourcePath: source.sourcePath,
     title: textFromHtml(titleHtml),
-    dateLabel: textFromHtml(eyebrowHtml).replace(/^Writing\s*\/\s*/i, ''),
+    dateLabel: source.dateLabel,
     excerpt: textFromHtml(excerptHtml),
     sectionCount,
     articleHtml,

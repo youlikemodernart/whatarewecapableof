@@ -1,0 +1,414 @@
+/* PiOp public index. Extends the public System Digital site system. */
+
+.page-piop .page {
+  max-width: 760px;
+}
+
+.piop-eyebrow,
+.piop-meta,
+.skill-meta,
+.support-form legend,
+.support-form .amount-field > label,
+.amount-suggestions-label {
+  color: var(--ink-3);
+  font-size: 14px;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.piop-eyebrow {
+  margin: 0 0 18px;
+}
+
+.piop-intro {
+  color: var(--ink-2);
+  font-size: 19px;
+  margin-top: 24px;
+  max-width: 58ch;
+}
+
+.piop-actions {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+  margin-top: 32px;
+}
+
+.page-piop .site-header a,
+.page-piop .site-footer a,
+.piop-actions a,
+.skill-actions a,
+.skill-actions button,
+.amount-suggestions button,
+.support-submit {
+  align-items: center;
+  display: inline-flex;
+  min-height: 44px;
+}
+
+.piop-actions a,
+.skill-actions a,
+.skill-actions button,
+.amount-suggestions button,
+.support-submit {
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  padding: 0 0 2px;
+  text-decoration: none;
+}
+
+.amount-suggestions button {
+  justify-content: center;
+  min-width: 44px;
+}
+
+.piop-actions a:hover,
+.skill-actions a:hover,
+.skill-actions button:hover,
+.amount-suggestions button:hover,
+.support-submit:hover {
+  box-shadow: 0 1px 0 var(--ink);
+}
+
+.piop-section {
+  border-top: 1px solid var(--rule);
+  padding-top: 24px;
+}
+
+.piop-section-heading {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.piop-section-heading h2 {
+  margin: 0;
+}
+
+.piop-section-heading .piop-meta {
+  margin: 0;
+}
+
+.stack-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  margin: 30px 0 0;
+}
+
+.stack-list dt,
+.stack-list dd {
+  align-items: center;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  margin: 0;
+  min-height: 48px;
+}
+
+.stack-list dt:last-of-type,
+.stack-list dd:last-of-type {
+  border-bottom: 1px solid var(--rule);
+}
+
+.stack-list dd {
+  font-variant-numeric: tabular-nums;
+  justify-content: flex-end;
+  padding-left: 24px;
+}
+
+.stack-list a {
+  align-items: center;
+  display: inline-flex;
+  min-height: 44px;
+}
+
+.stack-list a,
+.skill-actions a,
+.piop-note a {
+  text-underline-offset: 2px;
+}
+
+.piop-note a {
+  align-items: center;
+  display: inline-flex;
+  min-height: 44px;
+}
+
+.skill-index {
+  margin-top: 36px;
+}
+
+.skill-package {
+  border-top: 1px solid var(--rule);
+  padding: 24px 0 30px;
+}
+
+.skill-package:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+
+.skill-heading {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.skill-heading h3 {
+  font-size: 19px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.skill-meta {
+  margin: 0;
+}
+
+.skill-package > p {
+  color: var(--ink-2);
+  margin-bottom: 18px;
+}
+
+.skill-methods {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.skill-methods li {
+  margin-top: 12px;
+  max-width: 62ch;
+  padding-left: 18px;
+  position: relative;
+}
+
+.skill-methods li::before {
+  background: var(--ink);
+  content: "";
+  height: 1px;
+  left: 0;
+  position: absolute;
+  top: 0.72em;
+  width: 7px;
+}
+
+.skill-methods .skill-method-name {
+  font-weight: 600;
+}
+
+.install-command {
+  border-bottom: 1px solid var(--rule);
+  border-top: 1px solid var(--rule);
+  display: block;
+  font-family: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 14px;
+  line-height: 1.55;
+  margin-top: 22px;
+  overflow-x: auto;
+  padding: 12px 0;
+  white-space: nowrap;
+}
+
+.skill-actions {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin-top: 18px;
+}
+
+.skill-actions a,
+.skill-actions button {
+  font-size: 16px;
+}
+
+.copy-status {
+  color: var(--ink-3);
+  font-size: 14px;
+  min-height: 1.4em;
+}
+
+.plain-list {
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 0;
+}
+
+.plain-list li {
+  margin-top: 14px;
+  max-width: 60ch;
+  padding-left: 18px;
+  position: relative;
+}
+
+.plain-list li::before {
+  background: var(--ink);
+  content: "";
+  height: 1px;
+  left: 0;
+  position: absolute;
+  top: 0.72em;
+  width: 7px;
+}
+
+.piop-note {
+  color: var(--ink-2);
+  font-size: 15px;
+  margin-top: 24px;
+  max-width: 62ch;
+}
+
+.support-status {
+  border-bottom: 1px solid var(--rule);
+  border-top: 1px solid var(--rule);
+  margin: 28px 0;
+  padding: 16px 0;
+}
+
+.support-form {
+  margin-top: 32px;
+  max-width: 420px;
+}
+
+.support-form fieldset {
+  border: 0;
+  margin: 0 0 28px;
+  padding: 0;
+}
+
+.support-form legend {
+  margin-bottom: 12px;
+  padding: 0;
+}
+
+.support-form fieldset label {
+  align-items: center;
+  display: inline-flex;
+  gap: 8px;
+  margin-right: 24px;
+  min-height: 44px;
+}
+
+.support-form input[type="radio"] {
+  accent-color: var(--ink);
+  height: 18px;
+  width: 18px;
+}
+
+.amount-field > label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.amount-input {
+  align-items: baseline;
+  border-bottom: 1px solid var(--ink);
+  display: flex;
+  font-size: 24px;
+  gap: 4px;
+  max-width: 180px;
+}
+
+.amount-input input {
+  appearance: textfield;
+  background: transparent;
+  border: 0;
+  color: var(--ink);
+  font: inherit;
+  min-width: 0;
+  padding: 8px 0;
+  width: 100%;
+}
+
+.amount-input input::-webkit-inner-spin-button,
+.amount-input input::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+.amount-input:focus-within {
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
+}
+
+.amount-input input:focus-visible {
+  outline: none;
+}
+
+.amount-suggestions {
+  margin-top: 24px;
+}
+
+.amount-suggestions-label {
+  margin: 0 0 4px;
+}
+
+.amount-suggestion-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+}
+
+.amount-suggestions button {
+  font-size: 16px;
+}
+
+.support-submit {
+  display: inline-flex;
+  font-size: 18px;
+  margin-top: 34px;
+}
+
+.support-submit:disabled {
+  color: var(--ink-3);
+  cursor: wait;
+}
+
+.support-honeypot {
+  left: -10000px;
+  position: absolute;
+  top: auto;
+}
+
+@media (max-width: 600px) {
+  .piop-intro {
+    font-size: 17px;
+    line-height: 1.5;
+  }
+
+  .piop-actions {
+    gap: 4px 22px;
+    margin-top: 28px;
+  }
+
+  .piop-section-heading,
+  .skill-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+
+  .skill-package {
+    padding: 22px 0 26px;
+  }
+
+  .install-command {
+    font-size: 14px;
+    max-width: calc(100vw - 48px);
+  }
+
+  .support-form fieldset label {
+    margin-right: 18px;
+  }
+}

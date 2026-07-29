@@ -1,8 +1,10 @@
 # System constraints — whatarewecapableof
 
-Companion to `taste-profile/profile.md`. The profile describes the aesthetic; this file describes how to build within it. Everything here is a specific value or rule, not a vague direction.
+Companion to `taste-profile/profile.md`. The profile describes the aesthetic; this file describes the older token-based proposal-page system. Everything here is a specific value or rule, not a vague direction.
 
-These constraints are the engineering contract for any implementation pass. When an attribute is ambiguous (multiple acceptable values), this file chooses one and states the reasoning.
+These constraints are the engineering contract for pages that load the token stylesheet stack. When an attribute is ambiguous, this file chooses one and states the reasoning.
+
+**Public-page scope:** `css/site.css` is the current contract for all public pages and supersedes this file's typography, color, layout, component, file-structure, and implementation-checklist rules where they conflict. Public pages may load `site.css` plus a focused page stylesheet. Section 8 accessibility floors and Section 9 performance budgets apply to both systems.
 
 ---
 

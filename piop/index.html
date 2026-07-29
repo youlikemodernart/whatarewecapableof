@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PiOp Skills Library | What are we capable of?</title>
+  <meta name="description" content="Explore PiOp, its current stable Stack, and the private skill packages available to approved collaborators.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://whatarewecapableof.com/piop">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://whatarewecapableof.com/piop">
+  <meta property="og:title" content="PiOp Skills Library | What are we capable of?">
+  <meta property="og:description" content="Explore PiOp, its current stable Stack, and the private skill packages available to approved collaborators.">
+  <meta property="og:image" content="https://whatarewecapableof.com/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="PiOp Skills Library | What are we capable of?">
+  <meta name="twitter:image" content="https://whatarewecapableof.com/og.png">
+  <link rel="stylesheet" href="/css/site.css">
+  <link rel="stylesheet" href="/css/piop.css">
+</head>
+<body class="page-piop">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="page">
+    <header class="site-header">
+      <a class="mark" href="/">What are we capable of?</a>
+      <a class="mail" href="mailto:hello@whatarewecapableof.com">hello@whatarewecapableof.com</a>
+    </header>
+
+    <main id="main">
+      <p class="piop-eyebrow">PIOP / CURRENT STABLE STACK</p>
+      <h1 class="lead">A personal operating layer for Pi.</h1>
+      <p class="piop-intro">PiOp gives Pi a small operating method, explicit approval boundaries, and a library of focused skills. It is built for work that should remain understandable, removable, and under the user's control.</p>
+
+      <nav class="piop-actions" aria-label="Page sections">
+        <a href="#stack">Current Stack</a>
+        <a href="#skills">Skills Library</a>
+        <a href="#access">Access</a>
+        <a href="#support">Support PiOp</a>
+      </nav>
+
+      <section class="piop-section" id="stack">
+        <div class="piop-section-heading">
+          <h2>Current stable Stack</h2>
+          <p class="piop-meta">piop-stack-2026-07-29.1</p>
+        </div>
+        <p>The stable Stack is an exact set of pinned private releases. Updates happen deliberately, and each package can be inspected or removed independently.</p>
+        <dl class="stack-list">
+          <dt>Core</dt><dd><a href="https://github.com/youlikemodernart/pi-operating-layer-base">v0.1.8</a></dd>
+          <dt>Skills Library</dt><dd><a href="https://github.com/youlikemodernart/pi-skill-index">v0.1.5</a></dd>
+          <dt>Collaborator Basics</dt><dd><a href="https://github.com/youlikemodernart/pi-skill-collaborator-basics">v0.1.1</a></dd>
+          <dt>Relational Intelligence</dt><dd><a href="https://github.com/youlikemodernart/pi-skill-relational-intelligence">v0.1.0</a></dd>
+        </dl>
+      </section>
+
+      <section class="piop-section" id="skills">
+        <div class="piop-section-heading">
+          <h2>Skills Library</h2>
+          <p class="piop-meta">4 PACKAGES / 6 SKILLS</p>
+        </div>
+        <p>Each package has a declared purpose, installation scope, risk tier, and exact version. The library explains what a skill can read or change before someone decides to install it.</p>
+        <p class="piop-note"><strong>T0</strong> packages contain text-only skills and prompts. <strong>T3</strong> packages can involve accounts, credentials, live services, or writes and remain project local. Global installs apply across Pi; project-local installs stay with one workspace.</p>
+
+        <div class="skill-index">
+          <!-- PIOP_SKILLS_START -->
+          <article class="skill-package" id="skill-collaborator-basics">
+            <div class="skill-heading">
+              <h3>Collaborator basics</h3>
+              <p class="skill-meta">v0.1.1 / T0 / Global</p>
+            </div>
+            <p>Neutral first-use checks and private-safe source-note intake for collaborators who are beginning to use Pi skill packs.</p>
+            <ul class="skill-methods">
+              <li><span class="skill-method-name">Collaborator First Use.</span> Verify package discovery, first-use expectations, boundaries, removal, and a private-safe gap report.</li>
+              <li><span class="skill-method-name">Source Note Intake Lite.</span> Turn a small user-provided note into observations, uncertainties, questions, boundaries, and next steps without storing raw private source.</li>
+            </ul>
+            <code class="install-command">pi install git:github.com/youlikemodernart/pi-skill-collaborator-basics@v0.1.1</code>
+            <div class="skill-actions">
+              <a href="https://github.com/youlikemodernart/pi-skill-collaborator-basics">View private repository</a>
+              <button type="button" data-copy-command="pi install git:github.com/youlikemodernart/pi-skill-collaborator-basics@v0.1.1" aria-describedby="copy-collaborator-basics-status">Copy install command</button>
+              <span class="copy-status" id="copy-collaborator-basics-status" aria-live="polite"></span>
+            </div>
+          </article>
+
+          <article class="skill-package" id="skill-relational-intelligence">
+            <div class="skill-heading">
+              <h3>Relational intelligence</h3>
+              <p class="skill-meta">v0.1.0 / T0 / Global</p>
+            </div>
+            <p>Agency-preserving relational and introspective reflection with explicit memory, privacy, role, safety, and repair boundaries. Responder support is limited to openai-codex/gpt-5.6-sol; Claude responder use is unsupported.</p>
+            <ul class="skill-methods">
+              <li><span class="skill-method-name">Relational Intelligence.</span> Support relational or introspective reflection with evidence-based challenge, explicit uncertainty, user decision authority, consent-based memory proposals, immediate-safety shifts, and visible repair.</li>
+            </ul>
+            <code class="install-command">pi install git:github.com/youlikemodernart/pi-skill-relational-intelligence@v0.1.0</code>
+            <div class="skill-actions">
+              <a href="https://github.com/youlikemodernart/pi-skill-relational-intelligence">View private repository</a>
+              <button type="button" data-copy-command="pi install git:github.com/youlikemodernart/pi-skill-relational-intelligence@v0.1.0" aria-describedby="copy-relational-intelligence-status">Copy install command</button>
+              <span class="copy-status" id="copy-relational-intelligence-status" aria-live="polite"></span>
+            </div>
+          </article>
+
+          <article class="skill-package" id="skill-brand-strategy">
+            <div class="skill-heading">
+              <h3>Brand strategy</h3>
+              <p class="skill-meta">v0.1.1 / T0 / Global</p>
+            </div>
+            <p>Evidence-grounded brand and marketing strategy for positioning, category, messaging, brand architecture, distinctive assets, measurement, channel composition, launch planning, and execution briefs. Drafts and plans only; never executes live actions.</p>
+            <ul class="skill-methods">
+              <li><span class="skill-method-name">Brand Strategy.</span> Build or review brand audits, positioning, category strategy, brand platforms, messaging architecture, portfolio and naming strategy, distinctive assets, brand-health measurement, channel composition, budget posture, launches, and strategy-to-execution briefs.</li>
+            </ul>
+            <code class="install-command">pi install git:github.com/youlikemodernart/pi-skill-brand-strategy@v0.1.1</code>
+            <div class="skill-actions">
+              <a href="https://github.com/youlikemodernart/pi-skill-brand-strategy">View private repository</a>
+              <button type="button" data-copy-command="pi install git:github.com/youlikemodernart/pi-skill-brand-strategy@v0.1.1" aria-describedby="copy-brand-strategy-status">Copy install command</button>
+              <span class="copy-status" id="copy-brand-strategy-status" aria-live="polite"></span>
+            </div>
+          </article>
+
+          <article class="skill-package" id="skill-arena">
+            <div class="skill-heading">
+              <h3>Are.na</h3>
+              <p class="skill-meta">v0.1.0 / T3 / Project local</p>
+            </div>
+            <p>Clean-room Are.na discovery and inspection plus approval-gated creation, upload, connection, update, movement, commenting, importing, and deletion through the official CLI.</p>
+            <ul class="skill-methods">
+              <li><span class="skill-method-name">Are.na Read.</span> Read-only Are.na discovery and inspection for public or already-authorized channels, blocks, users, groups, followers, connections, comments, pagination, and structured output.</li>
+              <li><span class="skill-method-name">Are.na Operator.</span> Approval-gated Are.na operations for channels and blocks, links and text, files, connections, movement, comments, batches, imports, and deletion with exact target review and post-write verification.</li>
+            </ul>
+            <code class="install-command">pi install -l git:github.com/youlikemodernart/pi-skill-arena@v0.1.0</code>
+            <div class="skill-actions">
+              <a href="https://github.com/youlikemodernart/pi-skill-arena">View private repository</a>
+              <button type="button" data-copy-command="pi install -l git:github.com/youlikemodernart/pi-skill-arena@v0.1.0" aria-describedby="copy-arena-status">Copy install command</button>
+              <span class="copy-status" id="copy-arena-status" aria-live="polite"></span>
+            </div>
+          </article>
+          <!-- PIOP_SKILLS_END -->
+        </div>
+      </section>
+
+      <section class="piop-section" id="access">
+        <div class="piop-section-heading">
+          <h2>Private source, public descriptions</h2>
+          <p class="piop-meta">ACCESS BY INVITATION</p>
+        </div>
+        <p>This page is public. The source repositories remain private. GitHub decides whether a repository opens based on the signed-in account and its accepted invitation.</p>
+        <ul class="plain-list">
+          <li>Approved collaborators can open a repository and install its pinned release.</li>
+          <li>Pending collaborators need to accept the GitHub invitation first.</li>
+          <li>Other visitors can understand the skill here while the source remains gated.</li>
+        </ul>
+        <p class="piop-note">Repository access is granted manually. Payment does not grant access or change repository permissions.</p>
+        <div class="piop-actions">
+          <a href="mailto:hello@whatarewecapableof.com?subject=PiOp%20access">Request access</a>
+          <a href="https://github.com/notifications">Check GitHub invitations</a>
+        </div>
+      </section>
+
+      <section class="piop-section" id="support">
+        <div class="piop-section-heading">
+          <h2>Pay what you wish</h2>
+          <p class="piop-meta">ONE TIME OR MONTHLY</p>
+        </div>
+        <p>PiOp can be used without payment. If it is useful, choose a one-time amount or support its continued development each month. Support is optional. It does not purchase consulting services or repository access.</p>
+
+        <div class="support-status" id="support-status" role="status" aria-live="polite" hidden></div>
+
+        <form class="support-form" action="https://fin.whatarewecapableof.com/api/piop/checkout" method="post">
+          <fieldset>
+            <legend>Frequency</legend>
+            <label><input type="radio" name="frequency" value="once" checked> One time</label>
+            <label><input type="radio" name="frequency" value="monthly"> Monthly</label>
+          </fieldset>
+
+          <div class="amount-field">
+            <label for="support-amount">Amount in USD</label>
+            <span class="amount-input"><span aria-hidden="true">$</span><input id="support-amount" name="amount" type="number" min="1" max="10000" step="1" inputmode="decimal" value="25" required></span>
+          </div>
+
+          <div class="amount-suggestions" role="group" aria-labelledby="suggested-amounts-label">
+            <p class="amount-suggestions-label" id="suggested-amounts-label">Suggested amounts</p>
+            <div class="amount-suggestion-buttons">
+              <button type="button" data-amount="10">$10</button>
+              <button type="button" data-amount="25">$25</button>
+              <button type="button" data-amount="50">$50</button>
+              <button type="button" data-amount="100">$100</button>
+            </div>
+          </div>
+
+          <div class="support-honeypot" aria-hidden="true">
+            <label for="support-company">Company</label>
+            <input id="support-company" name="company" type="text" tabindex="-1" autocomplete="off">
+          </div>
+
+          <input type="hidden" name="source" value="piop-page">
+          <input type="hidden" name="request_id" id="support-request-id">
+          <button class="support-submit" type="submit" disabled>Continue to secure payment</button>
+          <noscript><p class="piop-note">JavaScript is required to start secure payment.</p></noscript>
+        </form>
+
+        <p class="piop-note">Stripe processes the payment. Monthly support repeats until canceled. Email <a href="mailto:hello@whatarewecapableof.com?subject=PiOp%20monthly%20support">hello@whatarewecapableof.com</a> to change or cancel monthly support.</p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a href="/">What are we capable of?</a>
+      <span>2026</span>
+    </footer>
+  </div>
+  <script src="/js/piop.js" defer></script>
+</body>
+</html>

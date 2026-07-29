@@ -19,7 +19,9 @@
     "ask": "cd apps/ask && vercel dev --listen 3197 --yes",
     "ask:smoke": "cd apps/ask && npm run smoke",
     "windex:audit": "cd apps/index && npm run audit",
-    "windex:check": "cd apps/index && npm run check"
+    "windex:check": "cd apps/index && npm run check",
+    "piop:sync": "node scripts/sync-piop-catalog.mjs",
+    "piop:check": "node scripts/check-piop-page.mjs"
   },
   "dependencies": {
     "googleapis": "^171.4.0"

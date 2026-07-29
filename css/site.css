@@ -1,10 +1,10 @@
 /* ============================================================
-   whatarewecapableof — System Minimalism site system (2026-06-03).
+   whatarewecapableof: System Digital public-page system (2026-06-03).
    All-system type, near-black on white, gray as information,
    real editorial hierarchy, structural whitespace. No accent
    color yet (reserved). Craft: kerning, ligatures, text-wrap.
-   Scope: the public pages (home, /how-we-work, /question).
-   The old /css system stays for the proposal pages (phase 2).
+   Scope: all public pages, including home, /how-we-work,
+   /question, and /piop. The token stack stays with proposal pages.
    ============================================================ */
 
 :root {

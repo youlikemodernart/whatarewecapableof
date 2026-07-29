@@ -1,6 +1,6 @@
 # PiOp public page
 
-The public PiOp page lives at `/piop/`. It explains the current stable Stack, renders the public Skills Library, describes private repository access, and offers optional one-time or monthly support.
+The public PiOp page lives at `/piop/`. It explains the current stable Stack, renders the public Skills Library, and describes private repository access. The one-time and monthly support form remains hidden until live payment activation is approved and verified.
 
 ## Source and release model
 

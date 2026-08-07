@@ -28,6 +28,75 @@
   max-width: 58ch;
 }
 
+.context-picker {
+  border-top: 1px solid var(--rule);
+  margin-top: 40px;
+  padding-top: 22px;
+}
+
+.context-picker-heading {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.context-picker-heading h2 {
+  margin: 0;
+}
+
+.context-kicker,
+.context-picker > label,
+.context-state {
+  color: var(--ink-3);
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.context-kicker {
+  margin: 0 0 8px;
+}
+
+.context-state {
+  color: var(--ink-2);
+  font-weight: 500;
+  margin: 0;
+}
+
+.context-picker > label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.context-picker select {
+  background: var(--bg);
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  color: var(--ink);
+  font: inherit;
+  min-height: 48px;
+  min-width: min(100%, 22rem);
+  padding: 8px 36px 8px 10px;
+  width: min(100%, 22rem);
+}
+
+.context-description,
+.context-note {
+  color: var(--ink-2);
+  font-size: 15px;
+  margin-top: 14px;
+  max-width: 58ch;
+}
+
+.context-note {
+  color: var(--ink-3);
+  margin-top: 8px;
+}
+
 .piop-actions {
   align-items: baseline;
   display: flex;
@@ -79,6 +148,36 @@
 .piop-section {
   border-top: 1px solid var(--rule);
   padding-top: 24px;
+}
+
+.piop-section:target,
+.piop-aside:target {
+  scroll-margin-block: 5ex;
+}
+
+.piop-aside {
+  border-top: 1px solid var(--rule);
+  margin-top: 32px;
+  padding-top: 20px;
+}
+
+.piop-aside h2,
+.piop-aside h3 {
+  font-size: 19px;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+
+.piop-aside p:last-child {
+  margin-bottom: 0;
+}
+
+.skill-future {
+  margin-top: 28px;
+}
+
+.skill-future .skill-heading {
+  margin-bottom: 8px;
 }
 
 .piop-section-heading {
@@ -398,6 +497,9 @@
     gap: 6px;
   }
 
+  .context-picker select {
+    width: 100%;
+  }
 
   .skill-package {
     padding: 22px 0 26px;

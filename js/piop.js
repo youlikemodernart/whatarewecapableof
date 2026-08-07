@@ -3,6 +3,17 @@
   const form = document.querySelector('.support-form');
   const requestIdInput = document.querySelector('#support-request-id');
   const status = document.querySelector('#support-status');
+  const contextSelect = document.querySelector('#context-select');
+  const contextState = document.querySelector('#context-state');
+  const contextDescription = document.querySelector('#context-description');
+
+  const contextDescriptions = {
+    neutral: 'The shared library is shown without a selected organization or person. Choosing a fixture changes the context label and explanation only.',
+    'neww-blake': 'Neww / Blake is shown as a working context. The shared library remains available and no access or action authority changes.',
+    'neww-joacim': 'Neww / Joacim is shown as a working context. The shared library remains available and no access or action authority changes.',
+    'neww-jony': 'Neww / Jony is shown as a working context. The shared library remains available and no access or action authority changes.',
+    'noah-smbp': 'Noah / smbp is shown as a working context. The shared library remains available and no access or action authority changes.',
+  };
 
   function announce(message) {
     if (!status) return;
@@ -24,6 +35,18 @@
     bytes[8] = (bytes[8] & 0x3f) | 0x80;
     const hex = [...bytes].map((byte) => byte.toString(16).padStart(2, '0')).join('');
     requestIdInput.value = `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+  }
+
+  if (contextSelect && contextState && contextDescription) {
+    const updateContext = () => {
+      const option = contextSelect.options[contextSelect.selectedIndex];
+      const label = option?.textContent || 'Neutral default';
+      contextState.textContent = `Showing: ${label}`;
+      contextDescription.textContent = contextDescriptions[contextSelect.value] || contextDescriptions.neutral;
+    };
+
+    contextSelect.addEventListener('change', updateContext);
+    updateContext();
   }
 
   refreshRequestId();

@@ -36,33 +36,10 @@
       <h1 class="lead">A personal operating layer for Pi.</h1>
       <p class="piop-intro">PiOp gives Pi a small operating method, explicit approval boundaries, and a library of focused skills. It is built for work that should remain understandable, removable, and under the user's control.</p>
 
-      <section class="context-picker" aria-labelledby="context-picker-title">
-        <div class="context-picker-heading">
-          <div>
-            <p class="context-kicker">WORKING CONTEXT</p>
-            <h2 id="context-picker-title">Select a context.</h2>
-          </div>
-          <p class="context-state" id="context-state" aria-live="polite">Showing: Neutral default</p>
-        </div>
-        <label for="context-select">Context</label>
-        <select id="context-select" name="context" aria-describedby="context-description context-note">
-          <option value="neutral">Neutral default</option>
-          <optgroup label="Current fixtures">
-            <option value="neww-blake">Neww / Blake</option>
-            <option value="neww-joacim">Neww / Joacim</option>
-            <option value="neww-jony">Neww / Jony</option>
-            <option value="noah-smbp">Noah / smbp</option>
-          </optgroup>
-        </select>
-        <p class="context-description" id="context-description">The shared library is shown without a selected organization or person. Choosing a fixture changes the context label and explanation only.</p>
-        <p class="context-note" id="context-note">All skills are available to everyone for now. Organization-specific skills are reserved for a future version.</p>
-      </section>
-
-      <aside class="piop-aside luna-note" aria-labelledby="luna-title">
-        <p class="context-kicker">OPTIONAL PROMPT HELPER</p>
-        <h2 id="luna-title">Luna</h2>
-        <p>Luna is an optional prompt-helper concept for shaping a request before work begins. It is never invoked silently and is not a permissions, billing, model, credential, tenant, or action route.</p>
-      </aside>
+      <div class="install-list-summary" id="install-list-summary" role="status" aria-live="polite">
+        <span class="install-list-label">Install list</span>
+        <span id="install-list-count">Empty</span>
+      </div>
 
       <nav class="piop-actions" aria-label="Page sections">
         <a href="#stack">Current Stack</a>
@@ -96,73 +73,103 @@
         <div class="skill-index">
           <!-- PIOP_SKILLS_START -->
           <article class="skill-package" id="skill-collaborator-basics">
-            <div class="skill-heading">
-              <h3>Collaborator basics</h3>
-              <p class="skill-meta">v0.1.1 / T0 / Global</p>
-            </div>
-            <p>Neutral first-use checks and private-safe source-note intake for collaborators who are beginning to use Pi skill packs.</p>
-            <ul class="skill-methods">
-              <li><span class="skill-method-name">Collaborator First Use.</span> Verify package discovery, first-use expectations, boundaries, removal, and a private-safe gap report.</li>
-              <li><span class="skill-method-name">Source Note Intake Lite.</span> Turn a small user-provided note into observations, uncertainties, questions, boundaries, and next steps without storing raw private source.</li>
-            </ul>
-            <code class="install-command">pi install git:github.com/youlikemodernart/pi-skill-collaborator-basics@v0.1.1</code>
-            <div class="skill-actions">
-              <a href="https://github.com/youlikemodernart/pi-skill-collaborator-basics">View private repository</a>
-              <button type="button" data-copy-command="pi install git:github.com/youlikemodernart/pi-skill-collaborator-basics@v0.1.1" aria-describedby="copy-collaborator-basics-status">Copy install command</button>
-              <span class="copy-status" id="copy-collaborator-basics-status" aria-live="polite"></span>
-            </div>
+            <details>
+              <summary class="skill-summary">
+                <div class="skill-heading">
+                  <h3>Collaborator basics</h3>
+                  <p class="skill-meta">v0.1.1 / T0 / Global</p>
+                </div>
+                <p>Neutral first-use checks and private-safe source-note intake for collaborators beginning to use Pi skill packs.</p>
+              </summary>
+              <div class="skill-details">
+                <ul class="skill-methods">
+                  <li><span class="skill-method-name">Collaborator First Use.</span> Verify package discovery, first-use expectations, boundaries, removal, and a private-safe gap report.</li>
+                  <li><span class="skill-method-name">Source Note Intake Lite.</span> Turn a small user-provided note into observations, uncertainties, questions, boundaries, and next steps without storing raw private source.</li>
+                </ul>
+                <code class="install-command">pi install git:github.com/youlikemodernart/pi-skill-collaborator-basics@v0.1.1</code>
+                <div class="skill-actions">
+                  <a href="https://github.com/youlikemodernart/pi-skill-collaborator-basics">View private repository</a>
+                  <button type="button" data-copy-command="pi install git:github.com/youlikemodernart/pi-skill-collaborator-basics@v0.1.1" aria-describedby="copy-collaborator-basics-status">Copy install command</button>
+                  <span class="copy-status" id="copy-collaborator-basics-status" aria-live="polite"></span>
+                </div>
+              </div>
+            </details>
+            <button class="skill-install-toggle" type="button" aria-pressed="false" data-skill-id="collaborator-basics" data-skill-name="Collaborator basics">Add to install list</button>
           </article>
 
           <article class="skill-package" id="skill-relational-intelligence">
-            <div class="skill-heading">
-              <h3>Relational intelligence</h3>
-              <p class="skill-meta">v0.1.0 / T0 / Global</p>
-            </div>
-            <p>Agency-preserving relational and introspective reflection with explicit memory, privacy, role, safety, and repair boundaries. Responder support is limited to openai-codex/gpt-5.6-sol; Claude responder use is unsupported.</p>
-            <ul class="skill-methods">
-              <li><span class="skill-method-name">Relational Intelligence.</span> Support relational or introspective reflection with evidence-based challenge, explicit uncertainty, user decision authority, consent-based memory proposals, immediate-safety shifts, and visible repair.</li>
-            </ul>
-            <code class="install-command">pi install git:github.com/youlikemodernart/pi-skill-relational-intelligence@v0.1.0</code>
-            <div class="skill-actions">
-              <a href="https://github.com/youlikemodernart/pi-skill-relational-intelligence">View private repository</a>
-              <button type="button" data-copy-command="pi install git:github.com/youlikemodernart/pi-skill-relational-intelligence@v0.1.0" aria-describedby="copy-relational-intelligence-status">Copy install command</button>
-              <span class="copy-status" id="copy-relational-intelligence-status" aria-live="polite"></span>
-            </div>
+            <details>
+              <summary class="skill-summary">
+                <div class="skill-heading">
+                  <h3>Relational intelligence</h3>
+                  <p class="skill-meta">v0.1.0 / T0 / Global</p>
+                </div>
+                <p>Agency-preserving relational and introspective reflection with explicit memory, privacy, role, safety, and repair boundaries.</p>
+              </summary>
+              <div class="skill-details">
+                <p class="skill-detail-note">Responder support is limited to openai-codex/gpt-5.6-sol; Claude responder use is unsupported.</p>
+                <ul class="skill-methods">
+                  <li><span class="skill-method-name">Relational Intelligence.</span> Support relational or introspective reflection with evidence-based challenge, explicit uncertainty, user decision authority, consent-based memory proposals, immediate-safety shifts, and visible repair.</li>
+                </ul>
+                <code class="install-command">pi install git:github.com/youlikemodernart/pi-skill-relational-intelligence@v0.1.0</code>
+                <div class="skill-actions">
+                  <a href="https://github.com/youlikemodernart/pi-skill-relational-intelligence">View private repository</a>
+                  <button type="button" data-copy-command="pi install git:github.com/youlikemodernart/pi-skill-relational-intelligence@v0.1.0" aria-describedby="copy-relational-intelligence-status">Copy install command</button>
+                  <span class="copy-status" id="copy-relational-intelligence-status" aria-live="polite"></span>
+                </div>
+              </div>
+            </details>
+            <button class="skill-install-toggle" type="button" aria-pressed="false" data-skill-id="relational-intelligence" data-skill-name="Relational intelligence">Add to install list</button>
           </article>
 
           <article class="skill-package" id="skill-brand-strategy">
-            <div class="skill-heading">
-              <h3>Brand strategy</h3>
-              <p class="skill-meta">v0.1.1 / T0 / Global</p>
-            </div>
-            <p>Evidence-grounded brand and marketing strategy for positioning, category, messaging, brand architecture, distinctive assets, measurement, channel composition, launch planning, and execution briefs. Drafts and plans only; never executes live actions.</p>
-            <ul class="skill-methods">
-              <li><span class="skill-method-name">Brand Strategy.</span> Build or review brand audits, positioning, category strategy, brand platforms, messaging architecture, portfolio and naming strategy, distinctive assets, brand-health measurement, channel composition, budget posture, launches, and strategy-to-execution briefs.</li>
-            </ul>
-            <code class="install-command">pi install git:github.com/youlikemodernart/pi-skill-brand-strategy@v0.1.1</code>
-            <div class="skill-actions">
-              <a href="https://github.com/youlikemodernart/pi-skill-brand-strategy">View private repository</a>
-              <button type="button" data-copy-command="pi install git:github.com/youlikemodernart/pi-skill-brand-strategy@v0.1.1" aria-describedby="copy-brand-strategy-status">Copy install command</button>
-              <span class="copy-status" id="copy-brand-strategy-status" aria-live="polite"></span>
-            </div>
+            <details>
+              <summary class="skill-summary">
+                <div class="skill-heading">
+                  <h3>Brand strategy</h3>
+                  <p class="skill-meta">v0.1.1 / T0 / Global</p>
+                </div>
+                <p>Evidence-grounded brand and marketing strategy for positioning, category, messaging, architecture, measurement, and launch planning.</p>
+              </summary>
+              <div class="skill-details">
+                <p class="skill-detail-note">Drafts and plans only; never executes live actions.</p>
+                <ul class="skill-methods">
+                  <li><span class="skill-method-name">Brand Strategy.</span> Build or review brand audits, positioning, category strategy, brand platforms, messaging architecture, portfolio and naming strategy, distinctive assets, brand-health measurement, channel composition, budget posture, launches, and strategy-to-execution briefs.</li>
+                </ul>
+                <code class="install-command">pi install git:github.com/youlikemodernart/pi-skill-brand-strategy@v0.1.1</code>
+                <div class="skill-actions">
+                  <a href="https://github.com/youlikemodernart/pi-skill-brand-strategy">View private repository</a>
+                  <button type="button" data-copy-command="pi install git:github.com/youlikemodernart/pi-skill-brand-strategy@v0.1.1" aria-describedby="copy-brand-strategy-status">Copy install command</button>
+                  <span class="copy-status" id="copy-brand-strategy-status" aria-live="polite"></span>
+                </div>
+              </div>
+            </details>
+            <button class="skill-install-toggle" type="button" aria-pressed="false" data-skill-id="brand-strategy" data-skill-name="Brand strategy">Add to install list</button>
           </article>
 
           <article class="skill-package" id="skill-arena">
-            <div class="skill-heading">
-              <h3>Are.na</h3>
-              <p class="skill-meta">v0.1.0 / T3 / Project local</p>
-            </div>
-            <p>Clean-room Are.na discovery and inspection plus approval-gated creation, upload, connection, update, movement, commenting, importing, and deletion through the official CLI.</p>
-            <ul class="skill-methods">
-              <li><span class="skill-method-name">Are.na Read.</span> Read-only Are.na discovery and inspection for public or already-authorized channels, blocks, users, groups, followers, connections, comments, pagination, and structured output.</li>
-              <li><span class="skill-method-name">Are.na Operator.</span> Approval-gated Are.na operations for channels and blocks, links and text, files, connections, movement, comments, batches, imports, and deletion with exact target review and post-write verification.</li>
-            </ul>
-            <code class="install-command">pi install -l git:github.com/youlikemodernart/pi-skill-arena@v0.1.0</code>
-            <div class="skill-actions">
-              <a href="https://github.com/youlikemodernart/pi-skill-arena">View private repository</a>
-              <button type="button" data-copy-command="pi install -l git:github.com/youlikemodernart/pi-skill-arena@v0.1.0" aria-describedby="copy-arena-status">Copy install command</button>
-              <span class="copy-status" id="copy-arena-status" aria-live="polite"></span>
-            </div>
+            <details>
+              <summary class="skill-summary">
+                <div class="skill-heading">
+                  <h3>Are.na</h3>
+                  <p class="skill-meta">v0.1.0 / T3 / Project local</p>
+                </div>
+                <p>Clean-room Are.na discovery and inspection with approval-gated operations through the official CLI.</p>
+              </summary>
+              <div class="skill-details">
+                <ul class="skill-methods">
+                  <li><span class="skill-method-name">Are.na Read.</span> Read-only Are.na discovery and inspection for public or already-authorized channels, blocks, users, groups, followers, connections, comments, pagination, and structured output.</li>
+                  <li><span class="skill-method-name">Are.na Operator.</span> Approval-gated Are.na operations for channels and blocks, links and text, files, connections, movement, comments, batches, imports, and deletion with exact target review and post-write verification.</li>
+                </ul>
+                <code class="install-command">pi install -l git:github.com/youlikemodernart/pi-skill-arena@v0.1.0</code>
+                <div class="skill-actions">
+                  <a href="https://github.com/youlikemodernart/pi-skill-arena">View private repository</a>
+                  <button type="button" data-copy-command="pi install -l git:github.com/youlikemodernart/pi-skill-arena@v0.1.0" aria-describedby="copy-arena-status">Copy install command</button>
+                  <span class="copy-status" id="copy-arena-status" aria-live="polite"></span>
+                </div>
+              </div>
+            </details>
+            <button class="skill-install-toggle" type="button" aria-pressed="false" data-skill-id="arena" data-skill-name="Are.na">Add to install list</button>
           </article>
           <!-- PIOP_SKILLS_END -->
         </div>

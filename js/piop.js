@@ -3,17 +3,8 @@
   const form = document.querySelector('.support-form');
   const requestIdInput = document.querySelector('#support-request-id');
   const status = document.querySelector('#support-status');
-  const contextSelect = document.querySelector('#context-select');
-  const contextState = document.querySelector('#context-state');
-  const contextDescription = document.querySelector('#context-description');
-
-  const contextDescriptions = {
-    neutral: 'The shared library is shown without a selected organization or person. Choosing a fixture changes the context label and explanation only.',
-    'neww-blake': 'Neww / Blake is shown as a working context. The shared library remains available and no access or action authority changes.',
-    'neww-joacim': 'Neww / Joacim is shown as a working context. The shared library remains available and no access or action authority changes.',
-    'neww-jony': 'Neww / Jony is shown as a working context. The shared library remains available and no access or action authority changes.',
-    'noah-smbp': 'Noah / smbp is shown as a working context. The shared library remains available and no access or action authority changes.',
-  };
+  const installListCount = document.querySelector('#install-list-count');
+  const installList = new Map();
 
   function announce(message) {
     if (!status) return;
@@ -37,18 +28,30 @@
     requestIdInput.value = `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
   }
 
-  if (contextSelect && contextState && contextDescription) {
-    const updateContext = () => {
-      const option = contextSelect.options[contextSelect.selectedIndex];
-      const label = option?.textContent || 'Neutral default';
-      contextState.textContent = `Showing: ${label}`;
-      contextDescription.textContent = contextDescriptions[contextSelect.value] || contextDescriptions.neutral;
-    };
-
-    contextSelect.addEventListener('change', updateContext);
-    updateContext();
+  function updateInstallList() {
+    if (!installListCount) return;
+    if (installList.size === 0) {
+      installListCount.textContent = 'Empty';
+      return;
+    }
+    const names = [...installList.values()];
+    installListCount.textContent = `${names.length} selected: ${names.join(', ')}`;
   }
 
+  for (const button of document.querySelectorAll('.skill-install-toggle')) {
+    button.addEventListener('click', () => {
+      const id = button.dataset.skillId || '';
+      const name = button.dataset.skillName || 'Skill';
+      const selected = button.getAttribute('aria-pressed') === 'true';
+      button.setAttribute('aria-pressed', String(!selected));
+      button.textContent = selected ? 'Add to install list' : 'In install list';
+      if (selected) installList.delete(id);
+      else installList.set(id, name);
+      updateInstallList();
+    });
+  }
+
+  updateInstallList();
   refreshRequestId();
   const initialSubmit = form?.querySelector('[type="submit"]');
   if (initialSubmit && requestIdInput?.value) initialSubmit.disabled = false;

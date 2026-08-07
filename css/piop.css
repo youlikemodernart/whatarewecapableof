@@ -28,73 +28,34 @@
   max-width: 58ch;
 }
 
-.context-picker {
-  border-top: 1px solid var(--rule);
-  margin-top: 40px;
-  padding-top: 22px;
-}
-
-.context-picker-heading {
-  align-items: baseline;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 24px;
-  justify-content: space-between;
-  margin-bottom: 16px;
-}
-
-.context-picker-heading h2 {
-  margin: 0;
-}
-
-.context-kicker,
-.context-picker > label,
-.context-state {
+.context-kicker {
   color: var(--ink-3);
   font-size: 14px;
   letter-spacing: 0.04em;
   line-height: 1.4;
+  margin: 0 0 8px;
   text-transform: uppercase;
 }
 
-.context-kicker {
-  margin: 0 0 8px;
+.install-list-summary {
+  align-items: baseline;
+  border-bottom: 1px solid var(--rule);
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  justify-content: space-between;
+  margin-top: 32px;
+  padding: 12px 0;
 }
 
-.context-state {
-  color: var(--ink-2);
-  font-weight: 500;
-  margin: 0;
+.install-list-label {
+  font-weight: 600;
 }
 
-.context-picker > label {
-  display: block;
-  margin-bottom: 8px;
-}
-
-.context-picker select {
-  background: var(--bg);
-  border: 1px solid var(--ink);
-  border-radius: 0;
-  color: var(--ink);
-  font: inherit;
-  min-height: 48px;
-  min-width: min(100%, 22rem);
-  padding: 8px 36px 8px 10px;
-  width: min(100%, 22rem);
-}
-
-.context-description,
-.context-note {
+#install-list-count {
   color: var(--ink-2);
   font-size: 15px;
-  margin-top: 14px;
-  max-width: 58ch;
-}
-
-.context-note {
-  color: var(--ink-3);
-  margin-top: 8px;
 }
 
 .piop-actions {
@@ -247,11 +208,90 @@
 
 .skill-package {
   border-top: 1px solid var(--rule);
-  padding: 24px 0 30px;
+  padding: 0;
 }
 
 .skill-package:last-child {
   border-bottom: 1px solid var(--rule);
+}
+
+.skill-package details {
+  padding: 24px 0 18px;
+}
+
+.skill-summary {
+  cursor: pointer;
+  list-style: none;
+  padding-right: 28px;
+  position: relative;
+}
+
+.skill-summary::-webkit-details-marker {
+  display: none;
+}
+
+.skill-summary::after {
+  color: var(--ink-3);
+  content: "+";
+  font-size: 22px;
+  line-height: 1;
+  position: absolute;
+  right: 2px;
+  top: 2px;
+}
+
+.skill-summary:hover::after,
+.skill-summary:focus-visible::after {
+  color: var(--ink);
+}
+
+.skill-package details[open] .skill-summary::after {
+  content: "−";
+}
+
+.skill-summary:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 5px;
+}
+
+.skill-summary .skill-heading {
+  margin-bottom: 8px;
+}
+
+.skill-summary > p {
+  color: var(--ink-2);
+  margin: 0;
+  max-width: 62ch;
+}
+
+.skill-details {
+  padding-top: 20px;
+}
+
+.skill-detail-note {
+  color: var(--ink-3);
+  font-size: 15px;
+}
+
+.skill-install-toggle {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  margin: 0 0 24px;
+  min-height: 44px;
+  padding: 4px 0 2px;
+}
+
+.skill-install-toggle:hover,
+.skill-install-toggle[aria-pressed="true"] {
+  box-shadow: 0 1px 0 var(--ink);
+}
+
+.skill-install-toggle[aria-pressed="true"]::before {
+  content: "✓ ";
 }
 
 .skill-heading {
@@ -497,12 +537,8 @@
     gap: 6px;
   }
 
-  .context-picker select {
-    width: 100%;
-  }
-
-  .skill-package {
-    padding: 22px 0 26px;
+  .skill-package details {
+    padding: 22px 0 16px;
   }
 
   .install-command {

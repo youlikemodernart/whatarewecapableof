@@ -1,10 +1,10 @@
-# PiOp public page
+# PiOp direct-link internal page
 
-The public PiOp page lives at `/piop/`. It explains the current stable Stack, renders the public Skills Library, and describes private repository access. The one-time and monthly support form remains hidden until live payment activation is approved and verified.
+The PiOp page lives at `/piop/` as a direct-link, noindex internal surface. It is not linked from the home page and is excluded from the public sitemap. It renders the Skills Library, explains how private repository access works for approved recipients, and prepares a setup prompt without installing anything from the page. The one-time and monthly support form remains hidden until live payment activation is approved and verified.
 
 ## Source and release model
 
-The generated skills block in `piop/index.html` derives from the released `pi-skill-index/catalog/skills.json`. The current Stack list derives from the private stable Stack lock. Neither source file is copied into the public site.
+The generated skills block in `piop/index.html` derives from the released `pi-skill-index/catalog/skills.json`. System-managed PiOp components are not presented as installable packages on this page. The catalog source is not copied into the public site.
 
 Generate and verify the page against exact local release sources:
 
@@ -17,15 +17,14 @@ node scripts/sync-piop-catalog.mjs \
   --check
 
 node scripts/check-piop-page.mjs \
-  --catalog /absolute/path/to/pi-skill-index/catalog/skills.json \
-  --lock /absolute/path/to/current-private-stable-stack-lock.json
+  --catalog /absolute/path/to/pi-skill-index/catalog/skills.json
 ```
 
 `sync-piop-catalog.mjs` only rewrites content between the `PIOP_SKILLS_START` and `PIOP_SKILLS_END` markers and updates package and skill totals. It requires pinned install commands and the expected GitHub repository owner.
 
 ## Repository access
 
-The page is public. Package repositories remain private and GitHub remains the access gate. Access is granted manually through repository invitations. The site has no GitHub authentication, permission detection, invitation acceptance, or automatic enrollment.
+The page is direct-link and noindex. Package repositories remain private and GitHub remains the access gate. Access is granted manually through repository invitations. The site has no GitHub authentication, permission detection, invitation acceptance, or automatic enrollment.
 
 Payment and repository access are separate. Checkout metadata sets `access_entitlement=none`. No checkout, payment, or subscription event may grant, revoke, or modify GitHub permissions.
 
@@ -60,4 +59,4 @@ npm run smoke:piop-checkout
 
 ## Deployment boundary
 
-A site deployment, Fin deployment, Stripe Product creation, production environment-variable change, or platform rate-limit rule requires explicit approval. Before activation, verify the exact public page, the exact Fin commit, the platform rate rule, Stripe live configuration, a one-time Checkout Session, a monthly Checkout Session, return URLs, cancellation handling, and the absence of repository permission effects.
+A site deployment, Fin deployment, Stripe Product creation, production environment-variable change, or platform rate-limit rule requires explicit approval. Before activation, verify the exact public page, the exact Fin commit, the platform rate rule, Stripe live configuration, a one-time Checkout Session, a monthly Checkout Session, return URLs, cancellation handling, and the absence of repository permission effects. The Skills Library page only prepares a setup prompt; it does not install packages or change repository permissions.

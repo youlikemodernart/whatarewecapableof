@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PiOp Skills Cart | What are we capable of?</title>
-  <meta name="description" content="Browse PiOp's current stable Stack and shared skills catalog, with context kept visible and optional helpers clearly bounded.">
+  <title>PiOp Skills Library | What are we capable of?</title>
+  <meta name="description" content="Browse PiOp's shared skill library: what each package does, what it can access, and its version. The page prepares a setup prompt for Pi and installs nothing.">
   <meta name="robots" content="noindex, nofollow, noarchive">
   <link rel="canonical" href="https://whatarewecapableof.com/piop">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -13,7 +13,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://whatarewecapableof.com/piop">
   <meta property="og:title" content="PiOp Skills Library | What are we capable of?">
-  <meta property="og:description" content="Explore PiOp, its current stable Stack, and the private skill packages available to approved collaborators.">
+  <meta property="og:description" content="A personal operating layer for Pi. Browse the shared skill library and prepare a setup prompt to run in Pi. Source repositories stay private; access is by invitation, separate from payment.">
   <meta property="og:image" content="https://whatarewecapableof.com/og.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -32,9 +32,9 @@
     </header>
 
     <main id="main">
-      <p class="piop-eyebrow">PIOP / SKILLS CART</p>
+      <p class="piop-eyebrow">PIOP / SKILLS LIBRARY</p>
       <h1 class="lead">A personal operating layer for Pi.</h1>
-      <p class="piop-intro">PiOp gives Pi a small operating method, explicit approval boundaries, and a library of focused skills. It is built for work that should remain understandable, removable, and under the user's control.</p>
+      <p class="piop-intro">PiOp gives Pi a small, explicit operating method, clear approval boundaries, and a library of focused skills. It is built for work that stays understandable, removable, and under your control. You browse the library here and prepare a setup prompt to run in Pi; the page installs nothing itself.</p>
 
       <div class="install-list-summary" id="install-list-summary" role="status" aria-live="polite">
         <span class="install-list-label">Install list · <span id="install-list-count">Empty</span></span>
@@ -42,34 +42,19 @@
       </div>
 
       <nav class="piop-actions" aria-label="Page sections">
-        <a href="#stack">Current Stack</a>
         <a href="#skills">Skills Library</a>
         <a href="#access">Access</a>
         <a href="#support">Support PiOp</a>
       </nav>
 
-      <section class="piop-section" id="stack">
-        <div class="piop-section-heading">
-          <h2>Current stable Stack</h2>
-          <p class="piop-meta">piop-stack-2026-07-29.1</p>
-        </div>
-        <p>The stable Stack is an exact set of pinned private releases. Updates happen deliberately, and each package can be inspected or removed independently.</p>
-        <dl class="stack-list">
-          <dt>Core</dt><dd><a href="https://github.com/youlikemodernart/pi-operating-layer-base">v0.1.8</a></dd>
-          <dt>Skills Library</dt><dd><a href="https://github.com/youlikemodernart/pi-skill-index">v0.1.5</a></dd>
-          <dt>Collaborator Basics</dt><dd><a href="https://github.com/youlikemodernart/pi-skill-collaborator-basics">v0.1.1</a></dd>
-        </dl>
-        <p class="stack-note">Core and the Skills Library remain part of the PiOp system. They are system-managed and are not available through this install list.</p>
-      </section>
-
       <section class="piop-section" id="skills">
         <div class="piop-section-heading">
-          <h2>Skills Cart</h2>
+          <h2>Skills Library</h2>
           <p class="piop-meta">4 PACKAGES / 6 SKILLS</p>
         </div>
-        <p>The shared catalog keeps each package's purpose, installation scope, risk tier, and exact version in view. Read what a skill can read or change before deciding whether to install it.</p>
-        <p class="piop-note">Select the packages you want to review. Nothing is installed from this page.</p>
-        <p class="piop-note"><strong>T0</strong> packages contain text-only skills and prompts. <strong>T3</strong> packages can involve accounts, credentials, live services, or writes and remain project local. Global installs apply across Pi; project-local installs stay with one workspace.</p>
+        <p>This shared library shows each package's purpose, install scope, risk tier, and exact version. Read what a package can access or change before you add it.</p>
+        <p class="piop-note">Add the packages you want, then generate a setup prompt to run in Pi. Nothing is installed from this page.</p>
+        <p class="piop-note">Each package shows a risk tier and a scope. Risk tiers run from T0 (text-only skills and prompts) to T3 (can touch accounts, credentials, live services, or files). Scope is either global (applies across Pi) or project-local (stays in one workspace).</p>
 
         <div class="skill-index">
           <!-- PIOP_SKILLS_START -->
@@ -80,7 +65,7 @@
                   <h3>Collaborator basics</h3>
                   <p class="skill-meta">v0.1.1 / T0 / Global</p>
                 </div>
-                <p>Neutral first-use checks and private-safe source-note intake for collaborators beginning to use Pi skill packs.</p>
+                <p>First-use checks, plus a private-safe way to turn a short note into observations, questions, and next steps.</p>
               </summary>
               <div class="skill-details">
                 <ul class="skill-methods">
@@ -105,7 +90,7 @@
                   <h3>Relational intelligence</h3>
                   <p class="skill-meta">v0.1.0 / T0 / Global</p>
                 </div>
-                <p>Agency-preserving relational and introspective reflection with explicit memory, privacy, role, safety, and repair boundaries.</p>
+                <p>Support for personal reflection that keeps you in charge, with explicit limits on memory, privacy, role, safety, and repair.</p>
               </summary>
               <div class="skill-details">
                 <p class="skill-detail-note">Responder support is limited to openai-codex/gpt-5.6-sol; Claude responder use is unsupported.</p>
@@ -155,7 +140,7 @@
                   <h3>Are.na</h3>
                   <p class="skill-meta">v0.1.0 / T3 / Project local</p>
                 </div>
-                <p>Clean-room Are.na discovery and inspection with approval-gated operations through the official CLI.</p>
+                <p>Read-only Are.na discovery and inspection, plus approval-gated changes through the official CLI.</p>
               </summary>
               <div class="skill-details">
                 <ul class="skill-methods">
@@ -177,7 +162,7 @@
 
         <section class="install-review" id="install-review" aria-labelledby="install-review-title" hidden>
           <div class="piop-section-heading">
-            <h3 id="install-review-title">Review install manifest</h3>
+            <h3 id="install-review-title">Review install list</h3>
             <p class="piop-meta" id="install-review-count">EMPTY</p>
           </div>
           <div class="selected-package-list" id="selected-package-list"></div>
@@ -192,7 +177,7 @@
               <button type="button" class="prompt-action" id="copy-setup-prompt">Copy setup prompt</button>
               <span class="copy-status" id="setup-prompt-status" aria-live="polite"></span>
             </div>
-            <p class="piop-note">Prompt ready for review. Nothing has been installed.</p>
+            <p class="piop-note">Your setup prompt is ready. Nothing has been installed.</p>
           </div>
         </section>
 
@@ -201,22 +186,22 @@
             <h3 id="future-skills-title">Organization-specific skills</h3>
             <p class="skill-meta">RESERVED / NOT ACTIVE</p>
           </div>
-          <p>This space is reserved for skills scoped to a particular organization. The current catalog stays shared and available to everyone.</p>
+          <p>This space is reserved for skills scoped to a single organization. The current library stays shared and open to everyone.</p>
         </aside>
       </section>
 
       <section class="piop-section" id="access">
         <div class="piop-section-heading">
-          <h2>Private source, public descriptions</h2>
+          <h2>How access works</h2>
           <p class="piop-meta">SOURCE ACCESS</p>
         </div>
-        <p>This page is public. The source repositories remain private where applicable. GitHub decides whether a repository opens based on the signed-in account and its accepted invitation.</p>
+        <p>This page is public; the source repositories are private. Whether a repository opens depends on your signed-in GitHub account and the invitation it has accepted.</p>
         <ul class="plain-list">
-          <li>Approved collaborators can open a repository and install its pinned release.</li>
+          <li>Approved collaborators can open the repository and install the pinned release.</li>
           <li>Pending collaborators need to accept the GitHub invitation first.</li>
-          <li>Other visitors can understand the skill here while the source remains gated.</li>
+          <li>Everyone else can read what each package does here; the source stays private.</li>
         </ul>
-        <p class="piop-note">Repository access is granted manually. Payment does not grant access or change repository permissions.</p>
+        <p class="piop-note">Access is granted manually, by invitation. Payment does not grant access or change repository permissions.</p>
         <div class="piop-actions">
           <a href="mailto:hello@whatarewecapableof.com?subject=PiOp%20access">Request access</a>
           <a href="https://github.com/notifications">Check GitHub invitations</a>
@@ -228,10 +213,10 @@
           <h2>Pay what you wish</h2>
           <p class="piop-meta">ONE TIME OR MONTHLY</p>
         </div>
-        <p>PiOp can be used without payment. If it is useful, choose a one-time amount or support its continued development each month. Support is optional. It does not purchase consulting services or repository access.</p>
+        <p>PiOp is free to use. If it is useful, you can give a one-time amount or support its development each month. Support is optional. It does not buy consulting services or repository access.</p>
 
         <div class="support-status" id="support-status" role="status" aria-live="polite" hidden></div>
-        <p class="piop-note">Payment support is being prepared and will open after the live checkout route completes verification.</p>
+        <p class="piop-note">Payment is not open yet. It will go live once the checkout is verified.</p>
 
         <form class="support-form" action="https://fin.whatarewecapableof.com/api/piop/checkout" method="post" hidden>
           <fieldset>
@@ -266,7 +251,7 @@
           <noscript><p class="piop-note">JavaScript is required to start secure payment.</p></noscript>
         </form>
 
-        <p class="piop-note">Stripe processes the payment. Monthly support repeats until canceled. Email <a href="mailto:hello@whatarewecapableof.com?subject=PiOp%20monthly%20support">hello@whatarewecapableof.com</a> to change or cancel monthly support.</p>
+        <p class="piop-note">Stripe processes the payment. Monthly support continues until you cancel. To change or cancel, email <a href="mailto:hello@whatarewecapableof.com?subject=PiOp%20monthly%20support">hello@whatarewecapableof.com</a>.</p>
       </section>
     </main>
 

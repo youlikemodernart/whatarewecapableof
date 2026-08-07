@@ -37,8 +37,8 @@
       <p class="piop-intro">PiOp gives Pi a small operating method, explicit approval boundaries, and a library of focused skills. It is built for work that should remain understandable, removable, and under the user's control.</p>
 
       <div class="install-list-summary" id="install-list-summary" role="status" aria-live="polite">
-        <span class="install-list-label">Install list</span>
-        <span id="install-list-count">Empty</span>
+        <span class="install-list-label">Install list · <span id="install-list-count">Empty</span></span>
+        <button class="review-install-list" type="button" id="review-install-list" hidden>Review install list</button>
       </div>
 
       <nav class="piop-actions" aria-label="Page sections">
@@ -68,6 +68,7 @@
           <p class="piop-meta">4 PACKAGES / 6 SKILLS</p>
         </div>
         <p>The shared catalog keeps each package's purpose, installation scope, risk tier, and exact version in view. Read what a skill can read or change before deciding whether to install it.</p>
+        <p class="piop-note">Select the packages you want to review. Nothing is installed from this page.</p>
         <p class="piop-note"><strong>T0</strong> packages contain text-only skills and prompts. <strong>T3</strong> packages can involve accounts, credentials, live services, or writes and remain project local. Global installs apply across Pi; project-local installs stay with one workspace.</p>
 
         <div class="skill-index">
@@ -94,7 +95,7 @@
                 </div>
               </div>
             </details>
-            <button class="skill-install-toggle" type="button" aria-pressed="false" data-skill-id="collaborator-basics" data-skill-name="Collaborator basics">Add to install list</button>
+            <button class="skill-install-toggle" type="button" data-skill-id="collaborator-basics" data-skill-name="Collaborator basics" data-skill-version="v0.1.1" data-skill-scope="Global" data-skill-risk="T0" data-skill-command="pi install git:github.com/youlikemodernart/pi-skill-collaborator-basics@v0.1.1">Add to install list</button>
           </article>
 
           <article class="skill-package" id="skill-relational-intelligence">
@@ -119,7 +120,7 @@
                 </div>
               </div>
             </details>
-            <button class="skill-install-toggle" type="button" aria-pressed="false" data-skill-id="relational-intelligence" data-skill-name="Relational intelligence">Add to install list</button>
+            <button class="skill-install-toggle" type="button" data-skill-id="relational-intelligence" data-skill-name="Relational intelligence" data-skill-version="v0.1.0" data-skill-scope="Global" data-skill-risk="T0" data-skill-command="pi install git:github.com/youlikemodernart/pi-skill-relational-intelligence@v0.1.0">Add to install list</button>
           </article>
 
           <article class="skill-package" id="skill-brand-strategy">
@@ -144,7 +145,7 @@
                 </div>
               </div>
             </details>
-            <button class="skill-install-toggle" type="button" aria-pressed="false" data-skill-id="brand-strategy" data-skill-name="Brand strategy">Add to install list</button>
+            <button class="skill-install-toggle" type="button" data-skill-id="brand-strategy" data-skill-name="Brand strategy" data-skill-version="v0.1.1" data-skill-scope="Global" data-skill-risk="T0" data-skill-command="pi install git:github.com/youlikemodernart/pi-skill-brand-strategy@v0.1.1">Add to install list</button>
           </article>
 
           <article class="skill-package" id="skill-arena">
@@ -169,10 +170,31 @@
                 </div>
               </div>
             </details>
-            <button class="skill-install-toggle" type="button" aria-pressed="false" data-skill-id="arena" data-skill-name="Are.na">Add to install list</button>
+            <button class="skill-install-toggle" type="button" data-skill-id="arena" data-skill-name="Are.na" data-skill-version="v0.1.0" data-skill-scope="Project local" data-skill-risk="T3" data-skill-command="pi install -l git:github.com/youlikemodernart/pi-skill-arena@v0.1.0">Add to install list</button>
           </article>
           <!-- PIOP_SKILLS_END -->
         </div>
+
+        <section class="install-review" id="install-review" aria-labelledby="install-review-title" hidden>
+          <div class="piop-section-heading">
+            <h3 id="install-review-title">Review install manifest</h3>
+            <p class="piop-meta" id="install-review-count">EMPTY</p>
+          </div>
+          <div class="selected-package-list" id="selected-package-list"></div>
+          <div class="prompt-actions">
+            <button type="button" class="prompt-action" id="generate-setup-prompt">Generate setup prompt</button>
+            <button type="button" class="prompt-action prompt-action-secondary" id="clear-install-list">Clear install list</button>
+          </div>
+          <div class="setup-prompt" id="setup-prompt" hidden>
+            <label for="setup-prompt-text">Setup prompt</label>
+            <textarea id="setup-prompt-text" readonly spellcheck="false"></textarea>
+            <div class="prompt-actions">
+              <button type="button" class="prompt-action" id="copy-setup-prompt">Copy setup prompt</button>
+              <span class="copy-status" id="setup-prompt-status" aria-live="polite"></span>
+            </div>
+            <p class="piop-note">Prompt ready for review. Nothing has been installed.</p>
+          </div>
+        </section>
 
         <aside class="piop-aside skill-future" aria-labelledby="future-skills-title">
           <div class="skill-heading">

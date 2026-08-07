@@ -2,6 +2,15 @@
 
 .page-piop .page {
   max-width: 760px;
+  padding-bottom: 72px;
+}
+
+.page-piop .site-header {
+  margin-bottom: 56px;
+}
+
+.page-piop .piop-section {
+  margin-top: 52px;
 }
 
 .piop-eyebrow,
@@ -23,8 +32,8 @@
 
 .piop-intro {
   color: var(--ink-2);
-  font-size: 19px;
-  margin-top: 24px;
+  font-size: 18px;
+  margin-top: 20px;
   max-width: 58ch;
 }
 
@@ -45,8 +54,8 @@
   flex-wrap: wrap;
   gap: 8px 20px;
   justify-content: space-between;
-  margin-top: 32px;
-  padding: 12px 0;
+  margin-top: 24px;
+  padding: 10px 0;
 }
 
 .install-list-label {
@@ -56,6 +65,24 @@
 #install-list-count {
   color: var(--ink-2);
   font-size: 15px;
+}
+
+.review-install-list,
+.prompt-action {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  min-height: 44px;
+  padding: 4px 0 2px;
+}
+
+.review-install-list:hover,
+.prompt-action:hover,
+.prompt-action[aria-pressed="true"] {
+  box-shadow: 0 1px 0 var(--ink);
 }
 
 .piop-actions {
@@ -108,7 +135,7 @@
 
 .piop-section {
   border-top: 1px solid var(--rule);
-  padding-top: 24px;
+  padding-top: 20px;
 }
 
 .piop-section:target,
@@ -145,9 +172,9 @@
   align-items: baseline;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 24px;
+  gap: 6px 20px;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 .piop-section-heading h2 {
@@ -216,7 +243,7 @@
 }
 
 .skill-package details {
-  padding: 24px 0 18px;
+  padding: 18px 0 12px;
 }
 
 .skill-summary {
@@ -231,22 +258,25 @@
 }
 
 .skill-summary::after {
-  color: var(--ink-3);
-  content: "+";
-  font-size: 22px;
-  line-height: 1;
+  border-bottom: 1px solid var(--ink-3);
+  border-right: 1px solid var(--ink-3);
+  content: "";
+  height: 8px;
   position: absolute;
-  right: 2px;
-  top: 2px;
+  right: 5px;
+  top: 4px;
+  transform: rotate(45deg);
+  width: 8px;
 }
 
 .skill-summary:hover::after,
 .skill-summary:focus-visible::after {
-  color: var(--ink);
+  border-color: var(--ink);
 }
 
 .skill-package details[open] .skill-summary::after {
-  content: "−";
+  top: 9px;
+  transform: rotate(225deg);
 }
 
 .skill-summary:focus-visible {
@@ -265,7 +295,7 @@
 }
 
 .skill-details {
-  padding-top: 20px;
+  padding-top: 16px;
 }
 
 .skill-detail-note {
@@ -286,12 +316,104 @@
 }
 
 .skill-install-toggle:hover,
-.skill-install-toggle[aria-pressed="true"] {
+.skill-install-toggle[data-selected="true"] {
   box-shadow: 0 1px 0 var(--ink);
 }
 
-.skill-install-toggle[aria-pressed="true"]::before {
+.skill-install-toggle::before {
+  content: "+ ";
+}
+
+.skill-install-toggle[data-selected="true"]::before {
   content: "✓ ";
+}
+
+.install-review {
+  border-top: 1px solid var(--rule);
+  margin-top: 22px;
+  padding-top: 18px;
+}
+
+.install-review h3 {
+  font-size: 19px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.selected-package-list {
+  border-bottom: 1px solid var(--rule);
+  border-top: 1px solid var(--rule);
+}
+
+.selected-package {
+  align-items: baseline;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  justify-content: space-between;
+  padding: 14px 0;
+}
+
+.selected-package:last-child {
+  border-bottom: 0;
+}
+
+.selected-package-name {
+  font-weight: 600;
+}
+
+.selected-package-meta {
+  color: var(--ink-3);
+  font-size: 14px;
+}
+
+.remove-package {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  min-height: 40px;
+  padding: 2px 0;
+}
+
+.prompt-actions {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-top: 18px;
+}
+
+.prompt-action-secondary {
+  color: var(--ink-2);
+}
+
+.setup-prompt {
+  margin-top: 24px;
+}
+
+.setup-prompt > label {
+  color: var(--ink-3);
+  display: block;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+#setup-prompt-text {
+  background: var(--surface, #fafafa);
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  display: block;
+  font: 14px/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  min-height: 220px;
+  padding: 12px;
+  resize: vertical;
+  width: 100%;
 }
 
 .skill-heading {

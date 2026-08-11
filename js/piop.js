@@ -3,10 +3,12 @@
   const form = document.querySelector('.support-form');
   const requestIdInput = document.querySelector('#support-request-id');
   const status = document.querySelector('#support-status');
+  const installListSummary = document.querySelector('#install-list-summary');
   const installListCount = document.querySelector('#install-list-count');
   const reviewButton = document.querySelector('#review-install-list');
   const reviewSection = document.querySelector('#install-review');
   const reviewCount = document.querySelector('#install-review-count');
+  const reviewTitle = document.querySelector('#install-review-title');
   const selectedPackageList = document.querySelector('#selected-package-list');
   const generatePromptButton = document.querySelector('#generate-setup-prompt');
   const clearInstallListButton = document.querySelector('#clear-install-list');
@@ -14,6 +16,7 @@
   const setupPromptText = document.querySelector('#setup-prompt-text');
   const copySetupPromptButton = document.querySelector('#copy-setup-prompt');
   const setupPromptStatus = document.querySelector('#setup-prompt-status');
+  const emailSkillRequest = document.querySelector('#email-skill-request');
   const installList = new Map();
 
   function announce(message) {
@@ -38,6 +41,22 @@
     requestIdInput.value = `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
   }
 
+  function invalidateSkillRequest() {
+    if (setupPrompt) setupPrompt.hidden = true;
+    if (setupPromptText) setupPromptText.value = '';
+    if (setupPromptStatus) setupPromptStatus.textContent = '';
+    if (emailSkillRequest) {
+      emailSkillRequest.hidden = true;
+      emailSkillRequest.removeAttribute('href');
+    }
+  }
+
+  function setSourceButtonState(id, selected) {
+    const sourceButton = document.querySelector(`[data-skill-id="${id}"]`);
+    sourceButton?.setAttribute('aria-pressed', String(selected));
+    return sourceButton;
+  }
+
   function renderInstallReview() {
     if (!selectedPackageList) return;
     selectedPackageList.replaceChildren();
@@ -54,14 +73,16 @@
       remove.className = 'remove-package';
       remove.type = 'button';
       remove.textContent = 'Remove';
+      remove.setAttribute('aria-label', `Remove ${packageInfo.name} from skill set`);
       remove.addEventListener('click', () => {
+        const removedIndex = [...installList.keys()].indexOf(id);
         installList.delete(id);
-        const sourceButton = document.querySelector(`[data-skill-id="${id}"]`);
-        if (sourceButton) {
-          sourceButton.dataset.selected = 'false';
-          sourceButton.textContent = 'Add to install list';
-        }
+        const sourceButton = setSourceButtonState(id, false);
+        invalidateSkillRequest();
         updateInstallList();
+        const remaining = selectedPackageList.querySelectorAll('.remove-package');
+        if (remaining.length) remaining[Math.min(removedIndex, remaining.length - 1)].focus();
+        else sourceButton?.focus();
       });
       row.append(name, meta, remove);
       selectedPackageList.append(row);
@@ -73,71 +94,82 @@
     if (installListCount) installListCount.textContent = count ? `${count} selected` : 'Empty';
     if (reviewButton) reviewButton.hidden = count === 0;
     if (reviewCount) reviewCount.textContent = count ? `${count} SELECTED` : 'EMPTY';
+    if (reviewSection) reviewSection.hidden = count === 0;
     renderInstallReview();
   }
 
-  function buildSetupPrompt() {
+  function buildSkillRequest() {
     const packages = [...installList.values()].map((packageInfo) => [
       `- ${packageInfo.name}`,
       `  Version: ${packageInfo.version}`,
       `  Scope: ${packageInfo.scope}`,
       `  Risk tier: ${packageInfo.risk}`,
-      `  Install command: ${packageInfo.command}`,
     ].join('\n')).join('\n');
-    return `I want to install this PiOp set:\n\n${packages}\n\nFirst inspect these exact package sources and explain what will be installed, where, and what each package can access or change. Do not install anything yet. Wait for my confirmation.\n\nAfter confirmation, install only these pinned versions and scopes. Then verify package discovery, versions, scope, and declared smoke checks. Report failures without substituting other packages or versions.`;
+    return `PiOp skill set request\n\nRecipient name: [add name]\nOrganization or project, if relevant: [add context]\n\nRequested packages:\n${packages}\n\nPlease review this combination for compatibility, scope, and risk before fulfillment. Private GitHub is the source authority for the exact reviewed versions. I do not need repository access. If approved, please prepare a recipient-specific verified ZIP, deliver it through a private Google Drive file, and send the exact copy-and-paste Pi setup prompt by email. Do not substitute package versions or expand account, credential, or organization access without confirming the change first.`;
   }
 
   for (const button of document.querySelectorAll('.skill-install-toggle')) {
-    button.dataset.selected = 'false';
+    button.hidden = false;
+    button.setAttribute('aria-pressed', 'false');
     button.addEventListener('click', () => {
       const id = button.dataset.skillId || '';
-      const selected = button.dataset.selected === 'true';
-      button.dataset.selected = String(!selected);
-      button.textContent = selected ? 'Add to install list' : 'Remove from install list';
+      const selected = button.getAttribute('aria-pressed') === 'true';
+      button.setAttribute('aria-pressed', String(!selected));
       if (selected) installList.delete(id);
       else installList.set(id, {
         name: button.dataset.skillName || 'Skill',
         version: button.dataset.skillVersion || 'Unknown version',
         scope: button.dataset.skillScope || 'Unknown scope',
         risk: button.dataset.skillRisk || 'Unknown risk',
-        command: button.dataset.skillCommand || '',
       });
+      invalidateSkillRequest();
       updateInstallList();
     });
   }
 
   reviewButton?.addEventListener('click', () => {
-    if (!reviewSection) return;
-    reviewSection.hidden = false;
-    reviewSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (!reviewSection || !reviewTitle) return;
+    reviewTitle.focus({ preventScroll: true });
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    reviewSection.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
   });
 
   generatePromptButton?.addEventListener('click', () => {
-    if (!setupPromptText) return;
-    setupPromptText.value = buildSetupPrompt();
+    if (!setupPromptText || installList.size === 0) return;
+    const request = buildSkillRequest();
+    setupPromptText.value = request;
     if (setupPrompt) setupPrompt.hidden = false;
+    if (emailSkillRequest) {
+      const subject = encodeURIComponent('PiOp skill set request');
+      const body = encodeURIComponent(request);
+      emailSkillRequest.href = `mailto:hello@whatarewecapableof.com?subject=${subject}&body=${body}`;
+      emailSkillRequest.hidden = false;
+    }
   });
 
   clearInstallListButton?.addEventListener('click', () => {
     installList.clear();
-    for (const button of document.querySelectorAll('.skill-install-toggle')) {
-      button.dataset.selected = 'false';
-      button.textContent = 'Add to install list';
-    }
-    if (setupPrompt) setupPrompt.hidden = true;
+    const sourceButtons = document.querySelectorAll('.skill-install-toggle');
+    for (const button of sourceButtons) button.setAttribute('aria-pressed', 'false');
+    invalidateSkillRequest();
     updateInstallList();
+    sourceButtons[0]?.focus();
   });
 
   copySetupPromptButton?.addEventListener('click', async () => {
     if (!setupPromptText || !setupPromptStatus) return;
     try {
-      await navigator.clipboard.writeText(setupPromptText.value);
-      setupPromptStatus.textContent = 'Setup prompt copied.';
+      await Promise.race([
+        navigator.clipboard.writeText(setupPromptText.value),
+        new Promise((_, reject) => window.setTimeout(() => reject(new Error('Clipboard timeout')), 1500)),
+      ]);
+      setupPromptStatus.textContent = 'Request copied.';
     } catch {
-      setupPromptStatus.textContent = 'Copy failed. Select the prompt above.';
+      setupPromptStatus.textContent = 'Copy failed. Select the request above.';
     }
   });
 
+  if (installListSummary) installListSummary.hidden = false;
   updateInstallList();
   refreshRequestId();
   const initialSubmit = form?.querySelector('[type="submit"]');
@@ -148,23 +180,6 @@
       if (!amountInput) return;
       amountInput.value = button.dataset.amount || '';
       amountInput.focus();
-    });
-  }
-
-  for (const button of document.querySelectorAll('[data-copy-command]')) {
-    button.addEventListener('click', async () => {
-      const command = button.dataset.copyCommand || '';
-      const targetId = button.getAttribute('aria-describedby');
-      const target = targetId ? document.getElementById(targetId) : null;
-      try {
-        await Promise.race([
-          navigator.clipboard.writeText(command),
-          new Promise((_, reject) => window.setTimeout(() => reject(new Error('Clipboard timeout')), 1500)),
-        ]);
-        if (target) target.textContent = 'Install command copied.';
-      } catch {
-        if (target) target.textContent = 'Copy failed. Select the command above.';
-      }
     });
   }
 

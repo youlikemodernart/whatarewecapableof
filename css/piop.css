@@ -69,20 +69,30 @@
 
 .review-install-list,
 .prompt-action {
+  align-items: center;
   background: transparent;
   border: 0;
   border-bottom: 1px solid var(--ink);
   color: var(--ink);
   cursor: pointer;
+  display: inline-flex;
   font: inherit;
   min-height: 44px;
   padding: 4px 0 2px;
+  text-decoration: none;
 }
 
 .review-install-list:hover,
 .prompt-action:hover,
 .prompt-action[aria-pressed="true"] {
   box-shadow: 0 1px 0 var(--ink);
+}
+
+.install-list-summary[hidden],
+.review-install-list[hidden],
+.prompt-action[hidden],
+.skill-install-toggle[hidden] {
+  display: none;
 }
 
 .piop-actions {
@@ -96,8 +106,6 @@
 .page-piop .site-header a,
 .page-piop .site-footer a,
 .piop-actions a,
-.skill-actions a,
-.skill-actions button,
 .amount-suggestions button,
 .support-submit {
   align-items: center;
@@ -106,8 +114,6 @@
 }
 
 .piop-actions a,
-.skill-actions a,
-.skill-actions button,
 .amount-suggestions button,
 .support-submit {
   background: none;
@@ -126,8 +132,6 @@
 }
 
 .piop-actions a:hover,
-.skill-actions a:hover,
-.skill-actions button:hover,
 .amount-suggestions button:hover,
 .support-submit:hover {
   box-shadow: 0 1px 0 var(--ink);
@@ -218,7 +222,6 @@
 }
 
 .stack-list a,
-.skill-actions a,
 .piop-note a {
   text-underline-offset: 2px;
 }
@@ -235,7 +238,7 @@
 
 .skill-package {
   border-top: 1px solid var(--rule);
-  padding: 0;
+  padding: 20px 0 24px;
 }
 
 .skill-package:last-child {
@@ -243,12 +246,15 @@
 }
 
 .skill-package details {
-  padding: 18px 0 12px;
+  margin-top: 18px;
 }
 
 .skill-summary {
+  align-items: center;
   cursor: pointer;
+  display: flex;
   list-style: none;
+  min-height: 44px;
   padding-right: 28px;
   position: relative;
 }
@@ -264,7 +270,7 @@
   height: 8px;
   position: absolute;
   right: 5px;
-  top: 4px;
+  top: 15px;
   transform: rotate(45deg);
   width: 8px;
 }
@@ -275,7 +281,7 @@
 }
 
 .skill-package details[open] .skill-summary::after {
-  top: 9px;
+  top: 19px;
   transform: rotate(225deg);
 }
 
@@ -284,23 +290,18 @@
   outline-offset: 5px;
 }
 
-.skill-summary .skill-heading {
-  margin-bottom: 8px;
-}
-
-.skill-summary > p {
-  color: var(--ink-2);
-  margin: 0;
-  max-width: 62ch;
-}
-
 .skill-details {
-  padding-top: 16px;
+  padding-top: 14px;
 }
 
-.skill-detail-note {
-  color: var(--ink-3);
+.skill-detail-heading {
   font-size: 15px;
+  font-weight: 600;
+  margin: 22px 0 0;
+}
+
+.skill-detail-heading:first-child {
+  margin-top: 0;
 }
 
 .skill-install-toggle {
@@ -310,13 +311,13 @@
   color: var(--ink);
   cursor: pointer;
   font: inherit;
-  margin: 0 0 24px;
+  margin: 18px 0 0;
   min-height: 44px;
   padding: 4px 0 2px;
 }
 
 .skill-install-toggle:hover,
-.skill-install-toggle[data-selected="true"] {
+.skill-install-toggle[aria-pressed="true"] {
   box-shadow: 0 1px 0 var(--ink);
 }
 
@@ -324,7 +325,7 @@
   content: "+ ";
 }
 
-.skill-install-toggle[data-selected="true"]::before {
+.skill-install-toggle[aria-pressed="true"]::before {
   content: "✓ ";
 }
 
@@ -375,7 +376,7 @@
   color: var(--ink);
   cursor: pointer;
   font: inherit;
-  min-height: 40px;
+  min-height: 44px;
   padding: 2px 0;
 }
 
@@ -467,30 +468,23 @@
   font-weight: 600;
 }
 
-.install-command {
-  border-bottom: 1px solid var(--rule);
+.skill-boundaries {
+  margin: 10px 0 0;
+}
+
+.skill-boundaries dt {
   border-top: 1px solid var(--rule);
-  display: block;
-  font-family: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-  font-size: 14px;
-  line-height: 1.55;
-  margin-top: 22px;
-  overflow-x: auto;
-  padding: 12px 0;
-  white-space: nowrap;
+  font-weight: 600;
+  padding-top: 12px;
 }
 
-.skill-actions {
-  align-items: baseline;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px 24px;
-  margin-top: 18px;
-}
-
-.skill-actions a,
-.skill-actions button {
-  font-size: 16px;
+.skill-boundaries dd {
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink-2);
+  margin: 4px 0 0;
+  max-width: 62ch;
+  overflow-wrap: break-word;
+  padding-bottom: 12px;
 }
 
 .copy-status {
@@ -659,13 +653,8 @@
     gap: 6px;
   }
 
-  .skill-package details {
-    padding: 22px 0 16px;
-  }
-
-  .install-command {
-    font-size: 14px;
-    max-width: calc(100vw - 48px);
+  .skill-package {
+    padding: 22px 0 26px;
   }
 
   .support-form fieldset label {

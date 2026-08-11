@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PiOp Skills Library | What are we capable of?</title>
-  <meta name="description" content="Browse PiOp's shared skill library: what each package does, what it can access, and its version. The page prepares a setup prompt for Pi and installs nothing.">
+  <meta name="description" content="Browse verified PiOp skill packages, assemble a skill set, and request a reviewed recipient-specific ZIP delivered privately through Google Drive.">
   <meta name="robots" content="noindex, nofollow, noarchive">
   <link rel="canonical" href="https://whatarewecapableof.com/piop">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -13,7 +13,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://whatarewecapableof.com/piop">
   <meta property="og:title" content="PiOp Skills Library | What are we capable of?">
-  <meta property="og:description" content="A personal operating layer for Pi. Browse the shared skill library and prepare a setup prompt to run in Pi. Source repositories stay private; access is by invitation, separate from payment.">
+  <meta property="og:description" content="A personal operating layer for Pi. Browse verified skill packages, assemble a set, and request private reviewed fulfillment. GitHub remains the source authority; recipient ZIPs are delivered through Google Drive.">
   <meta property="og:image" content="https://whatarewecapableof.com/og.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -34,150 +34,189 @@
     <main id="main">
       <p class="piop-eyebrow">PIOP / SKILLS LIBRARY</p>
       <h1 class="lead">A personal operating layer for Pi.</h1>
-      <p class="piop-intro">PiOp gives Pi a small, explicit operating method, clear approval boundaries, and a library of focused skills. It is built for work that stays understandable, removable, and under your control. You browse the library here and prepare a setup prompt to run in Pi; the page installs nothing itself.</p>
+      <p class="piop-intro">PiOp gives Pi a small, explicit operating method, clear approval boundaries, and a library of focused skills. Browse the verified library, assemble the set you want, and send one reviewable fulfillment request. The page installs nothing and does not require access to a source repository.</p>
 
-      <div class="install-list-summary" id="install-list-summary" role="status" aria-live="polite">
-        <span class="install-list-label">Install list · <span id="install-list-count">Empty</span></span>
-        <button class="review-install-list" type="button" id="review-install-list" hidden>Review install list</button>
+      <div class="install-list-summary" id="install-list-summary" hidden>
+        <span class="install-list-label">Skill set · <span id="install-list-count" aria-live="polite">Empty</span></span>
+        <button class="review-install-list" type="button" id="review-install-list" aria-controls="install-review" hidden>Review skill set</button>
       </div>
 
       <nav class="piop-actions" aria-label="Page sections">
         <a href="#skills">Skills Library</a>
-        <a href="#access">Access</a>
+        <a href="#access">Delivery</a>
         <a href="#support">Support PiOp</a>
       </nav>
 
       <section class="piop-section" id="skills">
         <div class="piop-section-heading">
           <h2>Skills Library</h2>
-          <p class="piop-meta">4 PACKAGES / 6 SKILLS</p>
+          <p class="piop-meta">5 PACKAGES / 7 SKILLS</p>
         </div>
-        <p>This shared library shows each package's purpose, install scope, risk tier, and exact version. Read what a package can access or change before you add it.</p>
-        <p class="piop-note">Add the packages you want, then generate a setup prompt to run in Pi. Nothing is installed from this page.</p>
-        <p class="piop-note">Each package shows a risk tier and a scope. Risk tiers run from T0 (text-only skills and prompts) to T3 (can touch accounts, credentials, live services, or files). Scope is either global (applies across Pi) or project-local (stays in one workspace).</p>
+        <p>This library shows each released package's purpose, scope, risk tier, exact version, methods, and declared boundaries. Read what a package can access or change before including it.</p>
+        <p class="piop-note">Assemble the packages you want, then generate a fulfillment request. We review the combination before preparing a recipient-specific ZIP. Nothing is installed from this page.</p>
+        <p class="piop-note">Risk tiers run from T0 (text-only skills and prompts) to T3 (can touch accounts, credentials, live services, or files). Scope is either global (applies across Pi) or project-local (stays in one workspace). The package-data row describes what ships in the release; runtime handling of user-provided content follows the selected method and active request.</p>
+        <noscript><p class="piop-note">The selection tool requires JavaScript. You can still review every package here and use the request link under Delivery.</p></noscript>
 
         <div class="skill-index">
           <!-- PIOP_SKILLS_START -->
           <article class="skill-package" id="skill-collaborator-basics">
+            <div class="skill-heading">
+              <h3>Collaborator basics</h3>
+              <p class="skill-meta">v0.1.1 / T0 / Global</p>
+            </div>
+            <p>Neutral first-use checks and private-safe source-note intake for collaborators who are beginning to use Pi skill packs.</p>
             <details>
-              <summary class="skill-summary">
-                <div class="skill-heading">
-                  <h3>Collaborator basics</h3>
-                  <p class="skill-meta">v0.1.1 / T0 / Global</p>
-                </div>
-                <p>First-use checks, plus a private-safe way to turn a short note into observations, questions, and next steps.</p>
-              </summary>
+              <summary class="skill-summary">Review methods and boundaries</summary>
               <div class="skill-details">
+                <h4 class="skill-detail-heading">Included methods</h4>
                 <ul class="skill-methods">
-                  <li><span class="skill-method-name">Collaborator First Use.</span> Verify package discovery, first-use expectations, boundaries, removal, and a private-safe gap report.</li>
-                  <li><span class="skill-method-name">Source Note Intake Lite.</span> Turn a small user-provided note into observations, uncertainties, questions, boundaries, and next steps without storing raw private source.</li>
+                <li><span class="skill-method-name">Collaborator First Use.</span> Verify package discovery, first-use expectations, boundaries, removal, and a private-safe gap report.</li>
+                <li><span class="skill-method-name">Source Note Intake Lite.</span> Turn a small user-provided note into observations, uncertainties, questions, boundaries, and next steps without storing raw private source.</li>
                 </ul>
-                <code class="install-command">pi install git:github.com/youlikemodernart/pi-skill-collaborator-basics@v0.1.1</code>
-                <div class="skill-actions">
-                  <a href="https://github.com/youlikemodernart/pi-skill-collaborator-basics">View private repository</a>
-                  <button type="button" data-copy-command="pi install git:github.com/youlikemodernart/pi-skill-collaborator-basics@v0.1.1" aria-describedby="copy-collaborator-basics-status">Copy install command</button>
-                  <span class="copy-status" id="copy-collaborator-basics-status" aria-live="polite"></span>
-                </div>
+                <h4 class="skill-detail-heading">Declared boundaries</h4>
+                <dl class="skill-boundaries">
+                  <dt>External access</dt>
+                  <dd>none</dd>
+                  <dt>Credentials</dt>
+                  <dd>none</dd>
+                  <dt>Package and private data</dt>
+                  <dd>No private data is included in the package. Runtime handling of user-provided content follows the selected method and active request.</dd>
+                </dl>
               </div>
             </details>
-            <button class="skill-install-toggle" type="button" data-skill-id="collaborator-basics" data-skill-name="Collaborator basics" data-skill-version="v0.1.1" data-skill-scope="Global" data-skill-risk="T0" data-skill-command="pi install git:github.com/youlikemodernart/pi-skill-collaborator-basics@v0.1.1">Add to install list</button>
+            <button class="skill-install-toggle" type="button" hidden aria-pressed="false" data-skill-id="collaborator-basics" data-skill-name="Collaborator basics" data-skill-version="v0.1.1" data-skill-scope="Global" data-skill-risk="T0">Include in skill set</button>
           </article>
 
           <article class="skill-package" id="skill-relational-intelligence">
+            <div class="skill-heading">
+              <h3>Relational intelligence</h3>
+              <p class="skill-meta">v0.1.0 / T0 / Global</p>
+            </div>
+            <p>Agency-preserving relational and introspective reflection with explicit memory, privacy, role, safety, and repair boundaries. Responder support is limited to openai-codex/gpt-5.6-sol; Claude responder use is unsupported.</p>
             <details>
-              <summary class="skill-summary">
-                <div class="skill-heading">
-                  <h3>Relational intelligence</h3>
-                  <p class="skill-meta">v0.1.0 / T0 / Global</p>
-                </div>
-                <p>Support for personal reflection that keeps you in charge, with explicit limits on memory, privacy, role, safety, and repair.</p>
-              </summary>
+              <summary class="skill-summary">Review methods and boundaries</summary>
               <div class="skill-details">
-                <p class="skill-detail-note">Responder support is limited to openai-codex/gpt-5.6-sol; Claude responder use is unsupported.</p>
+                <h4 class="skill-detail-heading">Included methods</h4>
                 <ul class="skill-methods">
-                  <li><span class="skill-method-name">Relational Intelligence.</span> Support relational or introspective reflection with evidence-based challenge, explicit uncertainty, user decision authority, consent-based memory proposals, immediate-safety shifts, and visible repair.</li>
+                <li><span class="skill-method-name">Relational Intelligence.</span> Support relational or introspective reflection with evidence-based challenge, explicit uncertainty, user decision authority, consent-based memory proposals, immediate-safety shifts, and visible repair.</li>
                 </ul>
-                <code class="install-command">pi install git:github.com/youlikemodernart/pi-skill-relational-intelligence@v0.1.0</code>
-                <div class="skill-actions">
-                  <a href="https://github.com/youlikemodernart/pi-skill-relational-intelligence">View private repository</a>
-                  <button type="button" data-copy-command="pi install git:github.com/youlikemodernart/pi-skill-relational-intelligence@v0.1.0" aria-describedby="copy-relational-intelligence-status">Copy install command</button>
-                  <span class="copy-status" id="copy-relational-intelligence-status" aria-live="polite"></span>
-                </div>
+                <h4 class="skill-detail-heading">Declared boundaries</h4>
+                <dl class="skill-boundaries">
+                  <dt>External access</dt>
+                  <dd>none</dd>
+                  <dt>Credentials</dt>
+                  <dd>none</dd>
+                  <dt>Package and private data</dt>
+                  <dd>No private data is included in the package. Runtime handling of user-provided content follows the selected method and active request.</dd>
+                </dl>
               </div>
             </details>
-            <button class="skill-install-toggle" type="button" data-skill-id="relational-intelligence" data-skill-name="Relational intelligence" data-skill-version="v0.1.0" data-skill-scope="Global" data-skill-risk="T0" data-skill-command="pi install git:github.com/youlikemodernart/pi-skill-relational-intelligence@v0.1.0">Add to install list</button>
+            <button class="skill-install-toggle" type="button" hidden aria-pressed="false" data-skill-id="relational-intelligence" data-skill-name="Relational intelligence" data-skill-version="v0.1.0" data-skill-scope="Global" data-skill-risk="T0">Include in skill set</button>
           </article>
 
           <article class="skill-package" id="skill-brand-strategy">
+            <div class="skill-heading">
+              <h3>Brand strategy</h3>
+              <p class="skill-meta">v0.1.1 / T0 / Global</p>
+            </div>
+            <p>Evidence-grounded brand and marketing strategy for positioning, category, messaging, brand architecture, distinctive assets, measurement, channel composition, launch planning, and execution briefs. Drafts and plans only; never executes live actions.</p>
             <details>
-              <summary class="skill-summary">
-                <div class="skill-heading">
-                  <h3>Brand strategy</h3>
-                  <p class="skill-meta">v0.1.1 / T0 / Global</p>
-                </div>
-                <p>Evidence-grounded brand and marketing strategy for positioning, category, messaging, architecture, measurement, and launch planning.</p>
-              </summary>
+              <summary class="skill-summary">Review methods and boundaries</summary>
               <div class="skill-details">
-                <p class="skill-detail-note">Drafts and plans only; never executes live actions.</p>
+                <h4 class="skill-detail-heading">Included methods</h4>
                 <ul class="skill-methods">
-                  <li><span class="skill-method-name">Brand Strategy.</span> Build or review brand audits, positioning, category strategy, brand platforms, messaging architecture, portfolio and naming strategy, distinctive assets, brand-health measurement, channel composition, budget posture, launches, and strategy-to-execution briefs.</li>
+                <li><span class="skill-method-name">Brand Strategy.</span> Build or review brand audits, positioning, category strategy, brand platforms, messaging architecture, portfolio and naming strategy, distinctive assets, brand-health measurement, channel composition, budget posture, launches, and strategy-to-execution briefs.</li>
                 </ul>
-                <code class="install-command">pi install git:github.com/youlikemodernart/pi-skill-brand-strategy@v0.1.1</code>
-                <div class="skill-actions">
-                  <a href="https://github.com/youlikemodernart/pi-skill-brand-strategy">View private repository</a>
-                  <button type="button" data-copy-command="pi install git:github.com/youlikemodernart/pi-skill-brand-strategy@v0.1.1" aria-describedby="copy-brand-strategy-status">Copy install command</button>
-                  <span class="copy-status" id="copy-brand-strategy-status" aria-live="polite"></span>
-                </div>
+                <h4 class="skill-detail-heading">Declared boundaries</h4>
+                <dl class="skill-boundaries">
+                  <dt>External access</dt>
+                  <dd>none</dd>
+                  <dt>Credentials</dt>
+                  <dd>none</dd>
+                  <dt>Package and private data</dt>
+                  <dd>No private data is included in the package. Runtime handling of user-provided content follows the selected method and active request.</dd>
+                </dl>
               </div>
             </details>
-            <button class="skill-install-toggle" type="button" data-skill-id="brand-strategy" data-skill-name="Brand strategy" data-skill-version="v0.1.1" data-skill-scope="Global" data-skill-risk="T0" data-skill-command="pi install git:github.com/youlikemodernart/pi-skill-brand-strategy@v0.1.1">Add to install list</button>
+            <button class="skill-install-toggle" type="button" hidden aria-pressed="false" data-skill-id="brand-strategy" data-skill-name="Brand strategy" data-skill-version="v0.1.1" data-skill-scope="Global" data-skill-risk="T0">Include in skill set</button>
           </article>
 
           <article class="skill-package" id="skill-arena">
+            <div class="skill-heading">
+              <h3>Are.na</h3>
+              <p class="skill-meta">v0.1.0 / T3 / Project local</p>
+            </div>
+            <p>Clean-room Are.na discovery and inspection plus approval-gated creation, upload, connection, update, movement, commenting, importing, and deletion through the official CLI.</p>
             <details>
-              <summary class="skill-summary">
-                <div class="skill-heading">
-                  <h3>Are.na</h3>
-                  <p class="skill-meta">v0.1.0 / T3 / Project local</p>
-                </div>
-                <p>Read-only Are.na discovery and inspection, plus approval-gated changes through the official CLI.</p>
-              </summary>
+              <summary class="skill-summary">Review methods and boundaries</summary>
               <div class="skill-details">
+                <h4 class="skill-detail-heading">Included methods</h4>
                 <ul class="skill-methods">
-                  <li><span class="skill-method-name">Are.na Read.</span> Read-only Are.na discovery and inspection for public or already-authorized channels, blocks, users, groups, followers, connections, comments, pagination, and structured output.</li>
-                  <li><span class="skill-method-name">Are.na Operator.</span> Approval-gated Are.na operations for channels and blocks, links and text, files, connections, movement, comments, batches, imports, and deletion with exact target review and post-write verification.</li>
+                <li><span class="skill-method-name">Are.na Read.</span> Read-only Are.na discovery and inspection for public or already-authorized channels, blocks, users, groups, followers, connections, comments, pagination, and structured output.</li>
+                <li><span class="skill-method-name">Are.na Operator.</span> Approval-gated Are.na operations for channels and blocks, links and text, files, connections, movement, comments, batches, imports, and deletion with exact target review and post-write verification.</li>
                 </ul>
-                <code class="install-command">pi install -l git:github.com/youlikemodernart/pi-skill-arena@v0.1.0</code>
-                <div class="skill-actions">
-                  <a href="https://github.com/youlikemodernart/pi-skill-arena">View private repository</a>
-                  <button type="button" data-copy-command="pi install -l git:github.com/youlikemodernart/pi-skill-arena@v0.1.0" aria-describedby="copy-arena-status">Copy install command</button>
-                  <span class="copy-status" id="copy-arena-status" aria-live="polite"></span>
-                </div>
+                <h4 class="skill-detail-heading">Declared boundaries</h4>
+                <dl class="skill-boundaries">
+                  <dt>External access</dt>
+                  <dd>read-only public or already-authorized Are.na access in arena-read; approval-gated live Are.na writes in arena-operator</dd>
+                  <dt>Credentials</dt>
+                  <dd>user-controlled Are.na OAuth through the official CLI; token values must never be retrieved, printed, copied, or transported</dd>
+                  <dt>Package and private data</dt>
+                  <dd>private Are.na content only when the user explicitly requests authorized access; no account overlay or private content is packaged</dd>
+                </dl>
               </div>
             </details>
-            <button class="skill-install-toggle" type="button" data-skill-id="arena" data-skill-name="Are.na" data-skill-version="v0.1.0" data-skill-scope="Project local" data-skill-risk="T3" data-skill-command="pi install -l git:github.com/youlikemodernart/pi-skill-arena@v0.1.0">Add to install list</button>
+            <button class="skill-install-toggle" type="button" hidden aria-pressed="false" data-skill-id="arena" data-skill-name="Are.na" data-skill-version="v0.1.0" data-skill-scope="Project local" data-skill-risk="T3">Include in skill set</button>
+          </article>
+
+          <article class="skill-package" id="skill-dual-harness">
+            <div class="skill-heading">
+              <h3>Dual harness</h3>
+              <p class="skill-meta">v0.3.0 / T2 / Global</p>
+            </div>
+            <p>Generalized Pi and Claude Code operating layer with a neutral Minimum Operating Kernel, optional shared-root and mirror patterns, private file-prompt bridges, MCP partitioning guidance, and an explicit macOS arm64 patched-thinking lifecycle.</p>
+            <details>
+              <summary class="skill-summary">Review methods and boundaries</summary>
+              <div class="skill-details">
+                <h4 class="skill-detail-heading">Included methods</h4>
+                <ul class="skill-methods">
+                <li><span class="skill-method-name">Dual Harness.</span> Set up, audit, update, repair, roll back, or remove an advisory Pi and Claude Code operating layer, including optional mirrors, file-prompt bridges, MCP partitioning, and patched thinking.</li>
+                </ul>
+                <h4 class="skill-detail-heading">Declared boundaries</h4>
+                <dl class="skill-boundaries">
+                  <dt>External access</dt>
+                  <dd>none on Pi package install; optional fixed-upstream GitHub release reads for patched thinking and separately approved Pi or Claude model execution through the file-prompt bridge</dd>
+                  <dt>Credentials</dt>
+                  <dd>uses only the target user controlled Pi, Claude Code, GitHub, and provider authentication already available to the invoked tools; the package does not retrieve, print, copy, or transport credential values</dd>
+                  <dt>Package and private data</dt>
+                  <dd>optional user supplied bridge prompts and outputs remain in a private local state directory with restrictive permissions; no source-owner private data or live settings are packaged</dd>
+                </dl>
+              </div>
+            </details>
+            <button class="skill-install-toggle" type="button" hidden aria-pressed="false" data-skill-id="dual-harness" data-skill-name="Dual harness" data-skill-version="v0.3.0" data-skill-scope="Global" data-skill-risk="T2">Include in skill set</button>
           </article>
           <!-- PIOP_SKILLS_END -->
         </div>
 
         <section class="install-review" id="install-review" aria-labelledby="install-review-title" hidden>
           <div class="piop-section-heading">
-            <h3 id="install-review-title">Review install list</h3>
+            <h3 id="install-review-title" tabindex="-1">Review skill set</h3>
             <p class="piop-meta" id="install-review-count">EMPTY</p>
           </div>
           <div class="selected-package-list" id="selected-package-list"></div>
           <div class="prompt-actions">
-            <button type="button" class="prompt-action" id="generate-setup-prompt">Generate setup prompt</button>
-            <button type="button" class="prompt-action prompt-action-secondary" id="clear-install-list">Clear install list</button>
+            <button type="button" class="prompt-action" id="generate-setup-prompt">Generate request</button>
+            <button type="button" class="prompt-action prompt-action-secondary" id="clear-install-list">Clear skill set</button>
           </div>
           <div class="setup-prompt" id="setup-prompt" hidden>
-            <label for="setup-prompt-text">Setup prompt</label>
+            <label for="setup-prompt-text">Fulfillment request</label>
             <textarea id="setup-prompt-text" readonly spellcheck="false"></textarea>
             <div class="prompt-actions">
-              <button type="button" class="prompt-action" id="copy-setup-prompt">Copy setup prompt</button>
+              <button type="button" class="prompt-action" id="copy-setup-prompt">Copy request</button>
+              <a class="prompt-action" id="email-skill-request" hidden>Email request</a>
               <span class="copy-status" id="setup-prompt-status" aria-live="polite"></span>
             </div>
-            <p class="piop-note">Your setup prompt is ready. Nothing has been installed.</p>
+            <p class="piop-note">The request contains package identities and delivery instructions only. It does not install anything or grant source access.</p>
           </div>
         </section>
 
@@ -186,25 +225,25 @@
             <h3 id="future-skills-title">Organization-specific skills</h3>
             <p class="skill-meta">RESERVED / NOT ACTIVE</p>
           </div>
-          <p>This space is reserved for skills scoped to a single organization. The current library stays shared and open to everyone.</p>
+          <p>This space is reserved for reviewed skills scoped to a single organization. Organization context, accounts, credentials, and permissions are never inferred from a shared package request.</p>
         </aside>
       </section>
 
       <section class="piop-section" id="access">
         <div class="piop-section-heading">
-          <h2>How access works</h2>
-          <p class="piop-meta">SOURCE ACCESS</p>
+          <h2>How delivery works</h2>
+          <p class="piop-meta">PRIVATE FULFILLMENT</p>
         </div>
-        <p>This page is public; the source repositories are private. Whether a repository opens depends on your signed-in GitHub account and the invitation it has accepted.</p>
+        <p>Private GitHub is the source authority. It holds the reviewed package history, exact versions, tests, and reproducible release evidence. Recipient delivery is separate.</p>
         <ul class="plain-list">
-          <li>Approved collaborators can open the repository and install the pinned release.</li>
-          <li>Pending collaborators need to accept the GitHub invitation first.</li>
-          <li>Everyone else can read what each package does here; the source stays private.</li>
+          <li>Choose a skill set and send the generated request.</li>
+          <li>We review package compatibility, scope, and risk before fulfillment.</li>
+          <li>If approved, we prepare a recipient-specific ZIP and share only that file through private Google Drive.</li>
+          <li>The delivery email includes the exact copy-and-paste Pi setup prompt.</li>
         </ul>
-        <p class="piop-note">Access is granted manually, by invitation. Payment does not grant access or change repository permissions.</p>
+        <p class="piop-note">A GitHub account is not required for recipient delivery. Payment does not change fulfillment priority, package access, or repository permissions.</p>
         <div class="piop-actions">
-          <a href="mailto:hello@whatarewecapableof.com?subject=PiOp%20access">Request access</a>
-          <a href="https://github.com/notifications">Check GitHub invitations</a>
+          <a href="mailto:hello@whatarewecapableof.com?subject=PiOp%20skill%20set%20request">Request a skill set</a>
         </div>
       </section>
 
@@ -213,7 +252,7 @@
           <h2>Pay what you wish</h2>
           <p class="piop-meta">ONE TIME OR MONTHLY</p>
         </div>
-        <p>PiOp is free to use. If it is useful, you can give a one-time amount or support its development each month. Support is optional. It does not buy consulting services or repository access.</p>
+        <p>PiOp is free to use. If it is useful, you can give a one-time amount or support its development each month. Support is optional. It does not buy consulting services, fulfillment priority, package access, or repository permissions.</p>
 
         <div class="support-status" id="support-status" role="status" aria-live="polite" hidden></div>
         <p class="piop-note">Payment is not open yet. It will go live once the checkout is verified.</p>

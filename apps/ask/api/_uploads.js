@@ -311,6 +311,26 @@ async function completeUpload({ uploadId, pathname, blobUrl, contentType, size, 
   const row = rows[0];
   const cleanBlobUrl = clean(blobUrl, 1000);
   if (row.status === 'completed' && row.active === true) return { id, responseId: row.response_id, questionRef: row.question_ref };
+  if (row.status === 'completed' && row.active === false && row.metadata_policy === 'strip') {
+    if (typeof deleteOriginalBlob !== 'function') throw makeHttpError(500, 'Inactive upload cleanup is unavailable.');
+    try {
+      await deleteOriginalBlob(pathname);
+      await markOriginalDeleted(id, true);
+    } catch {
+      await markOriginalDeleted(id, false);
+      throw makeHttpError(503, 'Inactive upload cleanup is pending retry.');
+    }
+    throw makeHttpError(409, 'This upload was already replaced.');
+  }
+  if (row.status === 'replaced') {
+    if (typeof deleteOriginalBlob !== 'function') throw makeHttpError(500, 'Replaced upload cleanup is unavailable.');
+    try {
+      await deleteOriginalBlob(pathname);
+    } catch {
+      throw makeHttpError(503, 'Replaced upload cleanup is pending retry.');
+    }
+    throw makeHttpError(409, 'This upload was already replaced.');
+  }
   if (row.response_status !== 'started') throw makeHttpError(409, 'This response has already been submitted.');
   if (row.status !== 'pending') throw makeHttpError(409, 'This upload was already replaced.');
 

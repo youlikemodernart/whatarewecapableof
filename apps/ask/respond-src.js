@@ -35,7 +35,22 @@ import { put } from '@vercel/blob/client';
   let uploadInProgress = false;
   let uploadOperation = 0;
   let submissionInProgress = false;
+  let photoPreviewUrl = '';
   const answers = new Map();
+
+  function clearPhotoPreview() {
+    if (photoPreviewUrl) URL.revokeObjectURL(photoPreviewUrl);
+    photoPreviewUrl = '';
+  }
+
+  function setPhotoPreview(file) {
+    clearPhotoPreview();
+    photoPreviewUrl = URL.createObjectURL(file);
+    const preview = els.questionCard.querySelector('#photo-preview');
+    if (!preview) return;
+    preview.src = photoPreviewUrl;
+    preview.classList.remove('hidden');
+  }
 
   function show(name) {
     ['loading', 'passcodeView', 'welcomeView', 'questionView', 'doneView'].forEach((key) => els[key].classList.toggle('hidden', key !== name));
@@ -214,7 +229,7 @@ import { put } from '@vercel/blob/client';
       body += `<div class="choices"><label class="choice"><span class="opt"><input type="checkbox" id="approval" ${saved === true ? 'checked' : ''}> <strong>${escapeHtml(q.approvalText || 'I approve.')}</strong></span></label></div>`;
     } else if (q.type === 'photo_upload') {
       const status = saved?.completed ? `<p class="upload-status" role="status">Uploaded: ${escapeHtml(saved.fileName)} (${Math.max(1, Math.round(saved.size / 1024))} KB)</p>` : '<p class="upload-status" role="status">No headshot uploaded yet.</p>';
-      body += `<div class="field upload-field"><label for="photo-upload">Choose headshot${q.required ? ' <span aria-hidden="true">*</span>' : ''}</label><input id="photo-upload" type="file" accept="image/jpeg,image/png,image/heic,image/heif,.jpg,.jpeg,.png,.heic,.heif" aria-describedby="photo-usage photo-status"><p class="context" id="photo-usage">${escapeHtml(q.usageText)}</p><div id="photo-status">${status}</div></div>`;
+      body += `<div class="field upload-field"><label for="photo-upload">Choose headshot${q.required ? ' <span aria-hidden="true">*</span>' : ''}</label><input id="photo-upload" type="file" accept="image/jpeg,image/png,image/heic,image/heif,.jpg,.jpeg,.png,.heic,.heif" aria-describedby="photo-usage photo-status"><img id="photo-preview" class="photo-preview hidden" alt="Preview of selected headshot"><p class="context" id="photo-usage">${escapeHtml(q.usageText)}</p><div id="photo-status">${status}</div></div>`;
     }
     els.questionCard.innerHTML = body;
     if (q.type === 'photo_upload') {
@@ -224,6 +239,7 @@ import { put } from '@vercel/blob/client';
         const operation = ++uploadOperation;
         uploadInProgress = true;
         answers.delete(q.ref);
+        setPhotoPreview(file);
         const statusNode = els.questionCard.querySelector('#photo-status');
         if (statusNode) statusNode.innerHTML = '<p class="upload-status" role="status">Uploading and verifying headshot…</p>';
         event.target.disabled = true;

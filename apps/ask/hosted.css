@@ -117,6 +117,7 @@ input[type="file"]::file-selector-button {
   font-weight: 600;
 }
 .upload-field .context { font-size: 14px; margin-bottom: 4px; }
+.photo-preview { display: block; width: min(100%, 280px); max-height: 280px; margin-top: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); object-fit: contain; }
 .upload-status { margin: 0; color: var(--muted); font-size: 14px; }
 input:focus, textarea:focus, select:focus, button:focus-visible, a:focus-visible {
   outline: 2px solid var(--accent);

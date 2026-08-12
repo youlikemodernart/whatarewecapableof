@@ -82,12 +82,17 @@ module.exports = async function handler(req, res) {
       onBeforeGenerateToken: async (pathname, clientPayload) => {
         const client = parsePayload(clientPayload);
         const prepared = await prepareUpload({ draft, pathname, ...client });
+        const requestUrl = new URL(req.url, 'http://ask.local');
+        const forwardedHost = String(req.headers['x-forwarded-host'] || req.headers.host || '').split(',')[0].trim();
+        const forwardedProto = String(req.headers['x-forwarded-proto'] || 'https').split(',')[0].trim();
+        const safeHost = /^[A-Za-z0-9.-]+(?::\d+)?$/.test(forwardedHost) ? forwardedHost : '';
         return {
           allowedContentTypes: ['image/jpeg', 'image/png', 'image/heic', 'image/heif'],
           maximumSizeInBytes: prepared.maximumSizeInBytes,
           addRandomSuffix: false,
           allowOverwrite: false,
           cacheControlMaxAge: 60,
+          callbackUrl: safeHost ? `${forwardedProto === 'http' ? 'http' : 'https'}://${safeHost}${requestUrl.pathname}` : undefined,
           tokenPayload: JSON.stringify({ uploadId: prepared.uploadId, pathname: prepared.pathname, contentType: prepared.contentType }),
         };
       },

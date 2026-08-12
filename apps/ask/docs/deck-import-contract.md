@@ -59,7 +59,7 @@ Identity questions can declare an exact `fields` array using `name`, `email`, an
 }
 ```
 
-A `photo_upload` question accepts one private JPEG, PNG, HEIC, or HEIF image up to 10 MB, 6000 px on either axis, and 12 megapixels total. Its `usageText` is required and must explicitly state that the headshot will be used with the respondent's name on `kamplove.org`. Imports cannot widen the fixed type, count, or size limits.
+A `photo_upload` question accepts one private JPEG, PNG, HEIC, or HEIF image up to 10 MB, 6000 px on either axis, and 13 megapixels total. Its `usageText` is required and must explicitly state that the headshot will be used with the respondent's name on `kamplove.org`. Imports cannot widen the fixed type, count, or size limits.
 
 ```json
 {

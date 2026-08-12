@@ -140,7 +140,7 @@ async function validateDecodedImage(buffer, expectedType) {
           const candidateHeight = Number(candidate.height || 0);
           const pixels = candidateWidth * candidateHeight;
           cumulativePixels += pixels;
-          if (candidateWidth < 1 || candidateHeight < 1 || candidateWidth > 6000 || candidateHeight > 6000 || pixels > 12_000_000 || cumulativePixels > 16_000_000) throw new Error('dimensions');
+          if (candidateWidth < 1 || candidateHeight < 1 || candidateWidth > 6000 || candidateHeight > 6000 || pixels > 13_000_000 || cumulativePixels > 17_000_000) throw new Error('dimensions');
           const decoded = await candidate.decode();
           if (decoded.width !== candidateWidth || decoded.height !== candidateHeight || decoded.data?.length !== pixels * 4) throw new Error('decode');
         }
@@ -149,13 +149,13 @@ async function validateDecodedImage(buffer, expectedType) {
         images.dispose();
       }
     }
-    const image = sharp(buffer, { failOn: 'error', limitInputPixels: 12_000_000, sequentialRead: true });
+    const image = sharp(buffer, { failOn: 'error', limitInputPixels: 13_000_000, sequentialRead: true });
     const metadata = await image.metadata();
     const formatType = metadata.format === 'jpeg' ? 'image/jpeg' : metadata.format === 'png' ? 'image/png' : '';
     const width = Number(metadata.width || 0);
     const height = Number(metadata.height || 0);
     if (!formatType || formatType !== expectedType) throw new Error('format');
-    if (width < 1 || height < 1 || width > 6000 || height > 6000 || width * height > 12_000_000) throw new Error('dimensions');
+    if (width < 1 || height < 1 || width > 6000 || height > 6000 || width * height > 13_000_000) throw new Error('dimensions');
     if (Number(metadata.pages || 1) !== 1) throw new Error('pages');
     await image.stats();
     return { contentType: formatType, width, height };

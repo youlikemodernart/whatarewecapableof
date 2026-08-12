@@ -8,7 +8,7 @@ let sqlClient = null;
 let schemaReady = false;
 let memoryState = null;
 
-const QUESTION_TYPES = new Set(['identity', 'short_text', 'long_text', 'multi_choice', 'single_choice', 'yes_no', 'approval_checkbox']);
+const QUESTION_TYPES = new Set(['identity', 'short_text', 'long_text', 'multi_choice', 'single_choice', 'yes_no', 'approval_checkbox', 'photo_upload']);
 const DECK_SCHEMA_VERSION = 'ask.deck.v0';
 const DECK_STATUSES = new Set(['draft', 'published', 'closed', 'archived']);
 const DECK_SENSITIVITIES = new Set(['low', 'medium', 'high']);
@@ -222,6 +222,7 @@ function memory() {
     decksById: new Map(deckRecords.map((record) => [record.deckId, record])),
     responses: new Map((persisted.responses || []).map((response) => [response.id, response])),
     events: persisted.events || [],
+    uploads: new Map((persisted.uploads || []).map((upload) => [upload.id, upload])),
   };
   return memoryState;
 }
@@ -232,6 +233,7 @@ function persistMemory(state = memoryState) {
     decks: Array.from(state.decksById.values()),
     responses: Array.from(state.responses.values()),
     events: state.events || [],
+    uploads: Array.from((state.uploads || new Map()).values()),
   }, null, 2));
 }
 
@@ -310,6 +312,23 @@ async function ensureSchema() {
     answered_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     UNIQUE (response_id, question_ref)
   )`;
+  await db`CREATE TABLE IF NOT EXISTS ask_uploads (
+    id TEXT PRIMARY KEY,
+    response_id TEXT NOT NULL REFERENCES ask_responses(id) ON DELETE CASCADE,
+    deck_version_id TEXT NOT NULL REFERENCES ask_deck_versions(id),
+    question_ref TEXT NOT NULL,
+    original_name TEXT NOT NULL DEFAULT '',
+    pathname TEXT NOT NULL UNIQUE,
+    blob_url TEXT NOT NULL DEFAULT '',
+    content_type TEXT NOT NULL DEFAULT '',
+    size_bytes BIGINT NOT NULL DEFAULT 0,
+    status TEXT NOT NULL DEFAULT 'pending',
+    active BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    completed_at TIMESTAMPTZ,
+    CHECK (status IN ('pending', 'completed', 'replaced', 'failed')),
+    CHECK (size_bytes >= 0 AND size_bytes <= 10485760)
+  )`;
   await db`CREATE TABLE IF NOT EXISTS ask_answer_packets (
     id TEXT PRIMARY KEY,
     response_id TEXT NOT NULL REFERENCES ask_responses(id) ON DELETE CASCADE,
@@ -341,6 +360,8 @@ async function ensureSchema() {
   await db`CREATE INDEX IF NOT EXISTS ask_responses_status_idx ON ask_responses (status, updated_at DESC)`;
   await db`CREATE INDEX IF NOT EXISTS ask_answers_response_idx ON ask_answers (response_id)`;
   await db`CREATE INDEX IF NOT EXISTS ask_answers_followup_idx ON ask_answers (requires_review, creates_followup)`;
+  await db`CREATE INDEX IF NOT EXISTS ask_uploads_response_idx ON ask_uploads (response_id, question_ref, created_at DESC)`;
+  await db`CREATE UNIQUE INDEX IF NOT EXISTS ask_uploads_active_idx ON ask_uploads (response_id, question_ref) WHERE active = TRUE`;
   await db`CREATE INDEX IF NOT EXISTS ask_answer_packets_response_idx ON ask_answer_packets (response_id, created_at DESC)`;
   await db`CREATE INDEX IF NOT EXISTS ask_deck_events_deck_idx ON ask_deck_events (deck_id, created_at DESC)`;
   await db`CREATE INDEX IF NOT EXISTS ask_response_events_response_idx ON ask_response_events (response_id, created_at DESC)`;
@@ -516,6 +537,15 @@ function normalizeQuestion(input, index) {
   }
   if (type === 'approval_checkbox') {
     question.approvalText = cleanText(input?.approvalText, 1000) || 'I approve this path.';
+  }
+  if (type === 'photo_upload') {
+    question.accept = ['image/jpeg', 'image/png', 'image/heic', 'image/heif'];
+    question.maxBytes = 10 * 1024 * 1024;
+    question.maxFiles = 1;
+    question.usageText = cleanText(input?.usageText, 1000);
+    if (!question.usageText || !/kamplove\.org/i.test(question.usageText) || !/name/i.test(question.usageText)) {
+      throw makeHttpError(400, `Question ${ref} must explain that the headshot will be used with the respondent's name on kamplove.org.`);
+    }
   }
   return question;
 }
@@ -1036,6 +1066,14 @@ function normalizeAnswer(question, incoming) {
   } else if (question.type === 'approval_checkbox') {
     value = raw === true;
     if (question.required && value !== true) throw makeHttpError(400, 'Approval is required before submitting.');
+  } else if (question.type === 'photo_upload') {
+    if (!raw || raw.serverVerified !== true || !raw.uploadId) throw makeHttpError(400, 'Upload a headshot before submitting.');
+    value = {
+      uploadId: cleanSingleLine(raw.uploadId, 80),
+      fileName: cleanSingleLine(raw.fileName, 240),
+      contentType: cleanSingleLine(raw.contentType, 100),
+      size: Number(raw.size || 0),
+    };
   }
 
   const selectedChoices = Array.isArray(value)
@@ -1209,7 +1247,9 @@ async function submitResponse({ responseId, answers }) {
     if (!response) throw makeHttpError(404, 'Response not found.');
     if (response.status !== 'started') throw makeHttpError(409, 'This response has already been submitted.');
     const deck = state.decksById.get(response.deckId);
-    const normalized = normalizeSubmittedAnswers(deck.schemaJson, answers);
+    const { answersWithVerifiedUploads } = require('./_uploads');
+    const verifiedAnswers = await answersWithVerifiedUploads(cleanResponseId, deck.schemaJson, answers);
+    const normalized = normalizeSubmittedAnswers(deck.schemaJson, verifiedAnswers);
     const respondent = respondentFromAnswers(normalized);
     response.answers = normalized;
     response.respondentName = respondent.name;
@@ -1234,23 +1274,63 @@ async function submitResponse({ responseId, answers }) {
   if (!rows.length) throw makeHttpError(404, 'Response not found.');
   const row = rows[0];
   if (row.status !== 'started') throw makeHttpError(409, 'This response has already been submitted.');
-  const normalized = normalizeSubmittedAnswers(row.schema_json, answers);
+  const { answersWithVerifiedUploads } = require('./_uploads');
+  const verifiedAnswers = await answersWithVerifiedUploads(cleanResponseId, row.schema_json, answers);
+  const normalized = normalizeSubmittedAnswers(row.schema_json, verifiedAnswers);
   const respondent = respondentFromAnswers(normalized);
 
-  const claimed = await db`UPDATE ask_responses
-    SET status = 'submitted', respondent_name = ${respondent.name}, respondent_email = ${respondent.email}, respondent_role = ${respondent.role}, submitted_at = now(), updated_at = now()
-    WHERE id = ${cleanResponseId} AND status = 'started'
-    RETURNING id`;
-  if (!claimed.length) throw makeHttpError(409, 'This response has already been submitted.');
-
-  for (const answer of normalized) {
-    await db`INSERT INTO ask_answers (response_id, question_ref, answer_type, value_json, status, creates_followup, requires_review, answered_at)
-      VALUES (${cleanResponseId}, ${answer.questionRef}, ${answer.answerType}, ${JSON.stringify(answer.value)}::jsonb, ${answer.status}, ${answer.createsFollowup}, ${answer.requiresReview}, now())
+  const answerRows = normalized.map((answer) => ({
+    questionRef: answer.questionRef,
+    answerType: answer.answerType,
+    value: answer.value,
+    status: answer.status,
+    createsFollowup: answer.createsFollowup,
+    requiresReview: answer.requiresReview,
+  }));
+  const submitted = await db`WITH claimed AS (
+      UPDATE ask_responses
+      SET status = 'submitted', respondent_name = ${respondent.name}, respondent_email = ${respondent.email}, respondent_role = ${respondent.role}, submitted_at = now(), updated_at = now()
+      WHERE id = ${cleanResponseId} AND status = 'started'
+        AND NOT EXISTS (
+          SELECT 1
+          FROM jsonb_to_recordset(${JSON.stringify(answerRows)}::jsonb) AS photo(
+            "questionRef" text, "answerType" text, value jsonb, status text, "createsFollowup" boolean, "requiresReview" boolean
+          )
+          WHERE photo."answerType" = 'photo_upload'
+            AND NOT EXISTS (
+              SELECT 1 FROM ask_uploads u
+              WHERE u.id = photo.value->>'uploadId'
+                AND u.response_id = ask_responses.id
+                AND u.question_ref = photo."questionRef"
+                AND u.status = 'completed'
+                AND u.active = TRUE
+            )
+        )
+      RETURNING id
+    ), answer_rows AS (
+      SELECT * FROM jsonb_to_recordset(${JSON.stringify(answerRows)}::jsonb) AS x(
+        "questionRef" text, "answerType" text, value jsonb, status text, "createsFollowup" boolean, "requiresReview" boolean
+      )
+    ), inserted_answers AS (
+      INSERT INTO ask_answers (response_id, question_ref, answer_type, value_json, status, creates_followup, requires_review, answered_at)
+      SELECT claimed.id, answer_rows."questionRef", answer_rows."answerType", answer_rows.value, answer_rows.status,
+        answer_rows."createsFollowup", answer_rows."requiresReview", now()
+      FROM claimed CROSS JOIN answer_rows
       ON CONFLICT (response_id, question_ref)
-      DO UPDATE SET value_json = EXCLUDED.value_json, status = EXCLUDED.status, creates_followup = EXCLUDED.creates_followup, requires_review = EXCLUDED.requires_review, answered_at = EXCLUDED.answered_at`;
+      DO UPDATE SET value_json = EXCLUDED.value_json, status = EXCLUDED.status, creates_followup = EXCLUDED.creates_followup,
+        requires_review = EXCLUDED.requires_review, answered_at = EXCLUDED.answered_at
+      RETURNING response_id
+    ), recorded_event AS (
+      INSERT INTO ask_response_events (response_id, event_type, summary)
+      SELECT id, 'submitted', 'Respondent submitted answers.' FROM claimed
+      RETURNING response_id
+    )
+    SELECT (SELECT count(*)::int FROM claimed) AS claimed_count,
+      (SELECT count(*)::int FROM inserted_answers) AS answer_count,
+      (SELECT count(*)::int FROM recorded_event) AS event_count`;
+  if (!submitted.length || Number(submitted[0].claimed_count) !== 1 || Number(submitted[0].answer_count) !== normalized.length || Number(submitted[0].event_count) !== 1) {
+    throw makeHttpError(409, 'This response has already been submitted.');
   }
-  await db`INSERT INTO ask_response_events (response_id, event_type, summary)
-    VALUES (${cleanResponseId}, 'submitted', 'Respondent submitted answers.')`;
   return {
     id: cleanResponseId,
     deckId: row.deck_id,
@@ -1278,6 +1358,7 @@ function answerLabel(question, answer) {
     return choiceMap(question).get(answer.value)?.label || answer.value || '';
   }
   if (question.type === 'approval_checkbox') return answer.value ? question.approvalText || 'Approved' : 'Not approved';
+  if (question.type === 'photo_upload') return answer.value?.fileName ? `Headshot uploaded: ${answer.value.fileName}` : 'Headshot uploaded';
   return String(answer.value || '');
 }
 
@@ -1432,4 +1513,6 @@ module.exports = {
   responseMarkdown,
   normalizeSeed,
   _memory: memory,
+  _persistMemory: persistMemory,
+  _sql: sql,
 };

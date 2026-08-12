@@ -40,6 +40,7 @@ This contract is for AI-session-generated question decks imported into WAWCO Ask
 - `single_choice`
 - `yes_no`
 - `approval_checkbox`
+- `photo_upload`
 
 Every question needs a stable lowercase `ref`, a supported `type`, a respondent-facing `prompt`, and optional `section`, `contextText`, `recommendationRationale`, and `required` fields.
 
@@ -57,6 +58,20 @@ Identity questions can declare an exact `fields` array using `name`, `email`, an
   ]
 }
 ```
+
+A `photo_upload` question accepts one private JPEG, PNG, HEIC, or HEIF image up to 10 MB, 6000 px on either axis, and 12 megapixels total. Its `usageText` is required and must explicitly state that the headshot will be used with the respondent's name on `kamplove.org`. Imports cannot widen the fixed type, count, or size limits.
+
+```json
+{
+  "ref": "board-headshot",
+  "type": "photo_upload",
+  "prompt": "Upload the headshot you would like us to use.",
+  "usageText": "By uploading this headshot, you give Kamp Love permission to publish it with your name on kamplove.org.",
+  "required": true
+}
+```
+
+The browser uploads directly to a private Vercel Blob store through a draft-authorized token. Final submission resolves the file from server-owned upload metadata; browser-supplied Blob URLs are ignored. Admins retrieve media only through an authenticated same-origin route. Markdown exports describe the upload without exposing its private Blob URL.
 
 ## Link-only access reconfiguration
 

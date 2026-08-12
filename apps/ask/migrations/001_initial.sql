@@ -82,6 +82,27 @@ CREATE TABLE IF NOT EXISTS ask_answers (
 CREATE INDEX IF NOT EXISTS ask_answers_response_idx ON ask_answers (response_id);
 CREATE INDEX IF NOT EXISTS ask_answers_followup_idx ON ask_answers (requires_review, creates_followup);
 
+CREATE TABLE IF NOT EXISTS ask_uploads (
+  id TEXT PRIMARY KEY,
+  response_id TEXT NOT NULL REFERENCES ask_responses(id) ON DELETE CASCADE,
+  deck_version_id TEXT NOT NULL REFERENCES ask_deck_versions(id),
+  question_ref TEXT NOT NULL,
+  original_name TEXT NOT NULL DEFAULT '',
+  pathname TEXT NOT NULL UNIQUE,
+  blob_url TEXT NOT NULL DEFAULT '',
+  content_type TEXT NOT NULL DEFAULT '',
+  size_bytes BIGINT NOT NULL DEFAULT 0,
+  status TEXT NOT NULL DEFAULT 'pending',
+  active BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  completed_at TIMESTAMPTZ,
+  CHECK (status IN ('pending', 'completed', 'replaced', 'failed')),
+  CHECK (size_bytes >= 0 AND size_bytes <= 10485760)
+);
+
+CREATE INDEX IF NOT EXISTS ask_uploads_response_idx ON ask_uploads (response_id, question_ref, created_at DESC);
+CREATE UNIQUE INDEX IF NOT EXISTS ask_uploads_active_idx ON ask_uploads (response_id, question_ref) WHERE active = TRUE;
+
 CREATE TABLE IF NOT EXISTS ask_answer_packets (
   id TEXT PRIMARY KEY,
   response_id TEXT NOT NULL REFERENCES ask_responses(id) ON DELETE CASCADE,

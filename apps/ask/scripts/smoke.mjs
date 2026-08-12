@@ -11,6 +11,7 @@ process.env.ASK_ALLOWED_DOMAIN = 'whatarewecapableof.com';
 process.env.ASK_ALLOWED_EMAILS = 'noah@whatarewecapableof.com';
 process.env.ASK_LINK_SECRET = 'ask-smoke-link-secret-32-bytes';
 process.env.ASK_MEMORY_FILE = path.join(os.tmpdir(), `wawco-ask-smoke-${process.pid}.json`);
+process.env.ASK_BLOB_MODE = 'memory';
 try { fs.unlinkSync(process.env.ASK_MEMORY_FILE); } catch {}
 
 const require = createRequire(import.meta.url);
@@ -19,10 +20,14 @@ const session = require('../api/session.js');
 const publicDeck = require('../api/public/deck.js');
 const start = require('../api/public/start.js');
 const submit = require('../api/public/submit.js');
+const upload = require('../api/public/upload.js');
 const decks = require('../api/admin/decks.js');
 const responses = require('../api/admin/responses.js');
 const exportMarkdown = require('../api/admin/export.js');
+const adminUpload = require('../api/admin/upload.js');
 const { createSessionCookie } = require('../api/_auth.js');
+const { validateDecodedImage } = require('../api/_uploads.js');
+const sharp = require('sharp');
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -350,6 +355,116 @@ assert(responseId, 'a submitted response should remain available to the admin');
 result = await call(exportMarkdown, { url: `/api/admin/export?id=${encodeURIComponent(responseId)}`, cookie: admin.cookie });
 assert(result.status === 200 && result.raw.includes('Needs follow-up') && result.raw.includes('Boundary'), 'markdown export should include review sections');
 
+const uploadDeckInput = {
+  ...importDeck,
+  title: 'Private headshot upload smoke',
+  clientLabel: 'Headshot Smoke Co',
+  questions: [
+    { ref: 'upload-identity', type: 'identity', section: 'About you', prompt: 'Who is responding?', required: true, fields: [
+      { key: 'name', label: 'Name' }, { key: 'email', label: 'Email' },
+    ] },
+    { ref: 'upload-photo', type: 'photo_upload', section: 'About you', prompt: 'Upload a headshot.', required: true,
+      usageText: "By uploading this headshot, you give Kamp Love permission to publish it with your name on kamplove.org." },
+  ],
+};
+result = await call(decks, { method: 'POST', url: '/api/admin/decks', cookie: admin.cookie, headers: adminHeaders, body: uploadDeckInput });
+assert(result.status === 201, 'photo-upload fixture should import');
+const uploadDeck = result.data;
+result = await call(start, { method: 'POST', url: '/api/public/start', body: { slug: uploadDeck.secret.publicSlug, passcode: uploadDeck.secret.passcode, begin: true } });
+assert(result.status === 200 && result.data.deck.questions[1].type === 'photo_upload', 'photo-upload deck should start');
+assert(result.data.deck.questions[1].maxBytes === 10 * 1024 * 1024 && result.data.deck.questions[1].accept.includes('image/heic'), 'photo constraints should be server-owned');
+const uploadDraftCookie = cookieHeader(result.headers['set-cookie']);
+const uploadAnswers = [
+  { questionRef: 'upload-identity', value: { name: 'Photo Smoke', email: 'photo@whatarewecapableof.com' } },
+  { questionRef: 'upload-photo', value: { uploadId: 'forged', blobUrl: 'https://attacker.invalid/private.jpg' } },
+];
+result = await call(submit, { method: 'POST', url: '/api/public/submit', cookie: uploadDraftCookie, body: { answers: uploadAnswers } });
+assert(result.status === 400, 'required photo should reject a forged browser answer without a completed server upload');
+
+const truncatedPng = Buffer.from('89504e470d0a1a0a0000000d49484452000000010000000108060000001f15c489', 'hex');
+const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGP4z8DwHwAFAAH/iZk9HQAAAABJRU5ErkJggg==', 'base64');
+const corruptPng = Buffer.from(png);
+corruptPng[corruptPng.indexOf(Buffer.from('IDAT')) + 5] ^= 0xff;
+const tooWidePng = await sharp({ create: { width: 6001, height: 1, channels: 3, background: '#ffffff' } }).png().toBuffer();
+let dimensionRejected = false;
+try { await validateDecodedImage(tooWidePng, 'image/png'); } catch { dimensionRejected = true; }
+assert(dimensionRejected, 'decoder should reject images beyond the dimension ceiling');
+const pathname = `ask-headshots/${'a'.repeat(48)}.png`;
+const generateEvent = { type: 'blob.generate-client-token', payload: { pathname, multipart: false, clientPayload: JSON.stringify({
+  questionRef: 'upload-photo', fileName: 'portrait.png', contentType: 'image/png', size: png.length,
+}) } };
+result = await call(upload, { method: 'POST', url: '/api/public/upload', body: generateEvent });
+assert(result.status === 401, 'upload token generation should require the signed draft');
+result = await call(upload, { method: 'POST', url: '/api/public/upload', cookie: uploadDraftCookie, body: {
+  ...generateEvent,
+  payload: { ...generateEvent.payload, clientPayload: JSON.stringify({ questionRef: 'upload-photo', fileName: 'portrait.jpg', contentType: 'image/png', size: png.length }) },
+} });
+assert(result.status === 400, 'upload authorization should reject filename and MIME mismatch');
+result = await call(upload, { method: 'POST', url: '/api/public/upload', cookie: uploadDraftCookie, body: {
+  ...generateEvent,
+  payload: { ...generateEvent.payload, clientPayload: JSON.stringify({ questionRef: 'upload-photo', fileName: 'portrait.png', contentType: 'image/png', size: 10 * 1024 * 1024 + 1 }) },
+} });
+assert(result.status === 400, 'upload authorization should reject files above 10 MB');
+result = await call(upload, { method: 'POST', url: '/api/public/upload', cookie: uploadDraftCookie, body: generateEvent });
+assert(result.status === 200 && result.data.memoryUpload && result.data.uploadId, 'authorized local upload should create a pending server record');
+const pendingUpload = result.data;
+result = await call(upload, { method: 'POST', url: '/api/public/upload', cookie: uploadDraftCookie, body: { type: 'ask.memory-upload', payload: {
+  uploadId: pendingUpload.uploadId, pathname, contentType: 'image/png', base64: truncatedPng.toString('base64'),
+} } });
+assert(result.status === 400, 'completion should reject a truncated file that only has valid image header bytes');
+result = await call(upload, { method: 'POST', url: '/api/public/upload', cookie: uploadDraftCookie, body: { type: 'ask.memory-upload', payload: {
+  uploadId: pendingUpload.uploadId, pathname, contentType: 'image/png', base64: corruptPng.toString('base64'),
+} } });
+assert(result.status === 400, 'decoder should reject structurally complete image data with corrupt contents');
+result = await call(upload, { method: 'POST', url: '/api/public/upload', cookie: uploadDraftCookie, body: { type: 'ask.memory-upload', payload: {
+  uploadId: pendingUpload.uploadId, pathname, contentType: 'image/png', base64: png.toString('base64'),
+} } });
+assert(result.status === 200 && result.data.completed, 'valid image bytes should complete the private upload');
+result = await call(upload, { method: 'POST', url: '/api/public/upload', cookie: uploadDraftCookie, body: { type: 'ask.memory-upload', payload: {
+  uploadId: pendingUpload.uploadId, pathname, contentType: 'image/png', base64: png.toString('base64'),
+} } });
+assert(result.status === 200 && result.data.completed, 'a repeated completion callback should be idempotent');
+const replacementPathname = `ask-headshots/${'b'.repeat(48)}.png`;
+result = await call(upload, { method: 'POST', url: '/api/public/upload', cookie: uploadDraftCookie, body: {
+  type: 'blob.generate-client-token', payload: { pathname: replacementPathname, multipart: false, clientPayload: JSON.stringify({
+    questionRef: 'upload-photo', fileName: 'replacement.png', contentType: 'image/png', size: png.length,
+  }) },
+} });
+assert(result.status === 200 && result.data.uploadId, 'a replacement upload should receive separate authorization');
+const replacementUpload = result.data;
+result = await call(upload, { url: '/api/public/upload?questionRef=upload-photo', cookie: uploadDraftCookie });
+assert(result.status === 200 && result.data.completed === false, 'authorizing a replacement should immediately supersede the prior active upload');
+result = await call(upload, { method: 'POST', url: '/api/public/upload', cookie: uploadDraftCookie, body: { type: 'ask.memory-upload', payload: {
+  uploadId: replacementUpload.uploadId, pathname: replacementPathname, contentType: 'image/png', base64: png.toString('base64'),
+} } });
+assert(result.status === 200 && result.data.completed, 'replacement image should complete');
+result = await call(upload, { method: 'POST', url: '/api/public/upload', cookie: uploadDraftCookie, body: { type: 'ask.memory-upload', payload: {
+  uploadId: pendingUpload.uploadId, pathname, contentType: 'image/png', base64: png.toString('base64'),
+} } });
+assert(result.status === 409, 'a delayed callback for a replaced upload should not deactivate the current upload');
+result = await call(upload, { url: '/api/public/upload?questionRef=upload-photo', cookie: uploadDraftCookie });
+assert(result.status === 200 && result.data.completed && result.data.fileName === 'replacement.png' && result.data.uploadId === replacementUpload.uploadId, 'draft status should expose only the latest active upload');
+result = await call(submit, { method: 'POST', url: '/api/public/submit', cookie: uploadDraftCookie, body: { answers: uploadAnswers } });
+assert(result.status === 200 && result.data.submitted, 'submit should resolve the completed server-owned photo instead of the forged browser value');
+result = await call(upload, { method: 'POST', url: '/api/public/upload', cookie: uploadDraftCookie, body: { type: 'ask.memory-upload', payload: {
+  uploadId: replacementUpload.uploadId, pathname: replacementPathname, contentType: 'image/png', base64: png.toString('base64'),
+} } });
+assert(result.status === 200 && result.data.completed, 'an exact completion retry after submission should succeed idempotently');
+result = await call(upload, { method: 'POST', url: '/api/public/upload', cookie: uploadDraftCookie, body: generateEvent });
+assert(result.status === 409, 'submitted responses should reject further upload authorization');
+
+result = await call(responses, { url: '/api/admin/responses', cookie: admin.cookie });
+const photoResponse = result.data.responses.find((item) => item.deckTitle === uploadDeckInput.title);
+const photoAnswer = photoResponse?.answers.find((answer) => answer.answerType === 'photo_upload');
+assert(photoAnswer?.value?.uploadId === replacementUpload.uploadId, 'admin response should reference the latest verified upload');
+assert(!JSON.stringify(photoResponse).includes('attacker.invalid') && !JSON.stringify(photoResponse).includes('memory://'), 'admin response JSON should not expose forged or private Blob URLs');
+result = await call(exportMarkdown, { url: `/api/admin/export?id=${encodeURIComponent(photoResponse.id)}`, cookie: admin.cookie });
+assert(result.status === 200 && result.raw.includes('Headshot uploaded: replacement.png') && !result.raw.includes('memory://'), 'Markdown should name the upload without exposing its private URL');
+result = await call(adminUpload, { url: `/api/admin/upload?id=${encodeURIComponent(replacementUpload.uploadId)}` });
+assert(result.status === 401, 'private media should reject unauthenticated reads');
+result = await call(adminUpload, { url: `/api/admin/upload?id=${encodeURIComponent(replacementUpload.uploadId)}`, cookie: admin.cookie });
+assert(result.status === 200 && result.headers['cache-control'] === 'private, no-store' && result.headers['content-type'] === 'image/png', 'authenticated admin should receive private media with no-store headers');
+
 const noCookie = await call(responses, { url: '/api/admin/responses' });
 assert(noCookie.status === 401, 'admin endpoint should require auth');
 
@@ -389,5 +504,20 @@ console.log(JSON.stringify({
     'link-only-response-lockout',
     'link-only-slug-collision',
     'markdown-export',
+    'photo-upload-schema-constraints',
+    'photo-upload-draft-authorization',
+    'photo-upload-mime-size-and-byte-validation',
+    'photo-upload-required-submit',
+    'photo-upload-server-owned-answer',
+    'photo-upload-decoder-validation',
+    'photo-upload-dimension-limit',
+    'photo-upload-callback-idempotence',
+    'photo-upload-post-submit-callback-idempotence',
+    'photo-upload-replacement-authorization-supersedes-prior',
+    'photo-upload-single-active-replacement',
+    'photo-upload-delayed-callback-safe',
+    'photo-upload-after-submit-blocked',
+    'photo-upload-private-admin-read',
+    'photo-upload-no-private-url-leakage',
   ],
 }, null, 2));

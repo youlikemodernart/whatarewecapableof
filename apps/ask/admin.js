@@ -76,14 +76,20 @@
   }
 
   function renderRows(responses) {
-    els.responseRows.innerHTML = responses.map((response) => `
+    els.responseRows.innerHTML = responses.map((response) => {
+      const photo = (response.answers || []).find((answer) => answer.answerType === 'photo_upload' && answer.value?.uploadId);
+      const photoLink = photo
+        ? `<a href="/api/admin/upload?id=${encodeURIComponent(photo.value.uploadId)}" target="_blank" rel="noreferrer">View headshot</a>`
+        : '';
+      return `
       <li class="row">
         <div class="cell"><span class="k">Respondent</span><span class="v"><strong>${escapeHtml(response.respondentName || 'Unknown')}</strong><span class="sub">${escapeHtml(response.respondentEmail || '')}</span></span></div>
         <div class="cell"><span class="k">Status</span><span class="v">${escapeHtml(response.status)}</span></div>
         <div class="cell"><span class="k">Follow-up</span><span class="v">${escapeHtml(response.followupCount || 0)}</span></div>
         <div class="cell"><span class="k">Submitted</span><span class="v">${escapeHtml(formatDate(response.submittedAt || response.updatedAt || ''))}</span></div>
-        <div class="cell"><span class="k">Summary</span><span class="v"><button type="button" class="secondary" data-export="${escapeHtml(response.id)}">Export</button></span></div>
-      </li>`).join('') || '<li class="empty">No responses yet.</li>';
+        <div class="cell"><span class="k">Summary</span><span class="v">${photoLink}<button type="button" class="secondary" data-export="${escapeHtml(response.id)}">Export</button></span></div>
+      </li>`;
+    }).join('') || '<li class="empty">No responses yet.</li>';
   }
 
   async function loadExport(id) {

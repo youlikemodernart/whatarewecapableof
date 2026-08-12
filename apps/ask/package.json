@@ -3,11 +3,18 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
+    "build:respond": "esbuild respond-src.js --bundle --platform=browser --format=iife --target=es2020 --outfile=respond.js",
     "smoke": "node scripts/smoke.mjs",
     "import:deck": "node scripts/import-deck.mjs",
-    "check": "node --check api/_auth.js && node --check api/_db.js && node --check api/_http.js && node --check api/_rate_limit.js && node --check api/_seed_deck.js && node --check api/public/deck.js && node --check api/public/start.js && node --check api/public/submit.js && node --check api/admin/decks.js && node --check api/admin/responses.js && node --check api/admin/export.js && node --check respond.js && node --check admin.js && node --check scripts/import-deck.mjs"
+    "check": "npm run build:respond && node --check api/_auth.js && node --check api/_db.js && node --check api/_uploads.js && node --check api/_http.js && node --check api/_rate_limit.js && node --check api/_seed_deck.js && node --check api/public/deck.js && node --check api/public/start.js && node --check api/public/submit.js && node --check api/public/upload.js && node --check api/admin/decks.js && node --check api/admin/responses.js && node --check api/admin/export.js && node --check api/admin/upload.js && node --check respond-src.js && node --check respond.js && node --check admin.js && node --check scripts/import-deck.mjs"
   },
   "dependencies": {
-    "@neondatabase/serverless": "^1.1.0"
+    "@neondatabase/serverless": "^1.1.0",
+    "@vercel/blob": "^2.8.0",
+    "heic-decode": "^2.1.0",
+    "sharp": "^0.35.3"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
   }
 }

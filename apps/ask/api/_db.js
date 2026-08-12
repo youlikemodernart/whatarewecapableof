@@ -13,6 +13,7 @@ const DECK_SCHEMA_VERSION = 'ask.deck.v0';
 const DECK_STATUSES = new Set(['draft', 'published', 'closed', 'archived']);
 const DECK_SENSITIVITIES = new Set(['low', 'medium', 'high']);
 const ACCESS_MODES = new Set(['passcode', 'link-only']);
+const PHOTO_METADATA_POLICIES = new Set(['strip', 'preserve', 'preserve_with_derivative']);
 const IDENTITY_FIELD_DEFAULTS = {
   name: { label: 'Name', autocomplete: 'name' },
   email: { label: 'Email', autocomplete: 'email' },
@@ -322,13 +323,30 @@ async function ensureSchema() {
     blob_url TEXT NOT NULL DEFAULT '',
     content_type TEXT NOT NULL DEFAULT '',
     size_bytes BIGINT NOT NULL DEFAULT 0,
+    metadata_policy TEXT NOT NULL DEFAULT 'strip',
+    publication_pathname TEXT NOT NULL DEFAULT '',
+    publication_blob_url TEXT NOT NULL DEFAULT '',
+    publication_content_type TEXT NOT NULL DEFAULT '',
+    publication_size_bytes BIGINT NOT NULL DEFAULT 0,
+    original_status TEXT NOT NULL DEFAULT 'retained',
     status TEXT NOT NULL DEFAULT 'pending',
     active BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     completed_at TIMESTAMPTZ,
     CHECK (status IN ('pending', 'completed', 'replaced', 'failed')),
-    CHECK (size_bytes >= 0 AND size_bytes <= 10485760)
+    CHECK (metadata_policy IN ('strip', 'preserve', 'preserve_with_derivative')),
+    CHECK (original_status IN ('retained', 'delete_pending', 'deleted')),
+    CHECK (size_bytes >= 0 AND size_bytes <= 10485760),
+    CHECK (publication_size_bytes >= 0 AND publication_size_bytes <= 10485760)
   )`;
+  await db`ALTER TABLE ask_uploads ADD COLUMN IF NOT EXISTS metadata_policy TEXT NOT NULL DEFAULT 'preserve'`;
+  await db`ALTER TABLE ask_uploads ALTER COLUMN metadata_policy SET DEFAULT 'strip'`;
+  await db`ALTER TABLE ask_uploads ADD COLUMN IF NOT EXISTS publication_pathname TEXT NOT NULL DEFAULT ''`;
+  await db`ALTER TABLE ask_uploads ADD COLUMN IF NOT EXISTS publication_blob_url TEXT NOT NULL DEFAULT ''`;
+  await db`ALTER TABLE ask_uploads ADD COLUMN IF NOT EXISTS publication_content_type TEXT NOT NULL DEFAULT ''`;
+  await db`ALTER TABLE ask_uploads ADD COLUMN IF NOT EXISTS publication_size_bytes BIGINT NOT NULL DEFAULT 0`;
+  await db`ALTER TABLE ask_uploads ADD COLUMN IF NOT EXISTS original_status TEXT NOT NULL DEFAULT 'retained'`;
+  await db`CREATE UNIQUE INDEX IF NOT EXISTS ask_uploads_publication_pathname_idx ON ask_uploads (publication_pathname) WHERE publication_pathname <> ''`;
   await db`CREATE TABLE IF NOT EXISTS ask_answer_packets (
     id TEXT PRIMARY KEY,
     response_id TEXT NOT NULL REFERENCES ask_responses(id) ON DELETE CASCADE,
@@ -542,6 +560,10 @@ function normalizeQuestion(input, index) {
     question.accept = ['image/jpeg', 'image/png', 'image/heic', 'image/heif'];
     question.maxBytes = 10 * 1024 * 1024;
     question.maxFiles = 1;
+    question.metadataPolicy = cleanSingleLine(input?.metadataPolicy || 'strip', 40);
+    if (!PHOTO_METADATA_POLICIES.has(question.metadataPolicy)) {
+      throw makeHttpError(400, `Question ${ref} has an unsupported metadata policy.`);
+    }
     question.usageText = cleanText(input?.usageText, 1000);
     if (!question.usageText || !/kamplove\.org/i.test(question.usageText) || !/name/i.test(question.usageText)) {
       throw makeHttpError(400, `Question ${ref} must explain that the headshot will be used with the respondent's name on kamplove.org.`);
@@ -1071,8 +1093,7 @@ function normalizeAnswer(question, incoming) {
     value = {
       uploadId: cleanSingleLine(raw.uploadId, 80),
       fileName: cleanSingleLine(raw.fileName, 240),
-      contentType: cleanSingleLine(raw.contentType, 100),
-      size: Number(raw.size || 0),
+      metadataPolicy: PHOTO_METADATA_POLICIES.has(cleanSingleLine(raw.metadataPolicy, 40)) ? cleanSingleLine(raw.metadataPolicy, 40) : 'strip',
     };
   }
 

@@ -26,7 +26,8 @@ const responses = require('../api/admin/responses.js');
 const exportMarkdown = require('../api/admin/export.js');
 const adminUpload = require('../api/admin/upload.js');
 const { createSessionCookie } = require('../api/_auth.js');
-const { validateDecodedImage } = require('../api/_uploads.js');
+const { validateDecodedImage, sanitizePublicationImage } = require('../api/_uploads.js');
+const { _memory } = require('../api/_db.js');
 const sharp = require('sharp');
 
 function assert(condition, message) {
@@ -367,12 +368,32 @@ const uploadDeckInput = {
       usageText: "By uploading this headshot, you give Kamp Love permission to publish it with your name on kamplove.org." },
   ],
 };
+const policyDeckInput = {
+  ...uploadDeckInput,
+  title: 'Metadata policy schema smoke',
+  clientLabel: 'Metadata Policy Co',
+  questions: [
+    uploadDeckInput.questions[0],
+    { ...uploadDeckInput.questions[1], ref: 'strip-photo', metadataPolicy: 'strip' },
+    { ...uploadDeckInput.questions[1], ref: 'preserve-photo', metadataPolicy: 'preserve' },
+    { ...uploadDeckInput.questions[1], ref: 'derivative-photo', metadataPolicy: 'preserve_with_derivative' },
+  ],
+};
+result = await call(decks, { method: 'POST', url: '/api/admin/decks', cookie: admin.cookie, headers: adminHeaders, body: policyDeckInput });
+assert(result.status === 201, 'all supported metadata policies should import');
+result = await call(decks, { method: 'POST', url: '/api/admin/decks', cookie: admin.cookie, headers: adminHeaders, body: {
+  ...uploadDeckInput,
+  title: 'Invalid metadata policy smoke',
+  questions: [uploadDeckInput.questions[0], { ...uploadDeckInput.questions[1], metadataPolicy: 'keep_everything' }],
+} });
+assert(result.status === 400, 'unsupported metadata policy should be rejected');
 result = await call(decks, { method: 'POST', url: '/api/admin/decks', cookie: admin.cookie, headers: adminHeaders, body: uploadDeckInput });
 assert(result.status === 201, 'photo-upload fixture should import');
 const uploadDeck = result.data;
 result = await call(start, { method: 'POST', url: '/api/public/start', body: { slug: uploadDeck.secret.publicSlug, passcode: uploadDeck.secret.passcode, begin: true } });
 assert(result.status === 200 && result.data.deck.questions[1].type === 'photo_upload', 'photo-upload deck should start');
 assert(result.data.deck.questions[1].maxBytes === 10 * 1024 * 1024 && result.data.deck.questions[1].accept.includes('image/heic'), 'photo constraints should be server-owned');
+assert(result.data.deck.questions[1].metadataPolicy === 'strip', 'photo metadata policy should default to strip');
 const uploadDraftCookie = cookieHeader(result.headers['set-cookie']);
 const uploadAnswers = [
   { questionRef: 'upload-identity', value: { name: 'Photo Smoke', email: 'photo@whatarewecapableof.com' } },
@@ -383,6 +404,13 @@ assert(result.status === 400, 'required photo should reject a forged browser ans
 
 const truncatedPng = Buffer.from('89504e470d0a1a0a0000000d49484452000000010000000108060000001f15c489', 'hex');
 const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGP4z8DwHwAFAAH/iZk9HQAAAABJRU5ErkJggg==', 'base64');
+const metadataJpeg = await sharp({ create: { width: 2, height: 3, channels: 3, background: '#336699' } })
+  .jpeg().withMetadata({ orientation: 6, exif: { IFD0: { Copyright: 'smoke metadata' } } }).toBuffer();
+const sanitizedMetadataJpeg = await sanitizePublicationImage(metadataJpeg, 'image/jpeg');
+const sanitizedMetadata = await sharp(sanitizedMetadataJpeg.bytes).metadata();
+assert(sanitizedMetadata.width === 3 && sanitizedMetadata.height === 2, 'sanitizer should apply EXIF orientation');
+assert(!sanitizedMetadata.exif && !sanitizedMetadata.xmp && !sanitizedMetadata.iptc, 'sanitizer should strip EXIF, XMP, and IPTC metadata');
+assert(sanitizedMetadata.space === 'srgb', 'sanitizer should emit sRGB publication bytes');
 const corruptPng = Buffer.from(png);
 corruptPng[corruptPng.indexOf(Buffer.from('IDAT')) + 5] ^= 0xff;
 const tooWidePng = await sharp({ create: { width: 6001, height: 1, channels: 3, background: '#ffffff' } }).png().toBuffer();
@@ -463,7 +491,60 @@ assert(result.status === 200 && result.raw.includes('Headshot uploaded: replacem
 result = await call(adminUpload, { url: `/api/admin/upload?id=${encodeURIComponent(replacementUpload.uploadId)}` });
 assert(result.status === 401, 'private media should reject unauthenticated reads');
 result = await call(adminUpload, { url: `/api/admin/upload?id=${encodeURIComponent(replacementUpload.uploadId)}`, cookie: admin.cookie });
-assert(result.status === 200 && result.headers['cache-control'] === 'private, no-store' && result.headers['content-type'] === 'image/png', 'authenticated admin should receive private media with no-store headers');
+assert(result.status === 200 && result.headers['cache-control'] === 'private, no-store' && result.headers['content-type'] === 'image/jpeg', 'authenticated admin should receive sanitized publication media with no-store headers');
+const stripRecord = _memory().uploads.get(replacementUpload.uploadId);
+assert(stripRecord.originalStatus === 'deleted' && !stripRecord.memoryBytes, 'strip policy should remove retained original bytes');
+const stripPublicationMetadata = await sharp(Buffer.from(stripRecord.publicationMemoryBytes, 'base64')).metadata();
+assert(!stripPublicationMetadata.exif && !stripPublicationMetadata.xmp && !stripPublicationMetadata.iptc, 'stored publication bytes should contain no metadata payload');
+result = await call(adminUpload, { url: `/api/admin/upload?id=${encodeURIComponent(replacementUpload.uploadId)}&representation=original`, cookie: admin.cookie });
+assert(result.status === 404, 'strip policy should not expose the original representation');
+
+async function exercisePreservePolicy(metadataPolicy, pathCharacter, sourceBytes, sourceType, extension) {
+  const fixture = {
+    ...uploadDeckInput,
+    title: `Metadata ${metadataPolicy} behavior smoke`,
+    clientLabel: `Metadata ${metadataPolicy}`,
+    questions: [uploadDeckInput.questions[0], { ...uploadDeckInput.questions[1], metadataPolicy }],
+  };
+  let policyResult = await call(decks, { method: 'POST', url: '/api/admin/decks', cookie: admin.cookie, headers: adminHeaders, body: fixture });
+  assert(policyResult.status === 201, `${metadataPolicy} deck should import`);
+  policyResult = await call(start, { method: 'POST', url: '/api/public/start', body: { slug: policyResult.data.secret.publicSlug, passcode: policyResult.data.secret.passcode, begin: true } });
+  assert(policyResult.status === 200, `${metadataPolicy} deck should start`);
+  const cookie = cookieHeader(policyResult.headers['set-cookie']);
+  const policyPathname = `ask-headshots/${pathCharacter.repeat(48)}.${extension}`;
+  policyResult = await call(upload, { method: 'POST', url: '/api/public/upload', cookie, body: {
+    type: 'blob.generate-client-token', payload: { pathname: policyPathname, multipart: false, clientPayload: JSON.stringify({
+      questionRef: 'upload-photo', fileName: `${metadataPolicy}.${extension}`, contentType: sourceType, size: sourceBytes.length,
+    }) },
+  } });
+  assert(policyResult.status === 200 && policyResult.data.uploadId, `${metadataPolicy} upload should authorize`);
+  const id = policyResult.data.uploadId;
+  const completion = { type: 'ask.memory-upload', payload: {
+    uploadId: id, pathname: policyPathname, contentType: sourceType, base64: sourceBytes.toString('base64'),
+  } };
+  policyResult = await call(upload, { method: 'POST', url: '/api/public/upload', cookie, body: completion });
+  assert(policyResult.status === 200, `${metadataPolicy} upload should complete`);
+  policyResult = await call(upload, { method: 'POST', url: '/api/public/upload', cookie, body: completion });
+  assert(policyResult.status === 200, `${metadataPolicy} completion retry should be idempotent`);
+  return { id, record: _memory().uploads.get(id) };
+}
+
+const preserved = await exercisePreservePolicy('preserve', 'c', metadataJpeg, 'image/jpeg', 'jpg');
+assert(Buffer.from(preserved.record.memoryBytes, 'base64').equals(metadataJpeg) && !preserved.record.publicationMemoryBytes, 'preserve should retain exact metadata-bearing original and create no derivative');
+result = await call(adminUpload, { url: `/api/admin/upload?id=${encodeURIComponent(preserved.id)}`, cookie: admin.cookie });
+assert(result.status === 404, 'preserve should not fall back to a metadata-bearing publication image');
+result = await call(adminUpload, { url: `/api/admin/upload?id=${encodeURIComponent(preserved.id)}&representation=original`, cookie: admin.cookie });
+assert(result.status === 200 && result.headers['content-type'] === 'image/jpeg', 'preserve should expose the retained original only when explicitly requested');
+
+const preservedDerivative = await exercisePreservePolicy('preserve_with_derivative', 'd', metadataJpeg, 'image/jpeg', 'jpg');
+assert(Buffer.from(preservedDerivative.record.memoryBytes, 'base64').equals(metadataJpeg) && preservedDerivative.record.publicationMemoryBytes, 'preserve_with_derivative should retain exact original and publication bytes');
+const derivativeMetadata = await sharp(Buffer.from(preservedDerivative.record.publicationMemoryBytes, 'base64')).metadata();
+assert(derivativeMetadata.width === 3 && derivativeMetadata.height === 2 && derivativeMetadata.space === 'srgb', 'preserve_with_derivative publication should apply orientation and emit sRGB');
+assert(!derivativeMetadata.exif && !derivativeMetadata.xmp && !derivativeMetadata.iptc, 'preserve_with_derivative publication should strip metadata');
+result = await call(adminUpload, { url: `/api/admin/upload?id=${encodeURIComponent(preservedDerivative.id)}`, cookie: admin.cookie });
+assert(result.status === 200 && result.headers['content-type'] === 'image/jpeg', 'preserve_with_derivative should expose sanitized publication by default');
+result = await call(adminUpload, { url: `/api/admin/upload?id=${encodeURIComponent(preservedDerivative.id)}&representation=original`, cookie: admin.cookie });
+assert(result.status === 200 && result.headers['content-type'] === 'image/jpeg', 'preserve_with_derivative should expose original only when explicitly requested');
 
 const noCookie = await call(responses, { url: '/api/admin/responses' });
 assert(noCookie.status === 401, 'admin endpoint should require auth');

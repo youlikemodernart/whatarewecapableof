@@ -17,20 +17,20 @@ module.exports = async function handler(req, res) {
   try {
     if (!getSession(req)) throw makeHttpError(401, 'Sign in required.');
     const url = new URL(req.url, 'http://ask.local');
-    const upload = await adminUpload(url.searchParams.get('id'));
+    const upload = await adminUpload(url.searchParams.get('id'), url.searchParams.get('representation') || 'publication');
     let bytes;
     let stream;
     if (storageConfig().mode === 'memory') {
-      bytes = Buffer.from(upload.memoryBytes || '', 'base64');
+      bytes = Buffer.from(upload.retrievalMemoryBytes || '', 'base64');
     } else {
-      const fetched = await get(upload.pathname, { access: 'private' });
+      const fetched = await get(upload.retrievalPathname, { access: 'private', useCache: false });
       if (!fetched || fetched.statusCode !== 200) throw makeHttpError(404, 'Upload not found.');
       stream = Readable.fromWeb(fetched.stream);
     }
     res.statusCode = 200;
-    res.setHeader('Content-Type', upload.contentType);
-    res.setHeader('Content-Length', String(upload.sizeBytes));
-    res.setHeader('Content-Disposition', `inline; filename="${dispositionName(upload.originalName)}"`);
+    res.setHeader('Content-Type', upload.retrievalContentType);
+    res.setHeader('Content-Length', String(upload.retrievalSizeBytes));
+    res.setHeader('Content-Disposition', `inline; filename="${dispositionName(upload.retrievalName)}"`);
     res.setHeader('Cache-Control', 'private, no-store');
     res.setHeader('X-Content-Type-Options', 'nosniff');
     if (bytes) return res.end(bytes);

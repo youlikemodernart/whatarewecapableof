@@ -61,17 +61,26 @@ Identity questions can declare an exact `fields` array using `name`, `email`, an
 
 A `photo_upload` question accepts one private JPEG, PNG, HEIC, or HEIF image up to 10 MB, 6000 px on either axis, and 13 megapixels total. Its `usageText` is required and must explicitly state that the headshot will be used with the respondent's name on `kamplove.org`. Imports cannot widen the fixed type, count, or size limits.
 
+`metadataPolicy` controls private retention and defaults to `strip`:
+
+- `strip`: rotate to the intended orientation, convert to sRGB JPEG, remove embedded metadata, retain only that publication image.
+- `preserve`: retain the exact private original. No publication image is made available because the original can contain location and device metadata.
+- `preserve_with_derivative`: retain the exact private original and create a separate metadata-free publication JPEG.
+
+Use a preserve mode only when exact source metadata is intentionally required. Admin retrieval defaults to the safe publication representation; original retrieval is available only for a preserve mode.
+
 ```json
 {
   "ref": "board-headshot",
   "type": "photo_upload",
   "prompt": "Upload the headshot you would like us to use.",
   "usageText": "By uploading this headshot, you give Kamp Love permission to publish it with your name on kamplove.org.",
+  "metadataPolicy": "strip",
   "required": true
 }
 ```
 
-The browser uploads directly to a private Vercel Blob store through a draft-authorized token. Final submission resolves the file from server-owned upload metadata; browser-supplied Blob URLs are ignored. Admins retrieve media only through an authenticated same-origin route. Markdown exports describe the upload without exposing its private Blob URL.
+The browser uploads directly to a private Vercel Blob store through a draft-authorized token. The server validates the original bytes and creates any required publication representation before activation. Final submission resolves the file from server-owned upload metadata; browser-supplied Blob URLs are ignored. Admins retrieve media only through an authenticated same-origin route and choose the original explicitly when policy permits it. Markdown exports describe the upload without exposing a private Blob pathname or URL.
 
 ## Link-only access reconfiguration
 

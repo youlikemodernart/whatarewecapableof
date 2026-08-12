@@ -92,16 +92,26 @@ CREATE TABLE IF NOT EXISTS ask_uploads (
   blob_url TEXT NOT NULL DEFAULT '',
   content_type TEXT NOT NULL DEFAULT '',
   size_bytes BIGINT NOT NULL DEFAULT 0,
+  metadata_policy TEXT NOT NULL DEFAULT 'strip',
+  publication_pathname TEXT NOT NULL DEFAULT '',
+  publication_blob_url TEXT NOT NULL DEFAULT '',
+  publication_content_type TEXT NOT NULL DEFAULT '',
+  publication_size_bytes BIGINT NOT NULL DEFAULT 0,
+  original_status TEXT NOT NULL DEFAULT 'retained',
   status TEXT NOT NULL DEFAULT 'pending',
   active BOOLEAN NOT NULL DEFAULT FALSE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   completed_at TIMESTAMPTZ,
   CHECK (status IN ('pending', 'completed', 'replaced', 'failed')),
-  CHECK (size_bytes >= 0 AND size_bytes <= 10485760)
+  CHECK (metadata_policy IN ('strip', 'preserve', 'preserve_with_derivative')),
+  CHECK (original_status IN ('retained', 'delete_pending', 'deleted')),
+  CHECK (size_bytes >= 0 AND size_bytes <= 10485760),
+  CHECK (publication_size_bytes >= 0 AND publication_size_bytes <= 10485760)
 );
 
 CREATE INDEX IF NOT EXISTS ask_uploads_response_idx ON ask_uploads (response_id, question_ref, created_at DESC);
 CREATE UNIQUE INDEX IF NOT EXISTS ask_uploads_active_idx ON ask_uploads (response_id, question_ref) WHERE active = TRUE;
+CREATE UNIQUE INDEX IF NOT EXISTS ask_uploads_publication_pathname_idx ON ask_uploads (publication_pathname) WHERE publication_pathname <> '';
 
 CREATE TABLE IF NOT EXISTS ask_answer_packets (
   id TEXT PRIMARY KEY,

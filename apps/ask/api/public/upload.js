@@ -1,9 +1,9 @@
 const { handleUpload } = require('@vercel/blob/client');
-const { get } = require('@vercel/blob');
+const { get, put, del } = require('@vercel/blob');
 const { getDraft, json } = require('../_auth');
 const { readJsonBody, handleApiError, makeHttpError } = require('../_http');
 const { checkRateLimit } = require('../_rate_limit');
-const { prepareUpload, completeUpload, uploadStatus } = require('../_uploads');
+const { prepareUpload, completeUpload, completionAlreadyRecorded, markOriginalDeleted, uploadStatus } = require('../_uploads');
 
 function parsePayload(value) {
   try {
@@ -94,10 +94,51 @@ module.exports = async function handler(req, res) {
       onUploadCompleted: async ({ blob, tokenPayload }) => {
         const token = parsePayload(tokenPayload);
         if (token.pathname !== blob.pathname || token.contentType !== blob.contentType) throw makeHttpError(400, 'Upload completion did not match its authorization.');
+        const recorded = await completionAlreadyRecorded(token.uploadId, blob.pathname, blob.contentType);
+        if (recorded) {
+          if (recorded.metadataPolicy === 'strip' && recorded.originalStatus !== 'deleted') {
+            try {
+              await del(blob.pathname);
+              await markOriginalDeleted(recorded.id, true);
+            } catch {
+              await markOriginalDeleted(recorded.id, false);
+              throw makeHttpError(503, 'Original deletion is pending retry.');
+            }
+          }
+          return;
+        }
         const fetched = await get(blob.pathname, { access: 'private', useCache: false });
         if (!fetched || fetched.statusCode !== 200) throw makeHttpError(400, 'Uploaded image could not be verified.');
         const bytes = await readVerifiedBytes(fetched.stream, fetched.blob.size);
-        await completeUpload({ uploadId: token.uploadId, pathname: blob.pathname, blobUrl: blob.url, contentType: fetched.blob.contentType, size: fetched.blob.size, bytes });
+        const completed = await completeUpload({
+          uploadId: token.uploadId,
+          pathname: blob.pathname,
+          blobUrl: blob.url,
+          contentType: fetched.blob.contentType,
+          size: fetched.blob.size,
+          bytes,
+          writePublication: async ({ pathname: publicationPathname, bytes: publicationBytes, contentType }) => {
+            const stored = await put(publicationPathname, publicationBytes, {
+              access: 'private',
+              contentType,
+              addRandomSuffix: false,
+              allowOverwrite: true,
+              cacheControlMaxAge: 60,
+            });
+            return { ...stored, size: publicationBytes.length };
+          },
+          deletePublication: (publicationPathname) => del(publicationPathname),
+          deleteOriginalBlob: (originalPathname) => del(originalPathname),
+        });
+        if (completed.deleteOriginal) {
+          try {
+            await del(blob.pathname);
+            await markOriginalDeleted(completed.id, true);
+          } catch {
+            await markOriginalDeleted(completed.id, false);
+            throw makeHttpError(503, 'Original deletion is pending retry.');
+          }
+        }
       },
     });
     return json(res, 200, result);

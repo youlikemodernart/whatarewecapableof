@@ -78,9 +78,18 @@
   function renderRows(responses) {
     els.responseRows.innerHTML = responses.map((response) => {
       const photo = (response.answers || []).find((answer) => answer.answerType === 'photo_upload' && answer.value?.uploadId);
-      const photoLink = photo
-        ? `<a href="/api/admin/upload?id=${encodeURIComponent(photo.value.uploadId)}" target="_blank" rel="noreferrer">View headshot</a>`
-        : '';
+      let photoLink = '';
+      if (photo) {
+        const id = encodeURIComponent(photo.value.uploadId);
+        const policy = photo.value.metadataPolicy || 'strip';
+        if (policy === 'preserve') {
+          photoLink = `<a href="/api/admin/upload?id=${id}&representation=original" target="_blank" rel="noreferrer">View original</a><span class="sub">Metadata retained</span>`;
+        } else if (policy === 'preserve_with_derivative') {
+          photoLink = `<a href="/api/admin/upload?id=${id}" target="_blank" rel="noreferrer">View publication image</a><a href="/api/admin/upload?id=${id}&representation=original" target="_blank" rel="noreferrer">View original</a>`;
+        } else {
+          photoLink = `<a href="/api/admin/upload?id=${id}" target="_blank" rel="noreferrer">View publication image</a>`;
+        }
+      }
       return `
       <li class="row">
         <div class="cell"><span class="k">Respondent</span><span class="v"><strong>${escapeHtml(response.respondentName || 'Unknown')}</strong><span class="sub">${escapeHtml(response.respondentEmail || '')}</span></span></div>

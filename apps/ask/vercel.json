@@ -1,5 +1,11 @@
 {
   "cleanUrls": true,
+  "routes": [
+    { "src": "/respond-src(?:\\.js)?", "status": 404, "dest": "/404.html" },
+    { "src": "/(?:data|docs|migrations)(?:/.*)?", "status": 404, "dest": "/404.html" },
+    { "src": "/(?:package(?:-lock)?\\.json|vercel\\.json)", "status": 404, "dest": "/404.html" },
+    { "handle": "filesystem" }
+  ],
   "headers": [
     {
       "source": "/(.*)",

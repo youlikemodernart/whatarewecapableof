@@ -59,7 +59,7 @@ Identity questions can declare an exact `fields` array using `name`, `email`, an
 }
 ```
 
-A `photo_upload` question accepts one private JPEG, PNG, HEIC, or HEIF image up to 10 MB, 6000 px on either axis, and 13 megapixels total. Its `usageText` is required and must explicitly state that the headshot will be used with the respondent's name on `kamplove.org`. Imports cannot widen the fixed type, count, or size limits.
+A `photo_upload` question accepts one private JPEG, PNG, HEIC, or HEIF image up to 10 MB, 6000 px on either axis, and 13 megapixels total. Its `usageText` is required and must clearly tell the respondent how the uploaded image will be used. Imports cannot widen the fixed type, count, or size limits.
 
 `metadataPolicy` controls private retention and defaults to `strip`:
 
@@ -71,10 +71,10 @@ Use a preserve mode only when exact source metadata is intentionally required. A
 
 ```json
 {
-  "ref": "board-headshot",
+  "ref": "profile-photo",
   "type": "photo_upload",
-  "prompt": "Upload the headshot you would like us to use.",
-  "usageText": "By uploading this headshot, you give Kamp Love permission to publish it with your name on kamplove.org.",
+  "prompt": "Upload the profile photo you would like us to use.",
+  "usageText": "By uploading this image, you give Sample Company permission to publish it with your profile on example.com.",
   "metadataPolicy": "strip",
   "required": true
 }

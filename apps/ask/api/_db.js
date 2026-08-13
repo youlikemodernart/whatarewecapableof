@@ -565,8 +565,8 @@ function normalizeQuestion(input, index) {
       throw makeHttpError(400, `Question ${ref} has an unsupported metadata policy.`);
     }
     question.usageText = cleanText(input?.usageText, 1000);
-    if (!question.usageText || !/kamplove\.org/i.test(question.usageText) || !/name/i.test(question.usageText)) {
-      throw makeHttpError(400, `Question ${ref} must explain that the headshot will be used with the respondent's name on kamplove.org.`);
+    if (!question.usageText || question.usageText.length < 24) {
+      throw makeHttpError(400, `Question ${ref} must explain how the uploaded image will be used.`);
     }
   }
   return question;

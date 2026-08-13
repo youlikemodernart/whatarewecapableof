@@ -27,7 +27,7 @@ const exportMarkdown = require('../api/admin/export.js');
 const adminUpload = require('../api/admin/upload.js');
 const { createSessionCookie } = require('../api/_auth.js');
 const { validateDecodedImage, sanitizePublicationImage } = require('../api/_uploads.js');
-const { _memory } = require('../api/_db.js');
+const { _memory, normalizeDeckImport } = require('../api/_db.js');
 const sharp = require('sharp');
 
 function assert(condition, message) {
@@ -365,7 +365,7 @@ const uploadDeckInput = {
       { key: 'name', label: 'Name' }, { key: 'email', label: 'Email' },
     ] },
     { ref: 'upload-photo', type: 'photo_upload', section: 'About you', prompt: 'Upload a headshot.', required: true,
-      usageText: "By uploading this headshot, you give Kamp Love permission to publish it with your name on kamplove.org." },
+      usageText: "By uploading this image, you give Sample Company permission to publish it with your profile on example.com." },
   ],
 };
 const policyDeckInput = {
@@ -387,6 +387,17 @@ result = await call(decks, { method: 'POST', url: '/api/admin/decks', cookie: ad
   questions: [uploadDeckInput.questions[0], { ...uploadDeckInput.questions[1], metadataPolicy: 'keep_everything' }],
 } });
 assert(result.status === 400, 'unsupported metadata policy should be rejected');
+let disclosureRejected = false;
+try {
+  normalizeDeckImport({
+    ...uploadDeckInput,
+    title: 'Missing image use disclosure smoke',
+    questions: [uploadDeckInput.questions[0], { ...uploadDeckInput.questions[1], usageText: 'Profile image.' }],
+  });
+} catch (error) {
+  disclosureRejected = error?.status === 400;
+}
+assert(disclosureRejected, 'photo uploads should require a meaningful use disclosure');
 result = await call(decks, { method: 'POST', url: '/api/admin/decks', cookie: admin.cookie, headers: adminHeaders, body: uploadDeckInput });
 assert(result.status === 201, 'photo-upload fixture should import');
 const uploadDeck = result.data;

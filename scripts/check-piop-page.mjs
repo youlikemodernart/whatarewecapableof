@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { publicPrivateDataBoundary, readAuthoritativeCatalog } from './piop-catalog-authority.mjs';
+import { readAuthoritativeProduct } from './piop-product-authority.mjs';
 
 function fail(message) {
   console.error(`FAIL: ${message}`);
@@ -13,7 +14,7 @@ function parseArgs(argv) {
   for (let index = 0; index < argv.length; index += 2) {
     const key = argv[index]?.replace(/^--/, '');
     const value = argv[index + 1];
-    if (!key || !value) fail('usage: node scripts/check-piop-page.mjs --catalog skills.json [--page piop/index.html] [--script js/piop.js] [--css css/piop.css]');
+    if (!key || !value) fail('usage: node scripts/check-piop-page.mjs --catalog skills.json --product scripts/data/piop-product.json [--page piop/index.html] [--script js/piop.js] [--css css/piop.css]');
     args[key] = value;
   }
   return args;
@@ -47,12 +48,15 @@ function packageBlock(page, id) {
 
 const args = parseArgs(process.argv.slice(2));
 if (!args.catalog) fail('a catalog is required');
+if (!args.product) fail('a product inventory is required');
 const pagePath = path.resolve(args.page || 'piop/index.html');
 const scriptPath = path.resolve(args.script || 'js/piop.js');
 const cssPath = path.resolve(args.css || 'css/piop.css');
 let catalog;
+let product;
 try {
   ({ catalog } = readAuthoritativeCatalog(args.catalog));
+  ({ product } = readAuthoritativeProduct(args.product));
 } catch (error) {
   fail(error.message);
 }
@@ -88,6 +92,17 @@ for (const entry of packages) {
 for (const entry of catalog.packages.filter((item) => item.status !== 'verified-private')) {
   forbidText(page, `id="skill-${entry.id}"`, `page includes non-released package ${entry.id}`);
 }
+
+for (const entry of product.foundation) {
+  requireText(page, `${escapeHtml(entry.name)} <span class="inventory-version">v${escapeHtml(entry.version)}</span>`, `Foundation entry ${entry.id}`);
+  requireText(page, escapeHtml(entry.purpose), `Foundation purpose ${entry.id}`);
+}
+for (const entry of product.modules) {
+  requireText(page, `${escapeHtml(entry.name)} <span class="inventory-version">v${escapeHtml(entry.version)}</span>`, `Module entry ${entry.id}`);
+  requireText(page, escapeHtml(entry.purpose), `Module purpose ${entry.id}`);
+  requireText(page, `Ready requires: ${escapeHtml(entry.readiness)}.`, `Module readiness ${entry.id}`);
+}
+for (const entry of product.operator_only) forbidText(page, entry.name, `operator-only surface rendered ${entry.id}`);
 
 requireText(page, `${packages.length} PACKAGES / ${skillCount} SKILLS`, 'catalog totals');
 requireText(page, 'Private GitHub is the source authority.', 'source-authority boundary');
@@ -131,4 +146,4 @@ for (const value of forbidden) {
   for (const source of publicSources) forbidText(source, value, 'public source contains forbidden source or private marker');
 }
 
-console.log(`PASS piop_page_check packages=${packages.length} skills=${skillCount} ids=${ids.length} fulfillment=private-drive authority=sha256-locked`);
+console.log(`PASS piop_page_check foundation=${product.foundation.length} modules=${product.modules.length} packages=${packages.length} skills=${skillCount} ids=${ids.length} fulfillment=private-drive authority=sha256-locked`);

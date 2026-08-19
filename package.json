@@ -21,7 +21,9 @@
     "windex:audit": "cd apps/index && npm run audit",
     "windex:check": "cd apps/index && npm run check",
     "piop:sync": "node scripts/sync-piop-catalog.mjs",
-    "piop:check": "node scripts/check-piop-page.mjs"
+    "piop:check": "node scripts/check-piop-page.mjs",
+    "piop:product:sync": "node scripts/sync-piop-product.mjs --product scripts/data/piop-product.json",
+    "piop:product:check": "node scripts/sync-piop-product.mjs --product scripts/data/piop-product.json --check"
   },
   "dependencies": {
     "googleapis": "^171.4.0"

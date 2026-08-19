@@ -226,6 +226,46 @@
   text-underline-offset: 2px;
 }
 
+.foundation-inventory,
+.module-inventory {
+  grid-template-columns: minmax(180px, 0.8fr) minmax(0, 1.6fr);
+}
+
+.foundation-inventory dt,
+.foundation-inventory dd,
+.module-inventory dt,
+.module-inventory dd {
+  align-items: flex-start;
+  display: block;
+  min-height: 0;
+  padding-bottom: 14px;
+  padding-top: 14px;
+}
+
+.foundation-inventory dd,
+.module-inventory dd {
+  color: var(--ink-2);
+  font-size: 15px;
+  justify-content: initial;
+  line-height: 1.5;
+  padding-left: 24px;
+}
+
+.inventory-version {
+  color: var(--ink-3);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.inventory-readiness {
+  color: var(--ink-3);
+  display: block;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
 .piop-note a {
   align-items: center;
   display: inline-flex;
@@ -655,6 +695,23 @@
 
   .skill-package {
     padding: 22px 0 26px;
+  }
+
+  .foundation-inventory,
+  .module-inventory {
+    grid-template-columns: 1fr;
+  }
+
+  .foundation-inventory dt,
+  .module-inventory dt {
+    border-bottom: 0;
+    padding-bottom: 4px;
+  }
+
+  .foundation-inventory dd,
+  .module-inventory dd {
+    padding-left: 0;
+    padding-top: 0;
   }
 
   .support-form fieldset label {

@@ -1,6 +1,6 @@
 # PiOp direct-link internal page
 
-The PiOp page lives at `/piop/` as a direct-link, noindex internal surface. It is not linked from the home page and is excluded from the public sitemap. It renders a safe projection of the released Skills Library, lets someone assemble a desired skill set, and generates a reviewable fulfillment request. The page installs nothing, grants no source access, and stores no recipient information. The one-time and monthly support form remains hidden until live payment activation is approved and verified.
+The PiOp page lives at `/piop/` as a direct-link, noindex internal surface. It is not linked from the home page and is excluded from the public sitemap. It explains PiOp Minimal, Foundation, and selected Modules within the existing WAWCO editorial page template. It also renders a safe projection of the released Skills Library, lets someone assemble a desired skill set, and generates a reviewable fulfillment request. Product-status copy distinguishes accepted source from recipient installation and readiness. The page installs nothing, grants no source access, and stores no recipient information. The one-time and monthly support form remains hidden until live payment activation is approved and verified.
 
 ## Source, catalog, and delivery authority
 

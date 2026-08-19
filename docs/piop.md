@@ -1,6 +1,6 @@
 # PiOp direct-link internal page
 
-The PiOp page lives at `/piop/` as a direct-link, noindex internal surface. It is not linked from the home page and is excluded from the public sitemap. It explains the current PiOp product shape: PiOp Minimal as the delivery model, Foundation as the dependable baseline, and Modules as selected additions. It also renders a safe projection of the released Skills Library, lets someone assemble a desired skill set, and generates a reviewable fulfillment request. Product-status copy must distinguish accepted source from recipient installation and readiness. The page installs nothing, grants no source access, stores no recipient information, and contains no payment surface.
+The PiOp page lives at `/piop/` as a direct-link, noindex internal surface. It is not linked from the home page and is excluded from the public sitemap. It renders a safe projection of the released Skills Library, lets someone assemble a desired skill set, and generates a reviewable fulfillment request. The page installs nothing, grants no source access, and stores no recipient information. The one-time and monthly support form remains hidden until live payment activation is approved and verified.
 
 ## Source, catalog, and delivery authority
 
@@ -73,10 +73,39 @@ The generated request contains:
 
 The user may copy the request or open a prefilled email. Opening an email is a user-controlled navigation action. The site does not send it.
 
-## Payment boundary
+## Payment and fulfillment separation
 
-The private PiOp page contains no payment or support form. Fulfillment remains independent of payment, package access, and repository permissions.
+Payment does not grant package access, change repository permissions, accelerate fulfillment, or alter package review. Checkout metadata remains `access_entitlement=none`. No checkout, payment, or subscription event may grant, revoke, or modify GitHub, Drive, package, or recipient permissions.
+
+## Stripe Checkout
+
+The public form posts to:
+
+```text
+https://fin.whatarewecapableof.com/api/piop/checkout
+```
+
+The endpoint accepts integer USD amounts from $1 through $10,000 and a frequency of `once` or `monthly`. It creates a server-side Stripe Checkout Session and redirects the browser to Stripe. One-time support uses Checkout payment mode. Monthly support uses subscription mode.
+
+Required production configuration:
+
+- `PIOP_CHECKOUT_ENABLED=1`, the PiOp-specific circuit breaker;
+- `STRIPE_MODE=live` and `FIN_STRIPE_LIVE_LINKS_ENABLED=1`;
+- `FIN_STRIPE_FAKE=0`;
+- existing WAWCO live Stripe secret and webhook configuration;
+- `PIOP_STRIPE_PRODUCT_ID`, containing the approved dedicated PiOp Stripe Product ID.
+
+The endpoint fails closed when the circuit breaker is off, fake mode is active, or the dedicated Product ID is absent or malformed. Creating the Stripe Product and setting production environment variables are live external changes and require explicit approval. The existing Fin webhook acknowledges these Stripe events. PiOp support needs no app-side entitlement or repository action.
+
+The browser creates a per-attempt UUID that becomes the Stripe idempotency key, so browser retries reuse the same Checkout Session request. The endpoint limits bodies to 2 KB and applies a best-effort five-attempt, ten-minute, per-IP limit inside each warm function instance. Before live activation, add an enforceable platform-level per-IP rate rule and alerting for Checkout Session spikes. The application limit does not replace a Vercel firewall or another shared rate-control layer.
+
+Run the no-network checkout smoke test:
+
+```sh
+cd apps/fin
+npm run smoke:piop-checkout
+```
 
 ## Deployment boundary
 
-A site deployment, recipient ZIP, Drive permission change, or email requires its current governing approval. Before site deployment, verify the exact private page, catalog projection, generated request, desktop and mobile behavior, keyboard flow, the exact source diff, and the absence of private repository or direct-install controls.
+A site deployment, Fin deployment, Stripe Product creation, production environment-variable change, platform rate-limit rule, recipient ZIP, Drive permission change, or email requires its current governing approval. Before site deployment, verify the exact public page, catalog projection, generated request, desktop and mobile behavior, keyboard flow, the exact source diff, and the absence of private repository or direct-install controls.

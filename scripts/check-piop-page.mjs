@@ -95,6 +95,8 @@ requireText(page, 'recipient-specific ZIP', 'recipient-specific fulfillment boun
 requireText(page, 'private Google Drive', 'private delivery boundary');
 requireText(page, 'A GitHub account is not required', 'recipient GitHub boundary');
 requireText(page, 'Payment does not change fulfillment priority, package access, or repository permissions.', 'payment boundary');
+requireText(page, 'action="https://fin.whatarewecapableof.com/api/piop/checkout"', 'checkout action');
+requireText(page, 'Monthly support continues until you cancel.', 'monthly support boundary');
 requireText(page, 'id="install-list-summary" hidden', 'progressive-enhancement summary state');
 requireText(page, 'The selection tool requires JavaScript.', 'no-script fallback');
 requireText(page, 'id="email-skill-request"', 'email request action');
@@ -106,7 +108,9 @@ const duplicateIds = ids.filter((id, index) => ids.indexOf(id) !== index);
 if (duplicateIds.length) fail(`duplicate HTML ids: ${[...new Set(duplicateIds)].join(', ')}`);
 
 const formActions = [...page.matchAll(/<form\b[^>]*\baction="([^"]+)"/g)].map((match) => match[1]);
-if (formActions.length !== 0) fail(`unexpected form actions: ${formActions.join(', ')}`);
+if (formActions.length !== 1 || formActions[0] !== 'https://fin.whatarewecapableof.com/api/piop/checkout') {
+  fail(`unexpected form actions: ${formActions.join(', ') || '(none)'}`);
+}
 if (/\b(?:fetch\s*\(|XMLHttpRequest\b|sendBeacon\s*\()/.test(script)) {
   fail('public script contains a direct network-send primitive');
 }

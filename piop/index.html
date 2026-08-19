@@ -35,6 +35,7 @@
       <p class="piop-eyebrow">PIOP / PRIVATE OVERVIEW</p>
       <h1 class="lead">A dependable setup for Pi.</h1>
       <p class="piop-intro">PiOp gives Pi a stable starting point for real work: useful context, explicit authority, capability discovery, and a recovery path. PiOp Minimal is the portable delivery model. Foundation is the shared baseline. Modules are selected additions.</p>
+      <p class="piop-note">Foundation and Modules describe product placement. Skills, extensions, commands, profiles, and prompts describe what Pi receives.</p>
 
       <div class="install-list-summary" id="install-list-summary" hidden>
         <span class="install-list-label">Skill set · <span id="install-list-count" aria-live="polite">Empty</span></span>
@@ -65,21 +66,21 @@
         <dl class="stack-list foundation-inventory">
           <!-- PIOP_FOUNDATION_START -->
           <dt>Core <span class="inventory-version">v0.1.12</span></dt>
-          <dd>Operating rules, Recipient Profile loading, status, authority, verification, and recovery.</dd>
+          <dd>Operating rules, Recipient Profile loading, status, authority, verification, and recovery. <span class="inventory-adds">Adds: Skills, extension, and prompts.</span></dd>
           <dt>Library <span class="inventory-version">v0.1.7</span></dt>
-          <dd>Ordinary-language discovery for installed and available skills.</dd>
+          <dd>Ordinary-language discovery for installed and available skills. <span class="inventory-adds">Adds: Skills and prompts.</span></dd>
           <dt>Collaborator Basics <span class="inventory-version">v0.1.1</span></dt>
-          <dd>First-use checks and private-safe source-note intake.</dd>
+          <dd>First-use checks and private-safe source-note intake. <span class="inventory-adds">Adds: Skills and prompt.</span></dd>
           <dt>Relational Intelligence <span class="inventory-version">v0.1.0</span></dt>
-          <dd>Agency-preserving relational reflection with explicit privacy and memory boundaries.</dd>
+          <dd>Agency-preserving relational reflection with explicit privacy and memory boundaries. <span class="inventory-adds">Adds: Skill.</span></dd>
           <dt>Talent Index <span class="inventory-version">v0.1.2</span></dt>
-          <dd>Capability contracts and routing for specialized agent roles.</dd>
+          <dd>Capability contracts and routing for specialized agent roles. <span class="inventory-adds">Adds: Extension.</span></dd>
           <dt>Model Switch <span class="inventory-version">v0.1.5</span></dt>
-          <dd>Explicit model discovery and switching without embedding provider credentials.</dd>
+          <dd>Explicit model discovery and switching without embedding provider credentials. <span class="inventory-adds">Adds: Extension.</span></dd>
           <dt>Secrets Safety <span class="inventory-version">v0.1.0</span></dt>
-          <dd>No-reveal checks, sensitive-surface protection, and high-confidence output redaction.</dd>
+          <dd>No-reveal checks, sensitive-surface protection, and high-confidence output redaction. <span class="inventory-adds">Adds: Extension.</span></dd>
           <dt>Context Autopilot <span class="inventory-version">v0.1.0</span></dt>
-          <dd>Bounded checkpoint, compaction, resume, and handoff continuity.</dd>
+          <dd>Bounded checkpoint, compaction, resume, and handoff continuity. <span class="inventory-adds">Adds: Extension.</span></dd>
           <!-- PIOP_FOUNDATION_END -->
         </dl>
         <p class="piop-note" id="foundation-status"><!-- PIOP_FOUNDATION_STATUS_START -->
@@ -96,17 +97,17 @@ Foundation currently contains 8 packages and 5 default extensions. Environment C
         <dl class="stack-list module-inventory">
           <!-- PIOP_MODULES_START -->
           <dt>Dual Harness <span class="inventory-version">v0.1.0</span></dt>
-          <dd>Shared Pi and Claude Code configuration, task routing, and file-based handoffs. <span class="inventory-readiness">Ready requires: Pi, Claude Code, and a recipient-specific handoff proof.</span></dd>
+          <dd>Shared Pi and Claude Code configuration, task routing, and file-based handoffs. <span class="inventory-adds">Adds: Dual Harness skill and file contracts.</span><span class="inventory-readiness">Ready requires: Pi, Claude Code, and a recipient-specific handoff proof.</span></dd>
           <dt>Agent Workspace <span class="inventory-version">v0.1.0</span></dt>
-          <dd>Named, visible, resumable Pi and Claude workspaces. <span class="inventory-readiness">Ready requires: Compatible local runtime; controlled IS proof for visible-controller readiness.</span></dd>
+          <dd>Named, visible, resumable Pi and Claude workspaces. <span class="inventory-adds">Adds: Agent Workspace and Agent Workspace Contact skills, plus controller CLIs.</span><span class="inventory-readiness">Ready requires: Compatible local runtime; controlled IS proof for visible-controller readiness.</span></dd>
           <dt>GitHub Ops <span class="inventory-version">v0.1.0</span></dt>
-          <dd>Repository, issue, pull request, release, signing, and contribution workflows. <span class="inventory-readiness">Ready requires: Authentication, target permissions, and operation-specific approval.</span></dd>
+          <dd>Repository, issue, pull request, release, signing, and contribution workflows. <span class="inventory-adds">Adds: GitHub Ops skill.</span><span class="inventory-readiness">Ready requires: Authentication, target permissions, and operation-specific approval.</span></dd>
           <dt>Surf <span class="inventory-version">v0.1.0</span></dt>
-          <dd>Browser control for testing, screenshots, forms, and page inspection. <span class="inventory-readiness">Ready requires: Node 22 runtime proof and a separately approved browser pairing.</span></dd>
+          <dd>Browser control for testing, screenshots, forms, and page inspection. <span class="inventory-adds">Adds: Surf Module extension and command.</span><span class="inventory-readiness">Ready requires: Node 22 runtime proof and a separately approved browser pairing.</span></dd>
           <dt>Figma Production Ops <span class="inventory-version">v0.1.0</span></dt>
-          <dd>Native editable Figma production, inspection, verification, and recovery. <span class="inventory-readiness">Ready requires: Provider, plugin, target, write, readback, editability, and recovery proof.</span></dd>
+          <dd>Native editable Figma production, inspection, verification, and recovery. <span class="inventory-adds">Adds: Figma Production Ops skill.</span><span class="inventory-readiness">Ready requires: Provider, plugin, target, write, readback, editability, and recovery proof.</span></dd>
           <dt>Figma Write Bridge <span class="inventory-version">v0.2.0</span></dt>
-          <dd>A separate bridge for controlled Figma writes. <span class="inventory-readiness">Ready requires: Bridge, plugin, listener, target, and write proof.</span></dd>
+          <dd>A separate bridge for controlled Figma writes. <span class="inventory-adds">Adds: Figma Write Bridge skill.</span><span class="inventory-readiness">Ready requires: Bridge, plugin, listener, target, and write proof.</span></dd>
           <!-- PIOP_MODULES_END -->
         </dl>
         <p class="piop-note">Each Module is selected deliberately, checked against its dependencies, and verified separately. Account access, credentials, providers, browsers, writes, and live effects retain their own approval boundaries.</p>

@@ -11,64 +11,87 @@
       "name": "Core",
       "version": "0.1.12",
       "purpose": "Operating rules, Recipient Profile loading, status, authority, verification, and recovery.",
-      "state": "accepted-foundation"
+      "state": "accepted-foundation",
+      "adds": "Skills, extension, and prompts"
     },
     {
       "id": "library",
       "name": "Library",
       "version": "0.1.7",
       "purpose": "Ordinary-language discovery for installed and available skills.",
-      "state": "accepted-foundation"
+      "state": "accepted-foundation",
+      "adds": "Skills and prompts"
     },
     {
       "id": "collaborator-basics",
       "name": "Collaborator Basics",
       "version": "0.1.1",
       "purpose": "First-use checks and private-safe source-note intake.",
-      "state": "accepted-foundation"
+      "state": "accepted-foundation",
+      "adds": "Skills and prompt"
     },
     {
       "id": "relational-intelligence",
       "name": "Relational Intelligence",
       "version": "0.1.0",
       "purpose": "Agency-preserving relational reflection with explicit privacy and memory boundaries.",
-      "state": "accepted-foundation"
+      "state": "accepted-foundation",
+      "adds": "Skill"
     },
     {
       "id": "talent-index",
       "name": "Talent Index",
       "version": "0.1.2",
       "purpose": "Capability contracts and routing for specialized agent roles.",
-      "state": "accepted-foundation"
+      "state": "accepted-foundation",
+      "adds": "Extension"
     },
     {
       "id": "model-switch",
       "name": "Model Switch",
       "version": "0.1.5",
       "purpose": "Explicit model discovery and switching without embedding provider credentials.",
-      "state": "accepted-foundation"
+      "state": "accepted-foundation",
+      "adds": "Extension"
     },
     {
       "id": "secrets-safety",
       "name": "Secrets Safety",
       "version": "0.1.0",
       "purpose": "No-reveal checks, sensitive-surface protection, and high-confidence output redaction.",
-      "state": "accepted-foundation"
+      "state": "accepted-foundation",
+      "adds": "Extension"
     },
     {
       "id": "context-autopilot",
       "name": "Context Autopilot",
       "version": "0.1.0",
       "purpose": "Bounded checkpoint, compaction, resume, and handoff continuity.",
-      "state": "accepted-foundation-disabled-by-default"
+      "state": "accepted-foundation-disabled-by-default",
+      "adds": "Extension"
     }
   ],
   "extensions": [
-    { "name": "MCP Adapter", "version": "2.19.0" },
-    { "name": "Pi Web Access", "version": "0.18.0" },
-    { "name": "Pi Subagents", "version": "0.40.0" },
-    { "name": "Pi Intercom", "version": "accepted immutable commit" },
-    { "name": "Pi Skill Palette", "version": "accepted immutable commit" }
+    {
+      "name": "MCP Adapter",
+      "version": "2.19.0"
+    },
+    {
+      "name": "Pi Web Access",
+      "version": "0.18.0"
+    },
+    {
+      "name": "Pi Subagents",
+      "version": "0.40.0"
+    },
+    {
+      "name": "Pi Intercom",
+      "version": "accepted immutable commit"
+    },
+    {
+      "name": "Pi Skill Palette",
+      "version": "accepted immutable commit"
+    }
   ],
   "registrations": [
     {
@@ -89,7 +112,8 @@
       "version": "0.1.0",
       "purpose": "Shared Pi and Claude Code configuration, task routing, and file-based handoffs.",
       "readiness": "Pi, Claude Code, and a recipient-specific handoff proof",
-      "state": "accepted-optional-module"
+      "state": "accepted-optional-module",
+      "adds": "Dual Harness skill and file contracts"
     },
     {
       "id": "agent-workspace",
@@ -97,7 +121,8 @@
       "version": "0.1.0",
       "purpose": "Named, visible, resumable Pi and Claude workspaces.",
       "readiness": "Compatible local runtime; controlled IS proof for visible-controller readiness",
-      "state": "accepted-optional-module"
+      "state": "accepted-optional-module",
+      "adds": "Agent Workspace and Agent Workspace Contact skills, plus controller CLIs"
     },
     {
       "id": "github-ops",
@@ -105,7 +130,8 @@
       "version": "0.1.0",
       "purpose": "Repository, issue, pull request, release, signing, and contribution workflows.",
       "readiness": "Authentication, target permissions, and operation-specific approval",
-      "state": "accepted-optional-module"
+      "state": "accepted-optional-module",
+      "adds": "GitHub Ops skill"
     },
     {
       "id": "surf",
@@ -113,7 +139,8 @@
       "version": "0.1.0",
       "purpose": "Browser control for testing, screenshots, forms, and page inspection.",
       "readiness": "Node 22 runtime proof and a separately approved browser pairing",
-      "state": "accepted-optional-module"
+      "state": "accepted-optional-module",
+      "adds": "Surf Module extension and command"
     },
     {
       "id": "figma-production-ops",
@@ -121,7 +148,8 @@
       "version": "0.1.0",
       "purpose": "Native editable Figma production, inspection, verification, and recovery.",
       "readiness": "Provider, plugin, target, write, readback, editability, and recovery proof",
-      "state": "accepted-optional-module"
+      "state": "accepted-optional-module",
+      "adds": "Figma Production Ops skill"
     },
     {
       "id": "figma-write-bridge",
@@ -129,7 +157,8 @@
       "version": "0.2.0",
       "purpose": "A separate bridge for controlled Figma writes.",
       "readiness": "Bridge, plugin, listener, target, and write proof",
-      "state": "accepted-optional-module"
+      "state": "accepted-optional-module",
+      "adds": "Figma Write Bridge skill"
     }
   ],
   "operator_only": [

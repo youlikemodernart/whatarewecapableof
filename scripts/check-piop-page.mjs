@@ -96,10 +96,12 @@ for (const entry of catalog.packages.filter((item) => item.status !== 'verified-
 for (const entry of product.foundation) {
   requireText(page, `${escapeHtml(entry.name)} <span class="inventory-version">v${escapeHtml(entry.version)}</span>`, `Foundation entry ${entry.id}`);
   requireText(page, escapeHtml(entry.purpose), `Foundation purpose ${entry.id}`);
+  requireText(page, `Adds: ${escapeHtml(entry.adds)}.`, `Foundation resources ${entry.id}`);
 }
 for (const entry of product.modules) {
   requireText(page, `${escapeHtml(entry.name)} <span class="inventory-version">v${escapeHtml(entry.version)}</span>`, `Module entry ${entry.id}`);
   requireText(page, escapeHtml(entry.purpose), `Module purpose ${entry.id}`);
+  requireText(page, `Adds: ${escapeHtml(entry.adds)}.`, `Module resources ${entry.id}`);
   requireText(page, `Ready requires: ${escapeHtml(entry.readiness)}.`, `Module readiness ${entry.id}`);
 }
 for (const entry of product.operator_only) forbidText(page, entry.name, `operator-only surface rendered ${entry.id}`);

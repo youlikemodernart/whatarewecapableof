@@ -6,7 +6,7 @@ export const PIOP_PRODUCT_AUTHORITY = Object.freeze({
   schemaVersion: 1,
   productVersion: '0.2.0',
   sourceCommit: '06741fa64d1d284eebf4497b9354e6a4dcc40636',
-  sha256: '33f8b01fd2f9c7ba4f8972613307c22b6ef8f368312a99b82c1d2e13e8c30bcb',
+  sha256: '30ee1a02a236b49d08cf7e9976b241520769ebe4fa12aba026cd1a64ff792ca8',
 });
 
 function requireExactKeys(value, expected, label) {
@@ -51,13 +51,15 @@ export function readAuthoritativeProduct(inputPath) {
   }
   if (new Set(ids).size !== ids.length) throw new Error('duplicate product inventory id');
   for (const entry of product.foundation) {
-    requireExactKeys(entry, ['id', 'name', 'version', 'purpose', 'state'], `foundation ${entry.id}`);
+    requireExactKeys(entry, ['id', 'name', 'version', 'purpose', 'adds', 'state'], `foundation ${entry.id}`);
     requireString(entry.purpose, `${entry.id} purpose`);
+    requireString(entry.adds, `${entry.id} adds`);
     if (!entry.state.startsWith('accepted-foundation')) throw new Error(`foundation state invalid: ${entry.id}`);
   }
   for (const entry of product.modules) {
-    requireExactKeys(entry, ['id', 'name', 'version', 'purpose', 'readiness', 'state'], `module ${entry.id}`);
+    requireExactKeys(entry, ['id', 'name', 'version', 'purpose', 'adds', 'readiness', 'state'], `module ${entry.id}`);
     requireString(entry.purpose, `${entry.id} purpose`);
+    requireString(entry.adds, `${entry.id} adds`);
     requireString(entry.readiness, `${entry.id} readiness`);
     if (entry.state !== 'accepted-optional-module') throw new Error(`module state invalid: ${entry.id}`);
   }

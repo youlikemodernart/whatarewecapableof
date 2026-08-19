@@ -43,11 +43,11 @@ function replaceRegion(page, start, end, rendered) {
 }
 
 function renderFoundation(entry) {
-  return `          <dt>${escapeHtml(entry.name)} <span class="inventory-version">v${escapeHtml(entry.version)}</span></dt>\n          <dd>${escapeHtml(entry.purpose)}</dd>`;
+  return `          <dt>${escapeHtml(entry.name)} <span class="inventory-version">v${escapeHtml(entry.version)}</span></dt>\n          <dd>${escapeHtml(entry.purpose)} <span class="inventory-adds">Adds: ${escapeHtml(entry.adds)}.</span></dd>`;
 }
 
 function renderModule(entry) {
-  return `          <dt>${escapeHtml(entry.name)} <span class="inventory-version">v${escapeHtml(entry.version)}</span></dt>\n          <dd>${escapeHtml(entry.purpose)} <span class="inventory-readiness">Ready requires: ${escapeHtml(entry.readiness)}.</span></dd>`;
+  return `          <dt>${escapeHtml(entry.name)} <span class="inventory-version">v${escapeHtml(entry.version)}</span></dt>\n          <dd>${escapeHtml(entry.purpose)} <span class="inventory-adds">Adds: ${escapeHtml(entry.adds)}.</span><span class="inventory-readiness">Ready requires: ${escapeHtml(entry.readiness)}.</span></dd>`;
 }
 
 const args = parseArgs(process.argv.slice(2));

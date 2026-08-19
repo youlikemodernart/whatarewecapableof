@@ -259,11 +259,19 @@
   white-space: nowrap;
 }
 
+.inventory-adds,
 .inventory-readiness {
-  color: var(--ink-3);
   display: block;
   font-size: 13px;
   margin-top: 5px;
+}
+
+.inventory-adds {
+  color: var(--ink-2);
+}
+
+.inventory-readiness {
+  color: var(--ink-3);
 }
 
 .piop-note a {

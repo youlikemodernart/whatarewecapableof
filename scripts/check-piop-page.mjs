@@ -111,6 +111,10 @@ requireText(page, 'Private GitHub is the source authority.', 'source-authority b
 requireText(page, 'recipient-specific ZIP', 'recipient-specific fulfillment boundary');
 requireText(page, 'private Google Drive', 'private delivery boundary');
 requireText(page, 'A GitHub account is not required', 'recipient GitHub boundary');
+requireText(page, 'id="is-terminal"', 'IS Terminal section');
+requireText(page, 'IS is the native macOS vehicle for using Pi and PiOp as a persistent working environment.', 'IS relationship statement');
+requireText(page, 'IS 0.1.7.14', 'canonical IS release');
+requireText(page, 'PiOp Foundation continues to work in an ordinary terminal.', 'ordinary-terminal fallback');
 requireText(page, 'Payment does not change fulfillment priority, package access, or repository permissions.', 'payment boundary');
 requireText(page, 'action="https://fin.whatarewecapableof.com/api/piop/checkout"', 'checkout action');
 requireText(page, 'Monthly support continues until you cancel.', 'monthly support boundary');

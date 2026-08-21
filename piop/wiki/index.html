@@ -82,9 +82,9 @@
           <tr><th scope="row">Installed shape</th><td>Foundation + Modules</td></tr>
           <tr><th scope="row">Foundation default</th><td>8 packages / 5 extensions</td></tr>
           <tr><th scope="row">Default web layer</th><td>Pi Web Access (Surf optional)</td></tr>
-          <tr><th scope="row">Source authority</th><td>Private GitHub</td></tr>
+          <tr><th scope="row">Source authority</th><td>Accepted PiOp source + skill graph</td></tr>
           <tr><th scope="row">Delivery</th><td>Private Drive + reviewed email</td></tr>
-          <tr><th scope="row">Version / state</th><td><span class="live">0.2.3 (release-ineligible)</span></td></tr>
+          <tr><th scope="row">Version / state</th><td><span class="live">0.2.3 stable</span></td></tr>
         </tbody>
       </table>
       <div class="ib-note">Availability describes reviewed product status, not readiness on a recipient's machine.</div>
@@ -137,26 +137,26 @@
     </table>
 
     <h2 id="skills">Skills <span class="edit" aria-hidden="true">[edit]</span></h2>
-    <p>Skills add focused methods for particular kinds of work. They travel with an installation without becoming part of the universal baseline. Risk tiers run from T0 (text-only) to T3 (can touch accounts, credentials, or live services); scope is global or project-local. A recipient assembles a set, and a reviewed request is generated from it. Selection installs nothing on its own.</p>
+    <p>Skills add focused methods for particular kinds of work. PiOp selects them from its accepted capability graph according to a recipient's use case. A selected root skill brings its declared required closures and bounded runtime resources into that recipient's bundle.</p>
     <table class="wt">
-      <caption>Selected skills (reviewed availability)</caption>
+      <caption>Graph-driven skill selection</caption>
       <thead>
-        <tr><th>Skill</th><th>Version</th><th>Tier</th><th>Scope</th><th>Description</th></tr>
+        <tr><th>Layer</th><th>Role</th><th>Authority boundary</th></tr>
       </thead>
       <tbody>
-        <tr><th scope="row">Collaborator basics</th><td class="nowrap">v0.1.1</td><td class="nowrap">T0</td><td class="nowrap">Global</td><td>Neutral first-use checks and private-safe source-note intake for collaborators beginning to use Pi skill packs.</td></tr>
-        <tr><th scope="row">Relational intelligence</th><td class="nowrap">v0.1.0</td><td class="nowrap">T0</td><td class="nowrap">Global</td><td>Agency-preserving relational and introspective reflection with explicit memory, privacy, role, safety, and repair boundaries.</td></tr>
-        <tr><th scope="row">Brand strategy</th><td class="nowrap">v0.1.1</td><td class="nowrap">T0</td><td class="nowrap">Global</td><td>Evidence-grounded brand and marketing strategy for positioning, category, messaging, architecture, and execution briefs. Plans only; never executes live actions.</td></tr>
-        <tr><th scope="row">Are.na</th><td class="nowrap">v0.1.0</td><td class="nowrap">T3</td><td class="nowrap">Project-local</td><td>Clean-room Are.na discovery and inspection plus approval-gated creation, upload, connection, and deletion through the official CLI.</td></tr>
-        <tr><th scope="row">Dual harness</th><td class="nowrap">v0.3.0</td><td class="nowrap">T2</td><td class="nowrap">Global</td><td>Generalized Pi and Claude Code operating layer with a neutral kernel, optional mirrors, private file-prompt bridges, and MCP partitioning guidance.</td></tr>
+        <tr><th scope="row">Skill graph</th><td>Identifies canonical skills and declared required relationships.</td><td>Grants no installation, capability, profile, account, or action authority.</td></tr>
+        <tr><th scope="row">Use-case selection</th><td>Chooses the smallest useful root skills for the recipient and work.</td><td>Selection is reviewed before bundle inclusion.</td></tr>
+        <tr><th scope="row">Recipient bundle</th><td>Carries selected roots, required closures, and bounded runtime resources.</td><td>Excludes the complete canonical library, raw corpora, books, benchmarks, and maintenance evidence.</td></tr>
+        <tr><th scope="row">Runtime readiness</th><td>Verifies what is installed, configured, authenticated, and usable on the recipient machine.</td><td>Bundle inclusion alone does not establish readiness or external-action approval.</td></tr>
       </tbody>
     </table>
+    <p class="note"><span class="lbl">Retired model:</span> The former standalone package catalog and its five per-skill repositories were retired on 21 August 2026. Historical catalog records do not define current availability or require one repository per skill.</p>
 
     <h2 id="delivery">Delivery <span class="edit" aria-hidden="true">[edit]</span></h2>
-    <p>Private GitHub is the source authority: it holds source history, exact versions, tests, and reproducible release evidence.<sup class="ref" id="cite-ref-2d"><a href="#ref-2">[2]</a></sup> Recipient delivery is separate.</p>
+    <p>The accepted PiOp source and skill graph govern what can enter a recipient bundle.<sup class="ref" id="cite-ref-2d"><a href="#ref-2">[2]</a></sup> Recipient delivery is separate.</p>
     <ul class="plain">
-      <li>A recipient chooses a skill set, and the generated request is sent.</li>
-      <li>Package compatibility, scope, and risk are reviewed before fulfillment.</li>
+      <li>The recipient describes the outcome, working context, and relevant constraints.</li>
+      <li>The smallest useful skill set, required closures, scope, and risk are reviewed before fulfillment.</li>
       <li>On approval, a recipient-specific ZIP is shared through private Google Drive.</li>
       <li>The delivery email carries the exact copy-and-paste Pi setup prompt.</li>
     </ul>

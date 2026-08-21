@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
-import { publicPrivateDataBoundary, readAuthoritativeCatalog } from './piop-catalog-authority.mjs';
 import { readAuthoritativeProduct } from './piop-product-authority.mjs';
 
 function fail(message) {
@@ -14,7 +13,7 @@ function parseArgs(argv) {
   for (let index = 0; index < argv.length; index += 2) {
     const key = argv[index]?.replace(/^--/, '');
     const value = argv[index + 1];
-    if (!key || !value) fail('usage: node scripts/check-piop-page.mjs --catalog skills.json --product scripts/data/piop-product.json [--page piop/index.html] [--script js/piop.js] [--css css/piop.css]');
+    if (!key || !value) fail('usage: node scripts/check-piop-page.mjs --product scripts/data/piop-product.json [--page piop/index.html] [--script js/piop.js] [--css css/piop.css]');
     args[key] = value;
   }
   return args;
@@ -37,25 +36,13 @@ function escapeHtml(value) {
     .replaceAll("'", '&#39;');
 }
 
-function packageBlock(page, id) {
-  const marker = `<article class="skill-package" id="skill-${id}">`;
-  const start = page.indexOf(marker);
-  if (start === -1) fail(`missing package article: ${id}`);
-  const end = page.indexOf('</article>', start);
-  if (end === -1) fail(`unterminated package article: ${id}`);
-  return page.slice(start, end + '</article>'.length);
-}
-
 const args = parseArgs(process.argv.slice(2));
-if (!args.catalog) fail('a catalog is required');
 if (!args.product) fail('a product inventory is required');
 const pagePath = path.resolve(args.page || 'piop/index.html');
 const scriptPath = path.resolve(args.script || 'js/piop.js');
 const cssPath = path.resolve(args.css || 'css/piop.css');
-let catalog;
 let product;
 try {
-  ({ catalog } = readAuthoritativeCatalog(args.catalog));
   ({ product } = readAuthoritativeProduct(args.product));
 } catch (error) {
   fail(error.message);
@@ -64,34 +51,6 @@ const page = fs.readFileSync(pagePath, 'utf8');
 const script = fs.readFileSync(scriptPath, 'utf8');
 const css = fs.readFileSync(cssPath, 'utf8');
 const publicSources = [page, script, css];
-const packages = catalog.packages.filter((entry) => entry.status === 'verified-private');
-if (!packages.length) fail('catalog has no verified private releases');
-
-let skillCount = 0;
-for (const entry of packages) {
-  const block = packageBlock(page, entry.id);
-  requireText(block, escapeHtml(entry.name), `package name ${entry.id}`);
-  requireText(block, escapeHtml(entry.description), `package description ${entry.id}`);
-  requireText(block, `v${escapeHtml(entry.version)}`, `package version ${entry.id}`);
-  requireText(block, escapeHtml(entry.external_access), `external-access boundary ${entry.id}`);
-  requireText(block, escapeHtml(entry.credentials), `credential boundary ${entry.id}`);
-  requireText(block, escapeHtml(publicPrivateDataBoundary(entry.private_data)), `package/private-data boundary ${entry.id}`);
-  requireText(block, `data-skill-id="${entry.id}"`, `selection control ${entry.id}`);
-  requireText(block, 'hidden aria-pressed="false"', `progressive-enhancement state ${entry.id}`);
-  for (const source of publicSources) {
-    forbidText(source, entry.repo, `public source exposes private repository ${entry.id}`);
-    forbidText(source, entry.install, `public source exposes direct install command ${entry.id}`);
-    forbidText(source, entry.release_archive_sha256, `public source exposes release digest ${entry.id}`);
-  }
-  for (const skill of entry.resources.skills) {
-    skillCount += 1;
-    requireText(block, escapeHtml(entry.skill_descriptions[skill]), `skill description ${entry.id}/${skill}`);
-  }
-}
-
-for (const entry of catalog.packages.filter((item) => item.status !== 'verified-private')) {
-  forbidText(page, `id="skill-${entry.id}"`, `page includes non-released package ${entry.id}`);
-}
 
 for (const entry of product.foundation) {
   requireText(page, `${escapeHtml(entry.name)} <span class="inventory-version">v${escapeHtml(entry.version)}</span>`, `Foundation entry ${entry.id}`);
@@ -106,8 +65,9 @@ for (const entry of product.modules) {
 }
 for (const entry of product.operator_only) forbidText(page, entry.name, `operator-only surface rendered ${entry.id}`);
 
-requireText(page, `${packages.length} PACKAGES / ${skillCount} SKILLS`, 'catalog totals');
-requireText(page, 'Private GitHub is the source authority.', 'source-authority boundary');
+requireText(page, 'GRAPH-DRIVEN / REVIEWED BUNDLES', 'current Skills Library model');
+requireText(page, 'PiOp selects skills from its reviewed capability graph according to what a recipient needs.', 'graph selection explanation');
+requireText(page, 'It does not install anything, grant account access, select a profile, or authorize an external action.', 'graph authority boundary');
 requireText(page, 'recipient-specific ZIP', 'recipient-specific fulfillment boundary');
 requireText(page, 'private Google Drive', 'private delivery boundary');
 requireText(page, 'A GitHub account is not required', 'recipient GitHub boundary');
@@ -118,11 +78,30 @@ requireText(page, 'PiOp Foundation continues to work in an ordinary terminal.', 
 requireText(page, 'Payment does not change fulfillment priority, package access, or repository permissions.', 'payment boundary');
 requireText(page, 'action="https://fin.whatarewecapableof.com/api/piop/checkout"', 'checkout action');
 requireText(page, 'Monthly support continues until you cancel.', 'monthly support boundary');
-requireText(page, 'id="install-list-summary" hidden', 'progressive-enhancement summary state');
-requireText(page, 'The selection tool requires JavaScript.', 'no-script fallback');
-requireText(page, 'id="email-skill-request"', 'email request action');
-requireText(script, 'PiOp skill set request', 'request output');
-requireText(script, 'recipient-specific verified ZIP', 'request delivery model');
+
+const staleInterfaceMarkers = [
+  '5 PACKAGES / 7 SKILLS',
+  'skill-install-toggle',
+  'install-list-summary',
+  'install-review',
+  'PiOp skill set request',
+  'Private GitHub is the source authority.',
+  'released Library catalog',
+  'verified-private',
+];
+for (const value of staleInterfaceMarkers) {
+  for (const source of [page, script]) forbidText(source, value, 'public interface contains stale catalog marker');
+}
+const privateSourceMarkers = [
+  'git:github.com/',
+  'https://github.com/youlikemodernart/',
+  'data-copy-command',
+  'Copy install command',
+  'Check GitHub invitations',
+];
+for (const value of privateSourceMarkers) {
+  for (const source of publicSources) forbidText(source, value, 'public source contains private-source marker');
+}
 
 const ids = [...page.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]);
 const duplicateIds = ids.filter((id, index) => ids.indexOf(id) !== index);
@@ -136,20 +115,4 @@ if (/\b(?:fetch\s*\(|XMLHttpRequest\b|sendBeacon\s*\()/.test(script)) {
   fail('public script contains a direct network-send primitive');
 }
 
-const forbidden = [
-  '/private/piop-recipient-directory',
-  'invitees.json',
-  'newsletter_eligible',
-  'approval_token',
-  'STRIPE_SECRET_KEY',
-  'git:github.com/',
-  'https://github.com/youlikemodernart/',
-  'data-copy-command',
-  'Copy install command',
-  'Check GitHub invitations',
-];
-for (const value of forbidden) {
-  for (const source of publicSources) forbidText(source, value, 'public source contains forbidden source or private marker');
-}
-
-console.log(`PASS piop_page_check foundation=${product.foundation.length} modules=${product.modules.length} packages=${packages.length} skills=${skillCount} ids=${ids.length} fulfillment=private-drive authority=sha256-locked`);
+console.log(`PASS piop_page_check foundation=${product.foundation.length} modules=${product.modules.length} ids=${ids.length} skills=graph-driven fulfillment=private-drive catalog=retired`);

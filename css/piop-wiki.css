@@ -1,0 +1,148 @@
+
+body.page-piop-wiki{
+  --ink:#1a1a1a; --ink-2:#44474a; --ink-3:#686d71;
+  --rule:#e6e6e3; --rule-2:#d3d3cd; --bg:#ffffff;
+  --panel:#f6f6f3; --blue:#3157d5; --blue-soft:#eef2ff; --blue-visited:#24409c;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  --serif:Georgia,"Times New Roman",Times,serif;
+  --article-max:1040px; --toc-w:210px;
+}
+body.page-piop-wiki *{box-sizing:border-box;}
+body.page-piop-wiki{-webkit-text-size-adjust:100%;}
+body.page-piop-wiki{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+body.page-piop-wiki a{color:var(--blue);text-decoration:none;}
+body.page-piop-wiki a:hover{text-decoration:underline;}
+body.page-piop-wiki a:visited{color:var(--blue-visited);}
+body.page-piop-wiki a:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:1px;}
+body.page-piop-wiki .skip-link{position:absolute;left:-9999px;top:0;background:var(--ink);color:#fff;padding:8px 14px;z-index:100;}
+body.page-piop-wiki .skip-link:focus{left:8px;top:8px;}
+
+/* ---- masthead (Vector-2022 parody, PiOp-branded) ---- */
+body.page-piop-wiki .masthead{display:flex;align-items:center;gap:16px;padding:8px 20px;border-bottom:1px solid var(--rule-2);position:sticky;top:0;background:var(--bg);z-index:50;}
+body.page-piop-wiki .mh-burger{font-size:16px;color:var(--ink-2);cursor:default;padding:6px 8px;border-radius:3px;}
+body.page-piop-wiki .mh-burger:hover{background:var(--panel);}
+body.page-piop-wiki .wordmark{display:flex;align-items:baseline;gap:8px;text-decoration:none;color:var(--ink);}
+body.page-piop-wiki .wordmark .logo{font-family:var(--serif);font-size:26px;font-weight:700;letter-spacing:.02em;color:var(--blue);line-height:1;}
+body.page-piop-wiki .wordmark .name{font-family:var(--serif);font-size:21px;font-weight:700;letter-spacing:.01em;}
+body.page-piop-wiki .wordmark .tag{font-size:11px;color:var(--ink-3);align-self:flex-end;margin-bottom:2px;}
+body.page-piop-wiki .mh-search{flex:1;display:flex;max-width:520px;margin:0 auto;}
+body.page-piop-wiki .mh-search input{flex:1;border:1px solid var(--rule-2);border-right:0;border-radius:2px 0 0 2px;padding:7px 12px;font-size:14px;font-family:inherit;color:var(--ink);min-width:0;}
+body.page-piop-wiki .mh-search input:focus{outline:2px solid var(--blue);outline-offset:-1px;}
+body.page-piop-wiki .mh-search button{border:1px solid var(--rule-2);background:var(--panel);padding:7px 14px;font-size:13px;border-radius:0 2px 2px 0;cursor:pointer;color:var(--ink-2);}
+body.page-piop-wiki .mh-right{display:flex;gap:14px;font-size:13px;white-space:nowrap;}
+body.page-piop-wiki .mh-right a{color:var(--blue);}
+
+/* ---- shell: left TOC rail + article ---- */
+body.page-piop-wiki .shell{display:flex;gap:26px;max-width:1040px;margin:0 auto;padding:0 20px;align-items:flex-start;}
+body.page-piop-wiki .toc-rail{width:var(--toc-w);flex:none;position:sticky;top:64px;padding-top:22px;font-size:13.5px;max-height:calc(100vh - 80px);overflow:auto;}
+body.page-piop-wiki .toc-rail .toc-head{display:flex;align-items:center;gap:8px;font-weight:600;margin-bottom:8px;}
+body.page-piop-wiki .toc-rail .toc-head .hide{font-size:11px;color:var(--ink-3);border:1px solid var(--rule-2);border-radius:2px;padding:0 5px;cursor:default;}
+body.page-piop-wiki .toc-rail ol{list-style:none;margin:0;padding:0;counter-reset:t;}
+body.page-piop-wiki .toc-rail li{counter-increment:t;margin:3px 0;padding-left:22px;position:relative;line-height:1.4;}
+body.page-piop-wiki .toc-rail li::before{content:counter(t);position:absolute;left:0;color:var(--ink-3);font-variant-numeric:tabular-nums;}
+body.page-piop-wiki .toc-rail a{color:var(--blue);}
+body.page-piop-wiki .toc-rail .top{padding-left:0;color:var(--ink-2);font-weight:500;}
+body.page-piop-wiki .toc-rail .top::before{content:none;}
+
+body.page-piop-wiki .article{flex:1;min-width:0;max-width:var(--article-max);padding:18px 0 60px;}
+
+/* ---- article head: tabs, title, subhead, hatnote ---- */
+body.page-piop-wiki .tabs{display:flex;justify-content:space-between;border-bottom:1px solid var(--rule-2);font-size:13px;margin-bottom:2px;}
+body.page-piop-wiki .tabs .grp{display:flex;gap:2px;}
+body.page-piop-wiki .tabs a,
+body.page-piop-wiki .tabs span{padding:8px 12px 6px;color:var(--blue);border:1px solid transparent;border-bottom:0;}
+body.page-piop-wiki .tabs .active{color:var(--ink);border-color:var(--rule-2);background:var(--bg);position:relative;top:1px;border-radius:2px 2px 0 0;}
+body.page-piop-wiki .tabs .muted{color:var(--ink-3);cursor:default;}
+body.page-piop-wiki .title-row{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;border-bottom:1px solid var(--rule-2);padding-bottom:6px;margin:14px 0 0;}
+body.page-piop-wiki h1.title{font-family:var(--serif);font-weight:400;font-size:30px;line-height:1.1;margin:0;}
+body.page-piop-wiki .title-meta{font-size:12px;color:var(--ink-3);text-align:right;white-space:nowrap;line-height:1.4;}
+body.page-piop-wiki .title-meta b{color:var(--ink-2);font-weight:600;}
+body.page-piop-wiki .subhead{font-size:13px;color:var(--ink-3);margin:6px 0 0;}
+body.page-piop-wiki .hatnote{font-style:italic;color:var(--ink-2);font-size:13.5px;margin:12px 0 2px;padding-left:14px;border-left:2px solid var(--blue);}
+body.page-piop-wiki .hatnote b{font-style:normal;}
+
+/* ---- infobox (floated right, mimics captured .infobox.vcard) ---- */
+body.page-piop-wiki .infobox{float:right;width:320px;margin:6px 0 18px 22px;border:1px solid var(--rule-2);border-top:3px solid var(--blue);font-size:12.5px;line-height:1.45;background:var(--bg);}
+body.page-piop-wiki .infobox .ib-title{font-family:var(--serif);font-weight:700;font-size:15px;text-align:center;padding:9px 12px;background:var(--blue-soft);border-bottom:1px solid var(--rule-2);}
+body.page-piop-wiki .infobox .ib-sub{text-align:center;color:var(--ink-3);font-size:12px;padding:6px 12px;border-bottom:1px solid var(--rule);}
+body.page-piop-wiki .infobox .ib-mark{text-align:center;font-family:var(--serif);font-size:40px;color:var(--blue);padding:10px 0 4px;}
+body.page-piop-wiki .infobox table{width:100%;border-collapse:collapse;}
+body.page-piop-wiki .infobox th,
+body.page-piop-wiki .infobox td{text-align:left;vertical-align:top;padding:6px 12px;border-bottom:1px solid var(--rule);}
+body.page-piop-wiki .infobox th{width:40%;color:var(--ink-3);font-weight:600;}
+body.page-piop-wiki .infobox tr:last-child th,
+body.page-piop-wiki .infobox tr:last-child td{border-bottom:0;}
+body.page-piop-wiki .infobox .live{color:var(--blue);font-weight:600;}
+body.page-piop-wiki .ib-note{padding:8px 12px;font-size:11.5px;color:var(--ink-3);background:var(--panel);border-top:1px solid var(--rule);}
+
+/* ---- body prose ---- */
+body.page-piop-wiki .article p{margin:0 0 .9em;max-width:80ch;}
+body.page-piop-wiki .lead{font-size:15.5px;}
+body.page-piop-wiki sup.ref{font-size:.72em;line-height:0;vertical-align:super;}
+body.page-piop-wiki sup.ref a{color:var(--blue);}
+body.page-piop-wiki h2{font-family:var(--serif);font-weight:400;font-size:22px;line-height:1.2;border-bottom:1px solid var(--rule-2);padding-bottom:4px;margin:26px 0 12px;display:flex;justify-content:space-between;align-items:baseline;}
+body.page-piop-wiki h2 .edit{font-family:var(--sans);font-size:12px;color:var(--ink-3);font-weight:400;}
+body.page-piop-wiki h2 .edit a{color:var(--ink-3);}
+body.page-piop-wiki h3{font-size:16px;margin:18px 0 8px;}
+body.page-piop-wiki .note{background:var(--blue-soft);border:1px solid var(--rule-2);border-left:3px solid var(--blue);padding:10px 14px;font-size:13.5px;color:var(--ink-2);margin:14px 0;border-radius:2px;}
+body.page-piop-wiki .note .lbl{display:block;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:4px;}
+
+/* ---- wikitable parody ---- */
+body.page-piop-wiki table.wt{border-collapse:collapse;margin:14px 0;font-size:13.5px;width:100%;}
+body.page-piop-wiki table.wt caption{font-weight:600;text-align:left;padding:4px 0;color:var(--ink-2);}
+body.page-piop-wiki table.wt th,
+body.page-piop-wiki table.wt td{border:1px solid var(--rule-2);padding:7px 10px;text-align:left;vertical-align:top;}
+body.page-piop-wiki table.wt thead th{background:var(--blue-soft);font-weight:600;}
+body.page-piop-wiki table.wt tbody th{background:var(--panel);font-weight:600;}
+body.page-piop-wiki table.wt .tier{font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink-2);}
+
+/* ---- skill index ---- */
+body.page-piop-wiki .skill-search{display:flex;gap:8px;align-items:center;margin:12px 0;flex-wrap:wrap;}
+body.page-piop-wiki .skill-search input{border:1px solid var(--rule-2);border-radius:2px;padding:7px 12px;font-size:14px;font-family:inherit;min-width:200px;}
+body.page-piop-wiki .skill-search .chip{border:1px solid var(--rule-2);background:var(--bg);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--ink-2);cursor:pointer;}
+body.page-piop-wiki .skill{border-bottom:1px solid var(--rule);padding:14px 0;}
+body.page-piop-wiki .skill h3{margin:0;font-family:var(--sans);font-size:15px;display:flex;justify-content:space-between;gap:12px;align-items:baseline;}
+body.page-piop-wiki .skill .meta{font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums;white-space:nowrap;}
+body.page-piop-wiki .skill p{margin:6px 0 0;color:var(--ink-2);font-size:13.5px;max-width:78ch;}
+
+/* ---- see also / references / categories / navbox ---- */
+body.page-piop-wiki ul.plain{list-style:none;margin:8px 0;padding:0;}
+body.page-piop-wiki ul.plain li{padding-left:16px;position:relative;margin:5px 0;}
+body.page-piop-wiki ul.plain li::before{content:"";position:absolute;left:0;top:.7em;width:7px;height:1px;background:var(--ink);}
+body.page-piop-wiki ol.refs{font-size:13px;color:var(--ink-2);padding-left:22px;}
+body.page-piop-wiki ol.refs li{margin:5px 0;}
+body.page-piop-wiki ol.refs code{background:var(--panel);padding:1px 4px;border-radius:2px;font-size:12px;}
+body.page-piop-wiki .catbar{border-top:1px solid var(--rule-2);margin-top:30px;padding-top:8px;font-size:13px;}
+body.page-piop-wiki .catbar .lbl{color:var(--ink-3);font-weight:600;margin-right:6px;}
+body.page-piop-wiki .catbar a{color:var(--blue);}
+body.page-piop-wiki .catbar .sep{color:var(--ink-3);margin:0 4px;}
+body.page-piop-wiki .navbox{border:1px solid var(--rule-2);margin-top:22px;font-size:13px;border-radius:2px;overflow:hidden;}
+body.page-piop-wiki .navbox summary{background:var(--panel);padding:7px 12px;font-weight:600;cursor:pointer;list-style:none;display:flex;justify-content:space-between;}
+body.page-piop-wiki .navbox summary::-webkit-details-marker{display:none;}
+body.page-piop-wiki .navbox summary .vte{color:var(--ink-3);font-weight:400;font-size:11px;}
+body.page-piop-wiki .navbox .nb-body{padding:10px 12px;display:flex;flex-wrap:wrap;gap:4px 14px;}
+body.page-piop-wiki .navbox .nb-body a{color:var(--blue);}
+
+/* ---- colophon ---- */
+body.page-piop-wiki .colophon{max-width:1040px;margin:20px auto 0;padding:16px 20px 40px;border-top:1px solid var(--rule);color:var(--ink-3);font-size:12.5px;text-align:center;line-height:1.6;}
+body.page-piop-wiki .colophon b{color:var(--ink-2);}
+
+/* ---- responsive ---- */
+@media (max-width:1000px){
+  body.page-piop-wiki .toc-rail{display:none;}
+  body.page-piop-wiki .infobox{float:none;width:auto;margin:14px 0;}
+  body.page-piop-wiki .mh-search{display:none;}
+}
+@media (max-width:600px){
+  body.page-piop-wiki{font-size:15px;}
+  body.page-piop-wiki .shell{padding:0 14px;}
+  body.page-piop-wiki .mh-right{display:none;}
+  body.page-piop-wiki h1.title{font-size:25px;}
+  body.page-piop-wiki h2{font-size:19px;}
+  body.page-piop-wiki table.wt{display:block;overflow-x:auto;}
+}
+
+
+body.page-piop-wiki .skill-search .chip[aria-pressed="true"]{background:var(--blue-soft);border-color:var(--blue);color:var(--blue);}
+body.page-piop-wiki .skill[hidden]{display:none;}
+body.page-piop-wiki .skill-filter-status{font-size:12px;color:var(--ink-3);margin:0;}

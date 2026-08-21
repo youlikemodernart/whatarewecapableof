@@ -113,6 +113,21 @@ body.page-piop-wiki table.wt thead th{background:var(--fill-header);font-weight:
 body.page-piop-wiki table.wt tbody th{background:var(--fill-header);font-weight:700;text-align:left;}
 body.page-piop-wiki table.wt td.nowrap,body.page-piop-wiki table.wt th.nowrap{white-space:nowrap;}
 
+/* ---- public skill directory ---- */
+body.page-piop-wiki .skill-directory-summary{border:1px solid var(--border);background:var(--fill);padding:.75em 1em;margin:1.25em 0;}
+body.page-piop-wiki .skill-directory-summary p{margin:0 0 .6em;}
+body.page-piop-wiki .skill-directory-categories{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.25em 1.25em;font-size:13.5px;}
+body.page-piop-wiki .skill-directory-categories li{margin:0;min-width:0;}
+body.page-piop-wiki .directory-count{color:var(--ink-3);font-size:.78em;font-weight:400;white-space:nowrap;}
+body.page-piop-wiki .skill-directory-group{margin:1.4em 0 0;scroll-margin-top:64px;}
+body.page-piop-wiki .skill-directory-group h3{border-bottom:1px solid var(--hairline);padding-bottom:.3em;display:flex;justify-content:space-between;align-items:baseline;}
+body.page-piop-wiki .skill-directory-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--hairline);border-left:1px solid var(--hairline);margin:0;}
+body.page-piop-wiki .skill-directory-entry{padding:.65em .75em;border-right:1px solid var(--hairline);border-bottom:1px solid var(--hairline);min-width:0;}
+body.page-piop-wiki .skill-directory-entry dt{font-weight:700;line-height:1.4;}
+body.page-piop-wiki .skill-directory-entry dt code{font-size:.78em;font-weight:400;color:var(--ink-3);background:var(--fill);padding:1px 4px;overflow-wrap:anywhere;}
+body.page-piop-wiki .skill-directory-entry dd{margin:.3em 0 0;color:var(--ink-2);font-size:13.5px;line-height:1.45;}
+body.page-piop-wiki .directory-status{display:inline-block;margin-left:.35em;padding:0 .35em;border:1px solid var(--border);background:var(--fill-header);color:var(--ink-2);font-size:.72em;font-weight:600;text-transform:uppercase;letter-spacing:.03em;white-space:nowrap;}
+
 /* ---- see also / plain lists ---- */
 body.page-piop-wiki ul.plain{list-style:none;margin:.5em 0;padding:0;}
 body.page-piop-wiki ul.plain li{padding-left:16px;position:relative;margin:.35em 0;}
@@ -161,4 +176,6 @@ body.page-piop-wiki .colophon b{color:var(--ink-2);}
   body.page-piop-wiki h2{font-size:19px;}
   body.page-piop-wiki .tabs span{padding-top:11px;padding-bottom:11px;} /* 40–44px tap targets */
   body.page-piop-wiki table.wt{display:block;overflow-x:auto;}
+  body.page-piop-wiki .skill-directory-categories{grid-template-columns:1fr;}
+  body.page-piop-wiki .skill-directory-list{grid-template-columns:1fr;}
 }

@@ -1,0 +1,1094 @@
+{
+  "schema_version": 1,
+  "kind": "PiOpPublicSkillDirectory",
+  "updated": "2026-08-21",
+  "source_snapshot": {
+    "graph_kind": "V2SkillGraph",
+    "graph_generated_at": "2026-08-21T19:03:25.954713Z",
+    "graph_nodes": 174,
+    "public_directory_rows": 152,
+    "excluded_current_graph_nodes": 22,
+    "graph_sha256": "ab52ae2a24a2fcb800d1d1b6e5ef322ed6faf3c1e23e70baa952310be5681309"
+  },
+  "boundary": "Directory listing only. A listing grants no installation, availability, readiness, profile, account, credential, or action authority.",
+  "categories": [
+    "Business and strategy",
+    "Marketing and audience",
+    "Design and creative",
+    "Writing and communication",
+    "Software and systems",
+    "Web and automation",
+    "Research and knowledge",
+    "Operations and platforms",
+    "Finance, legal and commerce",
+    "Architecture and physical products",
+    "Music, media and culture",
+    "Personal and practical"
+  ],
+  "skills": [
+    {
+      "id": "adobe-scripting",
+      "display_name": "Adobe scripting",
+      "category": "Design and creative",
+      "description": "Plan, write, and troubleshoot automation for Photoshop, Illustrator, and InDesign, including application control, export formats, color handling, and document-specific workflows.",
+      "status": "listed"
+    },
+    {
+      "id": "agent-infrastructure-cleanup",
+      "display_name": "Agent infrastructure cleanup",
+      "category": "Software and systems",
+      "description": "Audit and safely clear leftover local agent sessions, background services, debug browsers, tunnels, and development servers after sustained agent work.",
+      "status": "listed"
+    },
+    {
+      "id": "agent-workspace",
+      "display_name": "Agent workspace",
+      "category": "Software and systems",
+      "description": "Plan visible, persistent agent workspaces for focused tasks, reviews, interruptions, resumes, verification, and clean closure across agent environments.",
+      "status": "listed"
+    },
+    {
+      "id": "annas-archive",
+      "display_name": "Anna's Archive",
+      "category": "Research and knowledge",
+      "description": "Find and download books by title or author, choosing formats suited to visual reference material or text-heavy research.",
+      "status": "under-review"
+    },
+    {
+      "id": "anti-bot-vendors",
+      "display_name": "Anti-bot vendors",
+      "category": "Research and knowledge",
+      "description": "Research how commercial anti-bot and CAPTCHA systems collect signals, score requests, and support defensible assessments of vendor claims on authorized targets.",
+      "status": "listed"
+    },
+    {
+      "id": "api-scout",
+      "display_name": "API scout",
+      "category": "Web and automation",
+      "description": "Search a public API catalog for free or low-friction services before proposing paid intermediaries, custom scraping, or manual collection.",
+      "status": "listed"
+    },
+    {
+      "id": "api-static-site",
+      "display_name": "API to static site",
+      "category": "Web and automation",
+      "description": "Plan a four-stage pipeline that fetches API data, transforms it, renders static output, and deploys the result.",
+      "status": "listed"
+    },
+    {
+      "id": "apparel-production",
+      "display_name": "Apparel production",
+      "category": "Architecture and physical products",
+      "description": "Plan apparel manufacturing, specifications, sourcing, costing, samples, quality review, factory communication, and unit economics for cut-and-sew products.",
+      "status": "listed"
+    },
+    {
+      "id": "apple-platform-distribution",
+      "display_name": "Apple platform distribution",
+      "category": "Software and systems",
+      "description": "Plan and diagnose Mac software signing, notarization, packaging, distribution, updates, security controls, and release recovery with explicit approval gates.",
+      "status": "listed"
+    },
+    {
+      "id": "arch-construction-docs",
+      "display_name": "Architectural construction documents",
+      "category": "Architecture and physical products",
+      "description": "Create and critique architectural construction documents, including drawing conventions, detailing, building systems, code concerns, sheet sets, and dimensional reference.",
+      "status": "listed"
+    },
+    {
+      "id": "arch-drawing-viewer",
+      "display_name": "Architectural drawing viewer",
+      "category": "Architecture and physical products",
+      "description": "Review architectural plan sets by combining extracted sheet text with overview and tile images for structured construction-document interpretation.",
+      "status": "listed"
+    },
+    {
+      "id": "architecture-practice",
+      "display_name": "Architecture practice",
+      "category": "Architecture and physical products",
+      "description": "Assess how architecture firms organize, price, staff, deliver projects, coordinate consultants, manage construction administration, and plan operating economics.",
+      "status": "listed"
+    },
+    {
+      "id": "arena",
+      "display_name": "Are.na",
+      "category": "Design and creative",
+      "description": "Research, organize, and manage visual reference collections, channels, blocks, uploads, highlights, and imported material in Are.na.",
+      "status": "listed"
+    },
+    {
+      "id": "art-direction-research",
+      "display_name": "Art direction research",
+      "category": "Design and creative",
+      "description": "Translate brand strategy into visual direction through precedent research, lineage analysis, cultural-risk review, and concrete rules for design execution.",
+      "status": "listed"
+    },
+    {
+      "id": "art-gallery",
+      "display_name": "Art gallery",
+      "category": "Music, media and culture",
+      "description": "Plan and assess an online-first gallery practice, including representation, pricing, provenance, collector relationships, viewing rooms, shipping, and ethical boundaries.",
+      "status": "listed"
+    },
+    {
+      "id": "artist-management",
+      "display_name": "Artist management",
+      "category": "Music, media and culture",
+      "description": "Support music-management relationships, agreements, compensation, career planning, team design, and artist-finance questions across US and UK practice.",
+      "status": "listed"
+    },
+    {
+      "id": "audio-transcription",
+      "display_name": "Audio transcription",
+      "category": "Writing and communication",
+      "description": "Turn recordings, calls, meetings, voice notes, and audio or video files into transcripts, notes, and source material for further work.",
+      "status": "listed"
+    },
+    {
+      "id": "audit",
+      "display_name": "Audit",
+      "category": "Research and knowledge",
+      "description": "Evaluate knowledge skills, reference systems, and agent workflows through fidelity, functional, and integration audits with structured improvement protocols.",
+      "status": "listed"
+    },
+    {
+      "id": "authority-link-earning",
+      "display_name": "Authority link earning",
+      "category": "Marketing and audience",
+      "description": "Plan and audit earned search authority through link quality, digital PR, reclamation, opportunity research, policy-aware outreach drafts, and measurement.",
+      "status": "listed"
+    },
+    {
+      "id": "behavioral-biometrics",
+      "display_name": "Behavioral biometrics",
+      "category": "Research and knowledge",
+      "description": "Explain mouse and keystroke patterns used in automated-traffic detection, emphasizing measured signals, variation, and the limits of plausible averages.",
+      "status": "listed"
+    },
+    {
+      "id": "bookkeeping",
+      "display_name": "Bookkeeping",
+      "category": "Finance, legal and commerce",
+      "description": "Design and review small-business bookkeeping systems, reconciliations, monthly close, revenue handling, controls, accounting workflows, and CPA handoff materials.",
+      "status": "listed"
+    },
+    {
+      "id": "brainstorming",
+      "display_name": "Brainstorming",
+      "category": "Business and strategy",
+      "description": "Generate, develop, reframe, critique, and select ideas using structured divergence, convergence, facilitation, creative-process, and innovation methods.",
+      "status": "listed"
+    },
+    {
+      "id": "brand-strategy",
+      "display_name": "Brand strategy",
+      "category": "Business and strategy",
+      "description": "Develop positioning, audience definition, messaging, brand architecture, launches, measurement, channel choices, and cross-channel marketing plans.",
+      "status": "listed"
+    },
+    {
+      "id": "browser-extension",
+      "display_name": "Browser extension",
+      "category": "Web and automation",
+      "description": "Choose browser-control approaches and understand Chrome DevTools and CDP boundaries for recipient-specific, separately authorized browser work.",
+      "status": "listed"
+    },
+    {
+      "id": "browser-humanization",
+      "display_name": "Browser humanization",
+      "category": "Web and automation",
+      "description": "Understand bot detection across transport, browser, behavioral, reputation, and vendor layers when planning authorized web collection and scraping quality assurance.",
+      "status": "listed"
+    },
+    {
+      "id": "bug-security",
+      "display_name": "Bug security",
+      "category": "Software and systems",
+      "description": "Investigate software defects, security risks, test design, database reliability, production stability, observability, incidents, and formal verification.",
+      "status": "listed"
+    },
+    {
+      "id": "business-consulting",
+      "display_name": "Business consulting",
+      "category": "Business and strategy",
+      "description": "Apply economic reasoning to business strategy, pricing, growth, operations, organization, capital allocation, and competitive position for operating companies.",
+      "status": "listed"
+    },
+    {
+      "id": "camping-outdoors",
+      "display_name": "Camping and outdoors",
+      "category": "Personal and practical",
+      "description": "Plan trips and long outdoor stays around shelter, water, cooking, weather, power, navigation, safety, permits, gear, and resupply.",
+      "status": "listed"
+    },
+    {
+      "id": "cargo",
+      "display_name": "Cargo",
+      "category": "Web and automation",
+      "description": "Plan, inspect, and make controlled edits to Cargo sites, including page structure, custom elements, publishing, and observation workflows.",
+      "status": "listed"
+    },
+    {
+      "id": "chatgpt-ops",
+      "display_name": "ChatGPT operations",
+      "category": "Web and automation",
+      "description": "Design, test, distribute, operate, update, and retire scoped ChatGPT experiences using skills, MCP, Projects, custom GPTs, and workspace controls.",
+      "status": "listed"
+    },
+    {
+      "id": "cloudflare-ops",
+      "display_name": "Cloudflare operations",
+      "category": "Operations and platforms",
+      "description": "Operate Cloudflare DNS, SSL, Pages, storage, caching, tunnels, and APIs with scoped access, approval gates, recovery, and sanitized records.",
+      "status": "listed"
+    },
+    {
+      "id": "composition-pass",
+      "display_name": "Composition pass",
+      "category": "Design and creative",
+      "description": "Improve browser and paged artifacts through hierarchy, typesetting, interface posture, controls, pagination, taste constraints, and visual verification.",
+      "status": "listed"
+    },
+    {
+      "id": "construction-technology",
+      "display_name": "Construction technology",
+      "category": "Architecture and physical products",
+      "description": "Evaluate construction materials, systems, envelopes, BIM, industrialized methods, robotics, carbon, lean delivery, and technology proposals.",
+      "status": "listed"
+    },
+    {
+      "id": "contract-writing",
+      "display_name": "Contract writing",
+      "category": "Finance, legal and commerce",
+      "description": "Draft and review professional contracts, commercial terms, risk allocation, negotiation language, sales arrangements, compensation plans, and lifecycle handoffs.",
+      "status": "listed"
+    },
+    {
+      "id": "customs-and-trade",
+      "display_name": "Customs and trade",
+      "category": "Finance, legal and commerce",
+      "description": "Analyze import classification, valuation, origin, duties, entry, trade remedies, admissibility, Incoterms, landed cost, and US-Mexico trade questions.",
+      "status": "listed"
+    },
+    {
+      "id": "database-ops",
+      "display_name": "Database operations",
+      "category": "Operations and platforms",
+      "description": "Conduct controlled database operations with exact target binding, effect classification, recovery for uncertain outcomes, probes, and sanitized records.",
+      "status": "listed"
+    },
+    {
+      "id": "database-systems",
+      "display_name": "Database systems",
+      "category": "Software and systems",
+      "description": "Choose and design database systems, models, queries, transactions, migrations, reliability practices, analytics, search, and safe operator handoffs.",
+      "status": "listed"
+    },
+    {
+      "id": "diagram-maker",
+      "display_name": "Diagram maker",
+      "category": "Design and creative",
+      "description": "Create and critique diagrams for reasoning, information architecture, flows, evidence, workflows, and web-ready visual communication.",
+      "status": "listed"
+    },
+    {
+      "id": "digitalocean",
+      "display_name": "DigitalOcean",
+      "category": "Operations and platforms",
+      "description": "Guides architecture decisions for DigitalOcean applications, databases, networking, storage, security, reliability, automation, and lifecycle planning.",
+      "status": "listed"
+    },
+    {
+      "id": "digitalocean-ops",
+      "display_name": "DigitalOcean Operations",
+      "category": "Operations and platforms",
+      "description": "Plans and verifies governed DigitalOcean operations across its control panel, API, command line, infrastructure definitions, and product readbacks.",
+      "status": "listed"
+    },
+    {
+      "id": "distributed-systems",
+      "display_name": "Distributed Systems",
+      "category": "Software and systems",
+      "description": "Helps design and critique distributed systems, covering time, consensus, replication, consistency, transactions, coordination, failures, and verification.",
+      "status": "listed"
+    },
+    {
+      "id": "distribution",
+      "display_name": "Distribution",
+      "category": "Finance, legal and commerce",
+      "description": "Plans retail and wholesale routes to market for physical products, including channel strategy, buyers, terms, marketplaces, and distributor economics.",
+      "status": "listed"
+    },
+    {
+      "id": "drawio",
+      "display_name": "draw.io",
+      "category": "Design and creative",
+      "description": "Creates editable draw.io diagrams and flowcharts, then renders and reviews them for architecture, strategy, and workflow communication.",
+      "status": "listed"
+    },
+    {
+      "id": "dual-harness",
+      "display_name": "Dual Harness",
+      "category": "Software and systems",
+      "description": "Coordinates shared Pi and Claude Code configuration, routing, memory locations, skills, agents, and integration boundaries.",
+      "status": "listed"
+    },
+    {
+      "id": "ecommerce",
+      "display_name": "Ecommerce",
+      "category": "Finance, legal and commerce",
+      "description": "Guides strategy and operations for physical-product direct-to-consumer commerce, including merchandising, acquisition, retention, fulfillment, pricing, economics, and compliance.",
+      "status": "listed"
+    },
+    {
+      "id": "editor-companion",
+      "display_name": "Editor Companion",
+      "category": "Writing and communication",
+      "description": "Supports collaborative editing through diagnosis, revision, voice-aware craft, and an evolving draft shaped around the writer's intent.",
+      "status": "listed"
+    },
+    {
+      "id": "email-sms-marketing",
+      "display_name": "Email and SMS Marketing",
+      "category": "Marketing and audience",
+      "description": "Plans, audits, and operates permission-based email and mobile messaging programs, including lifecycle design, deliverability, consent, measurement, and compliance.",
+      "status": "listed"
+    },
+    {
+      "id": "epistemic-escalation",
+      "display_name": "Epistemic Escalation",
+      "category": "Research and knowledge",
+      "description": "Resets stalled investigation by isolating a causal question, gathering evidence, revising the model, and testing one falsifiable intervention.",
+      "status": "listed"
+    },
+    {
+      "id": "figma",
+      "display_name": "Figma",
+      "category": "Design and creative",
+      "description": "Provides grounded knowledge of Figma design, development, prototyping, collaboration, systems, plugins, and related product surfaces.",
+      "status": "listed"
+    },
+    {
+      "id": "figma-production-ops",
+      "display_name": "Figma Production Operations",
+      "category": "Design and creative",
+      "description": "Produces, inspects, verifies, compares, and recovers native editable Figma work from approved briefs and production requests.",
+      "status": "listed"
+    },
+    {
+      "id": "gateway-systems",
+      "display_name": "Gateway Systems",
+      "category": "Software and systems",
+      "description": "Designs and critiques gateways that connect untrusted ingress to workers, covering identity, queues, idempotency, reliability, and recovery.",
+      "status": "listed"
+    },
+    {
+      "id": "github-ops",
+      "display_name": "GitHub Operations",
+      "category": "Software and systems",
+      "description": "Guides source-first GitHub work across issues, pull requests, forks, branches, signing, CI, releases, reviews, and contribution flow.",
+      "status": "listed"
+    },
+    {
+      "id": "glyphs-app-ops",
+      "display_name": "Glyphs App Operations",
+      "category": "Design and creative",
+      "description": "Guides bounded typeface-production work in Glyphs, including source setup, object realization, generation, inspection, diagnostics, and recovery.",
+      "status": "listed"
+    },
+    {
+      "id": "google-admin-cloud",
+      "display_name": "Google Admin and Cloud",
+      "category": "Operations and platforms",
+      "description": "Supports planning and inventory work for Google Workspace Admin, Google Cloud, and Microsoft 365 environments.",
+      "status": "listed"
+    },
+    {
+      "id": "google-workspace-signatures",
+      "display_name": "Google Workspace Signatures",
+      "category": "Writing and communication",
+      "description": "Prepares, audits, tests, and closes out Gmail signature work, including rosters, HTML, plans, verification, and test emails.",
+      "status": "listed"
+    },
+    {
+      "id": "grant-writing",
+      "display_name": "Grant Writing",
+      "category": "Writing and communication",
+      "description": "Develops grant proposals across government, foundation, science, arts, and individual-artist programs, including research, narratives, budgets, and evaluation.",
+      "status": "listed"
+    },
+    {
+      "id": "graphic-design",
+      "display_name": "Graphic Design",
+      "category": "Design and creative",
+      "description": "Supports print layout and graphic design decisions through grids, composition, color, proportion, visual perception, and critique.",
+      "status": "listed"
+    },
+    {
+      "id": "harness-evolution",
+      "display_name": "Harness Evolution",
+      "category": "Software and systems",
+      "description": "Evaluates and develops agent-harness patterns for tool contracts, gateways, approvals, packaging, durable state, and operational testing.",
+      "status": "listed"
+    },
+    {
+      "id": "hosting-systems",
+      "display_name": "Hosting Systems",
+      "category": "Software and systems",
+      "description": "Guides hosting and compute decisions across infrastructure models, networking, TLS, storage, deployments, scaling, cost, and agent workloads.",
+      "status": "listed"
+    },
+    {
+      "id": "human-computer-usage",
+      "display_name": "Human Computer Usage",
+      "category": "Design and creative",
+      "description": "Tests interface and experience decisions against how people use computers, including attention, accessibility, error, trust, navigation, and forms.",
+      "status": "listed"
+    },
+    {
+      "id": "image-generation",
+      "display_name": "Image Generation",
+      "category": "Design and creative",
+      "description": "Generates, edits, compares, and reviews images from creative briefs while accounting for reference roles, provenance, privacy, cost, and criteria.",
+      "status": "listed"
+    },
+    {
+      "id": "industrial-design",
+      "display_name": "Industrial Design",
+      "category": "Architecture and physical products",
+      "description": "Guides physical product design through form, materials, manufacturing, ergonomics, sustainability, color, finish, and design-for-manufacture decisions.",
+      "status": "listed"
+    },
+    {
+      "id": "instagram-corpus-intake",
+      "display_name": "Instagram Corpus Intake",
+      "category": "Research and knowledge",
+      "description": "Builds and validates bounded local Instagram records for later analysis, preserving source limits, provenance, post order, assets, and acceptance criteria.",
+      "status": "listed"
+    },
+    {
+      "id": "instagram-editorial-analysis",
+      "display_name": "Instagram Editorial Analysis",
+      "category": "Research and knowledge",
+      "description": "Analyzes a supplied Instagram corpus for editorial patterns, periods, recurring programs, visual language, counterexamples, and evidence-linked conclusions.",
+      "status": "listed"
+    },
+    {
+      "id": "jung-dreams",
+      "display_name": "Jungian Dream Interpretation",
+      "category": "Personal and practical",
+      "description": "Supports dream exploration and interpretation through the methods of C. G. Jung's analytical psychology.",
+      "status": "listed"
+    },
+    {
+      "id": "kindle-scrape",
+      "display_name": "Kindle Capture",
+      "category": "Research and knowledge",
+      "description": "Converts an owned Kindle book into a searchable PDF for annotation, quotation, and archival use.",
+      "status": "under-review"
+    },
+    {
+      "id": "knowledge-builder",
+      "display_name": "Knowledge Builder",
+      "category": "Research and knowledge",
+      "description": "Builds source-grounded knowledge skills from written and visual evidence through acquisition, analysis, synthesis, assembly, reconciliation, and benchmarking.",
+      "status": "listed"
+    },
+    {
+      "id": "knowledge-refresh",
+      "display_name": "Knowledge Refresh",
+      "category": "Research and knowledge",
+      "description": "Keeps time-sensitive knowledge current by checking dated facts, identifying changes, and preparing proposed updates for review.",
+      "status": "listed"
+    },
+    {
+      "id": "linkedin-marketing",
+      "display_name": "LinkedIn Marketing",
+      "category": "Marketing and audience",
+      "description": "Guides LinkedIn go-to-market strategy across content, brands, advocacy, social selling, advertising, targeting, measurement, and channel fit.",
+      "status": "listed"
+    },
+    {
+      "id": "living-structure",
+      "display_name": "Living Structure",
+      "category": "Architecture and physical products",
+      "description": "Applies Christopher Alexander's theory of living structure to assess whether a design, system, or organizational change improves coherence.",
+      "status": "listed"
+    },
+    {
+      "id": "llc-formation",
+      "display_name": "Arizona LLC Formation",
+      "category": "Finance, legal and commerce",
+      "description": "Prepares Arizona single-member LLC formation materials through intake, current-source checks, approval gates, and local operating-agreement drafting.",
+      "status": "listed"
+    },
+    {
+      "id": "local-seo",
+      "display_name": "Local SEO",
+      "category": "Marketing and audience",
+      "description": "Guides local search strategy, Google Business Profile planning, reviews, citations, local pages, multi-location structure, and performance measurement.",
+      "status": "listed"
+    },
+    {
+      "id": "mac-app-lab",
+      "display_name": "Mac App Lab",
+      "category": "Software and systems",
+      "description": "Plans and assesses research using generated native macOS application fixtures without assuming a runnable local lab.",
+      "status": "listed"
+    },
+    {
+      "id": "macos-native-app-automation",
+      "display_name": "macOS Native App Automation",
+      "category": "Web and automation",
+      "description": "Plans guarded local or remote automation for native macOS applications while preserving the target application's foreground state.",
+      "status": "listed"
+    },
+    {
+      "id": "mail-intake",
+      "display_name": "Mail Intake",
+      "category": "Writing and communication",
+      "description": "Turns scoped email evidence into reviewable observations while keeping raw message content out of durable shared records.",
+      "status": "listed"
+    },
+    {
+      "id": "mentraos-dev",
+      "display_name": "Technical Intake",
+      "category": "Software and systems",
+      "description": "Classifies technical requests and identifies the current evidence needed before guidance involving hardware, providers, accounts, or deployment.",
+      "status": "listed"
+    },
+    {
+      "id": "merchant-center-ops",
+      "display_name": "Commerce Feed Operations",
+      "category": "Finance, legal and commerce",
+      "description": "Supports product-feed reconciliation, diagnostics, change preparation, verification, and recovery while routing commercial, tax, legal, and merchandising decisions to their owners.",
+      "status": "listed"
+    },
+    {
+      "id": "mesa-ops",
+      "display_name": "Repository and Workspace Operations",
+      "category": "Operations and platforms",
+      "description": "Guides repository, workspace, synchronization, integration, authentication, webhook, export, troubleshooting, and recovery planning with current checks at the point of use.",
+      "status": "listed"
+    },
+    {
+      "id": "messages-intake",
+      "display_name": "Message Intake",
+      "category": "Operations and platforms",
+      "description": "Provides read-only intake for text-message conversations: export, search, summarize, and route relevant context without changing the source conversation.",
+      "status": "listed"
+    },
+    {
+      "id": "microservices",
+      "display_name": "Microservices Architecture",
+      "category": "Software and systems",
+      "description": "Helps decide whether services are warranted, define boundaries, choose data and testing patterns, plan migrations, and critique distributed system designs.",
+      "status": "listed"
+    },
+    {
+      "id": "model-systems",
+      "display_name": "AI Model Systems",
+      "category": "Software and systems",
+      "description": "Guides model selection, evaluation, harness design, local inference, adaptation, verification, recovery, cost control, security, and privacy for AI systems.",
+      "status": "listed"
+    },
+    {
+      "id": "music-business",
+      "display_name": "Music Business",
+      "category": "Music, media and culture",
+      "description": "Explains music revenue, copyrights, royalties, deal structures, industry economics, rights, strategy, and audits across the United States music business.",
+      "status": "listed"
+    },
+    {
+      "id": "music-distribution",
+      "display_name": "Music Distribution",
+      "category": "Music, media and culture",
+      "description": "Supports release planning, distributor choices, metadata, playlisting, streaming-payout modeling, direct-to-fan distribution, and audits for recorded music releases.",
+      "status": "listed"
+    },
+    {
+      "id": "music-live",
+      "display_name": "Live Music Business",
+      "category": "Music, media and culture",
+      "description": "Covers touring, booking, promoters, live deals, show operations, ticketing, festivals, venues, and economics for planning and auditing live music work.",
+      "status": "listed"
+    },
+    {
+      "id": "music-media",
+      "display_name": "Music Curation",
+      "category": "Music, media and culture",
+      "description": "Helps design curation products, develop editorial judgment, define audience relationships, shape membership and voice, and audit music discovery work.",
+      "status": "listed"
+    },
+    {
+      "id": "music-publishing",
+      "display_name": "Music Publishing",
+      "category": "Music, media and culture",
+      "description": "Covers composition rights, publishing deals, royalty flows, licensing, collections, international administration, catalog value, and publisher or songwriter operations.",
+      "status": "listed"
+    },
+    {
+      "id": "native-input-automation",
+      "display_name": "Input Automation Research",
+      "category": "Software and systems",
+      "description": "Explains event provenance, operating-system input methods, browser automation detection, and the limits of current research for defensive technical analysis.",
+      "status": "listed"
+    },
+    {
+      "id": "nda-drafting",
+      "display_name": "NDA Drafting",
+      "category": "Finance, legal and commerce",
+      "description": "Supports drafting and reviewing confidentiality agreements, including structure, mutuality, consulting use, trade secrets, data provisions, and practical checklists.",
+      "status": "listed"
+    },
+    {
+      "id": "newsletter-image-archive",
+      "display_name": "Newsletter Image Archives",
+      "category": "Writing and communication",
+      "description": "Helps evaluate, prepare, rebuild, stage, and update image archives used in newsletters and other editorial communications.",
+      "status": "listed"
+    },
+    {
+      "id": "nostr",
+      "display_name": "Decentralized Publishing Protocols",
+      "category": "Music, media and culture",
+      "description": "Covers decentralized publishing protocols, audience distribution, identity, relays, value exchange, agent systems, product claims, and critical context.",
+      "status": "listed"
+    },
+    {
+      "id": "notion-ops",
+      "display_name": "Workspace Operations",
+      "category": "Operations and platforms",
+      "description": "Guides workspace and database design, imports, exports, migrations, integrations, audits, troubleshooting, and approval-gated operational work.",
+      "status": "listed"
+    },
+    {
+      "id": "organic-social",
+      "display_name": "Organic Social Media",
+      "category": "Marketing and audience",
+      "description": "Supports social strategy, content planning, native formats, community, creator work, measurement, growth, and channel-fit decisions for unpaid social media.",
+      "status": "listed"
+    },
+    {
+      "id": "paid-media",
+      "display_name": "Paid Media",
+      "category": "Marketing and audience",
+      "description": "Supports media plans, campaign audits, audience strategy, creative testing, budgets, attribution, measurement, and platform decisions across paid advertising.",
+      "status": "listed"
+    },
+    {
+      "id": "paper-and-substrates",
+      "display_name": "Paper and Substrates",
+      "category": "Design and creative",
+      "description": "Guides paper, board, printing, finishing, packaging, sourcing, cost, sustainability, and specification decisions for printed and physical brand materials.",
+      "status": "listed"
+    },
+    {
+      "id": "physical-iphone-qa",
+      "display_name": "iPhone Web QA",
+      "category": "Web and automation",
+      "description": "Runs real-device mobile web quality assurance when rendering, keyboard, viewport, scrolling, touch behavior, or native mobile automation require direct testing.",
+      "status": "listed"
+    },
+    {
+      "id": "pi-headless-handoff",
+      "display_name": "Headless AI Handoffs",
+      "category": "Software and systems",
+      "description": "Routes architecture, implementation, debugging, and review questions through file-based, read-only AI handoffs for a documented second opinion.",
+      "status": "listed"
+    },
+    {
+      "id": "pi-runtime-ops",
+      "display_name": "Agent Runtime Operations",
+      "category": "Software and systems",
+      "description": "Diagnoses slow or stalled agent sessions, resource reload behavior, process pressure, startup warnings, session archives, and runtime-path issues.",
+      "status": "listed"
+    },
+    {
+      "id": "pinterest-api",
+      "display_name": "Visual Discovery API Research",
+      "category": "Marketing and audience",
+      "description": "Supports keyword research, analytics, content strategy, board and pin queries, catalog reads, advertising-data reads, authentication, and rate-limit planning.",
+      "status": "listed"
+    },
+    {
+      "id": "pinterest-marketing",
+      "display_name": "Visual Discovery Marketing",
+      "category": "Marketing and audience",
+      "description": "Supports channel strategy, creative, search optimization, boards, shopping, catalogs, advertising, measurement, audits, and channel-fit decisions for visual discovery.",
+      "status": "listed"
+    },
+    {
+      "id": "playwright-browser-qa",
+      "display_name": "Browser QA",
+      "category": "Web and automation",
+      "description": "Sets up repeatable browser quality assurance for local sites, previews, generated pages, cross-browser checks, mobile emulation, and accessibility baselines.",
+      "status": "listed"
+    },
+    {
+      "id": "primary-source-research",
+      "display_name": "Primary Source Research",
+      "category": "Research and knowledge",
+      "description": "Runs source-bounded research from an approved packet with provenance checks, reviewable claims, and proposal-only learning.",
+      "status": "listed"
+    },
+    {
+      "id": "prime-ops",
+      "display_name": "Supervised Agent Operations",
+      "category": "Software and systems",
+      "description": "Guides supervised agent work through staged task packets, explicit model choices, artifact review, state checks, and conservative recovery.",
+      "status": "listed"
+    },
+    {
+      "id": "proxy-infrastructure",
+      "display_name": "Network Identity Research",
+      "category": "Research and knowledge",
+      "description": "Examines network identity, proxy limits, reputation signals, cross-layer consistency, and supply-chain ethics for authorized defensive technical assessment.",
+      "status": "listed"
+    },
+    {
+      "id": "publicist",
+      "display_name": "Public Relations",
+      "category": "Writing and communication",
+      "description": "Supports public-relations strategy, press materials, media lists, campaigns, crisis statements, spokesperson preparation, and coverage review without sending or publishing.",
+      "status": "listed"
+    },
+    {
+      "id": "publishing-house",
+      "display_name": "Independent Publishing",
+      "category": "Music, media and culture",
+      "description": "Supports editorial, production, metadata, sales, rights, finance, vendor, and launch planning for independent art, design, and monograph publishers.",
+      "status": "listed"
+    },
+    {
+      "id": "purchase-decisions",
+      "display_name": "Purchase Decisions",
+      "category": "Personal and practical",
+      "description": "Supports evidence-grounded purchasing decisions with current sources, hard constraints, tradeoffs, recommendations, and a documented basis for the choice.",
+      "status": "listed"
+    },
+    {
+      "id": "question-asking",
+      "display_name": "Question Asking",
+      "category": "Writing and communication",
+      "description": "Helps frame context-aware questions for discovery, interviews, coaching, negotiation, surveys, teaching, research, and difficult conversations.",
+      "status": "listed"
+    },
+    {
+      "id": "raster-vector-extraction",
+      "display_name": "Raster to Vector Extraction",
+      "category": "Design and creative",
+      "description": "Converts raster artwork into clean vector assets through tracing, reconstruction, typography checks, geometry review, and web-ready SVG preparation.",
+      "status": "listed"
+    },
+    {
+      "id": "real-estate-buyer-agent",
+      "display_name": "Residential Buyer Representation",
+      "category": "Finance, legal and commerce",
+      "description": "Covers buyer representation, financing, offers, contracts, contingencies, due diligence, closing, compliance, lead intake, and client guidance for residential purchases.",
+      "status": "listed"
+    },
+    {
+      "id": "record-label",
+      "display_name": "Record Labels",
+      "category": "Music, media and culture",
+      "description": "Covers label operations, artist development, recording economics, release planning, promotion, master ownership, catalog strategy, deal literacy, and audits.",
+      "status": "listed"
+    },
+    {
+      "id": "render-ops",
+      "display_name": "Cloud Application Operations",
+      "category": "Web and automation",
+      "description": "Guides cloud application operations, deployments, environment variables, storage, domains, databases, approval gates, recovery, and sanitized operational records.",
+      "status": "listed"
+    },
+    {
+      "id": "residential-architecture-construction",
+      "display_name": "Residential Construction",
+      "category": "Architecture and physical products",
+      "description": "Covers residential building structure, enclosure, mechanical systems, energy, inspections, details, source authority, and known technical gaps.",
+      "status": "listed"
+    },
+    {
+      "id": "rich-copy",
+      "display_name": "Rich Text Handoffs",
+      "category": "Writing and communication",
+      "description": "Creates local formatted copy pages for reliable rich-text handoffs when messages, documents, or manual pasting need preserved spacing and styling.",
+      "status": "listed"
+    },
+    {
+      "id": "scrapling",
+      "display_name": "Scrapling",
+      "category": "Web and automation",
+      "description": "Extracts authorized website content through a staged collection process, with benchmark records and escalation to browser tools when static extraction falls short.",
+      "status": "listed"
+    },
+    {
+      "id": "search-measurement-ops",
+      "display_name": "Search measurement operations",
+      "category": "Marketing and audience",
+      "description": "Measures owned search performance across defined sources and time windows, with normalized comparisons, page attribution, cohorts, confidence assessment, and reproducible records.",
+      "status": "listed"
+    },
+    {
+      "id": "seo-writing",
+      "display_name": "SEO writing",
+      "category": "Writing and communication",
+      "description": "Writes search-aware product, category, editorial, and metadata copy, with information architecture, internal linking, structured data, and measurement guidance.",
+      "status": "listed"
+    },
+    {
+      "id": "session-context-capture",
+      "display_name": "Session context capture",
+      "category": "Research and knowledge",
+      "description": "Reviews an active session or authorized transcript to identify durable context worth preserving in memory, skills, agents, instructions, or configuration.",
+      "status": "listed"
+    },
+    {
+      "id": "session-recap",
+      "display_name": "Session recap",
+      "category": "Writing and communication",
+      "description": "Creates private or public-safe session recaps from explicitly authorized, packetized evidence, while refusing to fill gaps when required evidence is absent.",
+      "status": "listed"
+    },
+    {
+      "id": "shopify-ops",
+      "display_name": "Shopify operations",
+      "category": "Finance, legal and commerce",
+      "description": "Handles store administration for products, collections, content, inventory, discounts, navigation, themes, and redirects, with approval-gated live actions and pre-use verification.",
+      "status": "listed"
+    },
+    {
+      "id": "site-publish",
+      "display_name": "Site publishing",
+      "category": "Web and automation",
+      "description": "Guides static-site publishing through version control and hosting, covering setup, routine releases, collaboration, and content-hosting choices.",
+      "status": "listed"
+    },
+    {
+      "id": "skill-benchmarking",
+      "display_name": "Skill benchmarking",
+      "category": "Research and knowledge",
+      "description": "Compares reference-heavy skills against prototype revisions using fixed prompts, structured scoring, locked artifacts, run records, and reviewable verdicts.",
+      "status": "listed"
+    },
+    {
+      "id": "skill-system-triage",
+      "display_name": "Skill system triage",
+      "category": "Software and systems",
+      "description": "Determines where a reusable capability belongs, selects an appropriate architecture, and strengthens operational skills with contracts and smoke tests.",
+      "status": "listed"
+    },
+    {
+      "id": "slack-apps",
+      "display_name": "Slack apps",
+      "category": "Operations and platforms",
+      "description": "Designs and maintains Slack apps, bots, assistants, access models, integrations, and collaboration surfaces across internal and external audiences.",
+      "status": "listed"
+    },
+    {
+      "id": "slack-ops",
+      "display_name": "Slack operations",
+      "category": "Operations and platforms",
+      "description": "Manages message delivery through official platform tooling, including destination resolution, drafting, sending, scheduling, thread replies, receipts, and external-channel fallbacks.",
+      "status": "listed"
+    },
+    {
+      "id": "software-architecture",
+      "display_name": "Software architecture",
+      "category": "Software and systems",
+      "description": "Guides application architecture decisions on system boundaries, quality attributes, data ownership, consistency, risk, technical debt, and documentation.",
+      "status": "listed"
+    },
+    {
+      "id": "sourcing",
+      "display_name": "Sourcing",
+      "category": "Finance, legal and commerce",
+      "description": "Finds, qualifies, and compares suppliers, manufacturers, distributors, and service providers through supply-chain research, cost analysis, vetting, terms, and samples.",
+      "status": "listed"
+    },
+    {
+      "id": "stem-player",
+      "display_name": "Stem player",
+      "category": "Music, media and culture",
+      "description": "Explains custom music preparation, loading, device recovery, audio formats, and practical tooling for a prototype stem-separation music player.",
+      "status": "listed"
+    },
+    {
+      "id": "storytelling",
+      "display_name": "Storytelling",
+      "category": "Writing and communication",
+      "description": "Develops durable narratives for brands, products, founders, long-form work, social media, public relations, and causes, with evidence and ethical attention practices.",
+      "status": "listed"
+    },
+    {
+      "id": "stripe-ops",
+      "display_name": "Stripe operations",
+      "category": "Finance, legal and commerce",
+      "description": "Supports payment-platform reads, prepared mutations, webhooks, refunds, disputes, payouts, reconciliation, and connected-account analysis under explicit approval boundaries.",
+      "status": "listed"
+    },
+    {
+      "id": "synthesis",
+      "display_name": "Synthesis",
+      "category": "Writing and communication",
+      "description": "Turns complex research into accessible business communication through audience calibration, narrative framing, data visualization, presentation design, and persuasion.",
+      "status": "listed"
+    },
+    {
+      "id": "system-digital",
+      "display_name": "System Digital",
+      "category": "Design and creative",
+      "description": "Applies a quiet, content-first visual style to local pages, memos, comparisons, diagrams, dashboards, and small tools when no stronger direction applies.",
+      "status": "listed"
+    },
+    {
+      "id": "system-mono",
+      "display_name": "System Mono",
+      "category": "Design and creative",
+      "description": "Designs monospaced interfaces for terminals, dashboards, command-line tools, themes, layouts, and code-adjacent controls using content-first visual discipline.",
+      "status": "listed"
+    },
+    {
+      "id": "tax-strategy",
+      "display_name": "Tax strategy",
+      "category": "Finance, legal and commerce",
+      "description": "Provides educational support for United States personal and business tax planning, including income, investments, retirement, entities, real estate, residency, and procedure.",
+      "status": "listed"
+    },
+    {
+      "id": "testing-strategy",
+      "display_name": "Testing strategy",
+      "category": "Software and systems",
+      "description": "Designs and improves software test suites through observable behavior, test-driven development, doubles, fixtures, test portfolios, and reliability practices.",
+      "status": "listed"
+    },
+    {
+      "id": "text-analysis",
+      "display_name": "Text analysis",
+      "category": "Writing and communication",
+      "description": "Analyzes nonfiction arguments, rhetoric, style, structure, genre, and ethics to explain how a text works and assess its claims.",
+      "status": "listed"
+    },
+    {
+      "id": "tls-fingerprinting",
+      "display_name": "TLS fingerprinting",
+      "category": "Web and automation",
+      "description": "Explains transport-layer client fingerprinting, protocol signals, impersonation approaches, and detection claims for defensive research and owned-client assessment.",
+      "status": "listed"
+    },
+    {
+      "id": "trademark-filing-review",
+      "display_name": "Trademark filing review",
+      "category": "Finance, legal and commerce",
+      "description": "Reviews United States trademark filing packets for procedural completeness, classification, specimens, filing basis, risk screening, deadlines, and self-filing workflow.",
+      "status": "listed"
+    },
+    {
+      "id": "travel-planning",
+      "display_name": "Travel planning",
+      "category": "Personal and practical",
+      "description": "Plans commercial and personal trips with destination research, itineraries, transportation, lodging, budgets, traveler needs, documents, and responsible-travel considerations.",
+      "status": "listed"
+    },
+    {
+      "id": "typeface-design",
+      "display_name": "Typeface design",
+      "category": "Design and creative",
+      "description": "Designs and critiques typefaces through briefs, drawing systems, spacing, families, variable fonts, character sets, proofing, quality assurance, and production handoffs.",
+      "status": "listed"
+    },
+    {
+      "id": "typography",
+      "display_name": "Typography",
+      "category": "Design and creative",
+      "description": "Guides typographic analysis, critique, type selection, spacing, layout, systems, history, web implementation, and multilingual work for print and screen.",
+      "status": "listed"
+    },
+    {
+      "id": "vercel-deploy",
+      "display_name": "Vercel deployment",
+      "category": "Web and automation",
+      "description": "Controls deployments with explicit approval, source persistence, provider readback, rollback planning, and safeguards for uncertain external writes.",
+      "status": "listed"
+    },
+    {
+      "id": "video-analysis",
+      "display_name": "Video analysis",
+      "category": "Research and knowledge",
+      "description": "Turns video into an auditable packet of sampled frames, timestamps, local text extraction, and transcript material for structured analysis.",
+      "status": "listed"
+    },
+    {
+      "id": "vj-performance",
+      "display_name": "VJ performance",
+      "category": "Music, media and culture",
+      "description": "Supports live audiovisual performance through visual language, rhythm, light, music synchronization, set dramaturgy, venue planning, accessibility, and rights considerations.",
+      "status": "listed"
+    },
+    {
+      "id": "web-bot-auth",
+      "display_name": "Web bot authentication",
+      "category": "Web and automation",
+      "description": "Plans cooperative web-client identity using message signatures, key directories, verification, published crawler information, and current standards assessment.",
+      "status": "listed"
+    },
+    {
+      "id": "web-design",
+      "display_name": "Web design",
+      "category": "Design and creative",
+      "description": "Designs web interfaces through layout, color, hierarchy, typography, motion, semantic markup, responsive components, accessibility, and performance.",
+      "status": "listed"
+    },
+    {
+      "id": "web-game-design",
+      "display_name": "Web game design",
+      "category": "Design and creative",
+      "description": "Designs and builds small browser games with game loops, touch controls, accessibility, playtesting, mobile support, and prototype reconstruction boundaries.",
+      "status": "listed"
+    },
+    {
+      "id": "web-intelligence",
+      "display_name": "Web intelligence",
+      "category": "Research and knowledge",
+      "description": "Researches a company's web presence through content extraction, structured data, technical signals, search, social analysis, APIs, and competitive investigation.",
+      "status": "listed"
+    },
+    {
+      "id": "webextension-development",
+      "display_name": "Web extension development",
+      "category": "Web and automation",
+      "description": "Builds, ports, tests, secures, packages, and maintains browser extensions across major browsers, including permissions, messaging, storage, migration, and store review.",
+      "status": "listed"
+    },
+    {
+      "id": "writing-style",
+      "display_name": "Writing style",
+      "category": "Writing and communication",
+      "description": "Edits professional copy with practical voice guidance, clear punctuation, concrete observation, and safeguards against common machine-written patterns.",
+      "status": "listed"
+    },
+    {
+      "id": "writing-style-consulting",
+      "display_name": "Writing style consulting",
+      "category": "Writing and communication",
+      "description": "Builds consulting communication through structured thinking, problem framing, client management, data visualization, presentation design, proposal writing, and persuasion.",
+      "status": "listed"
+    },
+    {
+      "id": "writing-voice-profile",
+      "display_name": "Writing voice profile",
+      "category": "Writing and communication",
+      "description": "Studies writing samples and produces a structured voice profile that guides content for organizational, author, publication, and blog contexts.",
+      "status": "listed"
+    },
+    {
+      "id": "youtube-manager",
+      "display_name": "YouTube management",
+      "category": "Music, media and culture",
+      "description": "Manages video uploads and channel metadata through the YouTube Data API, including titles, descriptions, and channel content.",
+      "status": "listed"
+    }
+  ]
+}

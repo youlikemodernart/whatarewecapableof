@@ -32,6 +32,23 @@ node --check js/piop.js
 
 `check-piop-page.mjs` verifies the locked Foundation and Module projection, graph-driven skill-selection copy, unique HTML IDs, fulfillment and authority boundaries, the single allowed Stripe form action, and the absence of stale package selectors, repository URLs, Git sources, direct install commands, release digests, known private markers, and direct JavaScript network-send primitives across the page, JavaScript, and PiOp CSS.
 
+The wiki carries a public-safe directory projection of 152 current graph skills. `scripts/data/piop-skills.json` contains the reviewed public names, categories, descriptions, and two under-review labels. It contains no private or explicitly excluded skill records and grants no availability or installation authority. Regenerate and verify it with:
+
+```sh
+node scripts/sync-piop-skill-directory.mjs \
+  --data scripts/data/piop-skills.json \
+  --page piop/wiki/index.html
+
+node scripts/sync-piop-skill-directory.mjs \
+  --data scripts/data/piop-skills.json \
+  --page piop/wiki/index.html \
+  --check
+
+node scripts/check-piop-wiki.mjs \
+  piop/wiki/index.html \
+  scripts/data/piop-skills.json
+```
+
 ## Use-case request behavior
 
 The page links to a user-controlled email request. It asks for the desired outcome, recipient, and relevant working context rather than a package identifier. The site does not send the request, install a skill, select a profile, or access an account.

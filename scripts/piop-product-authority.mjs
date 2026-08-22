@@ -4,9 +4,9 @@ import path from 'node:path';
 
 export const PIOP_PRODUCT_AUTHORITY = Object.freeze({
   schemaVersion: 1,
-  productVersion: '0.2.0',
-  sourceCommit: '06741fa64d1d284eebf4497b9354e6a4dcc40636',
-  sha256: '30ee1a02a236b49d08cf7e9976b241520769ebe4fa12aba026cd1a64ff792ca8',
+  productVersion: '0.2.3',
+  sourceCommit: 'ab35ad82fee276e2ebc7ea7550b55ae9799418fb',
+  sha256: 'b25404649b85a4cbf63a004c1196c38fcd070652d3d4236e065bc82223e636ff',
 });
 
 function requireExactKeys(value, expected, label) {
@@ -37,7 +37,7 @@ export function readAuthoritativeProduct(inputPath) {
   if (product.schema_version !== PIOP_PRODUCT_AUTHORITY.schemaVersion) throw new Error('product inventory schema mismatch');
   if (product.product_version !== PIOP_PRODUCT_AUTHORITY.productVersion) throw new Error('product version mismatch');
   if (product.source_commit !== PIOP_PRODUCT_AUTHORITY.sourceCommit) throw new Error('product source commit mismatch');
-  if (product.release_eligible !== false) throw new Error('site inventory must remain release-ineligible');
+  if (product.release_eligible !== true) throw new Error('site inventory must describe the accepted stable release');
   if (product.foundation.length !== 8 || product.extensions.length !== 5 || product.modules.length !== 6) {
     throw new Error('product inventory count mismatch');
   }

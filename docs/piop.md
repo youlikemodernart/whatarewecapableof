@@ -1,91 +1,67 @@
-# PiOp direct-link internal page
+# Canonical PiOp product reference
 
-The PiOp page lives at `/piop/` as a direct-link, noindex internal surface. It is not linked from the home page and is excluded from the public sitemap. It explains PiOp Minimal, Foundation, selected Modules, and the current graph-driven Skills Library model within the existing editorial page template. Foundation and Module rows are generated from the locked product projection at `scripts/data/piop-product.json`. Product-status copy distinguishes accepted source from recipient installation and readiness. The page installs nothing, grants no source access, and stores no recipient information. The one-time and monthly support form remains hidden until live payment activation is approved and verified.
+The canonical PiOp page lives at `/piop/`. It is a direct-link, noindex reference presented in an original encyclopedia style. The former editorial page was removed. `/piop/wiki/`, `/piop/skills/`, and `/piop/index.html` redirect permanently to `/piop/`.
 
-## Skill selection and delivery authority
+The canonical page explains PiOp Minimal, Foundation, selected Modules, IS Terminal, graph-driven skill selection, the complete public-safe skill directory, delivery, references, and authority boundaries. It installs nothing, grants no source or account access, stores no recipient information, and contains no payment or direct-install surface.
 
-PiOp selects skills from its accepted capability graph according to the recipient's use case. The graph identifies skill identities and declared required relationships. It grants no installation, capability, profile, account, credential, or external-action authority.
+## Source projections
 
-A reviewed fulfillment selects the smallest useful root skills and carries each selected root's required closures and bounded runtime resources into a recipient-specific bundle. The bundle excludes the complete canonical library, raw source corpora, books, PDFs, benchmark evidence, and maintenance history.
+Two reviewed data files generate bounded parts of the page:
 
-The standalone private-package catalog and its five package repositories were retired on 2026-08-21. The former catalog is historical compatibility evidence only. It does not define current site availability, trigger per-skill repository publication, or control Foundation, Recipient Profile, nightly, or stable contents. `scripts/piop-catalog-authority.mjs` and `scripts/sync-piop-catalog.mjs` fail closed if invoked.
+- `scripts/data/piop-product.json`: PiOp 0.2.3 stable Foundation, extensions, Modules, and release state.
+- `scripts/data/piop-skills.json`: 152 public-safe current graph skills, 12 categories, concise descriptions, and two under-review labels.
 
-Recipient fulfillment remains separate from source authority. A use-case request receives manual closure, compatibility, scope, and risk review. If approved, What are we capable of? prepares a recipient-specific verified ZIP, shares that file through private Google Drive, and emails the exact copy-and-paste Pi setup prompt. A GitHub account is not required for recipient delivery.
+The locked product authority is `scripts/piop-product-authority.mjs`. Product and skill source presence remain separate from installation, configuration, authentication, availability, verification, readiness, profile selection, and current action authority.
 
-## Verify the page
+The former standalone private-package catalog and its five repositories were retired on 2026-08-21. `scripts/piop-catalog-authority.mjs` and `scripts/sync-piop-catalog.mjs` remain fail-closed historical compatibility surfaces. They do not control the canonical page.
 
-Generate and verify the Foundation and Module projection:
+## IS Terminal reference
+
+The page identifies IS as the recommended macOS terminal and persistent workspace host for PiOp while preserving the three-layer boundary:
+
+- IS supplies the native terminal, panes, windows, and workspace host.
+- Pi remains the agent runtime.
+- PiOp supplies the portable operating setup, selected capabilities, recipient context, and authority boundaries.
+
+The IS section is grounded in the verified private IS 0.1.7.15 release, source README, release notes, and downstream boundary. It covers terminal foundations, persistent workspaces, visible agent work, guarded control, shell semantics, appearance, pane-safe interaction, pinned updates, platform requirements, trust state, and attribution. It publishes no private repository URL, artifact digest, account detail, or install command. Access and installation remain separately requested recipient actions.
+
+## Generate and verify
+
+From the repository root:
 
 ```sh
-node scripts/sync-piop-product.mjs \
-  --product scripts/data/piop-product.json
+npm run piop:sync
+npm run piop:check
+```
 
+Equivalent direct commands:
+
+```sh
 node scripts/sync-piop-product.mjs \
   --product scripts/data/piop-product.json \
-  --check
-
-node scripts/check-piop-page.mjs \
-  --product scripts/data/piop-product.json
-
-node --check js/piop.js
-```
-
-`check-piop-page.mjs` verifies the locked Foundation and Module projection, graph-driven skill-selection copy, unique HTML IDs, fulfillment and authority boundaries, the single allowed Stripe form action, and the absence of stale package selectors, repository URLs, Git sources, direct install commands, release digests, known private markers, and direct JavaScript network-send primitives across the page, JavaScript, and PiOp CSS.
-
-The wiki carries a public-safe directory projection of 152 current graph skills. `scripts/data/piop-skills.json` contains the reviewed public names, categories, descriptions, and two under-review labels. It contains no private or explicitly excluded skill records and grants no availability or installation authority. Regenerate and verify it with:
-
-```sh
-node scripts/sync-piop-skill-directory.mjs \
-  --data scripts/data/piop-skills.json \
-  --page piop/wiki/index.html
+  --page piop/index.html
 
 node scripts/sync-piop-skill-directory.mjs \
   --data scripts/data/piop-skills.json \
-  --page piop/wiki/index.html \
-  --check
+  --page piop/index.html
 
 node scripts/check-piop-wiki.mjs \
-  piop/wiki/index.html \
-  scripts/data/piop-skills.json
+  piop/index.html \
+  scripts/data/piop-skills.json \
+  scripts/data/piop-product.json
 ```
 
-## Use-case request behavior
+The checks verify:
 
-The page links to a user-controlled email request. It asks for the desired outcome, recipient, and relevant working context rather than a package identifier. The site does not send the request, install a skill, select a profile, or access an account.
+- exact product and skill projection identities;
+- PiOp 0.2.3 stable, 8 Foundation packages, 5 default extensions, and 6 Modules;
+- the complete 152-entry public-safe skill directory and two under-review labels;
+- IS 0.1.7.15, its trust statement, product relationship, and install/access boundary;
+- canonical URL, noindex state, unique HTML IDs, and redirect configuration;
+- absence of private source URLs, local paths, owner identities, operator-only product surfaces, and stale package-install claims.
 
-## Payment and fulfillment separation
+## Delivery boundary
 
-Payment does not grant package access, change repository permissions, accelerate fulfillment, or alter skill review. Checkout metadata remains `access_entitlement=none`. No checkout, payment, or subscription event may grant, revoke, or modify GitHub, Drive, package, or recipient permissions.
+A use-case request receives manual closure, compatibility, scope, and risk review. If approved, What are we capable of? prepares a recipient-specific verified ZIP, shares it through private Google Drive, and supplies the exact setup prompt. A GitHub account is not required for recipient delivery.
 
-## Stripe Checkout
-
-The public form posts to:
-
-```text
-https://fin.whatarewecapableof.com/api/piop/checkout
-```
-
-The endpoint accepts integer USD amounts from $1 through $10,000 and a frequency of `once` or `monthly`. It creates a server-side Stripe Checkout Session and redirects the browser to Stripe. One-time support uses Checkout payment mode. Monthly support uses subscription mode.
-
-Required production configuration:
-
-- `PIOP_CHECKOUT_ENABLED=1`, the PiOp-specific circuit breaker;
-- `STRIPE_MODE=live` and `FIN_STRIPE_LIVE_LINKS_ENABLED=1`;
-- `FIN_STRIPE_FAKE=0`;
-- existing WAWCO live Stripe secret and webhook configuration;
-- `PIOP_STRIPE_PRODUCT_ID`, containing the approved dedicated PiOp Stripe Product ID.
-
-The endpoint fails closed when the circuit breaker is off, fake mode is active, or the dedicated Product ID is absent or malformed. Creating the Stripe Product and setting production environment variables are live external changes and require explicit approval. The existing Fin webhook acknowledges these Stripe events. PiOp support needs no app-side entitlement or repository action.
-
-The browser creates a per-attempt UUID that becomes the Stripe idempotency key, so browser retries reuse the same Checkout Session request. The endpoint limits bodies to 2 KB and applies a best-effort five-attempt, ten-minute, per-IP limit inside each warm function instance. Before live activation, add an enforceable platform-level per-IP rate rule and alerting for Checkout Session spikes. The application limit does not replace a Vercel firewall or another shared rate-control layer.
-
-Run the no-network checkout smoke test:
-
-```sh
-cd apps/fin
-npm run smoke:piop-checkout
-```
-
-## Deployment boundary
-
-A site deployment, Fin deployment, Stripe Product creation, production environment-variable change, platform rate-limit rule, recipient ZIP, Drive permission change, or email requires its current governing approval. Before site deployment, verify the exact public page, generated request route, desktop and mobile behavior, keyboard flow, exact source diff, and absence of private repository or direct-install controls.
+Site deployment, IS access, recipient ZIP creation, Drive permissions, email, installation, app replacement, restart, credential use, provider actions, and other external effects require their current governing approval. Canonical-page presence grants none of them.

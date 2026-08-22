@@ -113,6 +113,15 @@ body.page-piop-wiki table.wt thead th{background:var(--fill-header);font-weight:
 body.page-piop-wiki table.wt tbody th{background:var(--fill-header);font-weight:700;text-align:left;}
 body.page-piop-wiki table.wt td.nowrap,body.page-piop-wiki table.wt th.nowrap{white-space:nowrap;}
 
+/* ---- IS Terminal reference ---- */
+body.page-piop-wiki .is-reference-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--hairline);border-left:1px solid var(--hairline);margin:1em 0;}
+body.page-piop-wiki .is-reference-list>div{padding:.7em .8em;border-right:1px solid var(--hairline);border-bottom:1px solid var(--hairline);min-width:0;}
+body.page-piop-wiki .is-reference-list dt{font-weight:700;}
+body.page-piop-wiki .is-reference-list dd{margin:.25em 0 0;color:var(--ink-2);font-size:13.5px;line-height:1.45;}
+body.page-piop-wiki .is-release-table th{width:24%;}
+body.page-piop-wiki .reference-actions{margin:.8em 0 1.25em;}
+body.page-piop-wiki .reference-actions a{display:inline-block;border:1px solid var(--border);background:var(--fill);padding:.4em .7em;font-weight:600;}
+
 /* ---- public skill directory ---- */
 body.page-piop-wiki .skill-directory-summary{border:1px solid var(--border);background:var(--fill);padding:.75em 1em;margin:1.25em 0;}
 body.page-piop-wiki .skill-directory-summary p{margin:0 0 .6em;}
@@ -176,6 +185,7 @@ body.page-piop-wiki .colophon b{color:var(--ink-2);}
   body.page-piop-wiki h2{font-size:19px;}
   body.page-piop-wiki .tabs span{padding-top:11px;padding-bottom:11px;} /* 40–44px tap targets */
   body.page-piop-wiki table.wt{display:block;overflow-x:auto;}
+  body.page-piop-wiki .is-reference-list{grid-template-columns:1fr;}
   body.page-piop-wiki .skill-directory-categories{grid-template-columns:1fr;}
   body.page-piop-wiki .skill-directory-list{grid-template-columns:1fr;}
 }

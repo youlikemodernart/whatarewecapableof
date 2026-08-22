@@ -20,10 +20,10 @@
     "ask:smoke": "cd apps/ask && npm run smoke",
     "windex:audit": "cd apps/index && npm run audit",
     "windex:check": "cd apps/index && npm run check",
-    "piop:sync": "node scripts/sync-piop-catalog.mjs",
-    "piop:check": "node scripts/check-piop-page.mjs",
-    "piop:product:sync": "node scripts/sync-piop-product.mjs --product scripts/data/piop-product.json",
-    "piop:product:check": "node scripts/sync-piop-product.mjs --product scripts/data/piop-product.json --check"
+    "piop:sync": "node scripts/sync-piop-product.mjs --product scripts/data/piop-product.json --page piop/index.html && node scripts/sync-piop-skill-directory.mjs --data scripts/data/piop-skills.json --page piop/index.html",
+    "piop:check": "node scripts/sync-piop-product.mjs --product scripts/data/piop-product.json --page piop/index.html --check && node scripts/sync-piop-skill-directory.mjs --data scripts/data/piop-skills.json --page piop/index.html --check && node scripts/check-piop-wiki.mjs piop/index.html scripts/data/piop-skills.json scripts/data/piop-product.json",
+    "piop:product:sync": "node scripts/sync-piop-product.mjs --product scripts/data/piop-product.json --page piop/index.html",
+    "piop:product:check": "node scripts/sync-piop-product.mjs --product scripts/data/piop-product.json --page piop/index.html --check"
   },
   "dependencies": {
     "googleapis": "^171.4.0"

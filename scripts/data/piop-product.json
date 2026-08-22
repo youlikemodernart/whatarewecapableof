@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "product": "PiOp Minimal",
-  "product_version": "0.2.0",
-  "source_commit": "06741fa64d1d284eebf4497b9354e6a4dcc40636",
-  "updated": "2026-08-19",
-  "release_eligible": false,
+  "product_version": "0.2.3",
+  "source_commit": "ab35ad82fee276e2ebc7ea7550b55ae9799418fb",
+  "updated": "2026-08-21",
+  "release_eligible": true,
   "foundation": [
     {
       "id": "core",

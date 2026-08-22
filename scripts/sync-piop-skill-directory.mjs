@@ -40,7 +40,7 @@ function slug(value) {
 
 const args = parseArgs(process.argv.slice(2));
 const dataPath = path.resolve(args.data || 'scripts/data/piop-skills.json');
-const pagePath = path.resolve(args.page || 'piop/wiki/index.html');
+const pagePath = path.resolve(args.page || 'piop/index.html');
 if (!fs.existsSync(dataPath)) fail(`directory data missing: ${dataPath}`);
 if (!fs.existsSync(pagePath)) fail(`wiki page missing: ${pagePath}`);
 

@@ -21,9 +21,18 @@
     "windex:audit": "cd apps/index && npm run audit",
     "windex:check": "cd apps/index && npm run check",
     "piop:sync": "node scripts/sync-piop-catalog.mjs",
-    "piop:check": "node scripts/check-piop-page.mjs"
+    "piop:check": "node scripts/check-piop-page.mjs",
+    "mail:draft:test": "node --test scripts/gmail-draft-message.test.mjs",
+    "email:profile": "node scripts/email-expression-profile.mjs",
+    "email:profile:test": "node --test scripts/email-expression-profile.test.mjs",
+    "email:resolver:test": "node --test scripts/email-expression-resolver.test.mjs"
   },
   "dependencies": {
-    "googleapis": "^171.4.0"
+    "googleapis": "^171.4.0",
+    "htmlparser2": "12.0.0",
+    "mailparser": "3.9.16",
+    "markdown-it": "14.3.0",
+    "nodemailer": "9.0.3",
+    "sanitize-html": "2.17.6"
   }
 }

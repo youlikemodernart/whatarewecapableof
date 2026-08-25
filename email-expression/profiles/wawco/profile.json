@@ -1,0 +1,190 @@
+{
+  "schemaVersion": "1.0",
+  "profileId": "wawco.email.house",
+  "profileVersion": "1.2.0",
+  "status": "accepted",
+  "organization": "What are we capable of?",
+  "scope": [
+    "structured-correspondence",
+    "project-update",
+    "proposal-handoff",
+    "client-follow-up"
+  ],
+  "visual": {
+    "surfaceId": "wawco.system-email-surface.v1",
+    "measurePx": 640,
+    "bodyFont": "system-sans",
+    "monoFont": "system-mono",
+    "bodySizePx": 16,
+    "bodyLineHeightPx": 24,
+    "colors": {
+      "text": "#202124",
+      "mutedText": "#5F6368",
+      "link": "#174EA6",
+      "rule": "#DADCE0",
+      "surfaceMuted": "#F1F3F4",
+      "highlight": "#FFE08A",
+      "highlightText": "#202124"
+    },
+    "rendering": {
+      "typography": {
+        "h1": {
+          "sizePx": 24,
+          "lineHeightPx": 30,
+          "weight": 700
+        },
+        "h2": {
+          "sizePx": 20,
+          "lineHeightPx": 26,
+          "weight": 700
+        },
+        "h3": {
+          "sizePx": 17,
+          "lineHeightPx": 24,
+          "weight": 700
+        },
+        "inlineCode": {
+          "sizePx": 14,
+          "lineHeightPx": 20,
+          "weight": 400
+        },
+        "codeBlock": {
+          "sizePx": 13,
+          "lineHeightPx": 20,
+          "weight": 400
+        },
+        "table": {
+          "sizePx": 14,
+          "lineHeightPx": 20,
+          "weight": 400
+        },
+        "tableHeader": {
+          "sizePx": 13,
+          "lineHeightPx": 18,
+          "weight": 700
+        },
+        "caption": {
+          "sizePx": 13,
+          "lineHeightPx": 18,
+          "weight": 400
+        }
+      },
+      "spacing": {
+        "paragraphAfterPx": 16,
+        "h1AfterPx": 16,
+        "h2BeforePx": 28,
+        "h2AfterPx": 12,
+        "h3BeforePx": 24,
+        "h3AfterPx": 10,
+        "listAfterPx": 20,
+        "blockquoteAfterPx": 20,
+        "ruleVerticalPx": 24,
+        "tableAfterPx": 24,
+        "figureBeforePx": 8,
+        "figureAfterPx": 24,
+        "captionBeforePx": 10
+      },
+      "rules": {
+        "strongRule": "#5F6368",
+        "quoteRule": "#BDC1C6",
+        "quoteWidthPx": 2,
+        "codeRadiusPx": 4,
+        "inlineCodeRadiusPx": 3
+      },
+      "figures": {
+        "landscapeMaxPx": 640,
+        "squareMaxPx": 520,
+        "portraitMaxPx": 440,
+        "tallMaxPx": 360
+      },
+      "highlightPalettes": {
+        "default": "#FFE08A",
+        "hotPink": "#FF4FD8"
+      }
+    }
+  },
+  "components": {
+    "headings": true,
+    "lists": true,
+    "blockquote": true,
+    "code": true,
+    "smallTables": {
+      "enabled": true,
+      "maxCount": 2
+    },
+    "inlineFigures": {
+      "enabled": true,
+      "maxCount": 2
+    },
+    "highlights": {
+      "enabled": true,
+      "maxCount": 20
+    }
+  },
+  "voice": {
+    "posture": [
+      "State the purpose directly.",
+      "Use structure only when it makes the decision or next action easier to read.",
+      "Keep system disclosure and reply routing explicit.",
+      "Translate internal system state into recipient-facing language."
+    ],
+    "tone": [
+      "Direct, calm, and editorial without sales-performance language.",
+      "Transparent about system involvement when the standing note applies.",
+      "Let routine updates read as correspondence rather than a system report."
+    ],
+    "rhythm": [
+      "Prefer short paragraphs with deliberate whitespace.",
+      "Use lists only when they improve decision or action clarity.",
+      "For routine updates, organize around what happened, what remains, and what the recipient needs to do."
+    ],
+    "diction": [
+      "Use concrete project language and exact next actions.",
+      "Use ordinary words before internal terminology.",
+      "Use the simplest ordinary term before operational vocabulary."
+    ],
+    "structure": [
+      "Lead with the purpose or decision.",
+      "Keep evidence and qualification adjacent to the claim.",
+      "Close with the next action when one exists.",
+      "Include a distinction only when it changes what the recipient understands, decides, or does.",
+      "Prefer a natural update over a taxonomy of statuses."
+    ],
+    "greeting": null,
+    "signoff": null,
+    "cta": "Name the exact next action when one exists.",
+    "avoid": [
+      "Generic enthusiasm, inflated claims, and ceremonial openings.",
+      "Dense hierarchy or formatting that performs importance rather than clarifying it.",
+      "Internal workflow, validation, provider, audience-logic, and state-machine language unless the recipient needs that exact detail.",
+      "Exposing comprehensive internal reasoning when a concise external explanation carries the same useful truth."
+    ],
+    "unknowns": []
+  },
+  "antiRules": [
+    "Do not distribute this house profile as a client starter profile.",
+    "Do not replace the restrained hierarchy with campaign styling without a reviewed profile version.",
+    "Do not remove the exact-payload approval or uncertain-send controls.",
+    "Do not expose the full semantic structure of the work merely because the system can articulate it."
+  ],
+  "privateBindingSlots": [
+    "sender-policy",
+    "signature",
+    "private-assets"
+  ],
+  "evidence": {
+    "reviewedBy": "Noah Glynn",
+    "reviewedAt": "2026-08-24",
+    "sourcePointers": [
+      "docs/system-email-surface-v1.md",
+      ".pi/workboards/system-email-surface-v1-2026-07-23.md",
+      ".pi/fixtures/organization-email-expression/wawco-testing/send-receipts.json",
+      "scripts/email-expression-resolver.test.mjs",
+      "user feedback 2026-08-24: recent client emails felt overly semantic",
+      "private Gmail Sent review, 2026-08-24"
+    ],
+    "knownGaps": [
+      "Broad Outlook and named-client compatibility matrix remains incomplete."
+    ]
+  }
+}
